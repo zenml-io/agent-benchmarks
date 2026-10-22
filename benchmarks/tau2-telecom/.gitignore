@@ -1,0 +1,5 @@
+data/
+.venv/
+**/__pycache__/
+harness/replay/results/
+harness/step_check/out*/

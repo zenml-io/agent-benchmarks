@@ -1,0 +1,766 @@
+{
+ "schema": 1,
+ "dry_run": false,
+ "coverage": {
+  "sessions": 101,
+  "sessions_not_fetched": 0,
+  "llm_calls_seen": 1057,
+  "replayable": 1048,
+  "replayable_inferred": 0,
+  "sampled": 160,
+  "skipped": {
+   "missing_tool_schema": 9
+  },
+  "schema_sources": {
+   "recorded": 160
+  },
+  "source_formats": {
+   "otel_parts": 160
+  },
+  "calls_with_dropped_reasoning": 0,
+  "calls_without_system_prompt": 160
+ },
+ "volume": {
+  "sessions": 101,
+  "calls_per_session": 10.47,
+  "sessions_per_month": 170.5,
+  "source": "observed"
+ },
+ "recorded": {
+  "models": {
+   "gpt-5.2-2025-12-11": 160
+  },
+  "tokens_per_call": {
+   "input_tokens": 8528.2,
+   "cached_input_tokens": 0.0,
+   "output_tokens": 77.9,
+   "reasoning_tokens": 0.0
+  },
+  "cost": {
+   "per_call_usd": null,
+   "per_session_usd": null,
+   "per_month_usd": null
+  }
+ },
+ "candidates": [
+  {
+   "name": "gpt-5.6-sol",
+   "model": "gpt-5.6-sol",
+   "endpoint_host": "api.openai.com",
+   "reference": false,
+   "open_weights": null,
+   "origin": null,
+   "excluded": false,
+   "price": {
+    "input_per_mtok": "4",
+    "output_per_mtok": "20",
+    "cached_input_per_mtok": "0.4",
+    "source": "genai-prices 0.1.13 (OpenAI GPT-5.6 Sol)"
+   },
+   "calls_sent": 160,
+   "calls_not_run": {},
+   "consistency": null,
+   "answered": 141,
+   "agreement": {
+    "same_tool_same_args": 52,
+    "different_text": 35,
+    "tool_instead_of_text": 24,
+    "same_tool_different_args": 10,
+    "text_instead_of_tool": 7,
+    "same_text": 7,
+    "different_tool": 6
+   },
+   "agreement_rate": 0.4184,
+   "agreement_interval": [
+    0.3402,
+    0.501
+   ],
+   "tool_choice_rate": 0.8267,
+   "tool_choice_interval": [
+    0.7257,
+    0.8958
+   ],
+   "tool_choice_calls": 75,
+   "judged_equivalent": 0,
+   "judged_different": 0,
+   "judged_unsure": 0,
+   "judge_failures": {},
+   "inferred_schema_agreement": {},
+   "failures": {
+    "http_error": 19
+   },
+   "failure_rate": 0.1187,
+   "by_tool": {
+    "get_bills_for_customer": {
+     "calls": 4,
+     "agreement_rate": 1.0,
+     "tool_choice_rate": 1.0,
+     "match_rate": 1.0,
+     "cost_per_call_usd": "0.00505990",
+     "fields": {
+      "get_bills_for_customer.customer_id": 1.0,
+      "get_bills_for_customer.limit": 1.0
+     }
+    },
+    "get_customer_by_name": {
+     "calls": 1,
+     "agreement_rate": 0.0,
+     "tool_choice_rate": 0.0,
+     "match_rate": 0.0,
+     "cost_per_call_usd": "0.02471600",
+     "fields": {}
+    },
+    "get_customer_by_phone": {
+     "calls": 18,
+     "agreement_rate": 0.9444,
+     "tool_choice_rate": 1.0,
+     "match_rate": 1.0,
+     "cost_per_call_usd": "0.00723598",
+     "fields": {
+      "get_customer_by_phone.phone_number": 0.9444
+     }
+    },
+    "get_details_by_id": {
+     "calls": 36,
+     "agreement_rate": 0.7778,
+     "tool_choice_rate": 0.8333,
+     "match_rate": 0.8333,
+     "cost_per_call_usd": "0.00481519",
+     "fields": {
+      "get_details_by_id.id": 0.9333
+     }
+    },
+    "refuel_data": {
+     "calls": 1,
+     "agreement_rate": 0.0,
+     "tool_choice_rate": 1.0,
+     "match_rate": 1.0,
+     "cost_per_call_usd": "0.00459200",
+     "fields": {
+      "refuel_data.customer_id": 0.0,
+      "refuel_data.gb_amount": 0.0,
+      "refuel_data.line_id": 0.0
+     }
+    },
+    "resume_line": {
+     "calls": 4,
+     "agreement_rate": 0.25,
+     "tool_choice_rate": 0.25,
+     "match_rate": 0.25,
+     "cost_per_call_usd": "0.00521400",
+     "fields": {
+      "resume_line.customer_id": 1.0,
+      "resume_line.line_id": 1.0
+     }
+    },
+    "send_payment_request": {
+     "calls": 4,
+     "agreement_rate": 0.5,
+     "tool_choice_rate": 0.5,
+     "match_rate": 0.5,
+     "cost_per_call_usd": "0.00882590",
+     "fields": {
+      "send_payment_request.bill_id": 1.0,
+      "send_payment_request.customer_id": 1.0
+     }
+    },
+    "text answer": {
+     "calls": 66,
+     "agreement_rate": 0.1061,
+     "tool_choice_rate": null,
+     "match_rate": 0.6364,
+     "cost_per_call_usd": "0.00738459",
+     "fields": {}
+    },
+    "transfer_to_human_agents": {
+     "calls": 7,
+     "agreement_rate": 0.0,
+     "tool_choice_rate": 0.8571,
+     "match_rate": 0.8571,
+     "cost_per_call_usd": "0.00710017",
+     "fields": {
+      "transfer_to_human_agents.summary": 0.0
+     }
+    }
+   },
+   "by_route": {
+    "after a user message": {
+     "calls": 49,
+     "agreement_rate": 0.1633,
+     "tool_choice_rate": 0.3469,
+     "match_rate": 0.6939,
+     "cost_per_call_usd": "0.00713220",
+     "fields": {
+      "get_customer_by_phone.phone_number": 0.0,
+      "get_details_by_id.id": 0.8571,
+      "refuel_data.customer_id": 0.0,
+      "refuel_data.gb_amount": 0.0,
+      "refuel_data.line_id": 0.0,
+      "send_payment_request.bill_id": 1.0,
+      "send_payment_request.customer_id": 1.0,
+      "transfer_to_human_agents.summary": 0.0
+     }
+    },
+    "after get_bills_for_customer": {
+     "calls": 4,
+     "agreement_rate": 0.0,
+     "tool_choice_rate": 0.0,
+     "match_rate": 0.5,
+     "cost_per_call_usd": "0.01060830",
+     "fields": {}
+    },
+    "after get_customer_by_phone": {
+     "calls": 18,
+     "agreement_rate": 0.5556,
+     "tool_choice_rate": 0.5556,
+     "match_rate": 0.6111,
+     "cost_per_call_usd": "0.00632793",
+     "fields": {
+      "get_details_by_id.id": 1.0
+     }
+    },
+    "after get_details_by_id": {
+     "calls": 35,
+     "agreement_rate": 0.4857,
+     "tool_choice_rate": 0.5143,
+     "match_rate": 0.6571,
+     "cost_per_call_usd": "0.00515327",
+     "fields": {
+      "get_bills_for_customer.customer_id": 1.0,
+      "get_bills_for_customer.limit": 1.0,
+      "get_details_by_id.id": 0.9231,
+      "resume_line.customer_id": 1.0,
+      "resume_line.line_id": 1.0
+     }
+    },
+    "after refuel_data": {
+     "calls": 1,
+     "agreement_rate": 0.0,
+     "tool_choice_rate": 0.0,
+     "match_rate": 1.0,
+     "cost_per_call_usd": "0.00500560",
+     "fields": {}
+    },
+    "after resume_line": {
+     "calls": 4,
+     "agreement_rate": 0.0,
+     "tool_choice_rate": 0.0,
+     "match_rate": 1.0,
+     "cost_per_call_usd": "0.00609160",
+     "fields": {}
+    },
+    "after send_payment_request": {
+     "calls": 4,
+     "agreement_rate": 0.0,
+     "tool_choice_rate": 0.0,
+     "match_rate": 1.0,
+     "cost_per_call_usd": "0.00593720",
+     "fields": {}
+    },
+    "after transfer_to_human_agents": {
+     "calls": 7,
+     "agreement_rate": 1.0,
+     "tool_choice_rate": 0.0,
+     "match_rate": 1.0,
+     "cost_per_call_usd": "0.00441349",
+     "fields": {}
+    },
+    "first turn": {
+     "calls": 19,
+     "agreement_rate": 0.8947,
+     "tool_choice_rate": 0.8947,
+     "match_rate": 0.9474,
+     "cost_per_call_usd": "0.00927326",
+     "fields": {
+      "get_customer_by_phone.phone_number": 1.0
+     }
+    }
+   },
+   "latency_seconds": {
+    "p50": 1.868,
+    "p95": 4.43
+   },
+   "tokens_per_call": {
+    "input_tokens": 6531.2,
+    "cached_input_tokens": 6094.8,
+    "output_tokens": 86.6,
+    "reasoning_tokens": 39.4
+   },
+   "retries": 0,
+   "cost": {
+    "per_call_usd": "0.00671195",
+    "per_session_usd": "0.07024293",
+    "per_month_usd": "11.97340968"
+   },
+   "cost_complete": true,
+   "spent_usd": "0.94638560",
+   "summary": "Picks the same tool as your current model 83% of the time."
+  },
+  {
+   "name": "gpt-5.6-luna",
+   "model": "gpt-5.6-luna",
+   "endpoint_host": "api.openai.com",
+   "reference": false,
+   "open_weights": null,
+   "origin": null,
+   "excluded": false,
+   "price": {
+    "input_per_mtok": "0.2",
+    "output_per_mtok": "1.2",
+    "cached_input_per_mtok": "0.02",
+    "source": "genai-prices 0.1.13 (OpenAI GPT-5.6 Luna)"
+   },
+   "calls_sent": 160,
+   "calls_not_run": {},
+   "consistency": null,
+   "answered": 141,
+   "agreement": {
+    "same_tool_same_args": 54,
+    "tool_instead_of_text": 32,
+    "different_text": 28,
+    "same_tool_different_args": 12,
+    "different_tool": 6,
+    "same_text": 6,
+    "text_instead_of_tool": 3
+   },
+   "agreement_rate": 0.4255,
+   "agreement_interval": [
+    0.347,
+    0.5081
+   ],
+   "tool_choice_rate": 0.88,
+   "tool_choice_interval": [
+    0.7874,
+    0.9356
+   ],
+   "tool_choice_calls": 75,
+   "judged_equivalent": 0,
+   "judged_different": 0,
+   "judged_unsure": 0,
+   "judge_failures": {},
+   "inferred_schema_agreement": {},
+   "failures": {
+    "http_error": 19
+   },
+   "failure_rate": 0.1187,
+   "by_tool": {
+    "get_bills_for_customer": {
+     "calls": 4,
+     "agreement_rate": 1.0,
+     "tool_choice_rate": 1.0,
+     "match_rate": 1.0,
+     "cost_per_call_usd": "0.00024617",
+     "fields": {
+      "get_bills_for_customer.customer_id": 1.0,
+      "get_bills_for_customer.limit": 1.0
+     }
+    },
+    "get_customer_by_name": {
+     "calls": 1,
+     "agreement_rate": 0.0,
+     "tool_choice_rate": 0.0,
+     "match_rate": 0.0,
+     "cost_per_call_usd": "0.00120700",
+     "fields": {}
+    },
+    "get_customer_by_phone": {
+     "calls": 18,
+     "agreement_rate": 0.9444,
+     "tool_choice_rate": 1.0,
+     "match_rate": 1.0,
+     "cost_per_call_usd": "0.00043051",
+     "fields": {
+      "get_customer_by_phone.phone_number": 0.9444
+     }
+    },
+    "get_details_by_id": {
+     "calls": 36,
+     "agreement_rate": 0.7778,
+     "tool_choice_rate": 0.8611,
+     "match_rate": 0.8611,
+     "cost_per_call_usd": "0.00029121",
+     "fields": {
+      "get_details_by_id.id": 0.9032
+     }
+    },
+    "refuel_data": {
+     "calls": 1,
+     "agreement_rate": 0.0,
+     "tool_choice_rate": 1.0,
+     "match_rate": 1.0,
+     "cost_per_call_usd": "0.00025440",
+     "fields": {
+      "refuel_data.customer_id": 0.0,
+      "refuel_data.gb_amount": 0.0,
+      "refuel_data.line_id": 0.0
+     }
+    },
+    "resume_line": {
+     "calls": 4,
+     "agreement_rate": 0.5,
+     "tool_choice_rate": 0.5,
+     "match_rate": 0.5,
+     "cost_per_call_usd": "0.00026564",
+     "fields": {
+      "resume_line.customer_id": 1.0,
+      "resume_line.line_id": 1.0
+     }
+    },
+    "send_payment_request": {
+     "calls": 4,
+     "agreement_rate": 0.75,
+     "tool_choice_rate": 0.75,
+     "match_rate": 0.75,
+     "cost_per_call_usd": "0.00047254",
+     "fields": {
+      "send_payment_request.bill_id": 1.0,
+      "send_payment_request.customer_id": 1.0
+     }
+    },
+    "text answer": {
+     "calls": 66,
+     "agreement_rate": 0.0909,
+     "tool_choice_rate": null,
+     "match_rate": 0.5152,
+     "cost_per_call_usd": "0.00038847",
+     "fields": {}
+    },
+    "transfer_to_human_agents": {
+     "calls": 7,
+     "agreement_rate": 0.0,
+     "tool_choice_rate": 1.0,
+     "match_rate": 1.0,
+     "cost_per_call_usd": "0.00036209",
+     "fields": {
+      "transfer_to_human_agents.summary": 0.0
+     }
+    }
+   },
+   "by_route": {
+    "after a user message": {
+     "calls": 49,
+     "agreement_rate": 0.1633,
+     "tool_choice_rate": 0.3469,
+     "match_rate": 0.6327,
+     "cost_per_call_usd": "0.00043309",
+     "fields": {
+      "get_customer_by_phone.phone_number": 0.0,
+      "get_details_by_id.id": 1.0,
+      "refuel_data.customer_id": 0.0,
+      "refuel_data.gb_amount": 0.0,
+      "refuel_data.line_id": 0.0,
+      "send_payment_request.bill_id": 1.0,
+      "send_payment_request.customer_id": 1.0,
+      "transfer_to_human_agents.summary": 0.0
+     }
+    },
+    "after get_bills_for_customer": {
+     "calls": 4,
+     "agreement_rate": 0.25,
+     "tool_choice_rate": 0.25,
+     "match_rate": 0.5,
+     "cost_per_call_usd": "0.00054639",
+     "fields": {
+      "send_payment_request.bill_id": 1.0,
+      "send_payment_request.customer_id": 1.0
+     }
+    },
+    "after get_customer_by_phone": {
+     "calls": 18,
+     "agreement_rate": 0.5556,
+     "tool_choice_rate": 0.5556,
+     "match_rate": 0.5556,
+     "cost_per_call_usd": "0.00030814",
+     "fields": {
+      "get_details_by_id.id": 1.0
+     }
+    },
+    "after get_details_by_id": {
+     "calls": 35,
+     "agreement_rate": 0.5143,
+     "tool_choice_rate": 0.6,
+     "match_rate": 0.6857,
+     "cost_per_call_usd": "0.00027652",
+     "fields": {
+      "get_bills_for_customer.customer_id": 1.0,
+      "get_bills_for_customer.limit": 1.0,
+      "get_details_by_id.id": 0.8,
+      "resume_line.customer_id": 1.0,
+      "resume_line.line_id": 1.0
+     }
+    },
+    "after refuel_data": {
+     "calls": 1,
+     "agreement_rate": 0.0,
+     "tool_choice_rate": 0.0,
+     "match_rate": 1.0,
+     "cost_per_call_usd": "0.00026928",
+     "fields": {}
+    },
+    "after resume_line": {
+     "calls": 4,
+     "agreement_rate": 0.0,
+     "tool_choice_rate": 0.0,
+     "match_rate": 1.0,
+     "cost_per_call_usd": "0.00029064",
+     "fields": {}
+    },
+    "after send_payment_request": {
+     "calls": 4,
+     "agreement_rate": 0.0,
+     "tool_choice_rate": 0.0,
+     "match_rate": 1.0,
+     "cost_per_call_usd": "0.00031996",
+     "fields": {}
+    },
+    "after transfer_to_human_agents": {
+     "calls": 7,
+     "agreement_rate": 0.8571,
+     "tool_choice_rate": 0.0,
+     "match_rate": 0.8571,
+     "cost_per_call_usd": "0.00021689",
+     "fields": {}
+    },
+    "first turn": {
+     "calls": 19,
+     "agreement_rate": 0.8947,
+     "tool_choice_rate": 0.8947,
+     "match_rate": 0.9474,
+     "cost_per_call_usd": "0.00047072",
+     "fields": {
+      "get_customer_by_phone.phone_number": 1.0
+     }
+    }
+   },
+   "latency_seconds": {
+    "p50": 1.506,
+    "p95": 3.649
+   },
+   "tokens_per_call": {
+    "input_tokens": 6531.2,
+    "cached_input_tokens": 6020.9,
+    "output_tokens": 84.4,
+    "reasoning_tokens": 41.4
+   },
+   "retries": 0,
+   "cost": {
+    "per_call_usd": "0.00036741",
+    "per_session_usd": "0.00384509",
+    "per_month_usd": "0.65542384"
+   },
+   "cost_complete": true,
+   "spent_usd": "0.05180510",
+   "summary": "Picks the same tool as your current model 88% of the time."
+  }
+ ],
+ "decision_shapes": {
+  "calls": 160,
+  "decision": 0,
+  "partial": 160,
+  "generative": 0,
+  "recorded_cost_share": {
+   "decision": null,
+   "partial": null,
+   "generative": null
+  },
+  "reasons": {
+   "the text answer needs a generative model": 74,
+   "free-form arguments: id": 42,
+   "free-form arguments: phone_number": 20,
+   "free-form arguments: summary": 7,
+   "free-form arguments: customer_id, limit": 4,
+   "free-form arguments: bill_id, customer_id": 4,
+   "free-form arguments: customer_id, line_id": 4,
+   "free-form arguments: customer_id, gb_amount, line_id": 3,
+   "free-form arguments: dob, full_name": 2
+  },
+  "by_node": {
+   "chat Azure/gpt-5.2-2025-12-11": {
+    "partial": 160
+   }
+  }
+ },
+ "decision_candidates": [],
+ "best_for": [
+  {
+   "goal": "Closest to today",
+   "candidate": "gpt-5.6-luna",
+   "why": "Picks the same tool as your current model 88% of the time."
+  },
+  {
+   "goal": "Cheapest",
+   "candidate": "gpt-5.6-luna",
+   "why": "$0.00036741 per call, within 10 points of how often your current model matches itself."
+  },
+  {
+   "goal": "Fastest",
+   "candidate": "gpt-5.6-luna",
+   "why": "1.51s median latency, within 10 points of how often your current model matches itself."
+  },
+  {
+   "goal": "Worth a full replay",
+   "candidate": "gpt-5.6-luna + gpt-5.6-sol",
+   "why": "Step agreement ranks candidates but does not show outcomes. Replay these end to end with your evaluator before switching: every candidate except clear failures, plus the cheapest, which step agreement often ranks low even when it keeps outcomes."
+  },
+  {
+   "goal": "Best mix",
+   "candidate": "gpt-5.6-luna",
+   "why": "Moves 1 of 10 kinds of call (26% of calls) to gpt-5.6-luna and keeps the rest on today's model."
+  }
+ ],
+ "best_mix": {
+  "groups": [
+   {
+    "group": "after a user message",
+    "share": 0.35,
+    "calls": 56,
+    "candidate": null,
+    "rate": null,
+    "cost_per_call_usd": null,
+    "too_few_calls": false,
+    "noisy_reference": false,
+    "held_out": "failed",
+    "held_out_rate": 0.52,
+    "held_out_calls": 25
+   },
+   {
+    "group": "after get_bills_for_customer",
+    "share": 0.025,
+    "calls": 4,
+    "candidate": null,
+    "rate": null,
+    "cost_per_call_usd": null,
+    "too_few_calls": true,
+    "noisy_reference": false,
+    "held_out": null,
+    "held_out_rate": null,
+    "held_out_calls": 0
+   },
+   {
+    "group": "after get_customer_by_name",
+    "share": 0.0125,
+    "calls": 2,
+    "candidate": null,
+    "rate": null,
+    "cost_per_call_usd": null,
+    "too_few_calls": false,
+    "noisy_reference": false,
+    "held_out": null,
+    "held_out_rate": null,
+    "held_out_calls": 0
+   },
+   {
+    "group": "after get_customer_by_phone",
+    "share": 0.125,
+    "calls": 20,
+    "candidate": null,
+    "rate": null,
+    "cost_per_call_usd": null,
+    "too_few_calls": true,
+    "noisy_reference": false,
+    "held_out": null,
+    "held_out_rate": null,
+    "held_out_calls": 0
+   },
+   {
+    "group": "after get_details_by_id",
+    "share": 0.2562,
+    "calls": 41,
+    "candidate": "gpt-5.6-luna",
+    "rate": 0.7,
+    "cost_per_call_usd": "0.00027652",
+    "too_few_calls": false,
+    "noisy_reference": false,
+    "held_out": "held",
+    "held_out_rate": 0.6667,
+    "held_out_calls": 15
+   },
+   {
+    "group": "after refuel_data",
+    "share": 0.0187,
+    "calls": 3,
+    "candidate": null,
+    "rate": null,
+    "cost_per_call_usd": null,
+    "too_few_calls": true,
+    "noisy_reference": false,
+    "held_out": null,
+    "held_out_rate": null,
+    "held_out_calls": 0
+   },
+   {
+    "group": "after resume_line",
+    "share": 0.025,
+    "calls": 4,
+    "candidate": null,
+    "rate": null,
+    "cost_per_call_usd": null,
+    "too_few_calls": true,
+    "noisy_reference": false,
+    "held_out": null,
+    "held_out_rate": null,
+    "held_out_calls": 0
+   },
+   {
+    "group": "after send_payment_request",
+    "share": 0.025,
+    "calls": 4,
+    "candidate": null,
+    "rate": null,
+    "cost_per_call_usd": null,
+    "too_few_calls": true,
+    "noisy_reference": false,
+    "held_out": null,
+    "held_out_rate": null,
+    "held_out_calls": 0
+   },
+   {
+    "group": "after transfer_to_human_agents",
+    "share": 0.0437,
+    "calls": 7,
+    "candidate": null,
+    "rate": null,
+    "cost_per_call_usd": null,
+    "too_few_calls": true,
+    "noisy_reference": false,
+    "held_out": null,
+    "held_out_rate": null,
+    "held_out_calls": 0
+   },
+   {
+    "group": "first turn",
+    "share": 0.1187,
+    "calls": 19,
+    "candidate": null,
+    "rate": null,
+    "cost_per_call_usd": null,
+    "too_few_calls": true,
+    "noisy_reference": false,
+    "held_out": null,
+    "held_out_rate": null,
+    "held_out_calls": 0
+   }
+  ],
+  "min_calls": 20,
+  "today_source": "recording",
+  "sessions": {
+   "learning": 10,
+   "held_out": 9
+  },
+  "cost": null,
+  "recorded_cost": null
+ },
+ "excluded_origins": {},
+ "disagreements_total": 163,
+ "spent_usd": "0.99819070",
+ "max_spend_usd": "8.00000000",
+ "stopped_early": null,
+ "judge": null,
+ "judge_check": null,
+ "notes": [
+  "160 sampled calls have no system prompt in their recording. If the agent uses one, the trace source or importer did not keep it, and candidates answer without it.",
+  "9 calls were skipped because a tool they could use has no schema. Pass `tool_schemas` from the agent's code to include them.",
+  "No candidate is marked `reference`, so there is no noise floor. Today's model run again shows how much answers vary on their own, and a difference smaller than that is noise. Add the current model with `reference: true`.",
+  "Per-session and monthly costs assume each candidate takes the same steps as the recording. A model that needs more turns, retries, or tool calls to finish a task costs more per task; a full replay of the agent measures that."
+ ]
+}

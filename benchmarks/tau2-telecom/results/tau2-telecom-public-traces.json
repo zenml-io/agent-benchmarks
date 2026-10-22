@@ -1,0 +1,1444 @@
+{
+ "meta": {
+  "name": "Frontier agents on public tau2-bench Telecom traces",
+  "slug": "tau2-telecom-public-traces",
+  "question": "On public recorded tau2-bench Telecom runs, how often do five frontier models solve the task, how do they fail, and how far do newer models' answers at each recorded step drift from GPT-5.2's?",
+  "domain": "Telecom technical support (customer-service agent with a simulated user who runs the device actions)",
+  "status": "complete",
+  "run_dates": {
+   "recordings": "2026-01-28 to 2026-04-21 (span start times; collected 2026-05-18 to 2026-05-18), by Exgentic",
+   "step_check": "2026-10-22",
+   "analysis": "2026-10-22"
+  },
+  "who_ran": "Hamza Tahir (ZenML), with Claude Code agents",
+  "kitaru_version": "0.27.2+dev",
+  "kitaru_details": {
+   "plugin": "kitaru-model-swap 0.1.0 (plugins/packages/model-swap), built from zenml-io/kitaru branch feature/model-swap-analyzer at 0217140c9bd6fc1b0569abefbaea30be20a6fde4",
+   "importer": "a private script importer mapping each Exgentic run to one Kitaru session and each OTel chat span to one llm_call node (not in this repository)",
+   "note": "The analyzer ran in-process (step_check/swap_run.py) against sessions on a local Kitaru server, so its full result could be written to disk."
+  },
+  "harness_git_commit": "c2bb92e93b865db6ae686adff8bc0281a79c4d31",
+  "harness_git_commit_note": null,
+  "code_location": "benchmarks/tau2-telecom-public",
+  "total_spend_usd": null,
+  "total_spend_usd_note": "benchmarks/tau2-telecom-public/costs.json has 3 runs: step check, batch 1 (8 candidates; gpt-5.6-sol and gpt-5.6-luna failed every call on /chat/completions): 8.30271325; step check, batch 2 (gpt-5.6-sol and gpt-5.6-luna through the Responses API): 0.99819070; step check run as a Kitaru worker task (same 8 candidates, 160 calls each), Kitaru job 01a163aa-cb64-7bc0-a5a7-4f2527fb96da: not recorded. Recorded parts sum to 9.30090395 USD; the unrecorded run is why the total is null. Using the public recordings cost nothing."
+ },
+ "dataset": {
+  "source": "Exgentic agent-llm-traces-v2 (Hugging Face), tool_calling harness on tau2-bench Telecom",
+  "url": "https://huggingface.co/datasets/Exgentic/agent-llm-traces-v2",
+  "license": null,
+  "license_note": "The dataset card and repository metadata declare no license (checked 2026-10-22).",
+  "total_cases": 1844,
+  "total_cases_note": "tau2_telecom rows across all harnesses in the 9 shards ({'claude_code': 359, 'openai_solo': 488, 'smolagents_code': 498, 'tool_calling': 499}); the shards hold 10056 rows in all.",
+  "kept_cases": 499,
+  "dropped_reason": "Kept the tool_calling harness only (one agent design, native tool calls). No rows were dropped within it; 0 duplicate session_id rows were found.",
+  "split": null,
+  "split_note": "No split: nothing was tuned on these runs.",
+  "types": [
+   {
+    "type": "mms",
+    "count": 216
+   },
+   {
+    "type": "mobile_data",
+    "count": 203
+   },
+   {
+    "type": "no_service",
+    "count": 80
+   }
+  ],
+  "types_note": "Issue type is not a dataset field. It is assigned by regular-expression text matching on the simulated user's first three messages, rules in order (first match wins): mms: /\\bmms\\b|picture message|multimedia/; mobile_data: /mobile data|internet|data connection|\\bdata\\b.*(slow|not working|work)|speed/; no_service: /no service|no signal|can.?t make (phone )?calls|no bars|service (is|has) (down|out)/."
+ },
+ "models": [
+  {
+   "id": "DeepSeek-V3.2",
+   "id_note": "The dataset's canonical model name; its build script strips routing prefixes (for example openai/Azure/), so the exact string the Exgentic harness sent is not in the data.",
+   "role": "recorded full runs",
+   "display_name": "DeepSeek V3.2",
+   "vendor": "DeepSeek",
+   "weights": "open",
+   "inference_provider_type": null,
+   "inference_provider_type_note": "Recorded by Exgentic; spans name the provider as azure.ai.openai and the run configs as openai_Azure_DeepSeek-V3.2.",
+   "price_per_mtok_input_usd": null,
+   "price_per_mtok_cached_input_usd": null,
+   "price_per_mtok_output_usd": null,
+   "price_date": null,
+   "price_note": "The dataset records each run's agent_cost (USD) but not the prices behind it; cost per correct uses agent_cost as recorded."
+  },
+  {
+   "id": "Kimi-K2.5",
+   "id_note": "The dataset's canonical model name; its build script strips routing prefixes (for example openai/Azure/), so the exact string the Exgentic harness sent is not in the data.",
+   "role": "recorded full runs",
+   "display_name": "Kimi K2.5",
+   "vendor": "Moonshot AI",
+   "weights": "open",
+   "inference_provider_type": null,
+   "inference_provider_type_note": "Recorded by Exgentic; spans name the provider as azure.ai.openai and the run configs as openai_Azure_Kimi-K2.5.",
+   "price_per_mtok_input_usd": null,
+   "price_per_mtok_cached_input_usd": null,
+   "price_per_mtok_output_usd": null,
+   "price_date": null,
+   "price_note": "The dataset records each run's agent_cost (USD) but not the prices behind it; cost per correct uses agent_cost as recorded."
+  },
+  {
+   "id": "claude-opus-4-5",
+   "id_note": "The dataset's canonical model name; its build script strips routing prefixes (for example openai/Azure/), so the exact string the Exgentic harness sent is not in the data.",
+   "role": "recorded full runs",
+   "display_name": "Claude Opus 4.5",
+   "vendor": "Anthropic",
+   "weights": "closed",
+   "inference_provider_type": null,
+   "inference_provider_type_note": "Recorded by Exgentic; spans name the provider as anthropic and the run configs as openai_aws_claude-opus-4-5.",
+   "price_per_mtok_input_usd": null,
+   "price_per_mtok_cached_input_usd": null,
+   "price_per_mtok_output_usd": null,
+   "price_date": null,
+   "price_note": "The dataset records each run's agent_cost (USD) but not the prices behind it; cost per correct uses agent_cost as recorded."
+  },
+  {
+   "id": "gemini-3-pro-preview",
+   "id_note": "The dataset's canonical model name; its build script strips routing prefixes (for example openai/Azure/), so the exact string the Exgentic harness sent is not in the data.",
+   "role": "recorded full runs",
+   "display_name": "Gemini 3 Pro (preview)",
+   "vendor": "Google",
+   "weights": "closed",
+   "inference_provider_type": null,
+   "inference_provider_type_note": "Recorded by Exgentic; spans name the provider as gcp.gemini and the run configs as openai_gcp_gemini-3-pro-preview.",
+   "price_per_mtok_input_usd": null,
+   "price_per_mtok_cached_input_usd": null,
+   "price_per_mtok_output_usd": null,
+   "price_date": null,
+   "price_note": "The dataset records each run's agent_cost (USD) but not the prices behind it; cost per correct uses agent_cost as recorded."
+  },
+  {
+   "id": "gpt-5.2-2025-12-11",
+   "id_note": "The dataset's canonical model name; its build script strips routing prefixes (for example openai/Azure/), so the exact string the Exgentic harness sent is not in the data.",
+   "role": "recorded full runs and step-check reference",
+   "display_name": "GPT-5.2",
+   "vendor": "OpenAI",
+   "weights": "closed",
+   "inference_provider_type": null,
+   "inference_provider_type_note": "Recorded by Exgentic; spans name the provider as azure.ai.openai and the run configs as openai_Azure_gpt-5.2-2025-12-11, openai_aws_claude-opus-4-5, openai_gcp_gemini-3-pro-preview.",
+   "price_per_mtok_input_usd": null,
+   "price_per_mtok_cached_input_usd": null,
+   "price_per_mtok_output_usd": null,
+   "price_date": null,
+   "price_note": "The dataset records each run's agent_cost (USD) but not the prices behind it; cost per correct uses agent_cost as recorded.",
+   "step_check_price": {
+    "input_per_mtok": "1.75",
+    "output_per_mtok": "14",
+    "cached_input_per_mtok": "0.175",
+    "source": "genai-prices 0.1.13 (OpenAI GPT-5.2)"
+   }
+  },
+  {
+   "id": "gpt-5.6-sol",
+   "role": "step-check candidate",
+   "display_name": "GPT-5.6 Sol",
+   "vendor": "OpenAI",
+   "weights": "closed",
+   "inference_provider_type": "vendor API",
+   "price_per_mtok_input_usd": 4.0,
+   "price_per_mtok_cached_input_usd": 0.4,
+   "price_per_mtok_output_usd": 20.0,
+   "price_date": "2026-10-22",
+   "price_note": "genai-prices 0.1.13 table bundled with the analyzer, used on the run date 2026-10-22 (no other date recorded)."
+  },
+  {
+   "id": "gpt-5.6-luna",
+   "role": "step-check candidate",
+   "display_name": "GPT-5.6 Luna",
+   "vendor": "OpenAI",
+   "weights": "closed",
+   "inference_provider_type": "vendor API",
+   "price_per_mtok_input_usd": 0.2,
+   "price_per_mtok_cached_input_usd": 0.02,
+   "price_per_mtok_output_usd": 1.2,
+   "price_date": "2026-10-22",
+   "price_note": "genai-prices 0.1.13 table bundled with the analyzer, used on the run date 2026-10-22 (no other date recorded)."
+  },
+  {
+   "id": "gpt-5.4-mini",
+   "role": "step-check candidate",
+   "display_name": "GPT-5.4 mini",
+   "vendor": "OpenAI",
+   "weights": "closed",
+   "inference_provider_type": "vendor API",
+   "price_per_mtok_input_usd": 0.75,
+   "price_per_mtok_cached_input_usd": 0.075,
+   "price_per_mtok_output_usd": 4.5,
+   "price_date": "2026-10-22",
+   "price_note": "genai-prices 0.1.13 table bundled with the analyzer, used on the run date 2026-10-22 (no other date recorded)."
+  },
+  {
+   "id": "deepseek-ai/DeepSeek-V4.1-Flash",
+   "role": "step-check candidate",
+   "display_name": "DeepSeek V4.1 Flash",
+   "vendor": "DeepSeek",
+   "weights": "open",
+   "inference_provider_type": "commercial provider",
+   "price_per_mtok_input_usd": 0.3,
+   "price_per_mtok_cached_input_usd": 0.3,
+   "price_per_mtok_output_usd": 1.2,
+   "price_date": "2026-10-19",
+   "price_note": "From benchmarks/haiku-tax/harness/models.py (checked 2026-10-19), which marks these prices UNVERIFIED (third-party listings); cached input billed at the input price.",
+   "provider_private": "provider-a"
+  },
+  {
+   "id": "moonshotai/Kimi-K3",
+   "role": "step-check candidate",
+   "display_name": "Kimi K3",
+   "vendor": "Moonshot AI",
+   "weights": "open",
+   "inference_provider_type": "commercial provider",
+   "price_per_mtok_input_usd": 3.0,
+   "price_per_mtok_cached_input_usd": 3.0,
+   "price_per_mtok_output_usd": 15.0,
+   "price_date": "2026-10-19",
+   "price_note": "From benchmarks/haiku-tax/harness/models.py (checked 2026-10-19), which marks these prices UNVERIFIED (third-party listings); cached input billed at the input price.",
+   "provider_private": "provider-a"
+  },
+  {
+   "id": "zai-org/GLM-5.3",
+   "role": "step-check candidate",
+   "display_name": "GLM-5.3",
+   "vendor": "Z.ai",
+   "weights": "open",
+   "inference_provider_type": "commercial provider",
+   "price_per_mtok_input_usd": 1.4,
+   "price_per_mtok_cached_input_usd": 1.4,
+   "price_per_mtok_output_usd": 4.4,
+   "price_date": "2026-10-19",
+   "price_note": "From benchmarks/haiku-tax/harness/models.py (checked 2026-10-19), which marks these prices UNVERIFIED (third-party listings); cached input billed at the input price.",
+   "provider_private": "provider-a"
+  },
+  {
+   "id": "Qwen/Qwen3.8-27B",
+   "role": "step-check candidate",
+   "display_name": "Qwen3.8 27B",
+   "vendor": "Alibaba Qwen",
+   "weights": "open",
+   "inference_provider_type": "commercial provider",
+   "price_per_mtok_input_usd": 0.45,
+   "price_per_mtok_cached_input_usd": 0.45,
+   "price_per_mtok_output_usd": 3.0,
+   "price_date": "2026-10-19",
+   "price_note": "From benchmarks/haiku-tax/harness/models.py (checked 2026-10-19), which marks these prices UNVERIFIED (third-party listings); cached input billed at the input price.",
+   "provider_private": "provider-a"
+  }
+ ],
+ "setup": {
+  "conditions": [
+   {
+    "name": "recorded_full_runs",
+    "description": "Exgentic's runs of tau2-bench Telecom with its tool_calling agent harness: one run per task per model, the model under test talking to a simulated user who performs the device actions. Outcomes are the dataset's success/score columns; nothing was re-run."
+   },
+   {
+    "name": "step_check_gpt52_recorded_calls",
+    "description": "Kitaru's model-swap step check: 160 sampled recorded GPT-5.2 calls resent, as recorded (full conversation up to that step, the recorded tool list), to GPT-5.2 itself (noise floor) and 7 newer candidates; replies compared with GPT-5.2's recorded reply."
+   }
+  ],
+  "prompt_rewriting": null,
+  "prompt_rewriting_note": "No prompt was changed. The agent's policy reaches the model as the first user message in the recordings, and the step check resends it unchanged.",
+  "tools": {
+   "agent_tools": [
+    "disable_roaming",
+    "enable_roaming",
+    "get_bills_for_customer",
+    "get_customer_by_id",
+    "get_customer_by_name",
+    "get_customer_by_phone",
+    "get_data_usage",
+    "get_details_by_id",
+    "message",
+    "refuel_data",
+    "resume_line",
+    "send_payment_request",
+    "suspend_line",
+    "transfer_to_human_agents"
+   ],
+   "note": "Every recorded tool definition has an empty parameter schema ({\"type\": \"object\", \"properties\": {}}); the step check passes them as recorded. Device tools (toggles, reboot, APN reset and others) belong to the simulated user, not the agent."
+  },
+  "user_simulator": "tau2-bench's LLM user simulator, as run by Exgentic. Its calls were filtered out of this dataset, so its model and cost are not known here.",
+  "limits": {
+   "recorded_full_runs": null,
+   "recorded_full_runs_note": "Step and token limits of the Exgentic harness are not recorded in the dataset.",
+   "step_check": {
+    "max_tokens": 4096,
+    "timeout_seconds": 180,
+    "max_retries": 3,
+    "concurrency": 16,
+    "max_calls": 160,
+    "max_spend_usd": {
+     "batch 1": "20",
+     "batch 2": "8"
+    },
+    "api": {
+     "gpt-5.6-sol and gpt-5.6-luna (batch 2)": "OpenAI Responses API",
+     "others": "/chat/completions"
+    }
+   }
+  }
+ },
+ "grading": {
+  "judges": [
+   {
+    "name": "tau2-bench task evaluation, as recorded by Exgentic",
+    "applies_to": "recorded_full_runs",
+    "note": "Read from the dataset's success column; not re-graded here."
+   },
+   {
+    "name": "kitaru-model-swap compare (exact, no LLM judge)",
+    "applies_to": "step_check_gpt52_recorded_calls"
+   }
+  ],
+  "tie_break": null,
+  "tie_break_note": "No ranking ties were broken; the step check's analyzer 'Best for' rule (within 10 points of the reference's self-agreement) is reported as the analyzer gave it.",
+  "human_agreement": null,
+  "human_agreement_note": "No human review: outcomes come from the benchmark's evaluator, and the step check uses exact comparison.",
+  "self_grading_check": null,
+  "self_grading_check_note": "No LLM judge was used, so no model graded its own output.",
+  "metrics": [
+   {
+    "name": "accuracy",
+    "definition": "correct / n, where correct = runs with success=true. Every run counts in n."
+   },
+   {
+    "name": "cost_per_correct_cents",
+    "definition": "100 x (sum of the dataset's agent_cost over all n runs of the model, solved or not) / correct. agent_cost is Exgentic's figure for the agent-under-test model's calls; how it priced cached tokens is not documented in the dataset. benchmark_cost (the user simulator and evaluation) is excluded."
+   },
+   {
+    "name": "mean_tokens_per_case",
+    "definition": "Mean of the dataset's total_tokens per run."
+   },
+   {
+    "name": "mean_calls_per_case",
+    "definition": "Mean number of agent chat spans (model calls) per run."
+   },
+   {
+    "name": "tool_choice_rate",
+    "definition": "Step check: among answered calls where the recorded GPT-5.2 reply called a tool, the share where the candidate called the same tool (arguments may differ). Kitaru analyzer field tool_choice_rate; Wilson 95% interval."
+   },
+   {
+    "name": "exact_agreement_rate",
+    "definition": "Step check: among answered calls, the share with the same tool and same normalized arguments, or the same normalized text. Kitaru analyzer field agreement_rate; Wilson 95% interval."
+   },
+   {
+    "name": "step_cost_per_call_cents",
+    "definition": "Step check: mean cost per answered call from the candidate's reported token usage at the price in models[] (cached input at the cached price where one is set)."
+   }
+  ]
+ },
+ "noise": {
+  "method": "Recorded outcomes: one run per task per model, no repeats, so no outcome noise floor. Step check: GPT-5.2 resent its own 160 recorded calls once (the reference); its agreement with its own recording is the step-level noise floor.",
+  "size": {
+   "tool_choice_self_agreement": {
+    "n": 75,
+    "matched": 63,
+    "rate": 0.84,
+    "ci95": [
+     0.7408,
+     0.906
+    ]
+   },
+   "exact_self_agreement": {
+    "n": 141,
+    "matched": 62,
+    "rate": 0.4397,
+    "ci95": [
+     0.3605,
+     0.5222
+    ]
+   }
+  },
+  "ci_method": "Wilson score 95% interval for rates; paired candidate-minus-reference differences use a cluster bootstrap over recorded runs (swapbench.stats.paired_delta, 10000 resamples, seed 0).",
+  "resamples": 10000,
+  "tie_threshold": null,
+  "tie_threshold_note": "No fixed tie threshold for outcomes; differences whose 95% interval includes 0 are reported as not distinguishable."
+ },
+ "results": {
+  "recorded_full_runs": [
+   {
+    "model": "DeepSeek-V3.2",
+    "n": 100,
+    "correct": 71,
+    "accuracy": 0.71,
+    "ci95": [
+     0.6146,
+     0.7899
+    ],
+    "cost_per_correct_cents": 6.9584,
+    "total_agent_cost_usd": 4.940464,
+    "mean_tokens_per_case": 175309.65,
+    "mean_calls_per_case": 18.11,
+    "mean_steps_per_case": 18.11,
+    "statuses": {
+     "success (success=true)": 71,
+     "unsuccessful (success=false)": 29
+    },
+    "failures": {
+     "ended_unsolved_without_escalation": 3,
+     "escalated_to_human_on_unsolved_task": 26
+    },
+    "transfers_in_solved_runs": 17,
+    "paired_vs": null,
+    "paired_vs_note": "Not computed: the public dataset carries no task identifier, and the simulated user words each opening differently, so runs cannot be matched to the same task across models."
+   },
+   {
+    "model": "Kimi-K2.5",
+    "n": 100,
+    "correct": 83,
+    "accuracy": 0.83,
+    "ci95": [
+     0.7445,
+     0.8911
+    ],
+    "cost_per_correct_cents": 11.1763,
+    "total_agent_cost_usd": 9.276308,
+    "mean_tokens_per_case": 135307.25,
+    "mean_calls_per_case": 16.14,
+    "mean_steps_per_case": 16.14,
+    "statuses": {
+     "success (success=true)": 83,
+     "unsuccessful (success=false)": 17
+    },
+    "failures": {
+     "ended_unsolved_without_escalation": 6,
+     "escalated_to_human_on_unsolved_task": 11
+    },
+    "transfers_in_solved_runs": 10,
+    "paired_vs": null,
+    "paired_vs_note": "Not computed: the public dataset carries no task identifier, and the simulated user words each opening differently, so runs cannot be matched to the same task across models."
+   },
+   {
+    "model": "claude-opus-4-5",
+    "n": 99,
+    "correct": 75,
+    "accuracy": 0.7576,
+    "ci95": [
+     0.6646,
+     0.8313
+    ],
+    "cost_per_correct_cents": 120.9685,
+    "total_agent_cost_usd": 90.72641,
+    "mean_tokens_per_case": 41050.5556,
+    "mean_calls_per_case": 17.2424,
+    "mean_steps_per_case": 17.2424,
+    "statuses": {
+     "success (success=true)": 3,
+     "unknown (success=false)": 22,
+     "unknown (success=true)": 72,
+     "unsuccessful (success=false)": 2
+    },
+    "failures": {
+     "ended_unsolved_without_escalation": 1,
+     "escalated_to_human_on_unsolved_task": 23
+    },
+    "transfers_in_solved_runs": 18,
+    "paired_vs": null,
+    "paired_vs_note": "Not computed: the public dataset carries no task identifier, and the simulated user words each opening differently, so runs cannot be matched to the same task across models."
+   },
+   {
+    "model": "gemini-3-pro-preview",
+    "n": 99,
+    "correct": 73,
+    "accuracy": 0.7374,
+    "ci95": [
+     0.643,
+     0.814
+    ],
+    "cost_per_correct_cents": 40.3457,
+    "total_agent_cost_usd": 29.452338,
+    "mean_tokens_per_case": 29574.7677,
+    "mean_calls_per_case": 14.798,
+    "mean_steps_per_case": 14.798,
+    "statuses": {
+     "success (success=true)": 3,
+     "unknown (success=false)": 25,
+     "unknown (success=true)": 70,
+     "unsuccessful (success=false)": 1
+    },
+    "failures": {
+     "ended_unsolved_without_escalation": 1,
+     "escalated_to_human_on_unsolved_task": 25
+    },
+    "transfers_in_solved_runs": 18,
+    "paired_vs": null,
+    "paired_vs_note": "Not computed: the public dataset carries no task identifier, and the simulated user words each opening differently, so runs cannot be matched to the same task across models."
+   },
+   {
+    "model": "gpt-5.2-2025-12-11",
+    "n": 101,
+    "correct": 54,
+    "accuracy": 0.5347,
+    "ci95": [
+     0.4379,
+     0.6289
+    ],
+    "cost_per_correct_cents": 28.1922,
+    "total_agent_cost_usd": 15.223808,
+    "mean_tokens_per_case": 90445.6634,
+    "mean_calls_per_case": 10.4653,
+    "mean_steps_per_case": 10.3663,
+    "statuses": {
+     "success (success=true)": 1,
+     "unknown (success=false)": 46,
+     "unknown (success=true)": 53,
+     "unsuccessful (success=false)": 1
+    },
+    "failures": {
+     "ended_unsolved_without_escalation": 15,
+     "escalated_to_human_on_unsolved_task": 32
+    },
+    "transfers_in_solved_runs": 10,
+    "paired_vs": null,
+    "paired_vs_note": "Not computed: the public dataset carries no task identifier, and the simulated user words each opening differently, so runs cannot be matched to the same task across models."
+   }
+  ]
+ },
+ "results_note": "One row per recorded run; 0 duplicate cases. Scoring: success=true counts as correct; status 'unsuccessful' and status 'unknown' with success=false count as wrong; status 'unknown' with success=true counts as correct (the dataset's status and success columns disagree on those rows). No runs were dropped: these are third-party recordings, not our harness. Two GPT-5.2 rows carry a Claude or Gemini config_path; they are counted under the model their spans name.",
+ "per_type": {
+  "recorded_full_runs": {
+   "DeepSeek-V3.2": {
+    "mms": {
+     "n": 43,
+     "correct": 26,
+     "accuracy": 0.6047
+    },
+    "mobile_data": {
+     "n": 45,
+     "correct": 34,
+     "accuracy": 0.7556
+    },
+    "no_service": {
+     "n": 12,
+     "correct": 11,
+     "accuracy": 0.9167
+    }
+   },
+   "Kimi-K2.5": {
+    "mms": {
+     "n": 43,
+     "correct": 31,
+     "accuracy": 0.7209
+    },
+    "mobile_data": {
+     "n": 41,
+     "correct": 36,
+     "accuracy": 0.878
+    },
+    "no_service": {
+     "n": 16,
+     "correct": 16,
+     "accuracy": 1.0
+    }
+   },
+   "claude-opus-4-5": {
+    "mms": {
+     "n": 43,
+     "correct": 19,
+     "accuracy": 0.4419
+    },
+    "mobile_data": {
+     "n": 40,
+     "correct": 40,
+     "accuracy": 1.0
+    },
+    "no_service": {
+     "n": 16,
+     "correct": 16,
+     "accuracy": 1.0
+    }
+   },
+   "gemini-3-pro-preview": {
+    "mms": {
+     "n": 43,
+     "correct": 21,
+     "accuracy": 0.4884
+    },
+    "mobile_data": {
+     "n": 40,
+     "correct": 37,
+     "accuracy": 0.925
+    },
+    "no_service": {
+     "n": 16,
+     "correct": 15,
+     "accuracy": 0.9375
+    }
+   },
+   "gpt-5.2-2025-12-11": {
+    "mms": {
+     "n": 44,
+     "correct": 13,
+     "accuracy": 0.2955
+    },
+    "mobile_data": {
+     "n": 37,
+     "correct": 31,
+     "accuracy": 0.8378
+    },
+    "no_service": {
+     "n": 20,
+     "correct": 10,
+     "accuracy": 0.5
+    }
+   }
+  }
+ },
+ "per_type_note": "Types come from text matching (see dataset.types_note); counts are small, so read per-type rates with caution.",
+ "failures": [
+  {
+   "category": "escalated_to_human_on_unsolved_task",
+   "definition": "An unsolved run (success=false) in which the agent called the transfer_to_human_agents tool. Detected from tool calls, not text. The policy allows a transfer only when the request cannot be handled within the agent's actions; these tasks were solvable.",
+   "counts": {
+    "DeepSeek-V3.2": 26,
+    "Kimi-K2.5": 11,
+    "claude-opus-4-5": 23,
+    "gemini-3-pro-preview": 25,
+    "gpt-5.2-2025-12-11": 32
+   },
+   "example": "After walking the user through airplane mode, a SIM reseat, a network-mode change and an APN reset, the agent handed the case to a human while the user's data connection still failed, although the task was solvable."
+  },
+  {
+   "category": "ended_unsolved_without_escalation",
+   "definition": "An unsolved run (success=false) with no transfer_to_human_agents call. Detected from tool calls, not text.",
+   "counts": {
+    "DeepSeek-V3.2": 3,
+    "Kimi-K2.5": 6,
+    "claude-opus-4-5": 1,
+    "gemini-3-pro-preview": 1,
+    "gpt-5.2-2025-12-11": 15
+   },
+   "example": "The agent declared that the on-device and account fixes it could perform were exhausted, or left the user with another question, and the conversation ended with the issue still open."
+  },
+  {
+   "category": "claimed_no_device_access",
+   "definition": "Any run in which an agent message says it does not have access to the device or device tools (regular-expression text matching on the agent's messages; a sub-pattern, also counted in one of the two categories above when the run was unsolved).",
+   "counts": {
+    "DeepSeek-V3.2": 0,
+    "Kimi-K2.5": 1,
+    "claude-opus-4-5": 0,
+    "gemini-3-pro-preview": 0,
+    "gpt-5.2-2025-12-11": 0
+   },
+   "counts_unsolved": {
+    "DeepSeek-V3.2": 0,
+    "Kimi-K2.5": 0,
+    "claude-opus-4-5": 0,
+    "gemini-3-pro-preview": 0,
+    "gpt-5.2-2025-12-11": 0
+   },
+   "example": "Six steps in, the agent escalated, saying it could not run device diagnostics itself; in this benchmark the user runs the device tools on the agent's instructions."
+  }
+ ],
+ "failures_note": "117 of 143 unsolved runs ended in an escalation to a human. Categories come from tool calls, except claimed_no_device_access, which is text matching.",
+ "replays_and_step_checks": [
+  {
+   "name": "step_check_gpt52_recorded_calls",
+   "kind": "Kitaru model-swap step check (kitaru-model-swap 0.1.0, zenml-io/kitaru#1327): each sampled recorded GPT-5.2 call is resent, as recorded, to each candidate; the reply is compared with the recorded reply. No agent is re-run and no task outcome is measured.",
+   "recorded_model": "gpt-5.2-2025-12-11",
+   "coverage": {
+    "sessions": 101,
+    "sessions_not_fetched": 0,
+    "llm_calls_seen": 1057,
+    "replayable": 1048,
+    "replayable_inferred": 0,
+    "sampled": 160,
+    "skipped": {
+     "missing_tool_schema": 9
+    },
+    "schema_sources": {
+     "recorded": 160
+    },
+    "source_formats": {
+     "otel_parts": 160
+    },
+    "calls_with_dropped_reasoning": 0,
+    "calls_without_system_prompt": 160
+   },
+   "sample": "160 of 1048 replayable recorded calls, chosen by the analyzer's deterministic round-robin over node name and model in recorded order; identical in both batches.",
+   "candidates": [
+    {
+     "candidate": "gpt-5.2 (recorded model)",
+     "model": "gpt-5.2-2025-12-11",
+     "reference": true,
+     "batch": "out",
+     "calls_sent": 160,
+     "answered": 141,
+     "failures": {
+      "http_error": 19
+     },
+     "tool_choice": {
+      "n": 75,
+      "matched": 63,
+      "rate": 0.84,
+      "ci95": [
+       0.7408,
+       0.906
+      ]
+     },
+     "exact_agreement": {
+      "n": 141,
+      "matched": 62,
+      "rate": 0.4397,
+      "ci95": [
+       0.3605,
+       0.5222
+      ]
+     },
+     "agreement_breakdown": {
+      "same_tool_same_args": 55,
+      "different_text": 40,
+      "tool_instead_of_text": 19,
+      "same_tool_different_args": 8,
+      "different_tool": 8,
+      "same_text": 7,
+      "text_instead_of_tool": 4
+     },
+     "cost_per_call_cents": 0.2617,
+     "tokens_per_call": {
+      "input_tokens": 6601.2,
+      "cached_input_tokens": 6424.0,
+      "output_tokens": 62.3,
+      "reasoning_tokens": 0.0
+     },
+     "latency_seconds": {
+      "p50": 1.195,
+      "p95": 4.553
+     },
+     "spent_usd": "0.36895075",
+     "paired_vs": null
+    },
+    {
+     "candidate": "gpt-5.6-sol",
+     "model": "gpt-5.6-sol",
+     "reference": false,
+     "batch": "out_responses",
+     "calls_sent": 160,
+     "answered": 141,
+     "failures": {
+      "http_error": 19
+     },
+     "tool_choice": {
+      "n": 75,
+      "matched": 62,
+      "rate": 0.8267,
+      "ci95": [
+       0.7257,
+       0.8958
+      ]
+     },
+     "exact_agreement": {
+      "n": 141,
+      "matched": 59,
+      "rate": 0.4184,
+      "ci95": [
+       0.3402,
+       0.501
+      ]
+     },
+     "agreement_breakdown": {
+      "same_tool_same_args": 52,
+      "different_text": 35,
+      "tool_instead_of_text": 24,
+      "same_tool_different_args": 10,
+      "text_instead_of_tool": 7,
+      "same_text": 7,
+      "different_tool": 6
+     },
+     "cost_per_call_cents": 0.6712,
+     "tokens_per_call": {
+      "input_tokens": 6531.2,
+      "cached_input_tokens": 6094.8,
+      "output_tokens": 86.6,
+      "reasoning_tokens": 39.4
+     },
+     "latency_seconds": {
+      "p50": 1.868,
+      "p95": 4.43
+     },
+     "spent_usd": "0.94638560",
+     "paired_vs": {
+      "tool_choice": {
+       "reference": "gpt-5.2 (recorded model)",
+       "n": 19,
+       "n_calls": 75,
+       "delta_points": -0.094,
+       "ci95_points": [
+        -3.5714,
+        3.9474
+       ],
+       "unit": "runs (cluster bootstrap over recorded runs; calls averaged within each run first)"
+      },
+      "exact_agreement": {
+       "reference": "gpt-5.2 (recorded model)",
+       "n": 19,
+       "n_calls": 141,
+       "delta_points": -0.8365,
+       "ci95_points": [
+        -3.4931,
+        2.0363
+       ],
+       "unit": "runs (cluster bootstrap over recorded runs; calls averaged within each run first)"
+      }
+     }
+    },
+    {
+     "candidate": "gpt-5.6-luna",
+     "model": "gpt-5.6-luna",
+     "reference": false,
+     "batch": "out_responses",
+     "calls_sent": 160,
+     "answered": 141,
+     "failures": {
+      "http_error": 19
+     },
+     "tool_choice": {
+      "n": 75,
+      "matched": 66,
+      "rate": 0.88,
+      "ci95": [
+       0.7874,
+       0.9356
+      ]
+     },
+     "exact_agreement": {
+      "n": 141,
+      "matched": 60,
+      "rate": 0.4255,
+      "ci95": [
+       0.347,
+       0.5081
+      ]
+     },
+     "agreement_breakdown": {
+      "same_tool_same_args": 54,
+      "tool_instead_of_text": 32,
+      "different_text": 28,
+      "same_tool_different_args": 12,
+      "different_tool": 6,
+      "same_text": 6,
+      "text_instead_of_tool": 3
+     },
+     "cost_per_call_cents": 0.0367,
+     "tokens_per_call": {
+      "input_tokens": 6531.2,
+      "cached_input_tokens": 6020.9,
+      "output_tokens": 84.4,
+      "reasoning_tokens": 41.4
+     },
+     "latency_seconds": {
+      "p50": 1.506,
+      "p95": 3.649
+     },
+     "spent_usd": "0.05180510",
+     "paired_vs": {
+      "tool_choice": {
+       "reference": "gpt-5.2 (recorded model)",
+       "n": 19,
+       "n_calls": 75,
+       "delta_points": 3.5526,
+       "ci95_points": [
+        -2.3684,
+        10.5263
+       ],
+       "unit": "runs (cluster bootstrap over recorded runs; calls averaged within each run first)"
+      },
+      "exact_agreement": {
+       "reference": "gpt-5.2 (recorded model)",
+       "n": 19,
+       "n_calls": 141,
+       "delta_points": -0.8114,
+       "ci95_points": [
+        -3.8816,
+        2.0833
+       ],
+       "unit": "runs (cluster bootstrap over recorded runs; calls averaged within each run first)"
+      }
+     }
+    },
+    {
+     "candidate": "gpt-5.4-mini",
+     "model": "gpt-5.4-mini",
+     "reference": false,
+     "batch": "out",
+     "calls_sent": 160,
+     "answered": 141,
+     "failures": {
+      "http_error": 19
+     },
+     "tool_choice": {
+      "n": 75,
+      "matched": 57,
+      "rate": 0.76,
+      "ci95": [
+       0.6522,
+       0.8425
+      ]
+     },
+     "exact_agreement": {
+      "n": 141,
+      "matched": 55,
+      "rate": 0.3901,
+      "ci95": [
+       0.3135,
+       0.4725
+      ]
+     },
+     "agreement_breakdown": {
+      "same_tool_same_args": 48,
+      "tool_instead_of_text": 30,
+      "different_text": 29,
+      "different_tool": 13,
+      "same_tool_different_args": 9,
+      "same_text": 7,
+      "text_instead_of_tool": 5
+     },
+     "cost_per_call_cents": 0.0985,
+     "tokens_per_call": {
+      "input_tokens": 6601.2,
+      "cached_input_tokens": 6374.4,
+      "output_tokens": 48.8,
+      "reasoning_tokens": 0.0
+     },
+     "latency_seconds": {
+      "p50": 0.909,
+      "p95": 1.662
+     },
+     "spent_usd": "0.13887405",
+     "paired_vs": {
+      "tool_choice": {
+       "reference": "gpt-5.2 (recorded model)",
+       "n": 19,
+       "n_calls": 75,
+       "delta_points": -0.5326,
+       "ci95_points": [
+        -11.1466,
+        13.4586
+       ],
+       "unit": "runs (cluster bootstrap over recorded runs; calls averaged within each run first)"
+      },
+      "exact_agreement": {
+       "reference": "gpt-5.2 (recorded model)",
+       "n": 19,
+       "n_calls": 141,
+       "delta_points": -4.034,
+       "ci95_points": [
+        -8.2863,
+        0.0219
+       ],
+       "unit": "runs (cluster bootstrap over recorded runs; calls averaged within each run first)"
+      }
+     }
+    },
+    {
+     "candidate": "deepseek-v4.1-flash",
+     "model": "deepseek-ai/DeepSeek-V4.1-Flash",
+     "reference": false,
+     "batch": "out",
+     "calls_sent": 160,
+     "answered": 160,
+     "failures": {},
+     "tool_choice": {
+      "n": 86,
+      "matched": 50,
+      "rate": 0.5814,
+      "ci95": [
+       0.4758,
+       0.68
+      ]
+     },
+     "exact_agreement": {
+      "n": 160,
+      "matched": 43,
+      "rate": 0.2687,
+      "ci95": [
+       0.2061,
+       0.3423
+      ]
+     },
+     "agreement_breakdown": {
+      "different_text": 44,
+      "same_tool_same_args": 39,
+      "different_tool": 27,
+      "tool_instead_of_text": 26,
+      "same_tool_different_args": 11,
+      "text_instead_of_tool": 9,
+      "same_text": 4
+     },
+     "cost_per_call_cents": 0.2928,
+     "tokens_per_call": {
+      "input_tokens": 8779.7,
+      "cached_input_tokens": 8435.2,
+      "output_tokens": 245.4,
+      "reasoning_tokens": 137.4
+     },
+     "latency_seconds": {
+      "p50": 2.27,
+      "p95": 5.609
+     },
+     "spent_usd": "0.46855110",
+     "paired_vs": {
+      "tool_choice": {
+       "reference": "gpt-5.2 (recorded model)",
+       "n": 19,
+       "n_calls": 75,
+       "delta_points": -25.3195,
+       "ci95_points": [
+        -38.0702,
+        -13.2519
+       ],
+       "unit": "runs (cluster bootstrap over recorded runs; calls averaged within each run first)"
+      },
+      "exact_agreement": {
+       "reference": "gpt-5.2 (recorded model)",
+       "n": 19,
+       "n_calls": 141,
+       "delta_points": -21.0881,
+       "ci95_points": [
+        -30.5556,
+        -11.9486
+       ],
+       "unit": "runs (cluster bootstrap over recorded runs; calls averaged within each run first)"
+      }
+     }
+    },
+    {
+     "candidate": "kimi-k3",
+     "model": "moonshotai/Kimi-K3",
+     "reference": false,
+     "batch": "out",
+     "calls_sent": 160,
+     "answered": 160,
+     "failures": {},
+     "tool_choice": {
+      "n": 86,
+      "matched": 67,
+      "rate": 0.7791,
+      "ci95": [
+       0.6805,
+       0.8538
+      ]
+     },
+     "exact_agreement": {
+      "n": 160,
+      "matched": 67,
+      "rate": 0.4188,
+      "ci95": [
+       0.3451,
+       0.4962
+      ]
+     },
+     "agreement_breakdown": {
+      "same_tool_same_args": 57,
+      "different_text": 42,
+      "tool_instead_of_text": 22,
+      "text_instead_of_tool": 16,
+      "same_tool_different_args": 10,
+      "same_text": 10,
+      "different_tool": 3
+     },
+     "cost_per_call_cents": 2.8229,
+     "tokens_per_call": {
+      "input_tokens": 8406.0,
+      "cached_input_tokens": 8318.8,
+      "output_tokens": 200.8,
+      "reasoning_tokens": 0.0
+     },
+     "latency_seconds": {
+      "p50": 2.297,
+      "p95": 12.592
+     },
+     "spent_usd": "4.51671600",
+     "paired_vs": {
+      "tool_choice": {
+       "reference": "gpt-5.2 (recorded model)",
+       "n": 19,
+       "n_calls": 75,
+       "delta_points": -4.0789,
+       "ci95_points": [
+        -9.6053,
+        1.3158
+       ],
+       "unit": "runs (cluster bootstrap over recorded runs; calls averaged within each run first)"
+      },
+      "exact_agreement": {
+       "reference": "gpt-5.2 (recorded model)",
+       "n": 19,
+       "n_calls": 141,
+       "delta_points": -2.218,
+       "ci95_points": [
+        -6.1028,
+        1.2281
+       ],
+       "unit": "runs (cluster bootstrap over recorded runs; calls averaged within each run first)"
+      }
+     }
+    },
+    {
+     "candidate": "glm-5.3",
+     "model": "zai-org/GLM-5.3",
+     "reference": false,
+     "batch": "out",
+     "calls_sent": 160,
+     "answered": 160,
+     "failures": {},
+     "tool_choice": {
+      "n": 86,
+      "matched": 66,
+      "rate": 0.7674,
+      "ci95": [
+       0.6679,
+       0.8441
+      ]
+     },
+     "exact_agreement": {
+      "n": 160,
+      "matched": 57,
+      "rate": 0.3563,
+      "ci95": [
+       0.2862,
+       0.433
+      ]
+     },
+     "agreement_breakdown": {
+      "same_tool_same_args": 54,
+      "different_text": 46,
+      "tool_instead_of_text": 25,
+      "same_tool_different_args": 12,
+      "text_instead_of_tool": 10,
+      "different_tool": 10,
+      "same_text": 3
+     },
+     "cost_per_call_cents": 1.298,
+     "tokens_per_call": {
+      "input_tokens": 8377.2,
+      "cached_input_tokens": 8288.0,
+      "output_tokens": 284.5,
+      "reasoning_tokens": 209.2
+     },
+     "latency_seconds": {
+      "p50": 1.549,
+      "p95": 7.035
+     },
+     "spent_usd": "2.07679080",
+     "paired_vs": {
+      "tool_choice": {
+       "reference": "gpt-5.2 (recorded model)",
+       "n": 19,
+       "n_calls": 75,
+       "delta_points": -6.5789,
+       "ci95_points": [
+        -14.4737,
+        0.0
+       ],
+       "unit": "runs (cluster bootstrap over recorded runs; calls averaged within each run first)"
+      },
+      "exact_agreement": {
+       "reference": "gpt-5.2 (recorded model)",
+       "n": 19,
+       "n_calls": 141,
+       "delta_points": -8.1944,
+       "ci95_points": [
+        -13.2989,
+        -3.2164
+       ],
+       "unit": "runs (cluster bootstrap over recorded runs; calls averaged within each run first)"
+      }
+     }
+    },
+    {
+     "candidate": "qwen3.8-27b",
+     "model": "Qwen/Qwen3.8-27B",
+     "reference": false,
+     "batch": "out",
+     "calls_sent": 160,
+     "answered": 160,
+     "failures": {},
+     "tool_choice": {
+      "n": 86,
+      "matched": 72,
+      "rate": 0.8372,
+      "ci95": [
+       0.7451,
+       0.9005
+      ]
+     },
+     "exact_agreement": {
+      "n": 160,
+      "matched": 69,
+      "rate": 0.4313,
+      "ci95": [
+       0.357,
+       0.5087
+      ]
+     },
+     "agreement_breakdown": {
+      "same_tool_same_args": 60,
+      "different_text": 55,
+      "same_tool_different_args": 12,
+      "text_instead_of_tool": 10,
+      "tool_instead_of_text": 10,
+      "same_text": 9,
+      "different_tool": 4
+     },
+     "cost_per_call_cents": 0.458,
+     "tokens_per_call": {
+      "input_tokens": 9572.1,
+      "cached_input_tokens": 9533.2,
+      "output_tokens": 90.9,
+      "reasoning_tokens": 0.0
+     },
+     "latency_seconds": {
+      "p50": 0.842,
+      "p95": 1.372
+     },
+     "spent_usd": "0.73283055",
+     "paired_vs": {
+      "tool_choice": {
+       "reference": "gpt-5.2 (recorded model)",
+       "n": 19,
+       "n_calls": 75,
+       "delta_points": -0.2632,
+       "ci95_points": [
+        -7.2368,
+        5.3947
+       ],
+       "unit": "runs (cluster bootstrap over recorded runs; calls averaged within each run first)"
+      },
+      "exact_agreement": {
+       "reference": "gpt-5.2 (recorded model)",
+       "n": 19,
+       "n_calls": 141,
+       "delta_points": -0.943,
+       "ci95_points": [
+        -3.7939,
+        2.0175
+       ],
+       "unit": "runs (cluster bootstrap over recorded runs; calls averaged within each run first)"
+      }
+     }
+    }
+   ],
+   "analyzer_best_for": [
+    {
+     "goal": "Closest to today",
+     "candidate": "qwen3.8-27b",
+     "why": "Picks the same tool as your current model 84% of the time; your current model run again does 84%."
+    },
+    {
+     "goal": "Cheapest",
+     "candidate": "gpt-5.4-mini",
+     "why": "$0.00098492 per call, within 10 points of how often your current model matches itself."
+    },
+    {
+     "goal": "Fastest",
+     "candidate": "qwen3.8-27b",
+     "why": "0.84s median latency, within 10 points of how often your current model matches itself."
+    },
+    {
+     "goal": "Best open model",
+     "candidate": "qwen3.8-27b",
+     "why": "Picks the same tool as your current model 84% of the time, and you can run it anywhere."
+    },
+    {
+     "goal": "Worth a full replay",
+     "candidate": "qwen3.8-27b + kimi-k3 + glm-5.3 + gpt-5.4-mini + deepseek-v4.1-flash",
+     "why": "Step agreement ranks candidates but does not show outcomes. Replay these end to end with your evaluator before switching: every candidate except clear failures, plus the cheapest, which step agreement often ranks low even when it keeps outcomes."
+    }
+   ],
+   "analyzer_best_for_note": "The analyzer's own picks from batch 1; batch 1 had no working GPT-5.6 rows, so GPT-5.6 Sol and Luna were not eligible for these picks.",
+   "batch1_superseded_candidates": [
+    "gpt-5.6-sol",
+    "gpt-5.6-luna"
+   ],
+   "recompute_check": "rates recomputed from calls.jsonl match the analyzer's report.json to within 4th-decimal rounding"
+  }
+ ],
+ "headline_findings": [
+  {
+   "finding": "On 499 public tau2-bench Telecom runs, Kimi K2.5 solved the most tasks and GPT-5.2 the fewest.",
+   "numbers": [
+    "results.recorded_full_runs[model=Kimi-K2.5].accuracy",
+    "results.recorded_full_runs[model=Kimi-K2.5].ci95",
+    "results.recorded_full_runs[model=gpt-5.2-2025-12-11].accuracy",
+    "results.recorded_full_runs[model=gpt-5.2-2025-12-11].ci95"
+   ]
+  },
+  {
+   "finding": "Most unsolved runs end with the agent handing the user to a human on a task it could have solved.",
+   "numbers": [
+    "failures[category=escalated_to_human_on_unsolved_task].counts",
+    "results.recorded_full_runs[model=DeepSeek-V3.2].correct",
+    "results.recorded_full_runs[model=Kimi-K2.5].correct",
+    "results.recorded_full_runs[model=claude-opus-4-5].correct",
+    "results.recorded_full_runs[model=gemini-3-pro-preview].correct",
+    "results.recorded_full_runs[model=gpt-5.2-2025-12-11].correct"
+   ]
+  },
+  {
+   "finding": "Re-sent its own recorded calls, GPT-5.2 picks the same tool only part of the time, which sets the bar any replacement has to be read against.",
+   "numbers": [
+    "replays_and_step_checks[name=step_check_gpt52_recorded_calls].candidates[candidate=gpt-5.2 (recorded model)].tool_choice.rate",
+    "replays_and_step_checks[name=step_check_gpt52_recorded_calls].candidates[candidate=gpt-5.2 (recorded model)].tool_choice.ci95"
+   ]
+  },
+  {
+   "finding": "Of the seven newer candidates, only deepseek-v4.1-flash picked GPT-5.2's recorded tool clearly less often than GPT-5.2's own repeat; every other candidate's paired interval includes zero.",
+   "numbers": [
+    "replays_and_step_checks[name=step_check_gpt52_recorded_calls].candidates[candidate=gpt-5.6-sol].paired_vs.tool_choice.ci95_points",
+    "replays_and_step_checks[name=step_check_gpt52_recorded_calls].candidates[candidate=gpt-5.6-luna].paired_vs.tool_choice.ci95_points",
+    "replays_and_step_checks[name=step_check_gpt52_recorded_calls].candidates[candidate=gpt-5.4-mini].paired_vs.tool_choice.ci95_points",
+    "replays_and_step_checks[name=step_check_gpt52_recorded_calls].candidates[candidate=deepseek-v4.1-flash].paired_vs.tool_choice.ci95_points",
+    "replays_and_step_checks[name=step_check_gpt52_recorded_calls].candidates[candidate=kimi-k3].paired_vs.tool_choice.ci95_points",
+    "replays_and_step_checks[name=step_check_gpt52_recorded_calls].candidates[candidate=glm-5.3].paired_vs.tool_choice.ci95_points",
+    "replays_and_step_checks[name=step_check_gpt52_recorded_calls].candidates[candidate=qwen3.8-27b].paired_vs.tool_choice.ci95_points"
+   ]
+  },
+  {
+   "finding": "Unsolved runs cost more per task than solved ones for every model, so failures are also the expensive runs.",
+   "numbers": [
+    "additional_measurements.cost_solved_vs_unsolved[model=DeepSeek-V3.2].mean_agent_cost_usd_solved",
+    "additional_measurements.cost_solved_vs_unsolved[model=DeepSeek-V3.2].mean_agent_cost_usd_unsolved",
+    "additional_measurements.cost_solved_vs_unsolved[model=Kimi-K2.5].mean_agent_cost_usd_solved",
+    "additional_measurements.cost_solved_vs_unsolved[model=Kimi-K2.5].mean_agent_cost_usd_unsolved",
+    "additional_measurements.cost_solved_vs_unsolved[model=claude-opus-4-5].mean_agent_cost_usd_solved",
+    "additional_measurements.cost_solved_vs_unsolved[model=claude-opus-4-5].mean_agent_cost_usd_unsolved",
+    "additional_measurements.cost_solved_vs_unsolved[model=gemini-3-pro-preview].mean_agent_cost_usd_solved",
+    "additional_measurements.cost_solved_vs_unsolved[model=gemini-3-pro-preview].mean_agent_cost_usd_unsolved",
+    "additional_measurements.cost_solved_vs_unsolved[model=gpt-5.2-2025-12-11].mean_agent_cost_usd_solved",
+    "additional_measurements.cost_solved_vs_unsolved[model=gpt-5.2-2025-12-11].mean_agent_cost_usd_unsolved"
+   ]
+  }
+ ],
+ "additional_measurements": {
+  "cost_solved_vs_unsolved": [
+   {
+    "model": "DeepSeek-V3.2",
+    "n_solved": 71,
+    "n_unsolved": 29,
+    "mean_agent_cost_usd_solved": 0.0392,
+    "mean_agent_cost_usd_unsolved": 0.0743,
+    "mean_steps_solved": 15.0563,
+    "mean_steps_unsolved": 25.5862
+   },
+   {
+    "model": "Kimi-K2.5",
+    "n_solved": 83,
+    "n_unsolved": 17,
+    "mean_agent_cost_usd_solved": 0.0886,
+    "mean_agent_cost_usd_unsolved": 0.1129,
+    "mean_steps_solved": 15.6024,
+    "mean_steps_unsolved": 18.7647
+   },
+   {
+    "model": "claude-opus-4-5",
+    "n_solved": 75,
+    "n_unsolved": 24,
+    "mean_agent_cost_usd_solved": 0.7869,
+    "mean_agent_cost_usd_unsolved": 1.3212,
+    "mean_steps_solved": 14.96,
+    "mean_steps_unsolved": 24.375
+   },
+   {
+    "model": "gemini-3-pro-preview",
+    "n_solved": 73,
+    "n_unsolved": 26,
+    "mean_agent_cost_usd_solved": 0.2798,
+    "mean_agent_cost_usd_unsolved": 0.3472,
+    "mean_steps_solved": 14.0137,
+    "mean_steps_unsolved": 17.0
+   },
+   {
+    "model": "gpt-5.2-2025-12-11",
+    "n_solved": 54,
+    "n_unsolved": 47,
+    "mean_agent_cost_usd_solved": 0.1453,
+    "mean_agent_cost_usd_unsolved": 0.157,
+    "mean_steps_solved": 9.7593,
+    "mean_steps_unsolved": 11.0638
+   }
+  ]
+ },
+ "limitations": [
+  "Recorded outcomes are one run per task per model, with no repeats, so no outcome noise floor was measured.",
+  "Runs cannot be paired by task across models (no task identifier in the public data), so model-vs-model differences are unpaired and only their separate Wilson intervals are reported.",
+  "The step check measures similarity to GPT-5.2's recorded replies, not correctness; no candidate's task success was measured, so it cannot say which model would solve more tasks.",
+  "Only one recorded model (GPT-5.2) could be reached for the step check; Claude Opus 4.5, Gemini 3 Pro, DeepSeek V3.2 and Kimi K2.5 as recorded were not reachable with the available keys, so step agreement could not be compared with recorded outcomes.",
+  "Recorded tool definitions have empty parameter schemas, so candidates saw tool names and descriptions but no argument schemas; this affects every candidate including the reference.",
+  "OpenAI rejected 19 of the 160 calls for every OpenAI candidate (a recorded tool-call id longer than OpenAI's 64-character limit); those calls are excluded from the OpenAI candidates' rates, so OpenAI and non-OpenAI candidates are scored on slightly different call sets.",
+  "9 of 1057 recorded GPT-5.2 calls were skipped by the analyzer for a missing tool schema.",
+  "The recorded GPT-5.2 settings (reasoning effort, temperature) are not in the data; the step check used provider defaults.",
+  "Issue types and the claimed_no_device_access category come from text matching, not human labels.",
+  "agent_cost is Exgentic's figure; its prices and cached-token treatment are undocumented, and the user simulator's cost is excluded.",
+  "Open-weight candidate prices in the step check are unverified third-party listings.",
+  "One step-check run's spend was not recorded (its result exceeded Kitaru's 1 MB worker task-result limit and was discarded), so total spend is null.",
+  "The dataset declares no license."
+ ],
+ "public_safety": [
+  {
+   "item": "Inference provider of the open-weight step-check candidates",
+   "why": "Provider names stay private in these exports.",
+   "where_in_file": "models[*].provider_private; replays_and_step_checks[0].candidates[*] (endpoint not included)"
+  },
+  {
+   "item": "Open-weight candidate prices",
+   "why": "Unverified third-party listings.",
+   "where_in_file": "models[role=step-check candidate, weights=open].price_*"
+  },
+  {
+   "item": "Dataset license",
+   "why": "Exgentic declares no license; quoting trace content publicly needs their permission or a license. The failure examples here are paraphrases.",
+   "where_in_file": "dataset.license, failures[*].example"
+  },
+  {
+   "item": "Unreleased Kitaru analyzer and its bugs",
+   "why": "kitaru-model-swap comes from an unmerged PR (zenml-io/kitaru#1327); the 1 MB result limit and the 64-character tool-call id failures are unreleased-software issues.",
+   "where_in_file": "meta.kitaru_details, limitations, meta.total_spend_usd_note"
+  }
+ ],
+ "inconsistencies": [
+  {
+   "where": "Dataset card (README.md)",
+   "claim": "10,057 agent runs (sessions)",
+   "data": "10056 rows across the 9 published shards"
+  },
+  {
+   "where": "Dataset card (README.md)",
+   "claim": "gen_ai.request.model / gen_ai.response.model in spans use the canonical model name, with zero mismatches",
+   "data": "In the tool_calling tau2_telecom slice, spans whose response model differs from the canonical name: {'claude-opus-4-5 -> None': 1633, 'claude-opus-4-5 -> global.anthropic.claude-opus-4-5-20251101-v1:0': 74, 'gemini-3-pro-preview -> None': 1410}"
+  },
+  {
+   "where": "Dataset rows",
+   "claim": "config_path names the run's experiment and model",
+   "data": "2 GPT-5.2 rows carry another model's config_path: [{'session_id': 'fe34eb314a84_11c7ce6d', 'model': 'gpt-5.2-2025-12-11', 'config_path': 'experiments/tau2_telecom/tool_calling/openai_aws_claude-opus-4-5/config.json'}, {'session_id': '638d222a8bb4_6a967f9b', 'model': 'gpt-5.2-2025-12-11', 'config_path': 'experiments/tau2_telecom/tool_calling/openai_gcp_gemini-3-pro-preview/config.json'}]"
+  },
+  {
+   "where": "Dataset rows",
+   "claim": "status describes the outcome",
+   "data": "288 rows have status 'unknown' while success is set: 195 true, 93 false"
+  },
+  {
+   "where": "Kitaru post-import insights card (this session's import of a 125-run sample)",
+   "claim": "6 recorded models appear in these sessions",
+   "data": "5 models; the sixth name is Claude Opus 4.5's Bedrock response model id on 33 of the sample's calls"
+  },
+  {
+   "where": "Kitaru post-import insights card (125-run sample)",
+   "claim": "100% of sessions include explicit correction language",
+   "data": "The agent policy arrives as the first user message and contains the marker words, so every session matches regardless of what the user said"
+  },
+  {
+   "where": "Kitaru model-swap report notes",
+   "claim": "160 sampled calls have no system prompt",
+   "data": "Each call's first user message carries the full agent policy; the recordings have no system role, not no instructions"
+  },
+  {
+   "where": "Earlier chat summary in this session (125-run sample, 25 per model)",
+   "claim": "GPT-5.2 failed 10 of 25 sampled runs (solved 15/25 = 0.6000)",
+   "data": "On all 101 GPT-5.2 runs: 54 solved (accuracy 0.5347)"
+  }
+ ]
+}

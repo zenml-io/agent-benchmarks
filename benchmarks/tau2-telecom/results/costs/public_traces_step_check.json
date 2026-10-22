@@ -1,0 +1,24 @@
+{
+  "currency": "USD",
+  "note": "Model spend for this benchmark. The recorded full runs are public data and cost nothing to use. Dry runs send no calls.",
+  "runs": [
+    {
+      "what": "step check, batch 1 (8 candidates; gpt-5.6-sol and gpt-5.6-luna failed every call on /chat/completions)",
+      "date": "2026-10-22",
+      "source": "step_check/out/report.json spent_usd",
+      "spent_usd": "8.30271325"
+    },
+    {
+      "what": "step check, batch 2 (gpt-5.6-sol and gpt-5.6-luna through the Responses API)",
+      "date": "2026-10-22",
+      "source": "step_check/out_responses/report.json spent_usd",
+      "spent_usd": "0.99819070"
+    },
+    {
+      "what": "step check run as a Kitaru worker task (same 8 candidates, 160 calls each), Kitaru job 01a163aa-cb64-7bc0-a5a7-4f2527fb96da",
+      "date": "2026-10-22",
+      "source": "none: the worker discarded the analyzer's result because it exceeded the 1 MB task-result limit, so its spend was never recorded",
+      "spent_usd": null
+    }
+  ]
+}

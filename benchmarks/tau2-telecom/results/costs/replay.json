@@ -1,0 +1,270 @@
+{
+ "currency": "USD",
+ "note": "Model spend for the live tau2-bench Telecom runs and Kitaru replays (2026-10-22). Kitaru records agent cost only for models its pricing catalog knows; the open-weight arms ran on a provider Kitaru could not price, so their agent spend is not recorded and the total is unknown.",
+ "runs": [
+  {
+   "what": "arm baseline_gpt-5.2_recorded: agent model calls",
+   "source": "Kitaru session cost (results/replays.jsonl agent_cost_usd)",
+   "spent_usd": "2.35354315"
+  },
+  {
+   "what": "arm baseline_gpt-5.2_recorded: user simulator (gpt-4.1-2025-04-14)",
+   "source": "tau2 user_cost_usd per episode",
+   "spent_usd": "2.710027999999999981"
+  },
+  {
+   "what": "arm deepseek-v4_1-flash: agent model calls",
+   "source": "Kitaru session cost (results/replays.jsonl agent_cost_usd)",
+   "spent_usd": null,
+   "note": "40 sessions on a model Kitaru could not price (session cost recorded as 0, kitaru#1347); not recorded"
+  },
+  {
+   "what": "arm deepseek-v4_1-flash: user simulator (gpt-4.1-2025-04-14)",
+   "source": "tau2 user_cost_usd per episode",
+   "spent_usd": "2.627271999999999884"
+  },
+  {
+   "what": "arm glm-5_3: agent model calls",
+   "source": "Kitaru session cost (results/replays.jsonl agent_cost_usd)",
+   "spent_usd": null,
+   "note": "40 sessions on a model Kitaru could not price (session cost recorded as 0, kitaru#1347); not recorded"
+  },
+  {
+   "what": "arm glm-5_3: user simulator (gpt-4.1-2025-04-14)",
+   "source": "tau2 user_cost_usd per episode",
+   "spent_usd": "2.397529999999999949"
+  },
+  {
+   "what": "arm gpt-5_4-mini: agent model calls",
+   "source": "Kitaru session cost (results/replays.jsonl agent_cost_usd)",
+   "spent_usd": "0.69342990"
+  },
+  {
+   "what": "arm gpt-5_4-mini: user simulator (gpt-4.1-2025-04-14)",
+   "source": "tau2 user_cost_usd per episode",
+   "spent_usd": "1.793803999999999940"
+  },
+  {
+   "what": "arm gpt-5_6-luna: agent model calls",
+   "source": "Kitaru session cost (results/replays.jsonl agent_cost_usd)",
+   "spent_usd": "0.17428192"
+  },
+  {
+   "what": "arm gpt-5_6-luna: user simulator (gpt-4.1-2025-04-14)",
+   "source": "tau2 user_cost_usd per episode",
+   "spent_usd": "1.3573339999999999669"
+  },
+  {
+   "what": "arm gpt-5_6-sol: agent model calls",
+   "source": "Kitaru session cost (results/replays.jsonl agent_cost_usd)",
+   "spent_usd": "4.0635436"
+  },
+  {
+   "what": "arm gpt-5_6-sol: user simulator (gpt-4.1-2025-04-14)",
+   "source": "tau2 user_cost_usd per episode",
+   "spent_usd": "2.339102000000000005"
+  },
+  {
+   "what": "arm kimi-k3: agent model calls",
+   "source": "Kitaru session cost (results/replays.jsonl agent_cost_usd)",
+   "spent_usd": null,
+   "note": "40 sessions on a model Kitaru could not price (session cost recorded as 0, kitaru#1347); not recorded"
+  },
+  {
+   "what": "arm kimi-k3: user simulator (gpt-4.1-2025-04-14)",
+   "source": "tau2 user_cost_usd per episode",
+   "spent_usd": "2.829055999999999932"
+  },
+  {
+   "what": "arm noise_gpt-5_2: agent model calls",
+   "source": "Kitaru session cost (results/replays.jsonl agent_cost_usd)",
+   "spent_usd": "2.66719285"
+  },
+  {
+   "what": "arm noise_gpt-5_2: user simulator (gpt-4.1-2025-04-14)",
+   "source": "tau2 user_cost_usd per episode",
+   "spent_usd": "3.083489999999999981"
+  },
+  {
+   "what": "arm prompt-escalation-rule: agent model calls",
+   "source": "Kitaru session cost (results/replays.jsonl agent_cost_usd)",
+   "spent_usd": "2.61412095"
+  },
+  {
+   "what": "arm prompt-escalation-rule: user simulator (gpt-4.1-2025-04-14)",
+   "source": "tau2 user_cost_usd per episode",
+   "spent_usd": "2.7624359999999999915"
+  },
+  {
+   "what": "arm qwen3_8-27b: agent model calls",
+   "source": "Kitaru session cost (results/replays.jsonl agent_cost_usd)",
+   "spent_usd": null,
+   "note": "40 sessions on a model Kitaru could not price (session cost recorded as 0, kitaru#1347); not recorded"
+  },
+  {
+   "what": "arm qwen3_8-27b: user simulator (gpt-4.1-2025-04-14)",
+   "source": "tau2 user_cost_usd per episode",
+   "spent_usd": "2.258659999999999880"
+  },
+  {
+   "what": "setup session 'tau2 telecom case 0' (Qwen/Qwen3.8-27B)",
+   "source": "Kitaru session cost",
+   "spent_usd": null,
+   "note": "unpriced model; not recorded"
+  },
+  {
+   "what": "setup session 'tau2 telecom case 0': user simulator",
+   "source": "tau2 user_cost_usd",
+   "spent_usd": "0.019894"
+  },
+  {
+   "what": "setup session 'tau2 telecom case 0 pilot' (gpt-5.2-2025-12-11)",
+   "source": "Kitaru session cost",
+   "spent_usd": "0.04263910"
+  },
+  {
+   "what": "setup session 'tau2 telecom case 0 pilot2' (gpt-5.2-2025-12-11)",
+   "source": "Kitaru session cost",
+   "spent_usd": "0.03584630"
+  },
+  {
+   "what": "setup session 'tau2 telecom case 0 pilot2': user simulator",
+   "source": "tau2 user_cost_usd",
+   "spent_usd": "0.035438"
+  },
+  {
+   "what": "setup session 'tau2 telecom case 5' (no model calls)",
+   "source": "Kitaru session cost",
+   "spent_usd": null
+  },
+  {
+   "what": "setup session 'tau2 telecom case 36' (zai-org/GLM-5.3)",
+   "source": "Kitaru session cost",
+   "spent_usd": null,
+   "note": "unpriced model; not recorded"
+  },
+  {
+   "what": "setup session 'tau2 telecom case 34' (zai-org/GLM-5.3)",
+   "source": "Kitaru session cost",
+   "spent_usd": null,
+   "note": "unpriced model; not recorded"
+  },
+  {
+   "what": "setup session 'tau2 telecom case 3' (no model calls)",
+   "source": "Kitaru session cost",
+   "spent_usd": null
+  },
+  {
+   "what": "setup session 'tau2 telecom case 28' (zai-org/GLM-5.3)",
+   "source": "Kitaru session cost",
+   "spent_usd": null,
+   "note": "unpriced model; not recorded"
+  },
+  {
+   "what": "setup session 'tau2 telecom case 28': user simulator",
+   "source": "tau2 user_cost_usd",
+   "spent_usd": "0.07189600000000002"
+  },
+  {
+   "what": "setup session 'tau2 telecom case 8' (no model calls)",
+   "source": "Kitaru session cost",
+   "spent_usd": null
+  },
+  {
+   "what": "setup session 'tau2 telecom case 7' (no model calls)",
+   "source": "Kitaru session cost",
+   "spent_usd": null
+  },
+  {
+   "what": "setup session 'tau2 telecom case 1' (no model calls)",
+   "source": "Kitaru session cost",
+   "spent_usd": null
+  },
+  {
+   "what": "setup session 'tau2 telecom case 0' (provider-a:Qwen/Qwen3.8-27B)",
+   "source": "Kitaru session cost",
+   "spent_usd": null,
+   "note": "unpriced model; not recorded"
+  },
+  {
+   "what": "setup session 'tau2 telecom case 4' (no model calls)",
+   "source": "Kitaru session cost",
+   "spent_usd": null
+  },
+  {
+   "what": "setup session 'tau2 telecom case 6' (no model calls)",
+   "source": "Kitaru session cost",
+   "spent_usd": null
+  },
+  {
+   "what": "setup session 'tau2 telecom case 39' (zai-org/GLM-5.3)",
+   "source": "Kitaru session cost",
+   "spent_usd": null,
+   "note": "unpriced model; not recorded"
+  },
+  {
+   "what": "setup session 'tau2 telecom case 39': user simulator",
+   "source": "tau2 user_cost_usd",
+   "spent_usd": "0.14533799999999997"
+  },
+  {
+   "what": "setup session 'tau2 telecom case 9' (zai-org/GLM-5.3)",
+   "source": "Kitaru session cost",
+   "spent_usd": null,
+   "note": "unpriced model; not recorded"
+  },
+  {
+   "what": "setup session 'tau2 telecom case 9': user simulator",
+   "source": "tau2 user_cost_usd",
+   "spent_usd": "0.022749999999999996"
+  },
+  {
+   "what": "setup session 'tau2 telecom case 2' (no model calls)",
+   "source": "Kitaru session cost",
+   "spent_usd": null
+  },
+  {
+   "what": "setup session 'tau2 telecom case 35' (zai-org/GLM-5.3)",
+   "source": "Kitaru session cost",
+   "spent_usd": null,
+   "note": "unpriced model; not recorded"
+  },
+  {
+   "what": "setup session 'tau2 telecom case 35': user simulator",
+   "source": "tau2 user_cost_usd",
+   "spent_usd": "0.11359600000000002"
+  },
+  {
+   "what": "setup session 'tau2 telecom case 11' (zai-org/GLM-5.3)",
+   "source": "Kitaru session cost",
+   "spent_usd": null,
+   "note": "unpriced model; not recorded"
+  },
+  {
+   "what": "setup session 'tau2 telecom case 11': user simulator",
+   "source": "tau2 user_cost_usd",
+   "spent_usd": "0.045333999999999985"
+  },
+  {
+   "what": "setup session 'tau2 telecom case 0' (no model calls)",
+   "source": "Kitaru session cost",
+   "spent_usd": null
+  },
+  {
+   "what": "setup session 'tau2 telecom case 15' (zai-org/GLM-5.3)",
+   "source": "Kitaru session cost",
+   "spent_usd": null,
+   "note": "unpriced model; not recorded"
+  },
+  {
+   "what": "setup session 'tau2 telecom case 15': user simulator",
+   "source": "tau2 user_cost_usd",
+   "spent_usd": "0.07182599999999999"
+  },
+  {
+   "what": "setup: first replay smoke test failed on provider-a's first response; user-simulator calls before it",
+   "source": "none",
+   "spent_usd": null
+  }
+ ]
+}
