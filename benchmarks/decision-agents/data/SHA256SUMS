@@ -1,0 +1,12 @@
+# Upstream downloads (as fetched on 2026-10-09 for the original run and again on 2026-10-22)
+f68951823f6ffc09566cc190d97b2808e0269a069843efe809a3f5f90d4c893b  work/claims/imr.csv
+fa69a873226e546e77cb040f1b96f5749d59753ee7bd57fc1c8d8a0b42521e77  work/bva/hf/BVA-AMA-Era-2019-2020.csv
+ae42ac293365abb6583a91d2bec77b552c6fc5338fd1047d6d748d814647d3f5  work/bva/hf/BVA-AMA-Era-t2021.csv
+2a8a950d7baf6c8b3b775abe0bda12a0b22608f61855c4c7c63cfb5f23728b1b  work/bva/hf/BVA-AMA-Era-2022-2023.csv
+# Files the build steps derive from them (identical to the original run's files when the upstream data is unchanged)
+81a886dd7a8a36f18a338d2ff4f6a6c98801256b4960798acd2936471a342298  work/claims/candidates.jsonl
+81524760c12e02d97449288659e70b8b77685a1742d32e61de8c3a2e3c79f2b1  work/claims/precedents.jsonl
+9f457dab32da9764481d2751a381aa7d1b73de8b469f2fcdd8facc0ca6396155  work/bva/index_sample.jsonl
+d9d6a3038e5c4cc32c099eddb766e9cf7b9fa8c1492dba4b099cd8f4b228eeff  work/bva/candidates.jsonl
+209a0c3098c1dfe3c5dc02e8032b7061f49e516306eb79cb957d240b2dda55e3  work/bva/precedents.jsonl
+b56762a2c419b6ff49c6c101712fd55d279f372684855a85498185f327556f58  work/de_kr/cases_raw.jsonl

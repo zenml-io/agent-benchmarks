@@ -1,0 +1,4790 @@
+[
+{
+"id": 521260,
+"file_number": "S 29 KR 10118/21",
+"court": "Sozialgericht Schleswig",
+"date": "2026-05-28",
+"truth": "overturn"
+},
+{
+"id": 520987,
+"file_number": "S 26 KR 128/25",
+"court": "Sozialgericht Braunschweig",
+"date": "2026-03-06",
+"truth": "uphold"
+},
+{
+"id": 521060,
+"file_number": "S 92 KR 414/23",
+"court": "Sozialgericht Hannover",
+"date": "2026-02-24",
+"truth": "uphold"
+},
+{
+"id": 400700,
+"file_number": "S 92 KR 273/23",
+"court": "Sozialgericht Hannover",
+"date": "2026-02-24",
+"truth": "uphold"
+},
+{
+"id": 418270,
+"file_number": "S 7 KR 1309/25",
+"court": "Sozialgericht Konstanz",
+"date": "2026-01-13",
+"truth": "uphold"
+},
+{
+"id": 409428,
+"file_number": "S 45 KR 1894/24 KH",
+"court": "Sozialgericht Hamburg",
+"date": "2026-01-12",
+"truth": "overturn"
+},
+{
+"id": 408560,
+"file_number": "S 210 KR 1788/22",
+"court": "Sozialgericht Berlin",
+"date": "2025-12-02",
+"truth": "overturn"
+},
+{
+"id": 367369,
+"file_number": "S 45 KR 594/24 KH",
+"court": "Sozialgericht Gelsenkirchen",
+"date": "2025-11-17",
+"truth": "uphold"
+},
+{
+"id": 367448,
+"file_number": "S 78 KR 273/23 KH",
+"court": "Sozialgericht Dortmund",
+"date": "2025-11-11",
+"truth": "overturn"
+},
+{
+"id": 409544,
+"file_number": "S 6 KR 7/25",
+"court": "Sozialgericht Hamburg",
+"date": "2025-11-04",
+"truth": "uphold"
+},
+{
+"id": 367615,
+"file_number": "S 51 KR 2656/23 KH",
+"court": "Sozialgericht Düsseldorf",
+"date": "2025-10-27",
+"truth": "uphold"
+},
+{
+"id": 428156,
+"file_number": "S 13 KR 375/24",
+"court": "Sozialgericht Darmstadt",
+"date": "2025-10-20",
+"truth": "uphold"
+},
+{
+"id": 367784,
+"file_number": "S 32 KR 358/25",
+"court": "Sozialgericht Detmold",
+"date": "2025-10-07",
+"truth": "overturn"
+},
+{
+"id": 400033,
+"file_number": "S 11 KR 258/21",
+"court": "Sozialgericht Osnabrück",
+"date": "2025-09-25",
+"truth": "overturn"
+},
+{
+"id": 409582,
+"file_number": "S 59 KR 2565/21",
+"court": "Sozialgericht Hamburg",
+"date": "2025-09-22",
+"truth": "overturn"
+},
+{
+"id": 418607,
+"file_number": "S 5 KR 2723/23",
+"court": "Sozialgericht Karlsruhe",
+"date": "2025-09-19",
+"truth": "uphold"
+},
+{
+"id": 418619,
+"file_number": "S 6 KR 471/24",
+"court": "Sozialgericht Freiburg",
+"date": "2025-09-18",
+"truth": "uphold"
+},
+{
+"id": 418625,
+"file_number": "S 9 KR 1877/24",
+"court": "Sozialgericht Karlsruhe",
+"date": "2025-09-10",
+"truth": "uphold"
+},
+{
+"id": 409611,
+"file_number": "S 38 KR 1116/23 D",
+"court": "Sozialgericht Hamburg",
+"date": "2025-09-08",
+"truth": "uphold"
+},
+{
+"id": 428322,
+"file_number": "S 11 KR 35/25",
+"court": "Sozialgericht GieBen",
+"date": "2025-08-27",
+"truth": "uphold"
+},
+{
+"id": 428348,
+"file_number": "S 8 KR 100/23",
+"court": "Sozialgericht Darmstadt",
+"date": "2025-08-11",
+"truth": "overturn"
+},
+{
+"id": 409681,
+"file_number": "S 50 KR 3430/19",
+"court": "Sozialgericht Hamburg",
+"date": "2025-07-15",
+"truth": "uphold"
+},
+{
+"id": 418791,
+"file_number": "S 6 KR 2426/24",
+"court": "Sozialgericht Mannheim",
+"date": "2025-07-10",
+"truth": "uphold"
+},
+{
+"id": 418790,
+"file_number": "S 6 KR 2427/24",
+"court": "Sozialgericht Mannheim",
+"date": "2025-07-10",
+"truth": "uphold"
+},
+{
+"id": 413922,
+"file_number": "S 15 KR 441/22",
+"court": "Sozialgericht Dessau-Roßlau",
+"date": "2025-06-27",
+"truth": "overturn"
+},
+{
+"id": 423095,
+"file_number": "S 23 KR 1103/23",
+"court": "Sozialgericht Altenburg",
+"date": "2025-06-23",
+"truth": "overturn"
+},
+{
+"id": 369138,
+"file_number": "S 27 KR 1551/24",
+"court": "Sozialgericht Düsseldorf",
+"date": "2025-06-23",
+"truth": "uphold"
+},
+{
+"id": 428466,
+"file_number": "S 8 KR 15/22",
+"court": "Sozialgericht Darmstadt",
+"date": "2025-06-16",
+"truth": "uphold"
+},
+{
+"id": 412614,
+"file_number": "S 7 KR 76/24",
+"court": "Sozialgericht Mainz",
+"date": "2025-06-16",
+"truth": "uphold"
+},
+{
+"id": 418904,
+"file_number": "S 1 KR 1201/23",
+"court": "Sozialgericht Reutlingen",
+"date": "2025-06-11",
+"truth": "uphold"
+},
+{
+"id": 418884,
+"file_number": "S 1 KR 1661/24",
+"court": "Sozialgericht Reutlingen",
+"date": "2025-06-11",
+"truth": "uphold"
+},
+{
+"id": 409757,
+"file_number": "S 38 KR 3760/22 D",
+"court": "Sozialgericht Hamburg",
+"date": "2025-05-27",
+"truth": "overturn"
+},
+{
+"id": 400327,
+"file_number": "S 31 KR 251/24",
+"court": "Sozialgericht Braunschweig",
+"date": "2025-05-21",
+"truth": "uphold"
+},
+{
+"id": 414014,
+"file_number": "S 22 KR 352/22",
+"court": "Sozialgericht Halle",
+"date": "2025-05-07",
+"truth": "uphold"
+},
+{
+"id": 418979,
+"file_number": "S 6 KR 2387/24",
+"court": "Sozialgericht Freiburg",
+"date": "2025-05-05",
+"truth": "uphold"
+},
+{
+"id": 423169,
+"file_number": "S 23 KR 995/24",
+"court": "Sozialgericht Altenburg",
+"date": "2025-03-24",
+"truth": "overturn"
+},
+{
+"id": 370460,
+"file_number": "S 27 KR 2756/23 KH",
+"court": "Sozialgericht Düsseldorf",
+"date": "2025-03-24",
+"truth": "overturn"
+},
+{
+"id": 419128,
+"file_number": "S 5 KR 2092/24",
+"court": "Sozialgericht Karlsruhe",
+"date": "2025-03-17",
+"truth": "overturn"
+},
+{
+"id": 409419,
+"file_number": "S 89 KR 1766/23",
+"court": "Sozialgericht Berlin",
+"date": "2025-03-14",
+"truth": "overturn"
+},
+{
+"id": 428752,
+"file_number": "S 25 KR 51/23",
+"court": "Sozialgericht Darmstadt",
+"date": "2025-03-12",
+"truth": "overturn"
+},
+{
+"id": 428818,
+"file_number": "S 1 KR 12/24",
+"court": "Sozialgericht Wiesbaden",
+"date": "2025-03-05",
+"truth": "uphold"
+},
+{
+"id": 409926,
+"file_number": "S 57 KR 1372/17",
+"court": "Sozialgericht Hamburg",
+"date": "2025-02-26",
+"truth": "uphold"
+},
+{
+"id": 370986,
+"file_number": "S 32 KR 1341/23",
+"court": "Sozialgericht Detmold",
+"date": "2025-02-18",
+"truth": "overturn"
+},
+{
+"id": 428858,
+"file_number": "S 14 KR 11/24",
+"court": "Sozialgericht Marburg",
+"date": "2025-02-17",
+"truth": "uphold"
+},
+{
+"id": 428872,
+"file_number": "S 2 KR 402/22",
+"court": "Sozialgericht Kassel",
+"date": "2025-02-12",
+"truth": "overturn"
+},
+{
+"id": 419256,
+"file_number": "S 11 KR 435/24",
+"court": "Sozialgericht Heilbronn",
+"date": "2025-02-12",
+"truth": "overturn"
+},
+{
+"id": 428882,
+"file_number": "S 13 KR 262/23",
+"court": "Sozialgericht Darmstadt",
+"date": "2025-02-07",
+"truth": "overturn"
+},
+{
+"id": 371272,
+"file_number": "S 27 KR 529/20",
+"court": "Sozialgericht Düsseldorf",
+"date": "2025-01-31",
+"truth": "uphold"
+},
+{
+"id": 454842,
+"file_number": "S 25 KR 1377/22",
+"court": "Sozialgericht Frankfurt am Main",
+"date": "2025-01-29",
+"truth": "uphold"
+},
+{
+"id": 409993,
+"file_number": "S 9 KR 3758/22",
+"court": "Sozialgericht Hamburg",
+"date": "2025-01-20",
+"truth": "overturn"
+},
+{
+"id": 410020,
+"file_number": "S 50 KR 1852/18",
+"court": "Sozialgericht Hamburg",
+"date": "2025-01-17",
+"truth": "overturn"
+},
+{
+"id": 412789,
+"file_number": "S 17 KR 188/24",
+"court": "Sozialgericht Speyer",
+"date": "2025-01-16",
+"truth": "overturn"
+},
+{
+"id": 491524,
+"file_number": "S 28 KR 882/23",
+"court": "Sozialgericht Berlin",
+"date": "2024-12-11",
+"truth": "uphold"
+},
+{
+"id": 372055,
+"file_number": "S 34 KR 1512/23",
+"court": "Sozialgericht Düsseldorf",
+"date": "2024-12-09",
+"truth": "uphold"
+},
+{
+"id": 419590,
+"file_number": "S 1 KR 2302/23",
+"court": "Sozialgericht Reutlingen",
+"date": "2024-11-13",
+"truth": "uphold"
+},
+{
+"id": 429188,
+"file_number": "S 4 KR 349/22",
+"court": "Sozialgericht Fulda",
+"date": "2024-10-31",
+"truth": "overturn"
+},
+{
+"id": 429274,
+"file_number": "S 13 KR 347/23",
+"court": "Sozialgericht Darmstadt",
+"date": "2024-10-08",
+"truth": "uphold"
+},
+{
+"id": 454855,
+"file_number": "S 35 KR 1181/21",
+"court": "Sozialgericht Frankfurt am Main",
+"date": "2024-10-02",
+"truth": "uphold"
+},
+{
+"id": 373096,
+"file_number": "S 15 KR 134/24 KH",
+"court": "Sozialgericht Düsseldorf",
+"date": "2024-09-26",
+"truth": "overturn"
+},
+{
+"id": 419754,
+"file_number": "S 15 KR 10/22",
+"court": "Sozialgericht Heilbronn",
+"date": "2024-09-19",
+"truth": "uphold"
+},
+{
+"id": 414307,
+"file_number": "S 30 KR 7261/19",
+"court": "Sozialgericht Halle",
+"date": "2024-09-18",
+"truth": "overturn"
+},
+{
+"id": 423333,
+"file_number": "S 23 KR 563/23",
+"court": "Sozialgericht Altenburg",
+"date": "2024-09-12",
+"truth": "overturn"
+},
+{
+"id": 410193,
+"file_number": "S 50 KR 1511/21",
+"court": "Sozialgericht Hamburg",
+"date": "2024-09-12",
+"truth": "overturn"
+},
+{
+"id": 410202,
+"file_number": "S 50 KR 472/20",
+"court": "Sozialgericht Hamburg",
+"date": "2024-09-10",
+"truth": "overturn"
+},
+{
+"id": 414353,
+"file_number": "S 17 KR 443/23",
+"court": "Sozialgericht Halle",
+"date": "2024-08-27",
+"truth": "uphold"
+},
+{
+"id": 410221,
+"file_number": "S 56 KR 1898/20",
+"court": "Sozialgericht Hamburg",
+"date": "2024-08-19",
+"truth": "overturn"
+},
+{
+"id": 373700,
+"file_number": "S 24 KR 1058/23",
+"court": "Sozialgericht Köln",
+"date": "2024-08-16",
+"truth": "uphold"
+},
+{
+"id": 419906,
+"file_number": "S 2 KR 385/23",
+"court": "Sozialgericht Konstanz",
+"date": "2024-07-31",
+"truth": "uphold"
+},
+{
+"id": 373957,
+"file_number": "S 54 KR 1350/23",
+"court": "Sozialgericht Duisburg",
+"date": "2024-07-25",
+"truth": "uphold"
+},
+{
+"id": 429484,
+"file_number": "S 18 KR 143/21",
+"court": "Sozialgericht Wiesbaden",
+"date": "2024-07-18",
+"truth": "overturn"
+},
+{
+"id": 420026,
+"file_number": "S 10 KR 2680/23",
+"court": "Sozialgericht Heilbronn",
+"date": "2024-06-26",
+"truth": "overturn"
+},
+{
+"id": 412980,
+"file_number": "S 7 KR 531/21",
+"court": "Sozialgericht Mainz",
+"date": "2024-06-26",
+"truth": "overturn"
+},
+{
+"id": 414418,
+"file_number": "S 17 KR 1209/21",
+"court": "Sozialgericht Halle",
+"date": "2024-06-25",
+"truth": "overturn"
+},
+{
+"id": 414411,
+"file_number": "S 17 KR 537/21",
+"court": "Sozialgericht Halle",
+"date": "2024-06-25",
+"truth": "overturn"
+},
+{
+"id": 423393,
+"file_number": "S 23 KR 1560/21",
+"court": "Sozialgericht Altenburg",
+"date": "2024-06-24",
+"truth": "uphold"
+},
+{
+"id": 374499,
+"file_number": "S 36 KR 646/23",
+"court": "Sozialgericht Köln",
+"date": "2024-06-21",
+"truth": "uphold"
+},
+{
+"id": 420079,
+"file_number": "S 15 KR 2264/23",
+"court": "Sozialgericht Heilbronn",
+"date": "2024-06-14",
+"truth": "uphold"
+},
+{
+"id": 374661,
+"file_number": "S 10 KR 596/23",
+"court": "Sozialgericht Detmold",
+"date": "2024-06-12",
+"truth": "uphold"
+},
+{
+"id": 374724,
+"file_number": "S 31 KR 1518/23 KH",
+"court": "Sozialgericht Köln",
+"date": "2024-06-07",
+"truth": "uphold"
+},
+{
+"id": 410354,
+"file_number": "S 56 KR 4199/19",
+"court": "Sozialgericht Hamburg",
+"date": "2024-05-31",
+"truth": "uphold"
+},
+{
+"id": 429688,
+"file_number": "S 8 KR 496/21",
+"court": "Sozialgericht Darmstadt",
+"date": "2024-05-22",
+"truth": "uphold"
+},
+{
+"id": 375056,
+"file_number": "S 17 KR 182/22",
+"court": "Sozialgericht Gelsenkirchen",
+"date": "2024-05-17",
+"truth": "overturn"
+},
+{
+"id": 375054,
+"file_number": "S 6 KR 401/23 KH",
+"court": "Sozialgericht Aachen",
+"date": "2024-05-17",
+"truth": "uphold"
+},
+{
+"id": 420163,
+"file_number": "S 2 KR 2525/21",
+"court": "Sozialgericht Konstanz",
+"date": "2024-05-16",
+"truth": "uphold"
+},
+{
+"id": 420160,
+"file_number": "S 2 KR 380/22",
+"court": "Sozialgericht Konstanz",
+"date": "2024-05-16",
+"truth": "overturn"
+},
+{
+"id": 420174,
+"file_number": "S 10 KR 2186/23",
+"court": "Sozialgericht Heilbronn",
+"date": "2024-05-14",
+"truth": "overturn"
+},
+{
+"id": 375391,
+"file_number": "S 15 KR 2852/23 KH",
+"court": "Sozialgericht Düsseldorf",
+"date": "2024-04-25",
+"truth": "overturn"
+},
+{
+"id": 375387,
+"file_number": "S 32 KR 965/22",
+"court": "Sozialgericht Detmold",
+"date": "2024-04-25",
+"truth": "overturn"
+},
+{
+"id": 492474,
+"file_number": "S 112 KR 2121/21",
+"court": "Sozialgericht Berlin",
+"date": "2024-04-08",
+"truth": "overturn"
+},
+{
+"id": 375824,
+"file_number": "S 15 KR 2462/23",
+"court": "Sozialgericht Düsseldorf",
+"date": "2024-04-02",
+"truth": "uphold"
+},
+{
+"id": 375840,
+"file_number": "S 41 KR 2640/19",
+"court": "Sozialgericht Duisburg",
+"date": "2024-03-28",
+"truth": "uphold"
+},
+{
+"id": 375944,
+"file_number": "S 47 KR 1051/22",
+"court": "Sozialgericht Köln",
+"date": "2024-03-21",
+"truth": "uphold"
+},
+{
+"id": 420368,
+"file_number": "S 2 KR 634/23",
+"court": "Sozialgericht Konstanz",
+"date": "2024-03-20",
+"truth": "uphold"
+},
+{
+"id": 420364,
+"file_number": "S 12 KR 2798/22",
+"court": "Sozialgericht Heilbronn",
+"date": "2024-03-20",
+"truth": "uphold"
+},
+{
+"id": 423477,
+"file_number": "S 23 KR 1119/22",
+"court": "Sozialgericht Altenburg",
+"date": "2024-03-18",
+"truth": "overturn"
+},
+{
+"id": 376051,
+"file_number": "S 31 KR 1183/22 KH",
+"court": "Sozialgericht Duisburg",
+"date": "2024-03-15",
+"truth": "overturn"
+},
+{
+"id": 413125,
+"file_number": "S 19 KR 450/22",
+"court": "Sozialgericht Speyer",
+"date": "2024-03-13",
+"truth": "overturn"
+},
+{
+"id": 376106,
+"file_number": "S 48 KR 1323/21",
+"court": "Sozialgericht Dortmund",
+"date": "2024-03-13",
+"truth": "uphold"
+},
+{
+"id": 429940,
+"file_number": "S 8 KR 497/20",
+"court": "Sozialgericht Darmstadt",
+"date": "2024-03-11",
+"truth": "uphold"
+},
+{
+"id": 376160,
+"file_number": "S 68 KR 536/22",
+"court": "Sozialgericht Dortmund",
+"date": "2024-03-11",
+"truth": "uphold"
+},
+{
+"id": 454881,
+"file_number": "S 34 KR 850/21",
+"court": "Sozialgericht Frankfurt am Main",
+"date": "2024-03-08",
+"truth": "overturn"
+},
+{
+"id": 420424,
+"file_number": "S 15 KR 1736/22",
+"court": "Sozialgericht Freiburg",
+"date": "2024-03-08",
+"truth": "overturn"
+},
+{
+"id": 492575,
+"file_number": "S 89 KR 683/21",
+"court": "Sozialgericht Berlin",
+"date": "2024-03-01",
+"truth": "overturn"
+},
+{
+"id": 492564,
+"file_number": "S 89 KR 572/20",
+"court": "Sozialgericht Berlin",
+"date": "2024-03-01",
+"truth": "overturn"
+},
+{
+"id": 376321,
+"file_number": "S 23 KR 1081/20",
+"court": "Sozialgericht Köln",
+"date": "2024-03-01",
+"truth": "uphold"
+},
+{
+"id": 429998,
+"file_number": "S 25 KR 699/21",
+"court": "Sozialgericht Darmstadt",
+"date": "2024-02-28",
+"truth": "overturn"
+},
+{
+"id": 429989,
+"file_number": "S 2 KR 550/19",
+"court": "Sozialgericht Kassel",
+"date": "2024-02-28",
+"truth": "overturn"
+},
+{
+"id": 399676,
+"file_number": "S 56 KR 1077/21",
+"court": "Sozialgericht Braunschweig",
+"date": "2024-02-26",
+"truth": "uphold"
+},
+{
+"id": 420461,
+"file_number": "S 15 KR 1777/23",
+"court": "Sozialgericht Freiburg",
+"date": "2024-02-23",
+"truth": "overturn"
+},
+{
+"id": 411999,
+"file_number": "S 8 KR 83/22",
+"court": "Sozialgericht Neubrandenburg",
+"date": "2024-02-23",
+"truth": "uphold"
+},
+{
+"id": 420519,
+"file_number": "S 10 KR 2154/22",
+"court": "Sozialgericht Heilbronn",
+"date": "2024-02-20",
+"truth": "overturn"
+},
+{
+"id": 430003,
+"file_number": "S 13 KR 561/21",
+"court": "Sozialgericht Darmstadt",
+"date": "2024-02-19",
+"truth": "overturn"
+},
+{
+"id": 376591,
+"file_number": "S 8 KR 1316/23",
+"court": "Sozialgericht Düsseldorf",
+"date": "2024-02-15",
+"truth": "overturn"
+},
+{
+"id": 413142,
+"file_number": "S 7 KR 526/20",
+"court": "Sozialgericht Mainz",
+"date": "2024-02-07",
+"truth": "uphold"
+},
+{
+"id": 413131,
+"file_number": "S 7 KR 41/22",
+"court": "Sozialgericht Mainz",
+"date": "2024-02-07",
+"truth": "uphold"
+},
+{
+"id": 376831,
+"file_number": "S 7 KR 2399/22",
+"court": "Sozialgericht Münster",
+"date": "2024-01-31",
+"truth": "uphold"
+},
+{
+"id": 376830,
+"file_number": "S 7 KR 1762/22",
+"court": "Sozialgericht Münster",
+"date": "2024-01-31",
+"truth": "uphold"
+},
+{
+"id": 492695,
+"file_number": "S 210 KR 1296/19",
+"court": "Sozialgericht Berlin",
+"date": "2024-01-24",
+"truth": "uphold"
+},
+{
+"id": 399797,
+"file_number": "S 6 KR 41/23",
+"court": "Sozialgericht Braunschweig",
+"date": "2024-01-23",
+"truth": "uphold"
+},
+{
+"id": 377023,
+"file_number": "S 27 KR 525/17",
+"court": "Sozialgericht Münster",
+"date": "2024-01-19",
+"truth": "uphold"
+},
+{
+"id": 413217,
+"file_number": "S 15 KR 186/21",
+"court": "Sozialgericht Speyer",
+"date": "2023-12-14",
+"truth": "overturn"
+},
+{
+"id": 397900,
+"file_number": "S 48 KR 218/18",
+"court": "Sozialgericht Aurich",
+"date": "2023-12-12",
+"truth": "overturn"
+},
+{
+"id": 377579,
+"file_number": "S 39 KR 1192/22 KH",
+"court": "Sozialgericht Duisburg",
+"date": "2023-12-11",
+"truth": "overturn"
+},
+{
+"id": 377647,
+"file_number": "S 8 KR 2085/21",
+"court": "Sozialgericht Düsseldorf",
+"date": "2023-12-07",
+"truth": "overturn"
+},
+{
+"id": 377646,
+"file_number": "S 8 KR 1642/22",
+"court": "Sozialgericht Düsseldorf",
+"date": "2023-12-07",
+"truth": "overturn"
+},
+{
+"id": 377715,
+"file_number": "S 68 KR 824/23",
+"court": "Sozialgericht Dortmund",
+"date": "2023-12-04",
+"truth": "uphold"
+},
+{
+"id": 377772,
+"file_number": "S 36 KR 1004/21",
+"court": "Sozialgericht Köln",
+"date": "2023-11-30",
+"truth": "overturn"
+},
+{
+"id": 377771,
+"file_number": "S 46 KR 963/21 KH",
+"court": "Sozialgericht Gelsenkirchen",
+"date": "2023-11-30",
+"truth": "uphold"
+},
+{
+"id": 430290,
+"file_number": "S 6 KR 608/21",
+"court": "Sozialgericht Darmstadt",
+"date": "2023-11-27",
+"truth": "uphold"
+},
+{
+"id": 378018,
+"file_number": "S 36 KR 622/21",
+"court": "Sozialgericht Köln",
+"date": "2023-11-16",
+"truth": "overturn"
+},
+{
+"id": 430409,
+"file_number": "S 10 KR 194/19",
+"court": "Sozialgericht Darmstadt",
+"date": "2023-10-27",
+"truth": "overturn"
+},
+{
+"id": 378330,
+"file_number": "S 27 KR 2077/19",
+"court": "Sozialgericht Düsseldorf",
+"date": "2023-10-27",
+"truth": "uphold"
+},
+{
+"id": 430440,
+"file_number": "S 10 KR 49/22",
+"court": "Sozialgericht Darmstadt",
+"date": "2023-10-20",
+"truth": "uphold"
+},
+{
+"id": 421009,
+"file_number": "S 1 KR 2098/22",
+"court": "Sozialgericht Reutlingen",
+"date": "2023-10-11",
+"truth": "uphold"
+},
+{
+"id": 378601,
+"file_number": "S 22 KR 1854/21",
+"court": "Sozialgericht Münster",
+"date": "2023-10-10",
+"truth": "uphold"
+},
+{
+"id": 430560,
+"file_number": "S 14 KR 818/21",
+"court": "Sozialgericht Kassel",
+"date": "2023-09-21",
+"truth": "overturn"
+},
+{
+"id": 454910,
+"file_number": "S 34 KR 28/21",
+"court": "Sozialgericht Frankfurt am Main",
+"date": "2023-09-15",
+"truth": "uphold"
+},
+{
+"id": 414889,
+"file_number": "S 30 KR 133/21",
+"court": "Sozialgericht Halle",
+"date": "2023-09-06",
+"truth": "overturn"
+},
+{
+"id": 379147,
+"file_number": "S 27 KR 682/19",
+"court": "Sozialgericht Düsseldorf",
+"date": "2023-09-01",
+"truth": "uphold"
+},
+{
+"id": 379570,
+"file_number": "S 32 KR 751/22",
+"court": "Sozialgericht Detmold",
+"date": "2023-08-10",
+"truth": "uphold"
+},
+{
+"id": 414953,
+"file_number": "S 33 KR 287/22",
+"court": "Sozialgericht Magdeburg",
+"date": "2023-08-08",
+"truth": "uphold"
+},
+{
+"id": 493509,
+"file_number": "S 223 KR 2413/21",
+"court": "Sozialgericht Berlin",
+"date": "2023-07-26",
+"truth": "overturn"
+},
+{
+"id": 454920,
+"file_number": "S 34 KR 727/21",
+"court": "Sozialgericht Frankfurt am Main",
+"date": "2023-07-21",
+"truth": "uphold"
+},
+{
+"id": 454919,
+"file_number": "S 34 KR 1684/22",
+"court": "Sozialgericht Frankfurt am Main",
+"date": "2023-07-21",
+"truth": "overturn"
+},
+{
+"id": 430719,
+"file_number": "S 13 KR 211/21",
+"court": "Sozialgericht Darmstadt",
+"date": "2023-07-21",
+"truth": "uphold"
+},
+{
+"id": 410916,
+"file_number": "S 56 KR 1851/21",
+"court": "Sozialgericht Hamburg",
+"date": "2023-07-17",
+"truth": "overturn"
+},
+{
+"id": 430742,
+"file_number": "S 14 KR 352/22",
+"court": "Sozialgericht Kassel",
+"date": "2023-07-13",
+"truth": "uphold"
+},
+{
+"id": 379983,
+"file_number": "S 27 KR 743/19",
+"court": "Sozialgericht Düsseldorf",
+"date": "2023-07-13",
+"truth": "uphold"
+},
+{
+"id": 430749,
+"file_number": "S 2 KR 18/23",
+"court": "Sozialgericht Wiesbaden",
+"date": "2023-07-06",
+"truth": "uphold"
+},
+{
+"id": 398353,
+"file_number": "S 46 KR 160/22",
+"court": "Sozialgericht Osnabrück",
+"date": "2023-07-06",
+"truth": "uphold"
+},
+{
+"id": 493567,
+"file_number": "S 122 KR 1852/21",
+"court": "Sozialgericht Berlin",
+"date": "2023-07-04",
+"truth": "overturn"
+},
+{
+"id": 454923,
+"file_number": "S 14 KR 160/21",
+"court": "Sozialgericht Frankfurt am Main",
+"date": "2023-07-03",
+"truth": "uphold"
+},
+{
+"id": 430801,
+"file_number": "S 14 KR 677/20",
+"court": "Sozialgericht Marburg",
+"date": "2023-06-27",
+"truth": "overturn"
+},
+{
+"id": 417677,
+"file_number": "S 44 KR 33/23",
+"court": "Sozialgericht Kiel",
+"date": "2023-06-22",
+"truth": "uphold"
+},
+{
+"id": 430835,
+"file_number": "S 6 KR 724/20",
+"court": "Sozialgericht Marburg",
+"date": "2023-06-21",
+"truth": "overturn"
+},
+{
+"id": 380387,
+"file_number": "S 31 KR 1196/22 KH",
+"court": "Sozialgericht Duisburg",
+"date": "2023-06-16",
+"truth": "overturn"
+},
+{
+"id": 380465,
+"file_number": "S 17 KR 1688/24",
+"court": "Sozialgericht Köln",
+"date": "2023-06-14",
+"truth": "uphold"
+},
+{
+"id": 380506,
+"file_number": "S 26 KR 957/22",
+"court": "Sozialgericht Münster",
+"date": "2023-06-13",
+"truth": "uphold"
+},
+{
+"id": 380699,
+"file_number": "S 6 KR 513/20",
+"court": "Sozialgericht Aachen",
+"date": "2023-05-31",
+"truth": "uphold"
+},
+{
+"id": 380784,
+"file_number": "S 46 KR 3167/19",
+"court": "Sozialgericht Gelsenkirchen",
+"date": "2023-05-25",
+"truth": "uphold"
+},
+{
+"id": 411071,
+"file_number": "S 38 KR 2729/19",
+"court": "Sozialgericht Hamburg",
+"date": "2023-05-24",
+"truth": "uphold"
+},
+{
+"id": 412244,
+"file_number": "S 8 KR 81/20",
+"court": "Sozialgericht Schwerin",
+"date": "2023-05-17",
+"truth": "overturn"
+},
+{
+"id": 381056,
+"file_number": "S 32 KR 351/19",
+"court": "Sozialgericht Detmold",
+"date": "2023-05-11",
+"truth": "overturn"
+},
+{
+"id": 412256,
+"file_number": "S 11 KR 151/21",
+"court": "Sozialgericht Rostock",
+"date": "2023-05-04",
+"truth": "overturn"
+},
+{
+"id": 398559,
+"file_number": "S 59 KR 1277/21",
+"court": "Sozialgericht Braunschweig",
+"date": "2023-04-27",
+"truth": "uphold"
+},
+{
+"id": 493871,
+"file_number": "S 223 KR 132/21",
+"court": "Sozialgericht Berlin",
+"date": "2023-04-26",
+"truth": "uphold"
+},
+{
+"id": 493853,
+"file_number": "S 223 KR 1921/20",
+"court": "Sozialgericht Berlin",
+"date": "2023-04-26",
+"truth": "overturn"
+},
+{
+"id": 411143,
+"file_number": "S 50 KR 1697/22 D",
+"court": "Sozialgericht Hamburg",
+"date": "2023-04-18",
+"truth": "overturn"
+},
+{
+"id": 411124,
+"file_number": "S 56 KR 2370/22",
+"court": "Sozialgericht Hamburg",
+"date": "2023-04-17",
+"truth": "overturn"
+},
+{
+"id": 398591,
+"file_number": "S 37 KR 371/19",
+"court": "Sozialgericht Braunschweig",
+"date": "2023-04-17",
+"truth": "uphold"
+},
+{
+"id": 493918,
+"file_number": "S 210 KR 1573/21",
+"court": "Sozialgericht Berlin",
+"date": "2023-04-04",
+"truth": "overturn"
+},
+{
+"id": 421586,
+"file_number": "S 13 KR 3202/21",
+"court": "Sozialgericht Ulm",
+"date": "2023-03-30",
+"truth": "overturn"
+},
+{
+"id": 381868,
+"file_number": "S 21 KR 335/23",
+"court": "Sozialgericht Köln",
+"date": "2023-03-29",
+"truth": "uphold"
+},
+{
+"id": 415156,
+"file_number": "S 8 KR 646/20",
+"court": "Sozialgericht Halle",
+"date": "2023-03-28",
+"truth": "uphold"
+},
+{
+"id": 431105,
+"file_number": "S 14 KR 221/22",
+"court": "Sozialgericht Kassel",
+"date": "2023-03-27",
+"truth": "uphold"
+},
+{
+"id": 382079,
+"file_number": "S 15 KR 68/19",
+"court": "Sozialgericht Aachen",
+"date": "2023-03-17",
+"truth": "overturn"
+},
+{
+"id": 382342,
+"file_number": "S 27 KR 366/19",
+"court": "Sozialgericht Düsseldorf",
+"date": "2023-03-03",
+"truth": "uphold"
+},
+{
+"id": 494091,
+"file_number": "S 91 KR 2606/20",
+"court": "Sozialgericht Berlin",
+"date": "2023-02-27",
+"truth": "uphold"
+},
+{
+"id": 382568,
+"file_number": "S 32 KR 2389/19",
+"court": "Sozialgericht Detmold",
+"date": "2023-02-21",
+"truth": "overturn"
+},
+{
+"id": 415198,
+"file_number": "S 34 KR 1296/18",
+"court": "Sozialgericht Magdeburg",
+"date": "2023-02-17",
+"truth": "overturn"
+},
+{
+"id": 415193,
+"file_number": "S 34 KR 1447/18",
+"court": "Sozialgericht Magdeburg",
+"date": "2023-02-17",
+"truth": "uphold"
+},
+{
+"id": 454959,
+"file_number": "S 14 KR 590/18",
+"court": "Sozialgericht Frankfurt am Main",
+"date": "2023-02-16",
+"truth": "overturn"
+},
+{
+"id": 412346,
+"file_number": "S 8 KR 80/20",
+"court": "Sozialgericht Schwerin",
+"date": "2023-02-10",
+"truth": "overturn"
+},
+{
+"id": 382781,
+"file_number": "S 17 KR 2475/22 KH",
+"court": "Sozialgericht Duisburg",
+"date": "2023-02-08",
+"truth": "overturn"
+},
+{
+"id": 382802,
+"file_number": "S 32 KR 70/21",
+"court": "Sozialgericht Detmold",
+"date": "2023-02-07",
+"truth": "overturn"
+},
+{
+"id": 382984,
+"file_number": "S 17 KR 2252/22 KH",
+"court": "Sozialgericht Duisburg",
+"date": "2023-01-30",
+"truth": "overturn"
+},
+{
+"id": 382983,
+"file_number": "S 17 KR 2238/22 KH",
+"court": "Sozialgericht Duisburg",
+"date": "2023-01-30",
+"truth": "overturn"
+},
+{
+"id": 382982,
+"file_number": "S 17 KR 2218/22 KH",
+"court": "Sozialgericht Duisburg",
+"date": "2023-01-30",
+"truth": "overturn"
+},
+{
+"id": 382981,
+"file_number": "S 17 KR 2099/22 KH",
+"court": "Sozialgericht Duisburg",
+"date": "2023-01-30",
+"truth": "overturn"
+},
+{
+"id": 382980,
+"file_number": "S 17 KR 2092/22 KH",
+"court": "Sozialgericht Duisburg",
+"date": "2023-01-30",
+"truth": "overturn"
+},
+{
+"id": 383005,
+"file_number": "S 24 KR 751/22 KH",
+"court": "Sozialgericht Köln",
+"date": "2023-01-27",
+"truth": "overturn"
+},
+{
+"id": 412357,
+"file_number": "S 8 KR 181/21",
+"court": "Sozialgericht Schwerin",
+"date": "2023-01-25",
+"truth": "uphold"
+},
+{
+"id": 383365,
+"file_number": "S 30 KR 1356/22 KH",
+"court": "Sozialgericht Düsseldorf",
+"date": "2023-01-12",
+"truth": "overturn"
+},
+{
+"id": 431432,
+"file_number": "S 10 KR 337/22",
+"court": "Sozialgericht Darmstadt",
+"date": "2023-01-04",
+"truth": "uphold"
+},
+{
+"id": 383683,
+"file_number": "S 13 KR 309/22 KH",
+"court": "Sozialgericht Aachen",
+"date": "2022-12-20",
+"truth": "overturn"
+},
+{
+"id": 383731,
+"file_number": "S 21 KR 1319/21",
+"court": "Sozialgericht Köln",
+"date": "2022-12-16",
+"truth": "uphold"
+},
+{
+"id": 383773,
+"file_number": "S 21 KR 1412/21",
+"court": "Sozialgericht Köln",
+"date": "2022-12-15",
+"truth": "uphold"
+},
+{
+"id": 383772,
+"file_number": "S 21 KR 1303/21",
+"court": "Sozialgericht Köln",
+"date": "2022-12-15",
+"truth": "uphold"
+},
+{
+"id": 411364,
+"file_number": "S 45 KR 2535/17",
+"court": "Sozialgericht Hamburg",
+"date": "2022-12-12",
+"truth": "overturn"
+},
+{
+"id": 383927,
+"file_number": "S 36 KR 1420/21",
+"court": "Sozialgericht Köln",
+"date": "2022-12-08",
+"truth": "overturn"
+},
+{
+"id": 494441,
+"file_number": "S 210 KR 701/22",
+"court": "Sozialgericht Berlin",
+"date": "2022-12-01",
+"truth": "overturn"
+},
+{
+"id": 384052,
+"file_number": "S 46 KR 770/18",
+"court": "Sozialgericht Gelsenkirchen",
+"date": "2022-12-01",
+"truth": "uphold"
+},
+{
+"id": 384050,
+"file_number": "S 46 KR 1526/18",
+"court": "Sozialgericht Gelsenkirchen",
+"date": "2022-12-01",
+"truth": "overturn"
+},
+{
+"id": 384049,
+"file_number": "S 46 KR 1162/20",
+"court": "Sozialgericht Gelsenkirchen",
+"date": "2022-12-01",
+"truth": "overturn"
+},
+{
+"id": 384081,
+"file_number": "S 15 KR 353/22 KH",
+"court": "Sozialgericht Düsseldorf",
+"date": "2022-11-30",
+"truth": "overturn"
+},
+{
+"id": 422048,
+"file_number": "S 10 KR 160/20",
+"court": "Sozialgericht Ulm",
+"date": "2022-11-25",
+"truth": "uphold"
+},
+{
+"id": 431571,
+"file_number": "S 2 KR 345/18",
+"court": "Sozialgericht Kassel",
+"date": "2022-11-23",
+"truth": "uphold"
+},
+{
+"id": 384246,
+"file_number": "S 25 KR 1008/18",
+"court": "Sozialgericht Münster",
+"date": "2022-11-23",
+"truth": "uphold"
+},
+{
+"id": 384360,
+"file_number": "S 23 KR 1213/21",
+"court": "Sozialgericht Köln",
+"date": "2022-11-17",
+"truth": "overturn"
+},
+{
+"id": 494503,
+"file_number": "S 28 KR 63/22",
+"court": "Sozialgericht Berlin",
+"date": "2022-11-16",
+"truth": "overturn"
+},
+{
+"id": 431678,
+"file_number": "S 13 KR 111/20",
+"court": "Sozialgericht Darmstadt",
+"date": "2022-10-24",
+"truth": "overturn"
+},
+{
+"id": 384826,
+"file_number": "S 78 KR 1492/20 WA",
+"court": "Sozialgericht Dortmund",
+"date": "2022-10-21",
+"truth": "uphold"
+},
+{
+"id": 411496,
+"file_number": "S 18 KR 4076/19",
+"court": "Sozialgericht Hamburg",
+"date": "2022-10-06",
+"truth": "overturn"
+},
+{
+"id": 456026,
+"file_number": "S 8 KR 172/20",
+"court": "Sozialgericht Schwerin",
+"date": "2022-09-27",
+"truth": "overturn"
+},
+{
+"id": 457641,
+"file_number": "S 34 KR 39/18",
+"court": "Sozialgericht Magdeburg",
+"date": "2022-09-26",
+"truth": "uphold"
+},
+{
+"id": 431818,
+"file_number": "S 10 KR 585/20",
+"court": "Sozialgericht Darmstadt",
+"date": "2022-09-26",
+"truth": "uphold"
+},
+{
+"id": 456057,
+"file_number": "S 3 KR 191/21",
+"court": "Sozialgericht Stralsund",
+"date": "2022-08-26",
+"truth": "overturn"
+},
+{
+"id": 431967,
+"file_number": "S 5 KR 419/21",
+"court": "Sozialgericht GieBen",
+"date": "2022-08-18",
+"truth": "overturn"
+},
+{
+"id": 346551,
+"file_number": "S 32 KR 2441/18",
+"court": "Sozialgericht Detmold",
+"date": "2022-08-11",
+"truth": "uphold"
+},
+{
+"id": 432060,
+"file_number": "S 18 KR 1406/19",
+"court": "Sozialgericht Darmstadt",
+"date": "2022-07-14",
+"truth": "uphold"
+},
+{
+"id": 432158,
+"file_number": "S 13 KR 18/19",
+"court": "Sozialgericht Darmstadt",
+"date": "2022-06-27",
+"truth": "uphold"
+},
+{
+"id": 432154,
+"file_number": "S 1 KR 119/21",
+"court": "Sozialgericht Wiesbaden",
+"date": "2022-06-27",
+"truth": "uphold"
+},
+{
+"id": 456106,
+"file_number": "S 3 KR 5/22",
+"court": "Sozialgericht Stralsund",
+"date": "2022-06-24",
+"truth": "overturn"
+},
+{
+"id": 495107,
+"file_number": "S 91 KR 2213/20 WA",
+"court": "Sozialgericht Berlin",
+"date": "2022-06-20",
+"truth": "overturn"
+},
+{
+"id": 432184,
+"file_number": "S 1 KR 74/21",
+"court": "Sozialgericht Wiesbaden",
+"date": "2022-06-15",
+"truth": "uphold"
+},
+{
+"id": 432182,
+"file_number": "S 13 KR 315/21",
+"court": "Sozialgericht Darmstadt",
+"date": "2022-06-15",
+"truth": "uphold"
+},
+{
+"id": 455015,
+"file_number": "S 14 KR 204/20",
+"court": "Sozialgericht Frankfurt am Main",
+"date": "2022-05-16",
+"truth": "overturn"
+},
+{
+"id": 432381,
+"file_number": "S 5 KR 2007/19",
+"court": "Sozialgericht GieBen",
+"date": "2022-05-02",
+"truth": "overturn"
+},
+{
+"id": 457870,
+"file_number": "S 34 KR 619/15",
+"court": "Sozialgericht Magdeburg",
+"date": "2022-04-25",
+"truth": "overturn"
+},
+{
+"id": 432459,
+"file_number": "S 7 KR 758/20",
+"court": "Sozialgericht GieBen",
+"date": "2022-04-13",
+"truth": "uphold"
+},
+{
+"id": 456186,
+"file_number": "S 8 KR 732/19",
+"court": "Sozialgericht Schwerin",
+"date": "2022-03-23",
+"truth": "overturn"
+},
+{
+"id": 432534,
+"file_number": "S 7 KR 635/21",
+"court": "Sozialgericht GieBen",
+"date": "2022-03-22",
+"truth": "overturn"
+},
+{
+"id": 456749,
+"file_number": "S 20 KR 831/20",
+"court": "Sozialgericht für das Saarland",
+"date": "2022-03-17",
+"truth": "overturn"
+},
+{
+"id": 344296,
+"file_number": "S 60 KR 1074/21",
+"court": "Sozialgericht Duisburg",
+"date": "2022-03-15",
+"truth": "overturn"
+},
+{
+"id": 344487,
+"file_number": "S 13 KR 53/21",
+"court": "Sozialgericht Aachen",
+"date": "2022-03-08",
+"truth": "overturn"
+},
+{
+"id": 457970,
+"file_number": "S 16 KR 341/18",
+"court": "Sozialgericht Halle",
+"date": "2022-03-01",
+"truth": "overturn"
+},
+{
+"id": 455032,
+"file_number": "S 18 KR 110/19",
+"court": "Sozialgericht Frankfurt am Main",
+"date": "2022-02-21",
+"truth": "uphold"
+},
+{
+"id": 432674,
+"file_number": "S 13 KR 200/18",
+"court": "Sozialgericht Darmstadt",
+"date": "2022-02-21",
+"truth": "uphold"
+},
+{
+"id": 456780,
+"file_number": "S 20 KR 133/20",
+"court": "Sozialgericht für das Saarland",
+"date": "2022-02-17",
+"truth": "overturn"
+},
+{
+"id": 432687,
+"file_number": "S 7 KR 432/20",
+"court": "Sozialgericht GieBen",
+"date": "2022-02-17",
+"truth": "uphold"
+},
+{
+"id": 456773,
+"file_number": "S 1 KR 568/20",
+"court": "Sozialgericht für das Saarland",
+"date": "2022-02-16",
+"truth": "overturn"
+},
+{
+"id": 432778,
+"file_number": "S 18 KR 530/16",
+"court": "Sozialgericht Darmstadt",
+"date": "2022-01-28",
+"truth": "uphold"
+},
+{
+"id": 455038,
+"file_number": "S 20 KR 1192/19",
+"court": "Sozialgericht Frankfurt am Main",
+"date": "2022-01-27",
+"truth": "overturn"
+},
+{
+"id": 456804,
+"file_number": "S 1 KR 1566/19",
+"court": "Sozialgericht für das Saarland",
+"date": "2022-01-19",
+"truth": "overturn"
+},
+{
+"id": 342923,
+"file_number": "S 13 KR 333/21",
+"court": "Sozialgericht Aachen",
+"date": "2022-01-18",
+"truth": "uphold"
+},
+{
+"id": 342922,
+"file_number": "S 13 KR 175/20",
+"court": "Sozialgericht Aachen",
+"date": "2022-01-18",
+"truth": "overturn"
+},
+{
+"id": 432880,
+"file_number": "S 2 KR 209/17",
+"court": "Sozialgericht Wiesbaden",
+"date": "2022-01-13",
+"truth": "uphold"
+},
+{
+"id": 432965,
+"file_number": "S 15 KR 306/18",
+"court": "Sozialgericht GieBen",
+"date": "2021-12-14",
+"truth": "uphold"
+},
+{
+"id": 433096,
+"file_number": "S 17 KR 178/18",
+"court": "Sozialgericht Wiesbaden",
+"date": "2021-11-17",
+"truth": "uphold"
+},
+{
+"id": 342123,
+"file_number": "S 60 KR 1558/18",
+"court": "Sozialgericht Duisburg",
+"date": "2021-11-09",
+"truth": "uphold"
+},
+{
+"id": 342037,
+"file_number": "S 17 KR 903/18",
+"court": "Sozialgericht Gelsenkirchen",
+"date": "2021-11-05",
+"truth": "uphold"
+},
+{
+"id": 341527,
+"file_number": "S 33 KR 1348/20",
+"court": "Sozialgericht Detmold",
+"date": "2021-11-02",
+"truth": "uphold"
+},
+{
+"id": 496150,
+"file_number": "S 56 KR 358/21",
+"court": "Sozialgericht Berlin",
+"date": "2021-10-21",
+"truth": "uphold"
+},
+{
+"id": 433238,
+"file_number": "S 9 KR 360/21",
+"court": "Sozialgericht GieBen",
+"date": "2021-10-20",
+"truth": "uphold"
+},
+{
+"id": 341476,
+"file_number": "S 13 KR 119/21",
+"court": "Sozialgericht Aachen",
+"date": "2021-10-19",
+"truth": "uphold"
+},
+{
+"id": 455062,
+"file_number": "S 25 KR 313/18",
+"court": "Sozialgericht Frankfurt am Main",
+"date": "2021-10-11",
+"truth": "overturn"
+},
+{
+"id": 433318,
+"file_number": "S 12 KR 224/20",
+"court": "Sozialgericht Kassel",
+"date": "2021-09-22",
+"truth": "overturn"
+},
+{
+"id": 433346,
+"file_number": "S 10 KR 498/17",
+"court": "Sozialgericht Darmstadt",
+"date": "2021-09-15",
+"truth": "uphold"
+},
+{
+"id": 433432,
+"file_number": "S 8 KR 361/20",
+"court": "Sozialgericht Darmstadt",
+"date": "2021-08-23",
+"truth": "overturn"
+},
+{
+"id": 339853,
+"file_number": "S 13 KR 345/20",
+"court": "Sozialgericht Aachen",
+"date": "2021-08-12",
+"truth": "overturn"
+},
+{
+"id": 433544,
+"file_number": "S 8 KR 94/17",
+"court": "Sozialgericht Kassel",
+"date": "2021-07-22",
+"truth": "overturn"
+},
+{
+"id": 433591,
+"file_number": "S 13 KR 270/20",
+"court": "Sozialgericht Darmstadt",
+"date": "2021-07-12",
+"truth": "uphold"
+},
+{
+"id": 455077,
+"file_number": "S 20 KR 8/19",
+"court": "Sozialgericht Frankfurt am Main",
+"date": "2021-07-07",
+"truth": "overturn"
+},
+{
+"id": 433612,
+"file_number": "S 13 KR 462/20",
+"court": "Sozialgericht Darmstadt",
+"date": "2021-07-05",
+"truth": "overturn"
+},
+{
+"id": 433640,
+"file_number": "S 6 KR 74/19",
+"court": "Sozialgericht Marburg",
+"date": "2021-07-01",
+"truth": "uphold"
+},
+{
+"id": 455079,
+"file_number": "S 38 KR 335/16",
+"court": "Sozialgericht Frankfurt am Main",
+"date": "2021-06-29",
+"truth": "uphold"
+},
+{
+"id": 433642,
+"file_number": "S 8 KR 629/19",
+"court": "Sozialgericht Darmstadt",
+"date": "2021-06-28",
+"truth": "overturn"
+},
+{
+"id": 338754,
+"file_number": "S 17 KR 328/20",
+"court": "Sozialgericht Gelsenkirchen",
+"date": "2021-06-11",
+"truth": "overturn"
+},
+{
+"id": 337069,
+"file_number": "S 13 KR 587/19",
+"court": "Sozialgericht Aachen",
+"date": "2021-04-13",
+"truth": "overturn"
+},
+{
+"id": 434015,
+"file_number": "S 13 KR 325/16",
+"court": "Sozialgericht Darmstadt",
+"date": "2021-04-12",
+"truth": "uphold"
+},
+{
+"id": 434034,
+"file_number": "S 14 KR 348/19",
+"court": "Sozialgericht Marburg",
+"date": "2021-04-09",
+"truth": "uphold"
+},
+{
+"id": 434055,
+"file_number": "S 21 KR 180/17",
+"court": "Sozialgericht Wiesbaden",
+"date": "2021-03-31",
+"truth": "overturn"
+},
+{
+"id": 336584,
+"file_number": "S 54 KR 733/20",
+"court": "Sozialgericht Braunschweig",
+"date": "2021-03-31",
+"truth": "uphold"
+},
+{
+"id": 455098,
+"file_number": "S 14 KR 1585/20",
+"court": "Sozialgericht Frankfurt am Main",
+"date": "2021-03-22",
+"truth": "uphold"
+},
+{
+"id": 434141,
+"file_number": "S 14 KR 346/19",
+"court": "Sozialgericht Marburg",
+"date": "2021-03-19",
+"truth": "overturn"
+},
+{
+"id": 424457,
+"file_number": "S 14 KR 845/19",
+"court": "Sozialgericht Altenburg",
+"date": "2021-03-11",
+"truth": "overturn"
+},
+{
+"id": 434305,
+"file_number": "S 11 KR 86/18",
+"court": "Sozialgericht Fulda",
+"date": "2021-02-18",
+"truth": "uphold"
+},
+{
+"id": 434292,
+"file_number": "S 8 KR 180/18",
+"court": "Sozialgericht Kassel",
+"date": "2021-02-18",
+"truth": "overturn"
+},
+{
+"id": 335128,
+"file_number": "S 13 KR 559/19",
+"court": "Sozialgericht Aachen",
+"date": "2021-02-09",
+"truth": "uphold"
+},
+{
+"id": 455109,
+"file_number": "S 18 KR 944/14",
+"court": "Sozialgericht Frankfurt am Main",
+"date": "2021-01-27",
+"truth": "uphold"
+},
+{
+"id": 455110,
+"file_number": "S 25 KR 24/18",
+"court": "Sozialgericht Frankfurt am Main",
+"date": "2021-01-22",
+"truth": "uphold"
+},
+{
+"id": 434424,
+"file_number": "S 7 KR 1984/19",
+"court": "Sozialgericht GieBen",
+"date": "2021-01-22",
+"truth": "uphold"
+},
+{
+"id": 434509,
+"file_number": "S 8 KR 45/18",
+"court": "Sozialgericht Kassel",
+"date": "2021-01-07",
+"truth": "uphold"
+},
+{
+"id": 455113,
+"file_number": "S 28 KR 192/16",
+"court": "Sozialgericht Frankfurt am Main",
+"date": "2020-12-17",
+"truth": "uphold"
+},
+{
+"id": 333926,
+"file_number": "S 13 KR 773/18",
+"court": "Sozialgericht Aachen",
+"date": "2020-12-15",
+"truth": "overturn"
+},
+{
+"id": 333925,
+"file_number": "S 13 KR 428/19",
+"court": "Sozialgericht Aachen",
+"date": "2020-12-15",
+"truth": "uphold"
+},
+{
+"id": 333924,
+"file_number": "S 13 KR 402/19",
+"court": "Sozialgericht Aachen",
+"date": "2020-12-15",
+"truth": "overturn"
+},
+{
+"id": 334300,
+"file_number": "S 60 KR 2374/19",
+"court": "Sozialgericht Duisburg",
+"date": "2020-12-14",
+"truth": "uphold"
+},
+{
+"id": 334299,
+"file_number": "S 60 KR 1889/19 WA",
+"court": "Sozialgericht Duisburg",
+"date": "2020-12-14",
+"truth": "overturn"
+},
+{
+"id": 458815,
+"file_number": "S 25 KR 105/15",
+"court": "Sozialgericht Magdeburg",
+"date": "2020-12-08",
+"truth": "uphold"
+},
+{
+"id": 455118,
+"file_number": "S 18 KR 633/13",
+"court": "Sozialgericht Frankfurt am Main",
+"date": "2020-12-08",
+"truth": "uphold"
+},
+{
+"id": 434668,
+"file_number": "S 8 KR 411/18",
+"court": "Sozialgericht Kassel",
+"date": "2020-11-27",
+"truth": "uphold"
+},
+{
+"id": 497740,
+"file_number": "S 223 KR 2405/19",
+"court": "Sozialgericht Berlin",
+"date": "2020-11-20",
+"truth": "overturn"
+},
+{
+"id": 333947,
+"file_number": "S 14 KR 237/20",
+"court": "Sozialgericht Aachen",
+"date": "2020-11-17",
+"truth": "uphold"
+},
+{
+"id": 332962,
+"file_number": "S 13 KR 244/20",
+"court": "Sozialgericht Aachen",
+"date": "2020-11-10",
+"truth": "uphold"
+},
+{
+"id": 333332,
+"file_number": "S 39 KR 216/20",
+"court": "Sozialgericht Duisburg",
+"date": "2020-11-03",
+"truth": "overturn"
+},
+{
+"id": 434799,
+"file_number": "S 13 KR 396/17",
+"court": "Sozialgericht Darmstadt",
+"date": "2020-11-02",
+"truth": "overturn"
+},
+{
+"id": 434936,
+"file_number": "S 4 KR 395/18",
+"court": "Sozialgericht Fulda",
+"date": "2020-10-13",
+"truth": "overturn"
+},
+{
+"id": 332980,
+"file_number": "S 14 KR 115/20",
+"court": "Sozialgericht Aachen",
+"date": "2020-10-13",
+"truth": "overturn"
+},
+{
+"id": 458959,
+"file_number": "S 15 KR 67/18",
+"court": "Sozialgericht Dessau-Roßlau",
+"date": "2020-09-25",
+"truth": "overturn"
+},
+{
+"id": 458952,
+"file_number": "S 15 KR 7/17",
+"court": "Sozialgericht Dessau-Roßlau",
+"date": "2020-09-25",
+"truth": "uphold"
+},
+{
+"id": 455131,
+"file_number": "S 25 KR 2655/18",
+"court": "Sozialgericht Frankfurt am Main",
+"date": "2020-09-23",
+"truth": "overturn"
+},
+{
+"id": 435025,
+"file_number": "S 11 KR 548/17",
+"court": "Sozialgericht GieBen",
+"date": "2020-09-23",
+"truth": "uphold"
+},
+{
+"id": 331731,
+"file_number": "S 60 KR 1678/19 WA",
+"court": "Sozialgericht Duisburg",
+"date": "2020-09-18",
+"truth": "overturn"
+},
+{
+"id": 331934,
+"file_number": "S 14 KR 272/19",
+"court": "Sozialgericht Aachen",
+"date": "2020-09-15",
+"truth": "uphold"
+},
+{
+"id": 435194,
+"file_number": "S 13 KR 524/16",
+"court": "Sozialgericht Darmstadt",
+"date": "2020-08-17",
+"truth": "overturn"
+},
+{
+"id": 435204,
+"file_number": "S 4 KR 169/18",
+"court": "Sozialgericht Fulda",
+"date": "2020-08-13",
+"truth": "overturn"
+},
+{
+"id": 455136,
+"file_number": "S 14 KR 1047/17",
+"court": "Sozialgericht Frankfurt am Main",
+"date": "2020-08-05",
+"truth": "uphold"
+},
+{
+"id": 435247,
+"file_number": "S 14 KR 154/19",
+"court": "Sozialgericht Marburg",
+"date": "2020-07-31",
+"truth": "uphold"
+},
+{
+"id": 435286,
+"file_number": "S 18 KR 1905/18",
+"court": "Sozialgericht Darmstadt",
+"date": "2020-07-24",
+"truth": "uphold"
+},
+{
+"id": 435273,
+"file_number": "S 18 KR 575/17",
+"court": "Sozialgericht Darmstadt",
+"date": "2020-07-24",
+"truth": "overturn"
+},
+{
+"id": 498448,
+"file_number": "S 112 KR 624/16",
+"court": "Sozialgericht Berlin",
+"date": "2020-07-08",
+"truth": "uphold"
+},
+{
+"id": 455137,
+"file_number": "S 34 KR 590/16",
+"court": "Sozialgericht Frankfurt am Main",
+"date": "2020-07-07",
+"truth": "uphold"
+},
+{
+"id": 329753,
+"file_number": "S 14 KR 560/19",
+"court": "Sozialgericht Aachen",
+"date": "2020-07-07",
+"truth": "uphold"
+},
+{
+"id": 457448,
+"file_number": "S 1 KR 556/19",
+"court": "Sozialgericht für das Saarland",
+"date": "2020-06-24",
+"truth": "overturn"
+},
+{
+"id": 330316,
+"file_number": "S 17 KR 431/17",
+"court": "Sozialgericht Rostock",
+"date": "2020-06-24",
+"truth": "overturn"
+},
+{
+"id": 330090,
+"file_number": "S 17 KR 942/18",
+"court": "Sozialgericht Rostock",
+"date": "2020-06-24",
+"truth": "overturn"
+},
+{
+"id": 435472,
+"file_number": "S 7 KR 323/20",
+"court": "Sozialgericht GieBen",
+"date": "2020-06-19",
+"truth": "uphold"
+},
+{
+"id": 329764,
+"file_number": "S 50 KR 1106/19",
+"court": "Sozialgericht Düsseldorf",
+"date": "2020-06-19",
+"truth": "overturn"
+},
+{
+"id": 435509,
+"file_number": "S 8 KR 388/18",
+"court": "Sozialgericht Darmstadt",
+"date": "2020-06-08",
+"truth": "overturn"
+},
+{
+"id": 498636,
+"file_number": "S 166 KR 893/19 WA",
+"court": "Sozialgericht Berlin",
+"date": "2020-06-05",
+"truth": "overturn"
+},
+{
+"id": 455141,
+"file_number": "S 34 KR 516/17",
+"court": "Sozialgericht Frankfurt am Main",
+"date": "2020-06-05",
+"truth": "uphold"
+},
+{
+"id": 435527,
+"file_number": "S 8 KR 204/18",
+"court": "Sozialgericht Darmstadt",
+"date": "2020-06-05",
+"truth": "uphold"
+},
+{
+"id": 435577,
+"file_number": "S 1 KR 464/19",
+"court": "Sozialgericht Wiesbaden",
+"date": "2020-05-27",
+"truth": "uphold"
+},
+{
+"id": 435611,
+"file_number": "S 8 KR 938/19",
+"court": "Sozialgericht Darmstadt",
+"date": "2020-05-25",
+"truth": "overturn"
+},
+{
+"id": 435596,
+"file_number": "S 12 KR 955/19",
+"court": "Sozialgericht Kassel",
+"date": "2020-05-20",
+"truth": "uphold"
+},
+{
+"id": 435635,
+"file_number": "S 14 KR 404/18",
+"court": "Sozialgericht Darmstadt",
+"date": "2020-05-19",
+"truth": "uphold"
+},
+{
+"id": 455144,
+"file_number": "S 25 KR 433/18",
+"court": "Sozialgericht Frankfurt am Main",
+"date": "2020-05-15",
+"truth": "uphold"
+},
+{
+"id": 435737,
+"file_number": "S 13 KR 544/19",
+"court": "Sozialgericht Darmstadt",
+"date": "2020-04-23",
+"truth": "uphold"
+},
+{
+"id": 435859,
+"file_number": "S 7 KR 922/19",
+"court": "Sozialgericht GieBen",
+"date": "2020-03-24",
+"truth": "uphold"
+},
+{
+"id": 499021,
+"file_number": "S 56 KR 2033/19",
+"court": "Sozialgericht Berlin",
+"date": "2020-03-05",
+"truth": "uphold"
+},
+{
+"id": 326358,
+"file_number": "S 3 KR 218/18",
+"court": "Sozialgericht Stralsund",
+"date": "2020-02-28",
+"truth": "overturn"
+},
+{
+"id": 435971,
+"file_number": "S 2 KR 618/17",
+"court": "Sozialgericht Kassel",
+"date": "2020-02-26",
+"truth": "uphold"
+},
+{
+"id": 436032,
+"file_number": "S 5 KR 186/16",
+"court": "Sozialgericht GieBen",
+"date": "2020-02-13",
+"truth": "overturn"
+},
+{
+"id": 499187,
+"file_number": "S 73 KR 728/17",
+"court": "Sozialgericht Berlin",
+"date": "2020-01-29",
+"truth": "overturn"
+},
+{
+"id": 455161,
+"file_number": "S 14 KR 687/17",
+"court": "Sozialgericht Frankfurt am Main",
+"date": "2020-01-16",
+"truth": "uphold"
+},
+{
+"id": 325192,
+"file_number": "S 1 KR 3340/18",
+"court": "Sozialgericht Reutlingen",
+"date": "2020-01-08",
+"truth": "overturn"
+},
+{
+"id": 324795,
+"file_number": "S 46 KR 1463/19",
+"court": "Sozialgericht Gelsenkirchen",
+"date": "2019-11-27",
+"truth": "uphold"
+},
+{
+"id": 324922,
+"file_number": "S 8 KR 341/18",
+"court": "Sozialgericht Schwerin",
+"date": "2019-11-20",
+"truth": "uphold"
+},
+{
+"id": 324921,
+"file_number": "S 8 KR 70/18",
+"court": "Sozialgericht Schwerin",
+"date": "2019-11-20",
+"truth": "uphold"
+},
+{
+"id": 499568,
+"file_number": "S 223 KR 919/17",
+"court": "Sozialgericht Berlin",
+"date": "2019-11-15",
+"truth": "overturn"
+},
+{
+"id": 323221,
+"file_number": "S 13 KR 168/19",
+"court": "Sozialgericht Aachen",
+"date": "2019-10-22",
+"truth": "uphold"
+},
+{
+"id": 323843,
+"file_number": "S 9 KR 795/18",
+"court": "Sozialgericht Karlsruhe",
+"date": "2019-10-11",
+"truth": "overturn"
+},
+{
+"id": 499730,
+"file_number": "S 73 KR 83/18",
+"court": "Sozialgericht Berlin",
+"date": "2019-10-09",
+"truth": "overturn"
+},
+{
+"id": 323088,
+"file_number": "S 60 KR 158/18",
+"court": "Sozialgericht Duisburg",
+"date": "2019-10-08",
+"truth": "uphold"
+},
+{
+"id": 455180,
+"file_number": "S 14 KR 996/14",
+"court": "Sozialgericht Frankfurt am Main",
+"date": "2019-09-30",
+"truth": "uphold"
+},
+{
+"id": 324545,
+"file_number": "S 6 KR 3579/17",
+"court": "Sozialgericht Karlsruhe",
+"date": "2019-09-20",
+"truth": "uphold"
+},
+{
+"id": 436876,
+"file_number": "S 7 KR 772/16",
+"court": "Sozialgericht Kassel",
+"date": "2019-09-04",
+"truth": "overturn"
+},
+{
+"id": 323105,
+"file_number": "S 49 KR 2980/17",
+"court": "Sozialgericht Dortmund",
+"date": "2019-09-03",
+"truth": "overturn"
+},
+{
+"id": 321991,
+"file_number": "S 13 KR 2/17",
+"court": "Sozialgericht Aachen",
+"date": "2019-08-20",
+"truth": "uphold"
+},
+{
+"id": 437186,
+"file_number": "S 8 KR 116/18",
+"court": "Sozialgericht Darmstadt",
+"date": "2019-06-24",
+"truth": "uphold"
+},
+{
+"id": 319914,
+"file_number": "S 24 KR 1181/18",
+"court": "Sozialgericht Detmold",
+"date": "2019-05-16",
+"truth": "overturn"
+},
+{
+"id": 319917,
+"file_number": "S 13 KR 78/19",
+"court": "Sozialgericht Aachen",
+"date": "2019-05-14",
+"truth": "uphold"
+},
+{
+"id": 319916,
+"file_number": "S 13 KR 533/18",
+"court": "Sozialgericht Aachen",
+"date": "2019-05-14",
+"truth": "uphold"
+},
+{
+"id": 319925,
+"file_number": "S 13 KR 321/18",
+"court": "Sozialgericht Aachen",
+"date": "2019-04-30",
+"truth": "uphold"
+},
+{
+"id": 319924,
+"file_number": "S 13 KR 737/18",
+"court": "Sozialgericht Aachen",
+"date": "2019-04-30",
+"truth": "uphold"
+},
+{
+"id": 319503,
+"file_number": "S 46 KR 455/18",
+"court": "Sozialgericht Osnabrück",
+"date": "2019-04-15",
+"truth": "uphold"
+},
+{
+"id": 437512,
+"file_number": "S 4 KR 39/15",
+"court": "Sozialgericht Fulda",
+"date": "2019-04-02",
+"truth": "uphold"
+},
+{
+"id": 318579,
+"file_number": "S 26 KR 1235/18",
+"court": "Sozialgericht Köln",
+"date": "2019-03-22",
+"truth": "uphold"
+},
+{
+"id": 455204,
+"file_number": "S 14 KR 204/14",
+"court": "Sozialgericht Frankfurt am Main",
+"date": "2019-03-18",
+"truth": "uphold"
+},
+{
+"id": 500846,
+"file_number": "S 76 KR 1425/17",
+"court": "Sozialgericht Berlin",
+"date": "2019-03-12",
+"truth": "uphold"
+},
+{
+"id": 437638,
+"file_number": "S 7 KR 261/17",
+"court": "Sozialgericht GieBen",
+"date": "2019-03-12",
+"truth": "uphold"
+},
+{
+"id": 319755,
+"file_number": "S 9 KR 1621/17",
+"court": "Sozialgericht Karlsruhe",
+"date": "2019-02-28",
+"truth": "overturn"
+},
+{
+"id": 437737,
+"file_number": "S 18 KR 126/18",
+"court": "Sozialgericht Wiesbaden",
+"date": "2019-02-22",
+"truth": "overturn"
+},
+{
+"id": 437804,
+"file_number": "S 4 KR 200/16",
+"court": "Sozialgericht Fulda",
+"date": "2019-02-12",
+"truth": "overturn"
+},
+{
+"id": 437787,
+"file_number": "S 4 KR 21/16",
+"court": "Sozialgericht Fulda",
+"date": "2019-02-12",
+"truth": "overturn"
+},
+{
+"id": 437793,
+"file_number": "S 18 KR 134/18",
+"court": "Sozialgericht Wiesbaden",
+"date": "2019-02-11",
+"truth": "uphold"
+},
+{
+"id": 501028,
+"file_number": "S 72 KR 748/18",
+"court": "Sozialgericht Berlin",
+"date": "2019-02-07",
+"truth": "uphold"
+},
+{
+"id": 501016,
+"file_number": "S 72 KR 2402/13",
+"court": "Sozialgericht Berlin",
+"date": "2019-02-07",
+"truth": "overturn"
+},
+{
+"id": 425042,
+"file_number": "S 2 KR 18/17",
+"court": "Sozialgericht Nordhausen",
+"date": "2019-01-29",
+"truth": "uphold"
+},
+{
+"id": 501143,
+"file_number": "S 81 KR 339/18",
+"court": "Sozialgericht Berlin",
+"date": "2019-01-21",
+"truth": "uphold"
+},
+{
+"id": 215953,
+"file_number": "S 3 KR 183/17",
+"court": "Sozialgericht Trier",
+"date": "2019-01-15",
+"truth": "uphold"
+},
+{
+"id": 437996,
+"file_number": "S 14 KR 1/18",
+"court": "Sozialgericht Marburg",
+"date": "2019-01-02",
+"truth": "uphold"
+},
+{
+"id": 459815,
+"file_number": "S 23 KR 3548/18",
+"court": "Sozialgericht Köln",
+"date": "2018-12-28",
+"truth": "uphold"
+},
+{
+"id": 459841,
+"file_number": "S 24 KR 1031/17",
+"court": "Sozialgericht Detmold",
+"date": "2018-12-21",
+"truth": "overturn"
+},
+{
+"id": 455215,
+"file_number": "S 28 KR 203/18",
+"court": "Sozialgericht Frankfurt am Main",
+"date": "2018-12-17",
+"truth": "uphold"
+},
+{
+"id": 455214,
+"file_number": "S 28 KR 105/16",
+"court": "Sozialgericht Frankfurt am Main",
+"date": "2018-12-17",
+"truth": "uphold"
+},
+{
+"id": 455213,
+"file_number": "S 28 KR 106/16",
+"court": "Sozialgericht Frankfurt am Main",
+"date": "2018-12-17",
+"truth": "uphold"
+},
+{
+"id": 501340,
+"file_number": "S 73 KR 722/14",
+"court": "Sozialgericht Berlin",
+"date": "2018-12-12",
+"truth": "uphold"
+},
+{
+"id": 460236,
+"file_number": "S 45 KR 592/16",
+"court": "Sozialgericht Gelsenkirchen",
+"date": "2018-12-03",
+"truth": "uphold"
+},
+{
+"id": 460283,
+"file_number": "S 8 KR 219/18",
+"court": "Sozialgericht Düsseldorf",
+"date": "2018-11-29",
+"truth": "overturn"
+},
+{
+"id": 460310,
+"file_number": "S 1 KR 1/17",
+"court": "Sozialgericht Aachen",
+"date": "2018-11-28",
+"truth": "overturn"
+},
+{
+"id": 460421,
+"file_number": "S 9 KR 2053/16",
+"court": "Sozialgericht Köln",
+"date": "2018-11-21",
+"truth": "overturn"
+},
+{
+"id": 501576,
+"file_number": "S 81 KR 1075/18",
+"court": "Sozialgericht Berlin",
+"date": "2018-11-05",
+"truth": "uphold"
+},
+{
+"id": 438257,
+"file_number": "S 12 KR 546/17",
+"court": "Sozialgericht Kassel",
+"date": "2018-11-05",
+"truth": "uphold"
+},
+{
+"id": 114694,
+"file_number": "S 14 KR 455/17",
+"court": "Sozialgericht Aachen",
+"date": "2018-10-30",
+"truth": "overturn"
+},
+{
+"id": 460799,
+"file_number": "S 16 KR 841/13",
+"court": "Sozialgericht Münster",
+"date": "2018-10-29",
+"truth": "uphold"
+},
+{
+"id": 460806,
+"file_number": "S 9 KR 712/18",
+"court": "Sozialgericht Münster",
+"date": "2018-10-28",
+"truth": "uphold"
+},
+{
+"id": 438358,
+"file_number": "S 5 KR 259/14",
+"court": "Sozialgericht GieBen",
+"date": "2018-10-18",
+"truth": "uphold"
+},
+{
+"id": 501657,
+"file_number": "S 112 KR 1247/17",
+"court": "Sozialgericht Berlin",
+"date": "2018-10-17",
+"truth": "uphold"
+},
+{
+"id": 461271,
+"file_number": "S 23 KR 2132/16",
+"court": "Sozialgericht Köln",
+"date": "2018-09-28",
+"truth": "uphold"
+},
+{
+"id": 438419,
+"file_number": "S 1 KR 551/17",
+"court": "Sozialgericht Wiesbaden",
+"date": "2018-09-26",
+"truth": "uphold"
+},
+{
+"id": 438451,
+"file_number": "S 4 KR 172/16",
+"court": "Sozialgericht Fulda",
+"date": "2018-09-25",
+"truth": "overturn"
+},
+{
+"id": 461704,
+"file_number": "S 26 KR 202/15",
+"court": "Sozialgericht Köln",
+"date": "2018-09-07",
+"truth": "uphold"
+},
+{
+"id": 461703,
+"file_number": "S 9 KR 498/14",
+"court": "Sozialgericht Münster",
+"date": "2018-09-07",
+"truth": "uphold"
+},
+{
+"id": 461809,
+"file_number": "S 22 KR 638/17",
+"court": "Sozialgericht Detmold",
+"date": "2018-09-04",
+"truth": "overturn"
+},
+{
+"id": 461885,
+"file_number": "S 27 KR 1266/16",
+"court": "Sozialgericht Düsseldorf",
+"date": "2018-08-30",
+"truth": "uphold"
+},
+{
+"id": 438548,
+"file_number": "S 10 KR 562/17",
+"court": "Sozialgericht Darmstadt",
+"date": "2018-08-29",
+"truth": "uphold"
+},
+{
+"id": 461952,
+"file_number": "S 46 KR 1039/17",
+"court": "Sozialgericht Gelsenkirchen",
+"date": "2018-08-28",
+"truth": "overturn"
+},
+{
+"id": 462168,
+"file_number": "S 15 KR 348/16",
+"court": "Sozialgericht Aachen",
+"date": "2018-08-16",
+"truth": "overturn"
+},
+{
+"id": 438632,
+"file_number": "S 11 KR 40/15",
+"court": "Sozialgericht Fulda",
+"date": "2018-08-16",
+"truth": "uphold"
+},
+{
+"id": 438634,
+"file_number": "S 18 KR 226/16",
+"court": "Sozialgericht Wiesbaden",
+"date": "2018-08-14",
+"truth": "overturn"
+},
+{
+"id": 462250,
+"file_number": "S 11 KR 1400/17",
+"court": "Sozialgericht Gelsenkirchen",
+"date": "2018-08-09",
+"truth": "overturn"
+},
+{
+"id": 462402,
+"file_number": "S 14 KR 305/17",
+"court": "Sozialgericht Aachen",
+"date": "2018-07-31",
+"truth": "uphold"
+},
+{
+"id": 462778,
+"file_number": "S 63 KR 2821/17",
+"court": "Sozialgericht Dortmund",
+"date": "2018-07-12",
+"truth": "uphold"
+},
+{
+"id": 438773,
+"file_number": "S 14 KR 300/17",
+"court": "Sozialgericht Darmstadt",
+"date": "2018-07-12",
+"truth": "uphold"
+},
+{
+"id": 462866,
+"file_number": "S 14 KR 515/17",
+"court": "Sozialgericht Aachen",
+"date": "2018-07-10",
+"truth": "uphold"
+},
+{
+"id": 463059,
+"file_number": "S 47 KR 1598/13",
+"court": "Sozialgericht Düsseldorf",
+"date": "2018-07-02",
+"truth": "overturn"
+},
+{
+"id": 463120,
+"file_number": "S 13 KR 289/17",
+"court": "Sozialgericht Aachen",
+"date": "2018-06-28",
+"truth": "uphold"
+},
+{
+"id": 463185,
+"file_number": "S 13 KR 75/17",
+"court": "Sozialgericht Aachen",
+"date": "2018-06-26",
+"truth": "overturn"
+},
+{
+"id": 463248,
+"file_number": "S 24 KR 80/16",
+"court": "Sozialgericht Detmold",
+"date": "2018-06-22",
+"truth": "uphold"
+},
+{
+"id": 463444,
+"file_number": "S 9 KR 1174/16",
+"court": "Sozialgericht Köln",
+"date": "2018-06-13",
+"truth": "uphold"
+},
+{
+"id": 77806,
+"file_number": "S 34 KR 554/16",
+"court": "Sozialgericht Osnabrück",
+"date": "2018-06-13",
+"truth": "overturn"
+},
+{
+"id": 75241,
+"file_number": "S 5 KR 58/18",
+"court": "Sozialgericht Trier",
+"date": "2018-06-13",
+"truth": "uphold"
+},
+{
+"id": 463499,
+"file_number": "S 16 KR 548/16",
+"court": "Sozialgericht Münster",
+"date": "2018-06-11",
+"truth": "uphold"
+},
+{
+"id": 502323,
+"file_number": "S 51 KR 2698/13",
+"court": "Sozialgericht Berlin",
+"date": "2018-05-31",
+"truth": "overturn"
+},
+{
+"id": 439038,
+"file_number": "S 11 KR 4/15",
+"court": "Sozialgericht Fulda",
+"date": "2018-05-17",
+"truth": "overturn"
+},
+{
+"id": 455240,
+"file_number": "S 14 KR 859/15",
+"court": "Sozialgericht Frankfurt am Main",
+"date": "2018-05-04",
+"truth": "uphold"
+},
+{
+"id": 439103,
+"file_number": "S 15 KR 3/17",
+"court": "Sozialgericht GieBen",
+"date": "2018-05-03",
+"truth": "uphold"
+},
+{
+"id": 425285,
+"file_number": "S 5 KR 2963/13",
+"court": "Sozialgericht Altenburg",
+"date": "2018-04-28",
+"truth": "uphold"
+},
+{
+"id": 464368,
+"file_number": "S 3 KR 411/14",
+"court": "Sozialgericht Detmold",
+"date": "2018-04-27",
+"truth": "overturn"
+},
+{
+"id": 439120,
+"file_number": "S 15 KR 639/15",
+"court": "Sozialgericht GieBen",
+"date": "2018-04-26",
+"truth": "overturn"
+},
+{
+"id": 464472,
+"file_number": "S 14 KR 424/17",
+"court": "Sozialgericht Aachen",
+"date": "2018-04-24",
+"truth": "uphold"
+},
+{
+"id": 464471,
+"file_number": "S 13 KR 83/17",
+"court": "Sozialgericht Aachen",
+"date": "2018-04-24",
+"truth": "uphold"
+},
+{
+"id": 464523,
+"file_number": "S 24 KR 863/17",
+"court": "Sozialgericht Detmold",
+"date": "2018-04-20",
+"truth": "overturn"
+},
+{
+"id": 439178,
+"file_number": "S 5 KR 78/15",
+"court": "Sozialgericht GieBen",
+"date": "2018-04-19",
+"truth": "uphold"
+},
+{
+"id": 439167,
+"file_number": "S 5 KR 30/17",
+"court": "Sozialgericht GieBen",
+"date": "2018-04-19",
+"truth": "overturn"
+},
+{
+"id": 464641,
+"file_number": "S 22 KR 419/17",
+"court": "Sozialgericht Detmold",
+"date": "2018-04-17",
+"truth": "uphold"
+},
+{
+"id": 439219,
+"file_number": "S 5 KR 413/13",
+"court": "Sozialgericht Kassel",
+"date": "2018-04-12",
+"truth": "uphold"
+},
+{
+"id": 464801,
+"file_number": "S 5 KR 167/16",
+"court": "Sozialgericht Detmold",
+"date": "2018-04-11",
+"truth": "overturn"
+},
+{
+"id": 79524,
+"file_number": "S 63 KR 163/16",
+"court": "Sozialgericht Oldenburg (Oldenburg)",
+"date": "2018-04-05",
+"truth": "uphold"
+},
+{
+"id": 464960,
+"file_number": "S 34 KR 1482/15",
+"court": "Sozialgericht Düsseldorf",
+"date": "2018-03-29",
+"truth": "uphold"
+},
+{
+"id": 465000,
+"file_number": "S 49 KR 641/17",
+"court": "Sozialgericht Dortmund",
+"date": "2018-03-28",
+"truth": "overturn"
+},
+{
+"id": 425346,
+"file_number": "S 5 KR 1364/14",
+"court": "Sozialgericht Nordhausen",
+"date": "2018-03-14",
+"truth": "overturn"
+},
+{
+"id": 135150,
+"file_number": "S 1 KR 3632/16",
+"court": "Sozialgericht Reutlingen",
+"date": "2018-03-14",
+"truth": "uphold"
+},
+{
+"id": 135149,
+"file_number": "S 1 KR 2084/17",
+"court": "Sozialgericht Reutlingen",
+"date": "2018-03-14",
+"truth": "overturn"
+},
+{
+"id": 439362,
+"file_number": "S 13 KR 47/17",
+"court": "Sozialgericht Darmstadt",
+"date": "2018-03-09",
+"truth": "uphold"
+},
+{
+"id": 439379,
+"file_number": "S 10 KR 385/17",
+"court": "Sozialgericht Darmstadt",
+"date": "2018-03-07",
+"truth": "overturn"
+},
+{
+"id": 439376,
+"file_number": "S 10 KR 30/17",
+"court": "Sozialgericht Darmstadt",
+"date": "2018-03-07",
+"truth": "overturn"
+},
+{
+"id": 439426,
+"file_number": "S 18 KR 396/16",
+"court": "Sozialgericht Wiesbaden",
+"date": "2018-03-01",
+"truth": "overturn"
+},
+{
+"id": 465673,
+"file_number": "S 13 KR 433/16",
+"court": "Sozialgericht Münster",
+"date": "2018-02-28",
+"truth": "overturn"
+},
+{
+"id": 80855,
+"file_number": "S 3 KR 103/17",
+"court": "Sozialgericht Trier",
+"date": "2018-02-27",
+"truth": "overturn"
+},
+{
+"id": 465925,
+"file_number": "S 13 KR 476/17",
+"court": "Sozialgericht Aachen",
+"date": "2018-02-20",
+"truth": "overturn"
+},
+{
+"id": 465923,
+"file_number": "S 13 KR 344/16",
+"court": "Sozialgericht Aachen",
+"date": "2018-02-20",
+"truth": "overturn"
+},
+{
+"id": 455255,
+"file_number": "S 25 KR 413/15",
+"court": "Sozialgericht Frankfurt am Main",
+"date": "2018-02-20",
+"truth": "uphold"
+},
+{
+"id": 135097,
+"file_number": "S 4 KR 2398/17",
+"court": "Sozialgericht Karlsruhe",
+"date": "2018-02-20",
+"truth": "overturn"
+},
+{
+"id": 80887,
+"file_number": "S 13 KR 286/16",
+"court": "Sozialgericht Speyer",
+"date": "2018-02-16",
+"truth": "overturn"
+},
+{
+"id": 439519,
+"file_number": "S 5 KR 716/15",
+"court": "Sozialgericht GieBen",
+"date": "2018-02-13",
+"truth": "overturn"
+},
+{
+"id": 466209,
+"file_number": "S 13 KR 114/17",
+"court": "Sozialgericht Aachen",
+"date": "2018-02-06",
+"truth": "uphold"
+},
+{
+"id": 466208,
+"file_number": "S 13 KR 262/17",
+"court": "Sozialgericht Aachen",
+"date": "2018-02-06",
+"truth": "uphold"
+},
+{
+"id": 466281,
+"file_number": "S 23 KR 369/17",
+"court": "Sozialgericht Köln",
+"date": "2018-02-02",
+"truth": "uphold"
+},
+{
+"id": 81968,
+"file_number": "S 42 KR 182/16",
+"court": "Sozialgericht Osnabrück",
+"date": "2018-02-01",
+"truth": "overturn"
+},
+{
+"id": 466462,
+"file_number": "S 3 KR 450/15",
+"court": "Sozialgericht Detmold",
+"date": "2018-01-26",
+"truth": "overturn"
+},
+{
+"id": 466498,
+"file_number": "S 8 KR 412/16",
+"court": "Sozialgericht Düsseldorf",
+"date": "2018-01-25",
+"truth": "uphold"
+},
+{
+"id": 466553,
+"file_number": "S 46 KR 1668/15",
+"court": "Sozialgericht Gelsenkirchen",
+"date": "2018-01-24",
+"truth": "overturn"
+},
+{
+"id": 439603,
+"file_number": "S 12 KR 252/17",
+"court": "Sozialgericht Kassel",
+"date": "2018-01-24",
+"truth": "overturn"
+},
+{
+"id": 82052,
+"file_number": "S 40 KR 591/13",
+"court": "Sozialgericht Braunschweig",
+"date": "2018-01-24",
+"truth": "overturn"
+},
+{
+"id": 82072,
+"file_number": "S 54 KR 370/14",
+"court": "Sozialgericht Braunschweig",
+"date": "2018-01-23",
+"truth": "overturn"
+},
+{
+"id": 455263,
+"file_number": "S 34 KR 264/15",
+"court": "Sozialgericht Frankfurt am Main",
+"date": "2018-01-16",
+"truth": "uphold"
+},
+{
+"id": 466800,
+"file_number": "S 3 KR 824/16",
+"court": "Sozialgericht Detmold",
+"date": "2018-01-12",
+"truth": "uphold"
+},
+{
+"id": 503093,
+"file_number": "S 166 KR 569/17",
+"court": "Sozialgericht Berlin",
+"date": "2017-12-15",
+"truth": "overturn"
+},
+{
+"id": 503121,
+"file_number": "S 28 KR 2811/15",
+"court": "Sozialgericht Berlin",
+"date": "2017-12-13",
+"truth": "uphold"
+},
+{
+"id": 115240,
+"file_number": "S 1 KR 1235/14",
+"court": "Landessozialgericht für das Saarland",
+"date": "2017-12-13",
+"truth": "uphold"
+},
+{
+"id": 115239,
+"file_number": "S 23 KR 226/16",
+"court": "Landessozialgericht für das Saarland",
+"date": "2017-12-12",
+"truth": "overturn"
+},
+{
+"id": 439805,
+"file_number": "S 8 KR 564/15",
+"court": "Sozialgericht Darmstadt",
+"date": "2017-12-05",
+"truth": "overturn"
+},
+{
+"id": 467650,
+"file_number": "S 24 KR 4/16",
+"court": "Sozialgericht Detmold",
+"date": "2017-12-01",
+"truth": "overturn"
+},
+{
+"id": 467706,
+"file_number": "S 8 KR 1048/15",
+"court": "Sozialgericht Düsseldorf",
+"date": "2017-11-30",
+"truth": "uphold"
+},
+{
+"id": 467786,
+"file_number": "S 14 KR 311/17",
+"court": "Sozialgericht Aachen",
+"date": "2017-11-28",
+"truth": "overturn"
+},
+{
+"id": 455269,
+"file_number": "S 18 KR 337/15",
+"court": "Sozialgericht Frankfurt am Main",
+"date": "2017-11-23",
+"truth": "overturn"
+},
+{
+"id": 467944,
+"file_number": "S 13 KR 257/17",
+"court": "Sozialgericht Aachen",
+"date": "2017-11-21",
+"truth": "uphold"
+},
+{
+"id": 467943,
+"file_number": "S 13 KR 250/17",
+"court": "Sozialgericht Aachen",
+"date": "2017-11-21",
+"truth": "uphold"
+},
+{
+"id": 439894,
+"file_number": "S 6 KR 111/16",
+"court": "Sozialgericht Marburg",
+"date": "2017-11-17",
+"truth": "overturn"
+},
+{
+"id": 439889,
+"file_number": "S 6 KR 8/16",
+"court": "Sozialgericht Marburg",
+"date": "2017-11-17",
+"truth": "overturn"
+},
+{
+"id": 82733,
+"file_number": "S 86 KR 305/17",
+"court": "Sozialgericht Hannover",
+"date": "2017-11-17",
+"truth": "overturn"
+},
+{
+"id": 468042,
+"file_number": "S 24 KR 836/16",
+"court": "Sozialgericht Detmold",
+"date": "2017-11-16",
+"truth": "overturn"
+},
+{
+"id": 468078,
+"file_number": "S 5 KR 266/17",
+"court": "Sozialgericht Detmold",
+"date": "2017-11-15",
+"truth": "overturn"
+},
+{
+"id": 468175,
+"file_number": "S 9 KR 736/15",
+"court": "Sozialgericht Duisburg",
+"date": "2017-11-10",
+"truth": "uphold"
+},
+{
+"id": 439956,
+"file_number": "S 7 KR 70/16",
+"court": "Sozialgericht GieBen",
+"date": "2017-11-10",
+"truth": "overturn"
+},
+{
+"id": 468208,
+"file_number": "S 3 KR 486/15",
+"court": "Sozialgericht Detmold",
+"date": "2017-11-09",
+"truth": "uphold"
+},
+{
+"id": 439958,
+"file_number": "S 8 KR 606/15",
+"court": "Sozialgericht Kassel",
+"date": "2017-11-09",
+"truth": "uphold"
+},
+{
+"id": 183107,
+"file_number": "S 1 KR 364/17",
+"court": "Sozialgericht Reutlingen",
+"date": "2017-11-08",
+"truth": "overturn"
+},
+{
+"id": 183106,
+"file_number": "S 1 KR 2880/16",
+"court": "Sozialgericht Reutlingen",
+"date": "2017-11-08",
+"truth": "overturn"
+},
+{
+"id": 503319,
+"file_number": "S 112 KR 218/16",
+"court": "Sozialgericht Berlin",
+"date": "2017-11-03",
+"truth": "uphold"
+},
+{
+"id": 468435,
+"file_number": "S 26 KR 877/17",
+"court": "Sozialgericht Köln",
+"date": "2017-10-25",
+"truth": "uphold"
+},
+{
+"id": 85185,
+"file_number": "S 34 KR 347/16",
+"court": "Sozialgericht Osnabrück",
+"date": "2017-10-25",
+"truth": "overturn"
+},
+{
+"id": 468561,
+"file_number": "S 49 KR 1421/16",
+"court": "Sozialgericht Dortmund",
+"date": "2017-10-19",
+"truth": "uphold"
+},
+{
+"id": 455272,
+"file_number": "S 25 KR 190/14",
+"court": "Sozialgericht Frankfurt am Main",
+"date": "2017-10-10",
+"truth": "overturn"
+},
+{
+"id": 469102,
+"file_number": "S 13 KR 407/16",
+"court": "Sozialgericht Aachen",
+"date": "2017-09-26",
+"truth": "uphold"
+},
+{
+"id": 469101,
+"file_number": "S 13 KR 389/16",
+"court": "Sozialgericht Aachen",
+"date": "2017-09-26",
+"truth": "uphold"
+},
+{
+"id": 469100,
+"file_number": "S 13 KR 139/17",
+"court": "Sozialgericht Aachen",
+"date": "2017-09-26",
+"truth": "uphold"
+},
+{
+"id": 503556,
+"file_number": "S 51 KR 3987/15",
+"court": "Sozialgericht Berlin",
+"date": "2017-09-15",
+"truth": "overturn"
+},
+{
+"id": 469283,
+"file_number": "S 23 KR 2081/16",
+"court": "Sozialgericht Köln",
+"date": "2017-09-15",
+"truth": "uphold"
+},
+{
+"id": 86592,
+"file_number": "S 34 KR 720/16",
+"court": "Sozialgericht Osnabrück",
+"date": "2017-09-04",
+"truth": "overturn"
+},
+{
+"id": 440256,
+"file_number": "S 18 KR 409/16",
+"court": "Sozialgericht Wiesbaden",
+"date": "2017-08-30",
+"truth": "overturn"
+},
+{
+"id": 440252,
+"file_number": "S 18 KR 625/15",
+"court": "Sozialgericht Wiesbaden",
+"date": "2017-08-30",
+"truth": "overturn"
+},
+{
+"id": 440269,
+"file_number": "S 8 KR 466/16",
+"court": "Sozialgericht Darmstadt",
+"date": "2017-08-28",
+"truth": "overturn"
+},
+{
+"id": 469703,
+"file_number": "S 17 KR 138/17",
+"court": "Sozialgericht Duisburg",
+"date": "2017-08-25",
+"truth": "uphold"
+},
+{
+"id": 469774,
+"file_number": "S 13 KR 175/17",
+"court": "Sozialgericht Aachen",
+"date": "2017-08-22",
+"truth": "overturn"
+},
+{
+"id": 469773,
+"file_number": "S 13 KR 164/17",
+"court": "Sozialgericht Aachen",
+"date": "2017-08-22",
+"truth": "overturn"
+},
+{
+"id": 469772,
+"file_number": "S 13 KR 136/17",
+"court": "Sozialgericht Aachen",
+"date": "2017-08-22",
+"truth": "overturn"
+},
+{
+"id": 469801,
+"file_number": "S 9 KR 722/16",
+"court": "Sozialgericht Münster",
+"date": "2017-08-21",
+"truth": "uphold"
+},
+{
+"id": 440301,
+"file_number": "S 8 KR 608/15",
+"court": "Sozialgericht Darmstadt",
+"date": "2017-08-21",
+"truth": "uphold"
+},
+{
+"id": 440375,
+"file_number": "S 8 KR 543/16",
+"court": "Sozialgericht Darmstadt",
+"date": "2017-08-07",
+"truth": "uphold"
+},
+{
+"id": 470134,
+"file_number": "S 9 KR 947/16",
+"court": "Sozialgericht Düsseldorf",
+"date": "2017-07-31",
+"truth": "overturn"
+},
+{
+"id": 470182,
+"file_number": "S 11 KR 1004/16",
+"court": "Sozialgericht Gelsenkirchen",
+"date": "2017-07-27",
+"truth": "overturn"
+},
+{
+"id": 470335,
+"file_number": "S 24 KR 242/15",
+"court": "Sozialgericht Detmold",
+"date": "2017-07-20",
+"truth": "uphold"
+},
+{
+"id": 470409,
+"file_number": "S 13 KR 450/16",
+"court": "Sozialgericht Aachen",
+"date": "2017-07-18",
+"truth": "overturn"
+},
+{
+"id": 470408,
+"file_number": "S 13 KR 364/16",
+"court": "Sozialgericht Aachen",
+"date": "2017-07-18",
+"truth": "overturn"
+},
+{
+"id": 470407,
+"file_number": "S 13 KR 159/17",
+"court": "Sozialgericht Aachen",
+"date": "2017-07-18",
+"truth": "overturn"
+},
+{
+"id": 440452,
+"file_number": "S 8 KR 30/16",
+"court": "Sozialgericht Darmstadt",
+"date": "2017-07-17",
+"truth": "uphold"
+},
+{
+"id": 440451,
+"file_number": "S 8 KR 130/15",
+"court": "Sozialgericht Darmstadt",
+"date": "2017-07-17",
+"truth": "uphold"
+},
+{
+"id": 440448,
+"file_number": "S 8 KR 672/14",
+"court": "Sozialgericht Darmstadt",
+"date": "2017-07-17",
+"truth": "uphold"
+},
+{
+"id": 440441,
+"file_number": "S 8 KR 282/15",
+"court": "Sozialgericht Darmstadt",
+"date": "2017-07-17",
+"truth": "uphold"
+},
+{
+"id": 455286,
+"file_number": "S 18 KR 274/15",
+"court": "Sozialgericht Frankfurt am Main",
+"date": "2017-07-14",
+"truth": "overturn"
+},
+{
+"id": 115148,
+"file_number": "S 23 KR 155/16",
+"court": "Landessozialgericht für das Saarland",
+"date": "2017-07-14",
+"truth": "overturn"
+},
+{
+"id": 503848,
+"file_number": "S 81 KR 719/17",
+"court": "Sozialgericht Berlin",
+"date": "2017-07-11",
+"truth": "uphold"
+},
+{
+"id": 83507,
+"file_number": "S 14 KR 197/17",
+"court": "Sozialgericht Mainz",
+"date": "2017-07-11",
+"truth": "overturn"
+},
+{
+"id": 470646,
+"file_number": "S 21 KR 1291/16",
+"court": "Sozialgericht Köln",
+"date": "2017-07-10",
+"truth": "uphold"
+},
+{
+"id": 470742,
+"file_number": "S 31 KR 547/16",
+"court": "Sozialgericht Duisburg",
+"date": "2017-07-05",
+"truth": "overturn"
+},
+{
+"id": 470928,
+"file_number": "S 23 KR 1230/16",
+"court": "Sozialgericht Köln",
+"date": "2017-06-28",
+"truth": "overturn"
+},
+{
+"id": 503927,
+"file_number": "S 208 KR 2111/16",
+"court": "Sozialgericht Berlin",
+"date": "2017-06-27",
+"truth": "overturn"
+},
+{
+"id": 455288,
+"file_number": "S 14 KR 257/16",
+"court": "Sozialgericht Frankfurt am Main",
+"date": "2017-06-22",
+"truth": "uphold"
+},
+{
+"id": 182833,
+"file_number": "S 14 KR 3991/16",
+"court": "Sozialgericht Karlsruhe",
+"date": "2017-06-22",
+"truth": "uphold"
+},
+{
+"id": 471130,
+"file_number": "S 34 KR 125/16",
+"court": "Sozialgericht Köln",
+"date": "2017-06-20",
+"truth": "overturn"
+},
+{
+"id": 471149,
+"file_number": "S 40 KR 2472/16",
+"court": "Sozialgericht Dortmund",
+"date": "2017-06-19",
+"truth": "overturn"
+},
+{
+"id": 440587,
+"file_number": "S 8 KR 322/16",
+"court": "Sozialgericht Darmstadt",
+"date": "2017-06-16",
+"truth": "overturn"
+},
+{
+"id": 182811,
+"file_number": "S 1 KR 406/16",
+"court": "Sozialgericht Reutlingen",
+"date": "2017-06-14",
+"truth": "uphold"
+},
+{
+"id": 84354,
+"file_number": "S 14 KR 475/16",
+"court": "Sozialgericht Mainz",
+"date": "2017-06-13",
+"truth": "uphold"
+},
+{
+"id": 84346,
+"file_number": "S 12 KR 562/16",
+"court": "Sozialgericht Mainz",
+"date": "2017-06-06",
+"truth": "overturn"
+},
+{
+"id": 84372,
+"file_number": "S 12 KR 30/16",
+"court": "Sozialgericht Mainz",
+"date": "2017-05-31",
+"truth": "overturn"
+},
+{
+"id": 471646,
+"file_number": "S 1 KR 98/16",
+"court": "Sozialgericht Aachen",
+"date": "2017-05-24",
+"truth": "overturn"
+},
+{
+"id": 440719,
+"file_number": "S 14 KR 11/17",
+"court": "Sozialgericht Marburg",
+"date": "2017-05-18",
+"truth": "uphold"
+},
+{
+"id": 440775,
+"file_number": "S 10 KR 454/15",
+"court": "Sozialgericht Darmstadt",
+"date": "2017-05-10",
+"truth": "overturn"
+},
+{
+"id": 114896,
+"file_number": "S 23 KR 869/15",
+"court": "Landessozialgericht für das Saarland",
+"date": "2017-05-09",
+"truth": "overturn"
+},
+{
+"id": 84380,
+"file_number": "S 3 KR 123/16",
+"court": "Sozialgericht Trier",
+"date": "2017-05-09",
+"truth": "overturn"
+},
+{
+"id": 504138,
+"file_number": "S 81 KR 988/16",
+"court": "Sozialgericht Berlin",
+"date": "2017-05-08",
+"truth": "uphold"
+},
+{
+"id": 440776,
+"file_number": "S 2 KR 72/15",
+"court": "Sozialgericht Wiesbaden",
+"date": "2017-05-08",
+"truth": "uphold"
+},
+{
+"id": 472120,
+"file_number": "S 49 KR 580/16",
+"court": "Sozialgericht Dortmund",
+"date": "2017-05-05",
+"truth": "overturn"
+},
+{
+"id": 139394,
+"file_number": "S 13 KR 630/16",
+"court": "Sozialgericht Ulm",
+"date": "2017-05-04",
+"truth": "overturn"
+},
+{
+"id": 504193,
+"file_number": "S 169 KR 1260/14",
+"court": "Sozialgericht Berlin",
+"date": "2017-05-02",
+"truth": "overturn"
+},
+{
+"id": 472340,
+"file_number": "S 17 KR 187/17",
+"court": "Sozialgericht Duisburg",
+"date": "2017-04-27",
+"truth": "overturn"
+},
+{
+"id": 472338,
+"file_number": "S 15 KR 359/15",
+"court": "Sozialgericht Aachen",
+"date": "2017-04-27",
+"truth": "overturn"
+},
+{
+"id": 472421,
+"file_number": "S 13 KR 490/16",
+"court": "Sozialgericht Aachen",
+"date": "2017-04-25",
+"truth": "uphold"
+},
+{
+"id": 472420,
+"file_number": "S 13 KR 485/16",
+"court": "Sozialgericht Aachen",
+"date": "2017-04-25",
+"truth": "uphold"
+},
+{
+"id": 472419,
+"file_number": "S 13 KR 479/16",
+"court": "Sozialgericht Aachen",
+"date": "2017-04-25",
+"truth": "uphold"
+},
+{
+"id": 472477,
+"file_number": "S 49 KR 642/16",
+"court": "Sozialgericht Dortmund",
+"date": "2017-04-21",
+"truth": "overturn"
+},
+{
+"id": 440860,
+"file_number": "S 9 KR 131/15",
+"court": "Sozialgericht GieBen",
+"date": "2017-04-19",
+"truth": "overturn"
+},
+{
+"id": 440840,
+"file_number": "S 14 KR 3/16",
+"court": "Sozialgericht Marburg",
+"date": "2017-04-19",
+"truth": "uphold"
+},
+{
+"id": 472624,
+"file_number": "S 39 KR 670/12",
+"court": "Sozialgericht Duisburg",
+"date": "2017-04-11",
+"truth": "overturn"
+},
+{
+"id": 472729,
+"file_number": "S 3 KR 715/16",
+"court": "Sozialgericht Detmold",
+"date": "2017-04-06",
+"truth": "overturn"
+},
+{
+"id": 472810,
+"file_number": "S 13 KR 1086/16",
+"court": "Sozialgericht Köln",
+"date": "2017-04-04",
+"truth": "uphold"
+},
+{
+"id": 472809,
+"file_number": "S 13 KR 916/16",
+"court": "Sozialgericht Münster",
+"date": "2017-04-04",
+"truth": "uphold"
+},
+{
+"id": 472808,
+"file_number": "S 13 KR 888/16",
+"court": "Sozialgericht Münster",
+"date": "2017-04-04",
+"truth": "uphold"
+},
+{
+"id": 472871,
+"file_number": "S 24 KR 83/16",
+"court": "Sozialgericht Detmold",
+"date": "2017-03-31",
+"truth": "overturn"
+},
+{
+"id": 472870,
+"file_number": "S 24 KR 230/16",
+"court": "Sozialgericht Detmold",
+"date": "2017-03-31",
+"truth": "overturn"
+},
+{
+"id": 473442,
+"file_number": "S 13 KR 487/16",
+"court": "Sozialgericht Aachen",
+"date": "2017-03-14",
+"truth": "uphold"
+},
+{
+"id": 473441,
+"file_number": "S 13 KR 436/16",
+"court": "Sozialgericht Aachen",
+"date": "2017-03-14",
+"truth": "uphold"
+},
+{
+"id": 473440,
+"file_number": "S 13 KR 312/16",
+"court": "Sozialgericht Aachen",
+"date": "2017-03-14",
+"truth": "overturn"
+},
+{
+"id": 473439,
+"file_number": "S 13 KR 272/16",
+"court": "Sozialgericht Aachen",
+"date": "2017-03-14",
+"truth": "overturn"
+},
+{
+"id": 441091,
+"file_number": "S 7 KR 344/15",
+"court": "Sozialgericht GieBen",
+"date": "2017-03-07",
+"truth": "uphold"
+},
+{
+"id": 473771,
+"file_number": "S 3 KR 604/15",
+"court": "Sozialgericht Detmold",
+"date": "2017-03-02",
+"truth": "uphold"
+},
+{
+"id": 91924,
+"file_number": "S 34 KR 55/15",
+"court": "Sozialgericht Osnabrück",
+"date": "2017-02-27",
+"truth": "overturn"
+},
+{
+"id": 85487,
+"file_number": "S 17 KR 336/16",
+"court": "Sozialgericht Speyer",
+"date": "2017-02-26",
+"truth": "overturn"
+},
+{
+"id": 455297,
+"file_number": "S 34 KR 1067/14",
+"court": "Sozialgericht Frankfurt am Main",
+"date": "2017-02-23",
+"truth": "overturn"
+},
+{
+"id": 504559,
+"file_number": "S 28 KR 921/14",
+"court": "Sozialgericht Berlin",
+"date": "2017-02-22",
+"truth": "uphold"
+},
+{
+"id": 473906,
+"file_number": "S 5 KR 34/15",
+"court": "Sozialgericht Detmold",
+"date": "2017-02-22",
+"truth": "overturn"
+},
+{
+"id": 85491,
+"file_number": "S 17 KR 407/16",
+"court": "Sozialgericht Speyer",
+"date": "2017-02-22",
+"truth": "overturn"
+},
+{
+"id": 474071,
+"file_number": "S 50 KR 941/15 WA",
+"court": "Sozialgericht Duisburg",
+"date": "2017-02-16",
+"truth": "uphold"
+},
+{
+"id": 474070,
+"file_number": "S 15 KR 10/16",
+"court": "Sozialgericht Aachen",
+"date": "2017-02-16",
+"truth": "overturn"
+},
+{
+"id": 474402,
+"file_number": "S 47 KR 417/15",
+"court": "Sozialgericht Düsseldorf",
+"date": "2017-02-03",
+"truth": "uphold"
+},
+{
+"id": 474433,
+"file_number": "S 45 KR 1672/15",
+"court": "Sozialgericht Gelsenkirchen",
+"date": "2017-02-02",
+"truth": "overturn"
+},
+{
+"id": 504879,
+"file_number": "S 112 KR 1030/16",
+"court": "Sozialgericht Berlin",
+"date": "2016-12-21",
+"truth": "overturn"
+},
+{
+"id": 86764,
+"file_number": "S 14 KR 213/13",
+"court": "Sozialgericht Mainz",
+"date": "2016-12-20",
+"truth": "overturn"
+},
+{
+"id": 86756,
+"file_number": "S 14 KR 19/14",
+"court": "Sozialgericht Mainz",
+"date": "2016-12-20",
+"truth": "overturn"
+},
+{
+"id": 441417,
+"file_number": "S 8 KR 756/14",
+"court": "Sozialgericht Darmstadt",
+"date": "2016-12-19",
+"truth": "overturn"
+},
+{
+"id": 78340,
+"file_number": "S 3 KR 51/14",
+"court": "Sozialgericht Stralsund",
+"date": "2016-12-16",
+"truth": "overturn"
+},
+{
+"id": 87241,
+"file_number": "S 19 KR 49/16",
+"court": "Sozialgericht Speyer",
+"date": "2016-12-09",
+"truth": "overturn"
+},
+{
+"id": 455307,
+"file_number": "S 34 KR 264/14",
+"court": "Sozialgericht Frankfurt am Main",
+"date": "2016-11-28",
+"truth": "overturn"
+},
+{
+"id": 455306,
+"file_number": "S 34 KR 197/14",
+"court": "Sozialgericht Frankfurt am Main",
+"date": "2016-11-28",
+"truth": "overturn"
+},
+{
+"id": 81205,
+"file_number": "S 35 KR 165/16",
+"court": "Sozialgericht Halle",
+"date": "2016-11-23",
+"truth": "overturn"
+},
+{
+"id": 87298,
+"file_number": "S 14 KR 223/14",
+"court": "Sozialgericht Mainz",
+"date": "2016-11-22",
+"truth": "uphold"
+},
+{
+"id": 441581,
+"file_number": "S 8 KR 732/14",
+"court": "Sozialgericht Darmstadt",
+"date": "2016-11-15",
+"truth": "overturn"
+},
+{
+"id": 116245,
+"file_number": "S 24 KR 539/15",
+"court": "Sozialgericht Detmold",
+"date": "2016-11-11",
+"truth": "overturn"
+},
+{
+"id": 116418,
+"file_number": "S 24 KR 48/15",
+"court": "Sozialgericht Detmold",
+"date": "2016-11-04",
+"truth": "overturn"
+},
+{
+"id": 116465,
+"file_number": "S 27 KR 1190/15",
+"court": "Sozialgericht Düsseldorf",
+"date": "2016-11-03",
+"truth": "overturn"
+},
+{
+"id": 441688,
+"file_number": "S 9 KR 156/15",
+"court": "Sozialgericht GieBen",
+"date": "2016-10-26",
+"truth": "overturn"
+},
+{
+"id": 441671,
+"file_number": "S 18 KR 75/14",
+"court": "Sozialgericht Wiesbaden",
+"date": "2016-10-26",
+"truth": "uphold"
+},
+{
+"id": 120681,
+"file_number": "S 9 KR 267/15",
+"court": "Sozialgericht Münster",
+"date": "2016-10-24",
+"truth": "uphold"
+},
+{
+"id": 505188,
+"file_number": "S 89 KR 2036/15",
+"court": "Sozialgericht Berlin",
+"date": "2016-10-19",
+"truth": "overturn"
+},
+{
+"id": 181628,
+"file_number": "S 14 KR 4428/14",
+"court": "Sozialgericht Karlsruhe",
+"date": "2016-10-12",
+"truth": "uphold"
+},
+{
+"id": 441813,
+"file_number": "S 9 KR 140/16",
+"court": "Sozialgericht GieBen",
+"date": "2016-09-28",
+"truth": "uphold"
+},
+{
+"id": 505343,
+"file_number": "S 51 KR 2336/13",
+"court": "Sozialgericht Berlin",
+"date": "2016-09-20",
+"truth": "uphold"
+},
+{
+"id": 181548,
+"file_number": "S 16 KR 2305/15",
+"court": "Sozialgericht Karlsruhe",
+"date": "2016-09-14",
+"truth": "uphold"
+},
+{
+"id": 121442,
+"file_number": "S 13 KR 418/15",
+"court": "Sozialgericht Aachen",
+"date": "2016-09-13",
+"truth": "uphold"
+},
+{
+"id": 121441,
+"file_number": "S 13 KR 413/15",
+"court": "Sozialgericht Aachen",
+"date": "2016-09-13",
+"truth": "overturn"
+},
+{
+"id": 121440,
+"file_number": "S 13 KR 410/15",
+"court": "Sozialgericht Aachen",
+"date": "2016-09-13",
+"truth": "uphold"
+},
+{
+"id": 121486,
+"file_number": "S 24 KR 245/14",
+"court": "Sozialgericht Detmold",
+"date": "2016-09-09",
+"truth": "overturn"
+},
+{
+"id": 121516,
+"file_number": "S 27 KR 629/16",
+"court": "Sozialgericht Düsseldorf",
+"date": "2016-09-08",
+"truth": "overturn"
+},
+{
+"id": 121564,
+"file_number": "S 34 KR 56/16",
+"court": "Sozialgericht Köln",
+"date": "2016-09-06",
+"truth": "overturn"
+},
+{
+"id": 121715,
+"file_number": "S 9 KR 8/15",
+"court": "Sozialgericht Duisburg",
+"date": "2016-08-31",
+"truth": "overturn"
+},
+{
+"id": 121898,
+"file_number": "S 9 KR 274/14",
+"court": "Sozialgericht Duisburg",
+"date": "2016-08-24",
+"truth": "uphold"
+},
+{
+"id": 121928,
+"file_number": "S 13 KR 337/15",
+"court": "Sozialgericht Aachen",
+"date": "2016-08-23",
+"truth": "overturn"
+},
+{
+"id": 441978,
+"file_number": "S 5 KR 115/13",
+"court": "Sozialgericht Kassel",
+"date": "2016-08-15",
+"truth": "uphold"
+},
+{
+"id": 181407,
+"file_number": "S 14 KR 1317/15",
+"court": "Sozialgericht Karlsruhe",
+"date": "2016-07-26",
+"truth": "overturn"
+},
+{
+"id": 90173,
+"file_number": "S 3 KR 428/15",
+"court": "Sozialgericht Mainz",
+"date": "2016-07-25",
+"truth": "overturn"
+},
+{
+"id": 442112,
+"file_number": "S 14 KR 160/15",
+"court": "Sozialgericht Marburg",
+"date": "2016-07-18",
+"truth": "uphold"
+},
+{
+"id": 122626,
+"file_number": "S 48 KR 656/14",
+"court": "Sozialgericht Dortmund",
+"date": "2016-07-15",
+"truth": "overturn"
+},
+{
+"id": 442137,
+"file_number": "S 1 KR 35/13",
+"court": "Sozialgericht Wiesbaden",
+"date": "2016-07-13",
+"truth": "overturn"
+},
+{
+"id": 90186,
+"file_number": "S 19 KR 369/14",
+"court": "Sozialgericht Speyer",
+"date": "2016-07-11",
+"truth": "uphold"
+},
+{
+"id": 442161,
+"file_number": "S 8 KR 75/15",
+"court": "Sozialgericht Kassel",
+"date": "2016-07-07",
+"truth": "uphold"
+},
+{
+"id": 124099,
+"file_number": "S 27 KR 290/14",
+"court": "Sozialgericht Düsseldorf",
+"date": "2016-06-30",
+"truth": "uphold"
+},
+{
+"id": 442172,
+"file_number": "S 10 KR 155/15",
+"court": "Sozialgericht Darmstadt",
+"date": "2016-06-29",
+"truth": "overturn"
+},
+{
+"id": 124192,
+"file_number": "S 34 KR 515/15",
+"court": "Sozialgericht Köln",
+"date": "2016-06-28",
+"truth": "overturn"
+},
+{
+"id": 505856,
+"file_number": "S 81 KR 1778/15",
+"court": "Sozialgericht Berlin",
+"date": "2016-05-23",
+"truth": "uphold"
+},
+{
+"id": 442350,
+"file_number": "S 8 KR 408/15",
+"court": "Sozialgericht Darmstadt",
+"date": "2016-05-23",
+"truth": "overturn"
+},
+{
+"id": 442334,
+"file_number": "S 8 KR 353/15",
+"court": "Sozialgericht Darmstadt",
+"date": "2016-05-23",
+"truth": "overturn"
+},
+{
+"id": 181171,
+"file_number": "S 5 KR 191/16",
+"court": "Sozialgericht Karlsruhe",
+"date": "2016-05-23",
+"truth": "overturn"
+},
+{
+"id": 125052,
+"file_number": "S 40 KR 672/15",
+"court": "Sozialgericht Dortmund",
+"date": "2016-05-23",
+"truth": "uphold"
+},
+{
+"id": 442352,
+"file_number": "S 14 KR 120/15",
+"court": "Sozialgericht Marburg",
+"date": "2016-05-18",
+"truth": "uphold"
+},
+{
+"id": 455320,
+"file_number": "S 14 KR 414/12",
+"court": "Sozialgericht Frankfurt am Main",
+"date": "2016-04-28",
+"truth": "uphold"
+},
+{
+"id": 91049,
+"file_number": "S 17 KR 476/14",
+"court": "Sozialgericht Speyer",
+"date": "2016-04-28",
+"truth": "uphold"
+},
+{
+"id": 455324,
+"file_number": "S 25 KR 104/13",
+"court": "Sozialgericht Frankfurt am Main",
+"date": "2016-04-15",
+"truth": "uphold"
+},
+{
+"id": 506032,
+"file_number": "S 72 KR 70/16",
+"court": "Sozialgericht Berlin",
+"date": "2016-04-14",
+"truth": "overturn"
+},
+{
+"id": 506058,
+"file_number": "S 81 KR 1181/14",
+"court": "Sozialgericht Berlin",
+"date": "2016-04-11",
+"truth": "overturn"
+},
+{
+"id": 91097,
+"file_number": "S 19 KR 479/14",
+"court": "Sozialgericht Speyer",
+"date": "2016-04-08",
+"truth": "overturn"
+},
+{
+"id": 442573,
+"file_number": "S 9 KR 521/15",
+"court": "Sozialgericht GieBen",
+"date": "2016-04-04",
+"truth": "uphold"
+},
+{
+"id": 442585,
+"file_number": "S 13 KR 293/14",
+"court": "Sozialgericht Darmstadt",
+"date": "2016-04-01",
+"truth": "uphold"
+},
+{
+"id": 442611,
+"file_number": "S 8 KR 630/14",
+"court": "Sozialgericht Darmstadt",
+"date": "2016-03-21",
+"truth": "uphold"
+},
+{
+"id": 127518,
+"file_number": "S 23 KR 242/15",
+"court": "Landessozialgericht für das Saarland",
+"date": "2016-03-18",
+"truth": "overturn"
+},
+{
+"id": 455327,
+"file_number": "S 14 KR 106/11",
+"court": "Sozialgericht Frankfurt am Main",
+"date": "2016-03-17",
+"truth": "overturn"
+},
+{
+"id": 125505,
+"file_number": "S 17 KR 1709/15",
+"court": "Sozialgericht Gelsenkirchen",
+"date": "2016-03-16",
+"truth": "overturn"
+},
+{
+"id": 506168,
+"file_number": "S 51 KR 2136/13",
+"court": "Sozialgericht Berlin",
+"date": "2016-03-15",
+"truth": "overturn"
+},
+{
+"id": 91900,
+"file_number": "S 13 KR 694/14",
+"court": "Sozialgericht Speyer",
+"date": "2016-03-10",
+"truth": "overturn"
+},
+{
+"id": 506199,
+"file_number": "S 81 KR 76/14",
+"court": "Sozialgericht Berlin",
+"date": "2016-03-07",
+"truth": "overturn"
+},
+{
+"id": 80444,
+"file_number": "S 15 KR 406/13",
+"court": "Sozialgericht Rostock",
+"date": "2016-03-02",
+"truth": "overturn"
+},
+{
+"id": 125904,
+"file_number": "S 13 KR 379/15",
+"court": "Sozialgericht Aachen",
+"date": "2016-03-01",
+"truth": "uphold"
+},
+{
+"id": 125973,
+"file_number": "S 23 KR 455/14",
+"court": "Sozialgericht Köln",
+"date": "2016-02-26",
+"truth": "uphold"
+},
+{
+"id": 86824,
+"file_number": "S 16 KR 103/11",
+"court": "Sozialgericht Halle",
+"date": "2016-02-26",
+"truth": "overturn"
+},
+{
+"id": 442796,
+"file_number": "S 9 KR 279/15",
+"court": "Sozialgericht GieBen",
+"date": "2016-02-24",
+"truth": "uphold"
+},
+{
+"id": 455329,
+"file_number": "S 14 KR 327/12",
+"court": "Sozialgericht Frankfurt am Main",
+"date": "2016-02-18",
+"truth": "uphold"
+},
+{
+"id": 506317,
+"file_number": "S 81 KR 585/14",
+"court": "Sozialgericht Berlin",
+"date": "2016-02-15",
+"truth": "overturn"
+},
+{
+"id": 126596,
+"file_number": "S 16 KR 656/14",
+"court": "Sozialgericht Münster",
+"date": "2016-02-01",
+"truth": "uphold"
+},
+{
+"id": 126632,
+"file_number": "S 24 KR 314/13",
+"court": "Sozialgericht Detmold",
+"date": "2016-01-29",
+"truth": "uphold"
+},
+{
+"id": 101071,
+"file_number": "S 86 KR 383/11",
+"court": "Sozialgericht Hannover",
+"date": "2016-01-29",
+"truth": "overturn"
+},
+{
+"id": 126673,
+"file_number": "S 8 KR 288/14",
+"court": "Sozialgericht Düsseldorf",
+"date": "2016-01-28",
+"truth": "overturn"
+},
+{
+"id": 126727,
+"file_number": "S 13 KR 38/13",
+"court": "Sozialgericht Münster",
+"date": "2016-01-27",
+"truth": "uphold"
+},
+{
+"id": 101073,
+"file_number": "S 34 KR 98/15",
+"court": "Sozialgericht Osnabrück",
+"date": "2016-01-27",
+"truth": "overturn"
+},
+{
+"id": 506416,
+"file_number": "S 89 KR 1536/14",
+"court": "Sozialgericht Berlin",
+"date": "2016-01-22",
+"truth": "overturn"
+},
+{
+"id": 126835,
+"file_number": "S 8 KR 435/14",
+"court": "Sozialgericht Dortmund",
+"date": "2016-01-22",
+"truth": "overturn"
+},
+{
+"id": 133545,
+"file_number": "S 1 KR 2979/12",
+"court": "Sozialgericht Reutlingen",
+"date": "2016-01-20",
+"truth": "overturn"
+},
+{
+"id": 133544,
+"file_number": "S 1 KR 206/13",
+"court": "Sozialgericht Reutlingen",
+"date": "2016-01-20",
+"truth": "uphold"
+},
+{
+"id": 133543,
+"file_number": "S 1 KR 1767/15",
+"court": "Sozialgericht Reutlingen",
+"date": "2016-01-20",
+"truth": "uphold"
+},
+{
+"id": 126942,
+"file_number": "S 17 KR 206/15",
+"court": "Sozialgericht Gelsenkirchen",
+"date": "2016-01-20",
+"truth": "overturn"
+},
+{
+"id": 93029,
+"file_number": "S 14 KR 255/15",
+"court": "Sozialgericht Mainz",
+"date": "2016-01-11",
+"truth": "uphold"
+},
+{
+"id": 443010,
+"file_number": "S 18 KR 439/12",
+"court": "Sozialgericht Wiesbaden",
+"date": "2015-12-28",
+"truth": "overturn"
+},
+{
+"id": 142814,
+"file_number": "S 26 KR 923/14 WA",
+"court": "Sozialgericht Köln",
+"date": "2015-12-22",
+"truth": "uphold"
+},
+{
+"id": 142841,
+"file_number": "S 12 KR 460/15",
+"court": "Sozialgericht Köln",
+"date": "2015-12-21",
+"truth": "overturn"
+},
+{
+"id": 443081,
+"file_number": "S 9 KR 307/15",
+"court": "Sozialgericht GieBen",
+"date": "2015-12-10",
+"truth": "uphold"
+},
+{
+"id": 94215,
+"file_number": "S 3 KR 31/15",
+"court": "Sozialgericht Trier",
+"date": "2015-12-01",
+"truth": "uphold"
+},
+{
+"id": 101804,
+"file_number": "S 69 KR 329/12",
+"court": "Sozialgericht Hannover",
+"date": "2015-11-30",
+"truth": "overturn"
+},
+{
+"id": 94211,
+"file_number": "S 19 KR 409/14",
+"court": "Sozialgericht Speyer",
+"date": "2015-11-30",
+"truth": "overturn"
+},
+{
+"id": 94206,
+"file_number": "S 19 KR 160/15",
+"court": "Sozialgericht Speyer",
+"date": "2015-11-30",
+"truth": "overturn"
+},
+{
+"id": 506658,
+"file_number": "S 166 KR 671/12",
+"court": "Sozialgericht Berlin",
+"date": "2015-11-27",
+"truth": "uphold"
+},
+{
+"id": 101803,
+"file_number": "S 46 KR 1667/13",
+"court": "Sozialgericht Osnabrück",
+"date": "2015-11-27",
+"truth": "overturn"
+},
+{
+"id": 94245,
+"file_number": "S 1 KR 115/14",
+"court": "Sozialgericht Trier",
+"date": "2015-11-26",
+"truth": "uphold"
+},
+{
+"id": 90389,
+"file_number": "S 17 KR 508/12",
+"court": "Sozialgericht Magdeburg",
+"date": "2015-11-19",
+"truth": "uphold"
+},
+{
+"id": 443180,
+"file_number": "S 9 KR 319/14",
+"court": "Sozialgericht GieBen",
+"date": "2015-11-18",
+"truth": "overturn"
+},
+{
+"id": 143389,
+"file_number": "S 13 KR 331/14",
+"court": "Sozialgericht Aachen",
+"date": "2015-11-17",
+"truth": "overturn"
+},
+{
+"id": 443220,
+"file_number": "S 8 KR 54/14",
+"court": "Sozialgericht Darmstadt",
+"date": "2015-11-16",
+"truth": "uphold"
+},
+{
+"id": 180989,
+"file_number": "S 5 KR 2089/15",
+"court": "Sozialgericht Freiburg",
+"date": "2015-11-16",
+"truth": "overturn"
+},
+{
+"id": 143530,
+"file_number": "S 40 KR 759/14",
+"court": "Sozialgericht Dortmund",
+"date": "2015-11-11",
+"truth": "uphold"
+},
+{
+"id": 143529,
+"file_number": "S 40 KR 518/14",
+"court": "Sozialgericht Dortmund",
+"date": "2015-11-11",
+"truth": "uphold"
+},
+{
+"id": 506779,
+"file_number": "S 81 KR 2480/12",
+"court": "Sozialgericht Berlin",
+"date": "2015-11-09",
+"truth": "uphold"
+},
+{
+"id": 506799,
+"file_number": "S 122 KR 2119/12",
+"court": "Sozialgericht Berlin",
+"date": "2015-11-03",
+"truth": "overturn"
+},
+{
+"id": 143859,
+"file_number": "S 3 KR 14/15",
+"court": "Sozialgericht Detmold",
+"date": "2015-10-29",
+"truth": "uphold"
+},
+{
+"id": 144029,
+"file_number": "S 3 KR 336/15",
+"court": "Sozialgericht Detmold",
+"date": "2015-10-22",
+"truth": "overturn"
+},
+{
+"id": 506942,
+"file_number": "S 72 KR 2210/13",
+"court": "Sozialgericht Berlin",
+"date": "2015-10-01",
+"truth": "overturn"
+},
+{
+"id": 104400,
+"file_number": "S 13 KR 736/14",
+"court": "Sozialgericht Osnabrück",
+"date": "2015-10-01",
+"truth": "overturn"
+},
+{
+"id": 506960,
+"file_number": "S 208 KR 2197/14",
+"court": "Sozialgericht Berlin",
+"date": "2015-09-29",
+"truth": "uphold"
+},
+{
+"id": 160489,
+"file_number": "S 13 KR 185/14",
+"court": "Sozialgericht Aachen",
+"date": "2015-09-29",
+"truth": "overturn"
+},
+{
+"id": 160516,
+"file_number": "S 9 KR 197/13",
+"court": "Sozialgericht Düsseldorf",
+"date": "2015-09-28",
+"truth": "uphold"
+},
+{
+"id": 160597,
+"file_number": "S 27 KR 351/14",
+"court": "Sozialgericht Düsseldorf",
+"date": "2015-09-24",
+"truth": "overturn"
+},
+{
+"id": 95256,
+"file_number": "S 19 KR 509/14",
+"court": "Sozialgericht Speyer",
+"date": "2015-09-18",
+"truth": "overturn"
+},
+{
+"id": 91012,
+"file_number": "S 35 KR 71/13",
+"court": "Sozialgericht Halle",
+"date": "2015-09-09",
+"truth": "overturn"
+}
+]

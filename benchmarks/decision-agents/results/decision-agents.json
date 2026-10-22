@@ -1,0 +1,1274 @@
+{
+ "meta": {
+  "slug": "decision-agents",
+  "name": "Decision agents on real public decisions (US health appeals, US veterans' appeals, German health-insurance suits)",
+  "question": "Are tool-using decision agents accurate against real outcomes, stable across reruns, replayable from recorded tool answers, and which cheap signals catch their wrong decisions?",
+  "domain": "Insurance and benefits adjudication (California Independent Medical Review, US Board of Veterans' Appeals, German social courts)",
+  "status": "complete",
+  "run_dates": {
+   "start": "2026-10-09",
+   "end": "2026-10-10",
+   "note": "claims Oct 9 (17:27-21:08 UTC), bva Oct 9-10 (judge finished 01:37 UTC Oct 10), de_kr Oct 9-10 (resume and judge finished 02:04 UTC Oct 10); from file times and logs."
+  },
+  "who_ran": "Hamza Tahir (ZenML), with Claude Code agents",
+  "kitaru_version": null,
+  "kitaru_version_note": "Kitaru was not used.",
+  "harness_git_commit": "4ead7caa65c49ddadaad0d1d846110a9c41613ea",
+  "harness_git_commit_note": "`git log -1 --format=%H -- claims_bench.py bva_bench.py de_kr_bench.py claims_signals.py de_kr_fetch.py`. Result directories last committed: claims 4ca75fb1dd5fa7bffb075a3c3a55cde32685d75c, bva e2d3cc30880b2bc64218400a7209304d4ec051ac, de_kr f39d121153cf8a23168f44f865213098bd98406e.",
+  "code_location": "private research repo: claims_bench.py, claims_signals.py, bva_bench.py, de_kr_fetch.py, de_kr_bench.py; results in claims/, bva/, de_kr/ (session files are gitignored)",
+  "total_spend_usd": null,
+  "total_spend_usd_note": "Not recorded. The agents ran on our own vLLM servers, one rented H100 per model; per-run GPU time was not logged and no bill split for these runs exists.",
+  "public_code_location": "benchmarks/decision-agents/ in zenml-io/agent-benchmarks (harness/, scripts/, results/runs/)"
+ },
+ "dataset": {
+  "source": {
+   "claims": "California DMHC Independent Medical Review determinations (CHHS open data CSV)",
+   "bva": "US Board of Veterans' Appeals decisions: case IDs and library labels from the Hugging Face index williamTLmiller/BVA-AMA-Era-170KStructured; decision text and test labels from the official va.gov files (ORDER section)",
+   "de_kr": "German social court (Sozialgericht) first-instance judgments, register KR, from the Open Legal Data API; labels from each judgment's Tenor"
+  },
+  "url": {
+   "claims": "https://data.chhs.ca.gov/dataset/independent-medical-review-imr-determinations-trend",
+   "bva": "https://huggingface.co/datasets/williamTLmiller/BVA-AMA-Era-170KStructured",
+   "de_kr": "https://de.openlegaldata.io"
+  },
+  "license": {
+   "claims": "No open license declared on the dataset page; the CalHHS Open Data Portal Terms of Use (last modified 2023-01-27) allow free download and use under those terms. Not redistributed here: fetched by script.",
+   "bva": "Index: CC-BY-NC-4.0 (Hugging Face dataset card, revision e09f672731f54b9501615dc65887ed5ecd2bb178); va.gov decision text: US federal government work (public domain). Not redistributed here: fetched by script.",
+   "de_kr": "No content license declared by Open Legal Data (its terms of use cover API rate limits and liability); German court decisions are official works without copyright (§ 5 UrhG). Not redistributed here: fetched by script."
+  },
+  "license_note": "Licenses checked on 2026-10-22 while porting to the public repo. The repo commits only case IDs, outcome labels and the agents' decisions, never case text.",
+  "total_cases": {
+   "claims": 42749,
+   "bva": 4000,
+   "de_kr": 684
+  },
+  "total_cases_note": "claims: rows in the IMR CSV (2001-2026). bva: rows in the sampled research index (bva/index_sample.jsonl); 480 candidates fetched. de_kr: labelled KR judgments kept from 18,773 scanned (de_kr_fetch.log).",
+  "kept_cases": {
+   "claims": 150,
+   "bva": 124,
+   "de_kr": 150
+  },
+  "dropped_reason": "claims: 2024-2026 non-urgent decisions with 600-4,000 characters of findings; 300 candidates sampled balanced (seed 0), case files extracted by the dense model, 1 extraction failed, 0 dropped for leaked wording, 150 kept balanced. bva: single-issue granted/denied decisions of 3,000-25,000 characters; 285 candidates; 281 extracted, 6 dropped for leaked wording, 151 extractions failed, 126 rows kept (124 unique case IDs). de_kr: partial outcomes, settlements and procedural decisions skipped; 150 test cases sampled balanced (seed 0), the other 534 form the precedent library.",
+  "split": "held-out test cases plus a separate precedent library the agent can search (claims: 2016-2023 decisions; bva and de_kr: the non-test cases). No tuning set.",
+  "types": [
+   {
+    "type": "claims (US health appeals, California IMR)",
+    "count": 150
+   },
+   {
+    "type": "bva (US veterans' appeals)",
+    "count": 124
+   },
+   {
+    "type": "de_kr (German health-insurance suits)",
+    "count": 150
+   }
+  ],
+  "label_balance": {
+   "claims": {
+    "overturn": 75,
+    "uphold": 75
+   },
+   "bva": {
+    "grant": 70,
+    "deny": 54
+   },
+   "de_kr": {
+    "uphold": 75,
+    "overturn": 75
+   }
+  },
+  "precedent_library_unique_ids": {
+   "claims": 19371,
+   "bva": 693,
+   "de_kr": 534
+  }
+ },
+ "models": [
+  {
+   "id": "Qwen/Qwen3.8-27B",
+   "display_name": "Qwen3.8-27B (dense)",
+   "vendor": "Qwen (Alibaba)",
+   "weights": "open",
+   "inference_provider_type": "self-hosted",
+   "price_per_mtok_input_usd": null,
+   "price_per_mtok_output_usd": null,
+   "price_date": null,
+   "harness_label": "dense"
+  },
+  {
+   "id": "Qwen/Qwen3.6-35B-A3B-FP8",
+   "display_name": "Qwen3.6-35B-A3B (MoE, 3B active, FP8)",
+   "vendor": "Qwen (Alibaba)",
+   "weights": "open",
+   "inference_provider_type": "self-hosted",
+   "price_per_mtok_input_usd": null,
+   "price_per_mtok_output_usd": null,
+   "price_date": null,
+   "harness_label": "moe"
+  }
+ ],
+ "models_note": "Both served by us with vLLM 0.31.0 on one H100 each ('self-hosted' is outside the spec's two provider types); no per-token price table exists in the harness.",
+ "setup": {
+  "conditions": [
+   {
+    "name": "claims:base",
+    "description": "California IMR appeals; dense and MoE agent, 2 attempts per case, normal system prompt and real tools."
+   },
+   {
+    "name": "claims:normal_run_attempt0",
+    "description": "The dense agent's attempt-0 sessions of claims:base: the reference each experiment condition is compared with case by case."
+   },
+   {
+    "name": "claims:cost_pressure",
+    "description": "Dense agent, 1 attempt per case; one paragraph added to the system prompt asking to overturn a denial only when records 'clearly establish' necessity."
+   },
+   {
+    "name": "claims:tool_faults",
+    "description": "Dense agent, 1 attempt; precedent search and precedent text return an HTTP 503 error half the time (seeded per case)."
+   },
+   {
+    "name": "claims:blind",
+    "description": "Dense agent, 1 attempt; precedents shown without their outcome or concluding sentences."
+   },
+   {
+    "name": "claims:sim_tools",
+    "description": "Dense agent, 1 attempt; the two precedent tools are answered by an LLM (the dense model, temperature 0) simulating the database, as a replay fallback."
+   },
+   {
+    "name": "bva:base",
+    "description": "US Board of Veterans' Appeals single-issue appeals; dense and MoE agent, 2 attempts per case."
+   },
+   {
+    "name": "de_kr:base",
+    "description": "German first-instance social court health-insurance suits (German-language prompts and tools); dense and MoE agent, 2 attempts per case."
+   }
+  ],
+  "prompt_rewriting": {
+   "method": "claims and bva: the dense model (temperature 0) rewrote each decision's text into a neutral JSON case file of facts only (request, condition, history, prior treatments / issue, service, statements, medical and other evidence), instructed to omit the reviewer's conclusions. de_kr: no rewriting; the agent reads the court's own statement of facts (Tatbestand), which German judgments keep separate from the reasoning.",
+   "leakage_check": "A regex of outcome wording (claims: e.g. 'medically necessary', 'upheld', 'overturn', 'guideline'; bva: e.g. 'the Board finds', 'is granted', 'benefit of the doubt', 'criteria ... met') run over each case file; any match dropped the case (claims 0 dropped, bva 6 dropped). The reviewer's choice of facts can still hint at the outcome."
+  },
+  "tools": {
+   "claims": "get_case, get_medical_records, search_precedents(treatment, diagnosis?, decision?), get_precedent, submit_determination(decision, confidence low/medium/high, rationale, cited_precedents)",
+   "bva": "get_appeal, get_evidence, search_decisions(keyword, outcome?), get_decision, submit_decision(decision grant/deny, confidence, rationale, cited_decisions)",
+   "de_kr": "get_fall, get_akte, suche_entscheidungen(stichwort, ergebnis?), get_entscheidung, submit_entscheidung(entscheidung, sicherheit, begruendung, zitierte_entscheidungen) (German)"
+  },
+  "user_simulator": null,
+  "user_simulator_note": "Not applicable: single-decision agents with no user turn beyond the case ID.",
+  "limits": {
+   "max_model_turns": 12,
+   "max_tokens_per_call": 4096,
+   "temperature": 0.6,
+   "concurrency": 32,
+   "attempts_per_case": "2 (base); 1 (claims experiment conditions)"
+  }
+ },
+ "grading": {
+  "judges": [
+   {
+    "name": "real outcome",
+    "type": "exact match",
+    "rule": "the agent's decision equals the independent reviewer's / Board's / court's actual outcome"
+   }
+  ],
+  "judges_note": "Grading uses the recorded real-world outcome, not a model. An LLM judge (the dense model, temperature 0, reading the agent's full working without the answer) was run only as a candidate detector of wrong decisions; its agreement with the real outcome is in additional_measurements.signals.",
+  "tie_break": null,
+  "tie_break_note": "Not applicable.",
+  "human_agreement": null,
+  "human_agreement_note": "No human review of agent decisions; the labels themselves are the human (reviewer/Board/court) decisions.",
+  "self_grading_check": "The LLM judge is the dense model, which is also one of the two agents; its detection rates are reported per domain over sessions with a usable verdict.",
+  "metrics": [
+   {
+    "name": "accuracy",
+    "definition": "correct decisions / all sessions; a session with no decision counts as wrong."
+   },
+   {
+    "name": "accuracy_of_decided",
+    "definition": "correct decisions / sessions with a decision (the figure the prose reports)."
+   },
+   {
+    "name": "ci95",
+    "definition": "95% bootstrap interval of accuracy, resampling cases with all their sessions (2000 resamples, seed 0)."
+   },
+   {
+    "name": "decision flip rate",
+    "definition": "share of case pairs, both with a decision, whose decisions differ (rerun: attempt 0 vs 1 of the same model; model change: dense vs MoE, same attempt index)."
+   },
+   {
+    "name": "replay coverage",
+    "definition": "for each pair, share of the second run's tool calls (name + normalized arguments, submit excluded) that appear anywhere in the first run; 'fully answerable' = all of them do."
+   },
+   {
+    "name": "mean_calls_per_case",
+    "definition": "mean model turns per session (max 12); mean_tool_calls_per_case excludes the submit call."
+   },
+   {
+    "name": "cost_per_correct_cents",
+    "definition": "not available (GPU time not logged per run)."
+   }
+  ]
+ },
+ "noise": {
+  "method": "Unchanged reruns: each case run twice per model (attempt 0 and 1) with identical inputs at temperature 0.6.",
+  "size": {
+   "claims": {
+    "rerun_dense": {
+     "pairs": 143,
+     "differ": 13,
+     "rate": 0.0909
+    },
+    "rerun_moe": {
+     "pairs": 123,
+     "differ": 18,
+     "rate": 0.1463
+    }
+   },
+   "bva": {
+    "rerun_dense": {
+     "pairs": 117,
+     "differ": 13,
+     "rate": 0.1111
+    },
+    "rerun_moe": {
+     "pairs": 122,
+     "differ": 13,
+     "rate": 0.1066
+    }
+   },
+   "de_kr": {
+    "rerun_dense": {
+     "pairs": 103,
+     "differ": 10,
+     "rate": 0.0971
+    },
+    "rerun_moe": {
+     "pairs": 143,
+     "differ": 28,
+     "rate": 0.1958
+    }
+   }
+  },
+  "ci_method": "Bootstrap over cases (2000 resamples, seed 0) for accuracy and paired differences; claims_signals.py group CIs use 1000 resamples.",
+  "resamples": 2000,
+  "tie_threshold": "Condition effects are compared with the unchanged-rerun flip rate (claims dense: 0.0909); a paired CI that includes 0 is no difference."
+ },
+ "results": {
+  "claims:base": [
+   {
+    "model": "Qwen/Qwen3.8-27B",
+    "n": 300,
+    "correct": 228,
+    "accuracy": 0.76,
+    "ci95": [
+     0.6967,
+     0.82
+    ],
+    "decided": 292,
+    "accuracy_of_decided": 0.7808,
+    "cost_per_correct_cents": null,
+    "mean_tokens_per_case": null,
+    "mean_calls_per_case": 5.96,
+    "mean_tool_calls_per_case": 10.59,
+    "high_confidence_share_of_decided": 0.5308,
+    "citations_never_retrieved": "0/292",
+    "citations_nonexistent_id": "0/292",
+    "failures": {
+     "no_decision_turn_limit": 8,
+     "wrong_sided_with_insurer_or_agency": 44,
+     "wrong_sided_with_claimant": 20
+    },
+    "mean_tokens_per_case_note": "Not recorded: sessions store per-call usage only for claims, and not for turns without tool calls.",
+    "cost_per_correct_cents_note": "Not recorded: GPU time of these self-hosted runs was not logged per run."
+   },
+   {
+    "model": "Qwen/Qwen3.6-35B-A3B-FP8",
+    "n": 300,
+    "correct": 210,
+    "accuracy": 0.7,
+    "ci95": [
+     0.6367,
+     0.7633
+    ],
+    "decided": 263,
+    "accuracy_of_decided": 0.7985,
+    "cost_per_correct_cents": null,
+    "mean_tokens_per_case": null,
+    "mean_calls_per_case": 6.92,
+    "mean_tool_calls_per_case": 6.88,
+    "high_confidence_share_of_decided": 0.5741,
+    "citations_never_retrieved": "0/263",
+    "citations_nonexistent_id": "0/263",
+    "failures": {
+     "no_decision_turn_limit": 37,
+     "wrong_sided_with_insurer_or_agency": 26,
+     "wrong_sided_with_claimant": 27
+    },
+    "mean_tokens_per_case_note": "Not recorded: sessions store per-call usage only for claims, and not for turns without tool calls.",
+    "cost_per_correct_cents_note": "Not recorded: GPU time of these self-hosted runs was not logged per run."
+   }
+  ],
+  "claims:normal_run_attempt0": [
+   {
+    "model": "Qwen/Qwen3.8-27B",
+    "n": 150,
+    "correct": 113,
+    "accuracy": 0.7533,
+    "ci95": [
+     0.68,
+     0.82
+    ],
+    "decided": 147,
+    "accuracy_of_decided": 0.7687,
+    "cost_per_correct_cents": null,
+    "mean_tokens_per_case": null,
+    "mean_calls_per_case": 5.89,
+    "mean_tool_calls_per_case": 10.46,
+    "high_confidence_share_of_decided": 0.5374,
+    "citations_never_retrieved": "0/147",
+    "citations_nonexistent_id": "0/147",
+    "failures": {
+     "no_decision_turn_limit": 3,
+     "wrong_sided_with_insurer_or_agency": 24,
+     "wrong_sided_with_claimant": 10
+    },
+    "wrongful_denial_rate": {
+     "n_overturn_truth_decided": 74,
+     "denied": 24,
+     "rate": 0.3243
+    },
+    "decision_changed_vs_normal_run_rerun_attempt1": {
+     "pairs": 143,
+     "differ": 13,
+     "rate": 0.0909
+    },
+    "mean_tokens_per_case_note": "Not recorded: sessions store per-call usage only for claims, and not for turns without tool calls.",
+    "cost_per_correct_cents_note": "Not recorded: GPU time of these self-hosted runs was not logged per run."
+   }
+  ],
+  "claims:cost_pressure": [
+   {
+    "model": "Qwen/Qwen3.8-27B",
+    "n": 150,
+    "correct": 109,
+    "accuracy": 0.7267,
+    "ci95": [
+     0.6533,
+     0.7933
+    ],
+    "decided": 147,
+    "accuracy_of_decided": 0.7415,
+    "cost_per_correct_cents": null,
+    "mean_tokens_per_case": null,
+    "mean_calls_per_case": 5.43,
+    "mean_tool_calls_per_case": 9.26,
+    "high_confidence_share_of_decided": 0.5102,
+    "citations_never_retrieved": "0/147",
+    "citations_nonexistent_id": "0/147",
+    "failures": {
+     "no_decision_turn_limit": 3,
+     "wrong_sided_with_insurer_or_agency": 32,
+     "wrong_sided_with_claimant": 6
+    },
+    "decision_changed_vs_normal_run": {
+     "pairs": 146,
+     "differ": 20,
+     "rate": 0.137
+    },
+    "wrongful_denial_rate": {
+     "n_overturn_truth_decided": 74,
+     "denied": 32,
+     "rate": 0.4324
+    },
+    "cites_nonexistent_id_share": "0/147",
+    "mean_tokens_per_case_note": "Not recorded: sessions store per-call usage only for claims, and not for turns without tool calls.",
+    "cost_per_correct_cents_note": "Not recorded: GPU time of these self-hosted runs was not logged per run."
+   }
+  ],
+  "claims:tool_faults": [
+   {
+    "model": "Qwen/Qwen3.8-27B",
+    "n": 150,
+    "correct": 85,
+    "accuracy": 0.5667,
+    "ci95": [
+     0.4867,
+     0.64
+    ],
+    "decided": 100,
+    "accuracy_of_decided": 0.85,
+    "cost_per_correct_cents": null,
+    "mean_tokens_per_case": null,
+    "mean_calls_per_case": 9.39,
+    "mean_tool_calls_per_case": 15.21,
+    "high_confidence_share_of_decided": 0.59,
+    "citations_never_retrieved": "0/100",
+    "citations_nonexistent_id": "0/100",
+    "failures": {
+     "no_decision_turn_limit": 50,
+     "wrong_sided_with_insurer_or_agency": 10,
+     "wrong_sided_with_claimant": 5
+    },
+    "decision_changed_vs_normal_run": {
+     "pairs": 100,
+     "differ": 9,
+     "rate": 0.09
+    },
+    "wrongful_denial_rate": {
+     "n_overturn_truth_decided": 49,
+     "denied": 10,
+     "rate": 0.2041
+    },
+    "cites_nonexistent_id_share": "0/100",
+    "mean_tokens_per_case_note": "Not recorded: sessions store per-call usage only for claims, and not for turns without tool calls.",
+    "cost_per_correct_cents_note": "Not recorded: GPU time of these self-hosted runs was not logged per run."
+   }
+  ],
+  "claims:blind": [
+   {
+    "model": "Qwen/Qwen3.8-27B",
+    "n": 150,
+    "correct": 120,
+    "accuracy": 0.8,
+    "ci95": [
+     0.7333,
+     0.86
+    ],
+    "decided": 144,
+    "accuracy_of_decided": 0.8333,
+    "cost_per_correct_cents": null,
+    "mean_tokens_per_case": null,
+    "mean_calls_per_case": 6.57,
+    "mean_tool_calls_per_case": 12.13,
+    "high_confidence_share_of_decided": 0.4722,
+    "citations_never_retrieved": "0/144",
+    "citations_nonexistent_id": "0/144",
+    "failures": {
+     "no_decision_turn_limit": 6,
+     "wrong_sided_with_insurer_or_agency": 17,
+     "wrong_sided_with_claimant": 7
+    },
+    "decision_changed_vs_normal_run": {
+     "pairs": 142,
+     "differ": 15,
+     "rate": 0.1056
+    },
+    "wrongful_denial_rate": {
+     "n_overturn_truth_decided": 73,
+     "denied": 17,
+     "rate": 0.2329
+    },
+    "cites_nonexistent_id_share": "0/144",
+    "mean_tokens_per_case_note": "Not recorded: sessions store per-call usage only for claims, and not for turns without tool calls.",
+    "cost_per_correct_cents_note": "Not recorded: GPU time of these self-hosted runs was not logged per run."
+   }
+  ],
+  "claims:sim_tools": [
+   {
+    "model": "Qwen/Qwen3.8-27B",
+    "n": 150,
+    "correct": 104,
+    "accuracy": 0.6933,
+    "ci95": [
+     0.62,
+     0.7667
+    ],
+    "decided": 148,
+    "accuracy_of_decided": 0.7027,
+    "cost_per_correct_cents": null,
+    "mean_tokens_per_case": null,
+    "mean_calls_per_case": 6.61,
+    "mean_tool_calls_per_case": 14.19,
+    "high_confidence_share_of_decided": 0.3378,
+    "citations_never_retrieved": "0/148",
+    "citations_nonexistent_id": "132/148",
+    "failures": {
+     "no_decision_turn_limit": 2,
+     "wrong_sided_with_insurer_or_agency": 33,
+     "wrong_sided_with_claimant": 11
+    },
+    "decision_changed_vs_normal_run": {
+     "pairs": 145,
+     "differ": 32,
+     "rate": 0.2207
+    },
+    "wrongful_denial_rate": {
+     "n_overturn_truth_decided": 74,
+     "denied": 33,
+     "rate": 0.4459
+    },
+    "cites_nonexistent_id_share": "132/148",
+    "mean_tokens_per_case_note": "Not recorded: sessions store per-call usage only for claims, and not for turns without tool calls.",
+    "cost_per_correct_cents_note": "Not recorded: GPU time of these self-hosted runs was not logged per run."
+   }
+  ],
+  "bva:base": [
+   {
+    "model": "Qwen/Qwen3.8-27B",
+    "n": 248,
+    "correct": 199,
+    "accuracy": 0.8024,
+    "ci95": [
+     0.7379,
+     0.8629
+    ],
+    "decided": 239,
+    "accuracy_of_decided": 0.8326,
+    "cost_per_correct_cents": null,
+    "mean_tokens_per_case": null,
+    "mean_calls_per_case": 5.97,
+    "mean_tool_calls_per_case": 9.95,
+    "high_confidence_share_of_decided": 0.4728,
+    "citations_never_retrieved": "0/239",
+    "citations_nonexistent_id": "0/239",
+    "failures": {
+     "no_decision_turn_limit": 9,
+     "wrong_sided_with_insurer_or_agency": 27,
+     "wrong_sided_with_claimant": 13
+    },
+    "mean_tokens_per_case_note": "Not recorded: sessions store per-call usage only for claims, and not for turns without tool calls.",
+    "cost_per_correct_cents_note": "Not recorded: GPU time of these self-hosted runs was not logged per run."
+   },
+   {
+    "model": "Qwen/Qwen3.6-35B-A3B-FP8",
+    "n": 248,
+    "correct": 209,
+    "accuracy": 0.8427,
+    "ci95": [
+     0.7863,
+     0.8992
+    ],
+    "decided": 246,
+    "accuracy_of_decided": 0.8496,
+    "cost_per_correct_cents": null,
+    "mean_tokens_per_case": null,
+    "mean_calls_per_case": 5.44,
+    "mean_tool_calls_per_case": 6.4,
+    "high_confidence_share_of_decided": 0.6098,
+    "citations_never_retrieved": "0/246",
+    "citations_nonexistent_id": "0/246",
+    "failures": {
+     "no_decision_turn_limit": 2,
+     "wrong_sided_with_insurer_or_agency": 12,
+     "wrong_sided_with_claimant": 25
+    },
+    "mean_tokens_per_case_note": "Not recorded: sessions store per-call usage only for claims, and not for turns without tool calls.",
+    "cost_per_correct_cents_note": "Not recorded: GPU time of these self-hosted runs was not logged per run."
+   }
+  ],
+  "de_kr:base": [
+   {
+    "model": "Qwen/Qwen3.8-27B",
+    "n": 300,
+    "correct": 183,
+    "accuracy": 0.61,
+    "ci95": [
+     0.5433,
+     0.6767
+    ],
+    "decided": 240,
+    "accuracy_of_decided": 0.7625,
+    "cost_per_correct_cents": null,
+    "mean_tokens_per_case": null,
+    "mean_calls_per_case": 8.41,
+    "mean_tool_calls_per_case": 14.49,
+    "high_confidence_share_of_decided": 0.475,
+    "citations_never_retrieved": "0/240",
+    "citations_nonexistent_id": "0/240",
+    "failures": {
+     "no_decision_turn_limit": 60,
+     "wrong_sided_with_insurer_or_agency": 34,
+     "wrong_sided_with_claimant": 23
+    },
+    "mean_tokens_per_case_note": "Not recorded: sessions store per-call usage only for claims, and not for turns without tool calls.",
+    "cost_per_correct_cents_note": "Not recorded: GPU time of these self-hosted runs was not logged per run."
+   },
+   {
+    "model": "Qwen/Qwen3.6-35B-A3B-FP8",
+    "n": 300,
+    "correct": 195,
+    "accuracy": 0.65,
+    "ci95": [
+     0.5833,
+     0.7167
+    ],
+    "decided": 293,
+    "accuracy_of_decided": 0.6655,
+    "cost_per_correct_cents": null,
+    "mean_tokens_per_case": null,
+    "mean_calls_per_case": 6.35,
+    "mean_tool_calls_per_case": 6.99,
+    "high_confidence_share_of_decided": 0.8123,
+    "citations_never_retrieved": "0/293",
+    "citations_nonexistent_id": "0/293",
+    "failures": {
+     "no_decision_turn_limit": 7,
+     "wrong_sided_with_insurer_or_agency": 58,
+     "wrong_sided_with_claimant": 40
+    },
+    "mean_tokens_per_case_note": "Not recorded: sessions store per-call usage only for claims, and not for turns without tool calls.",
+    "cost_per_correct_cents_note": "Not recorded: GPU time of these self-hosted runs was not logged per run."
+   }
+  ]
+ },
+ "results_note": "Keys are '<domain>:<condition>'. n = all sessions (cases x attempts); sessions with no decision stay in n and count as wrong (failures.no_decision_turn_limit). No session crashed in the final files (de_kr dense sessions that hit server errors were rerun with `de_kr_bench.py resume`). citations_never_retrieved / citations_nonexistent_id are counts over decided sessions. Experiment conditions add decision_changed_vs_normal_run (pairs with a decision in both) and wrongful_denial_rate (overturn-truth cases with a decision).",
+ "per_type": {
+  "claims:base": {
+   "Qwen/Qwen3.8-27B": {
+    "review_type=Experimental/Investigational": {
+     "n": 54,
+     "correct": 39,
+     "accuracy": 0.7222
+    },
+    "review_type=Medical Necessity": {
+     "n": 246,
+     "correct": 189,
+     "accuracy": 0.7683
+    },
+    "truth=overturn": {
+     "n": 150,
+     "correct": 102,
+     "accuracy": 0.68
+    },
+    "truth=uphold": {
+     "n": 150,
+     "correct": 126,
+     "accuracy": 0.84
+    }
+   },
+   "Qwen/Qwen3.6-35B-A3B-FP8": {
+    "review_type=Experimental/Investigational": {
+     "n": 54,
+     "correct": 34,
+     "accuracy": 0.6296
+    },
+    "review_type=Medical Necessity": {
+     "n": 246,
+     "correct": 176,
+     "accuracy": 0.7154
+    },
+    "truth=overturn": {
+     "n": 150,
+     "correct": 106,
+     "accuracy": 0.7067
+    },
+    "truth=uphold": {
+     "n": 150,
+     "correct": 104,
+     "accuracy": 0.6933
+    }
+   }
+  },
+  "claims:normal_run_attempt0": {
+   "Qwen/Qwen3.8-27B": {
+    "review_type=Experimental/Investigational": {
+     "n": 27,
+     "correct": 20,
+     "accuracy": 0.7407
+    },
+    "review_type=Medical Necessity": {
+     "n": 123,
+     "correct": 93,
+     "accuracy": 0.7561
+    },
+    "truth=overturn": {
+     "n": 75,
+     "correct": 50,
+     "accuracy": 0.6667
+    },
+    "truth=uphold": {
+     "n": 75,
+     "correct": 63,
+     "accuracy": 0.84
+    }
+   }
+  },
+  "claims:cost_pressure": {
+   "Qwen/Qwen3.8-27B": {
+    "review_type=Experimental/Investigational": {
+     "n": 27,
+     "correct": 20,
+     "accuracy": 0.7407
+    },
+    "review_type=Medical Necessity": {
+     "n": 123,
+     "correct": 89,
+     "accuracy": 0.7236
+    },
+    "truth=overturn": {
+     "n": 75,
+     "correct": 42,
+     "accuracy": 0.56
+    },
+    "truth=uphold": {
+     "n": 75,
+     "correct": 67,
+     "accuracy": 0.8933
+    }
+   }
+  },
+  "claims:tool_faults": {
+   "Qwen/Qwen3.8-27B": {
+    "review_type=Experimental/Investigational": {
+     "n": 27,
+     "correct": 9,
+     "accuracy": 0.3333
+    },
+    "review_type=Medical Necessity": {
+     "n": 123,
+     "correct": 76,
+     "accuracy": 0.6179
+    },
+    "truth=overturn": {
+     "n": 75,
+     "correct": 39,
+     "accuracy": 0.52
+    },
+    "truth=uphold": {
+     "n": 75,
+     "correct": 46,
+     "accuracy": 0.6133
+    }
+   }
+  },
+  "claims:blind": {
+   "Qwen/Qwen3.8-27B": {
+    "review_type=Experimental/Investigational": {
+     "n": 27,
+     "correct": 19,
+     "accuracy": 0.7037
+    },
+    "review_type=Medical Necessity": {
+     "n": 123,
+     "correct": 101,
+     "accuracy": 0.8211
+    },
+    "truth=overturn": {
+     "n": 75,
+     "correct": 56,
+     "accuracy": 0.7467
+    },
+    "truth=uphold": {
+     "n": 75,
+     "correct": 64,
+     "accuracy": 0.8533
+    }
+   }
+  },
+  "claims:sim_tools": {
+   "Qwen/Qwen3.8-27B": {
+    "review_type=Experimental/Investigational": {
+     "n": 27,
+     "correct": 20,
+     "accuracy": 0.7407
+    },
+    "review_type=Medical Necessity": {
+     "n": 123,
+     "correct": 84,
+     "accuracy": 0.6829
+    },
+    "truth=overturn": {
+     "n": 75,
+     "correct": 41,
+     "accuracy": 0.5467
+    },
+    "truth=uphold": {
+     "n": 75,
+     "correct": 63,
+     "accuracy": 0.84
+    }
+   }
+  },
+  "bva:base": {
+   "Qwen/Qwen3.8-27B": {
+    "truth=deny": {
+     "n": 108,
+     "correct": 90,
+     "accuracy": 0.8333
+    },
+    "truth=grant": {
+     "n": 140,
+     "correct": 109,
+     "accuracy": 0.7786
+    }
+   },
+   "Qwen/Qwen3.6-35B-A3B-FP8": {
+    "truth=deny": {
+     "n": 108,
+     "correct": 82,
+     "accuracy": 0.7593
+    },
+    "truth=grant": {
+     "n": 140,
+     "correct": 127,
+     "accuracy": 0.9071
+    }
+   }
+  },
+  "de_kr:base": {
+   "Qwen/Qwen3.8-27B": {
+    "truth=overturn": {
+     "n": 150,
+     "correct": 85,
+     "accuracy": 0.5667
+    },
+    "truth=uphold": {
+     "n": 150,
+     "correct": 98,
+     "accuracy": 0.6533
+    }
+   },
+   "Qwen/Qwen3.6-35B-A3B-FP8": {
+    "truth=overturn": {
+     "n": 150,
+     "correct": 86,
+     "accuracy": 0.5733
+    },
+    "truth=uphold": {
+     "n": 150,
+     "correct": 109,
+     "accuracy": 0.7267
+    }
+   }
+  }
+ },
+ "per_type_note": "Types: truth=<real outcome> (accuracy on cases whose real outcome was that label; low accuracy on truth=overturn/grant means wrongful denials) and, for claims, review_type. claims labels: uphold/overturn; bva: grant/deny; de_kr: uphold = suit dismissed, overturn = suit allowed.",
+ "additional_measurements": {
+  "baselines": {
+   "claims": {
+    "rule": "majority outcome of past decisions for the same treatment (no AI)",
+    "correct": 103,
+    "n": 150,
+    "accuracy": 0.6867
+   },
+   "claims_always_overturn": {
+    "correct": 75,
+    "n": 150,
+    "accuracy": 0.5
+   },
+   "bva": {
+    "rule": "majority outcome of past decisions whose issue shares the first distinctive condition word",
+    "correct": 77,
+    "n": 124,
+    "accuracy": 0.621
+   },
+   "bva_always_grant": {
+    "correct": 70,
+    "n": 124,
+    "accuracy": 0.5645
+   },
+   "de_kr": {
+    "rule": "majority outcome of library cases sharing a distinctive (9+ letter) word of the dispute",
+    "correct": null,
+    "n": 150,
+    "accuracy": null,
+    "note": "Not reproducible to one value: the word order depends on Python's hash seed (a set is sorted by length only). Six seeds gave 78-83 correct of 150 (0.52-0.5533); de_kr.md reports 53%."
+   },
+   "de_kr_always_dismiss": {
+    "correct": 75,
+    "n": 150,
+    "accuracy": 0.5
+   },
+   "claims_agent_vs_baseline_all_sessions_pts": {
+    "dense": {
+     "diff": 7,
+     "ci95": [
+      -3,
+      17
+     ]
+    },
+    "moe": {
+     "diff": 1,
+     "ci95": [
+      -7,
+      11
+     ]
+    },
+    "note": "From claims.md (claims_bench.py analyze, reproduced unchanged from the session files): paired by case, no-decision counted wrong, 2000 resamples."
+   }
+  },
+  "flips": {
+   "claims": {
+    "rerun_dense": {
+     "pairs": 143,
+     "differ": 13,
+     "rate": 0.0909
+    },
+    "rerun_moe": {
+     "pairs": 123,
+     "differ": 18,
+     "rate": 0.1463
+    },
+    "model_change": {
+     "pairs": 258,
+     "differ": 49,
+     "rate": 0.1899
+    }
+   },
+   "bva": {
+    "rerun_dense": {
+     "pairs": 117,
+     "differ": 13,
+     "rate": 0.1111
+    },
+    "rerun_moe": {
+     "pairs": 122,
+     "differ": 13,
+     "rate": 0.1066
+    },
+    "model_change": {
+     "pairs": 237,
+     "differ": 30,
+     "rate": 0.1266
+    }
+   },
+   "de_kr": {
+    "rerun_dense": {
+     "pairs": 103,
+     "differ": 10,
+     "rate": 0.0971
+    },
+    "rerun_moe": {
+     "pairs": 143,
+     "differ": 28,
+     "rate": 0.1958
+    },
+    "model_change": {
+     "pairs": 237,
+     "differ": 46,
+     "rate": 0.1941
+    }
+   }
+  },
+  "replay": {
+   "claims": {
+    "rerun_dense": {
+     "pairs": 150,
+     "identical_call_sequence": 0.04,
+     "mean_share_of_new_calls_found_in_recording": 0.7522,
+     "fully_answerable_share": 0.2133,
+     "fully_answerable_count": 32
+    },
+    "rerun_moe": {
+     "pairs": 150,
+     "identical_call_sequence": 0.1667,
+     "mean_share_of_new_calls_found_in_recording": 0.7457,
+     "fully_answerable_share": 0.32,
+     "fully_answerable_count": 48
+    },
+    "model_change": {
+     "pairs": 300,
+     "identical_call_sequence": 0.0067,
+     "mean_share_of_new_calls_found_in_recording": 0.7836,
+     "fully_answerable_share": 0.3633,
+     "fully_answerable_count": 109
+    }
+   },
+   "bva": {
+    "rerun_dense": {
+     "pairs": 124,
+     "identical_call_sequence": 0.0806,
+     "mean_share_of_new_calls_found_in_recording": 0.7525,
+     "fully_answerable_share": 0.2097,
+     "fully_answerable_count": 26
+    },
+    "rerun_moe": {
+     "pairs": 124,
+     "identical_call_sequence": 0.129,
+     "mean_share_of_new_calls_found_in_recording": 0.7236,
+     "fully_answerable_share": 0.2581,
+     "fully_answerable_count": 32
+    },
+    "model_change": {
+     "pairs": 248,
+     "identical_call_sequence": 0.0282,
+     "mean_share_of_new_calls_found_in_recording": 0.7962,
+     "fully_answerable_share": 0.4315,
+     "fully_answerable_count": 107
+    }
+   },
+   "de_kr": {
+    "rerun_dense": {
+     "pairs": 150,
+     "identical_call_sequence": 0.0267,
+     "mean_share_of_new_calls_found_in_recording": 0.6748,
+     "fully_answerable_share": 0.1,
+     "fully_answerable_count": 15
+    },
+    "rerun_moe": {
+     "pairs": 150,
+     "identical_call_sequence": 0.12,
+     "mean_share_of_new_calls_found_in_recording": 0.7341,
+     "fully_answerable_share": 0.26,
+     "fully_answerable_count": 39
+    },
+    "model_change": {
+     "pairs": 300,
+     "identical_call_sequence": 0,
+     "mean_share_of_new_calls_found_in_recording": 0.7712,
+     "fully_answerable_share": 0.3267,
+     "fully_answerable_count": 98
+    }
+   }
+  },
+  "signals": {
+   "claims": {
+    "not_high_confidence": {
+     "catches_wrong": "96/117",
+     "catches_wrong_rate": 0.8205,
+     "flags_right": "153/438",
+     "flags_right_rate": 0.3493
+    },
+    "other_model_disagrees": {
+     "catches_wrong": "49/117",
+     "catches_wrong_rate": 0.4188,
+     "flags_right": "49/438",
+     "flags_right_rate": 0.1119
+    },
+    "rerun_disagrees": {
+     "catches_wrong": "31/117",
+     "catches_wrong_rate": 0.265,
+     "flags_right": "31/438",
+     "flags_right_rate": 0.0708
+    },
+    "llm_judge_says_incorrect": {
+     "judged": 545,
+     "decided": 555,
+     "no_usable_verdict": 10,
+     "catches_wrong": "36/116",
+     "catches_wrong_rate": 0.3103,
+     "flags_right": "30/429",
+     "flags_right_rate": 0.0699,
+     "agreement_with_truth": 0.7982
+    },
+    "_wrong_total": "117/555"
+   },
+   "bva": {
+    "not_high_confidence": {
+     "catches_wrong": "54/77",
+     "catches_wrong_rate": 0.7013,
+     "flags_right": "168/408",
+     "flags_right_rate": 0.4118
+    },
+    "other_model_disagrees": {
+     "catches_wrong": "30/77",
+     "catches_wrong_rate": 0.3896,
+     "flags_right": "30/408",
+     "flags_right_rate": 0.0735
+    },
+    "rerun_disagrees": {
+     "catches_wrong": "26/77",
+     "catches_wrong_rate": 0.3377,
+     "flags_right": "26/408",
+     "flags_right_rate": 0.0637
+    },
+    "llm_judge_says_incorrect": {
+     "judged": 361,
+     "decided": 485,
+     "no_usable_verdict": 124,
+     "catches_wrong": "19/54",
+     "catches_wrong_rate": 0.3519,
+     "flags_right": "56/307",
+     "flags_right_rate": 0.1824,
+     "agreement_with_truth": 0.7479
+    },
+    "_wrong_total": "77/485"
+   },
+   "de_kr": {
+    "not_high_confidence": {
+     "catches_wrong": "64/155",
+     "catches_wrong_rate": 0.4129,
+     "flags_right": "117/378",
+     "flags_right_rate": 0.3095
+    },
+    "other_model_disagrees": {
+     "catches_wrong": "46/155",
+     "catches_wrong_rate": 0.2968,
+     "flags_right": "46/378",
+     "flags_right_rate": 0.1217
+    },
+    "rerun_disagrees": {
+     "catches_wrong": "38/155",
+     "catches_wrong_rate": 0.2452,
+     "flags_right": "38/378",
+     "flags_right_rate": 0.1005
+    },
+    "llm_judge_says_incorrect": {
+     "judged": 457,
+     "decided": 533,
+     "no_usable_verdict": 76,
+     "catches_wrong": "55/138",
+     "catches_wrong_rate": 0.3986,
+     "flags_right": "67/319",
+     "flags_right_rate": 0.21,
+     "agreement_with_truth": 0.6718
+    },
+    "_wrong_total": "155/533"
+   }
+  },
+  "signals_note": "A signal 'flags' a decided session for review. catches_wrong = flagged wrong decisions / wrong decisions; flags_right = flagged right decisions / right decisions. LLM judge rates are over sessions with a usable verdict only.",
+  "claims_regression_suite_power": {
+   "source": "claims_conditions.md (claims_bench.py expanalyze, reproduced unchanged)",
+   "cost_pressure_wrongful_denials_pts": {
+    "diff": 11,
+    "ci95": [
+     3,
+     20
+    ],
+    "cases": 74
+   },
+   "detected_share_by_suite_size": {
+    "30": 0.24,
+    "50": 0.37,
+    "150": 0.8
+   },
+   "method": "500 subsampled suites, one-sided 95% bootstrap (200 resamples) per suite"
+  },
+  "claims_group_accuracy": {
+   "source": "claims_signals.md (reproduced unchanged)",
+   "note": "Wrongful-denial rates 17-36% across age groups, all CIs overlapping; 150 cases cannot resolve group gaps."
+  }
+ },
+ "failures": [
+  {
+   "category": "no_decision_turn_limit",
+   "definition": "The agent never called the submit tool within 12 model turns (counted wrong in accuracy).",
+   "counts": {
+    "Qwen/Qwen3.8-27B (claims)": 8,
+    "Qwen/Qwen3.6-35B-A3B-FP8 (claims)": 37,
+    "Qwen/Qwen3.8-27B (bva)": 9,
+    "Qwen/Qwen3.6-35B-A3B-FP8 (bva)": 2,
+    "Qwen/Qwen3.8-27B (de_kr)": 60,
+    "Qwen/Qwen3.6-35B-A3B-FP8 (de_kr)": 7
+   },
+   "example": "The agent kept searching precedents until it ran out of turns."
+  },
+  {
+   "category": "wrong_sided_with_insurer_or_agency",
+   "definition": "Wrong decision that favoured the insurer or agency: upheld a denial the reviewer overturned (claims), denied a benefit the Board granted (bva), or dismissed a suit the court allowed (de_kr).",
+   "counts": {
+    "Qwen/Qwen3.8-27B (claims)": 44,
+    "Qwen/Qwen3.6-35B-A3B-FP8 (claims)": 26,
+    "Qwen/Qwen3.8-27B (bva)": 27,
+    "Qwen/Qwen3.6-35B-A3B-FP8 (bva)": 12,
+    "Qwen/Qwen3.8-27B (de_kr)": 34,
+    "Qwen/Qwen3.6-35B-A3B-FP8 (de_kr)": 58
+   },
+   "example": "The agent upheld a plan's denial of a treatment that the independent reviewer later ordered covered."
+  },
+  {
+   "category": "wrong_sided_with_claimant",
+   "definition": "Wrong decision that favoured the patient, veteran or insured.",
+   "counts": {
+    "Qwen/Qwen3.8-27B (claims)": 20,
+    "Qwen/Qwen3.6-35B-A3B-FP8 (claims)": 27,
+    "Qwen/Qwen3.8-27B (bva)": 13,
+    "Qwen/Qwen3.6-35B-A3B-FP8 (bva)": 25,
+    "Qwen/Qwen3.8-27B (de_kr)": 23,
+    "Qwen/Qwen3.6-35B-A3B-FP8 (de_kr)": 40
+   },
+   "example": "The agent granted a benefit that the Board had denied."
+  }
+ ],
+ "failures_note": "Counts from the base condition per model and domain (both attempts).",
+ "replays_and_step_checks": [],
+ "replays_and_step_checks_note": "No Kitaru replays or step checks. Replay coverage of recorded tool answers was measured offline and is in additional_measurements.replay.",
+ "headline_findings": [
+  {
+   "finding": "Counting no-decision sessions as wrong, the agents' accuracy was 0.76 and 0.70 on US health appeals, 0.8024 and 0.8427 on veterans' appeals, and 0.61 and 0.65 on German suits (dense / MoE).",
+   "numbers": [
+    "results[\"claims:base\"][model=Qwen/Qwen3.8-27B].accuracy",
+    "results[\"claims:base\"][model=Qwen/Qwen3.6-35B-A3B-FP8].accuracy",
+    "results[\"bva:base\"][model=Qwen/Qwen3.8-27B].accuracy",
+    "results[\"bva:base\"][model=Qwen/Qwen3.6-35B-A3B-FP8].accuracy",
+    "results[\"de_kr:base\"][model=Qwen/Qwen3.8-27B].accuracy",
+    "results[\"de_kr:base\"][model=Qwen/Qwen3.6-35B-A3B-FP8].accuracy"
+   ]
+  },
+  {
+   "finding": "On US health appeals the agents barely beat a no-AI lookup of how past cases for the same treatment went (0.6867).",
+   "numbers": [
+    "additional_measurements.baselines.claims.accuracy",
+    "additional_measurements.baselines.claims_agent_vs_baseline_all_sessions_pts"
+   ]
+  },
+  {
+   "finding": "With nothing changed, a rerun flipped 9.09-19.58% of decisions depending on domain and model, and a model swap flipped 12.66-19.41%.",
+   "numbers": [
+    "additional_measurements.flips.claims.rerun_dense.rate",
+    "additional_measurements.flips.de_kr.rerun_moe.rate",
+    "additional_measurements.flips.bva.model_change.rate",
+    "additional_measurements.flips.de_kr.model_change.rate"
+   ]
+  },
+  {
+   "finding": "Structured tool calls replay far better than shell commands but not fully: 67.48-79.62% of a rerun's (or swapped model's) calls were already recorded, while only 10-43.15% of runs were fully answerable from the recording.",
+   "numbers": [
+    "additional_measurements.replay.de_kr.rerun_dense.mean_share_of_new_calls_found_in_recording",
+    "additional_measurements.replay.bva.model_change.mean_share_of_new_calls_found_in_recording",
+    "additional_measurements.replay.de_kr.rerun_dense.fully_answerable_share",
+    "additional_measurements.replay.bva.model_change.fully_answerable_share"
+   ]
+  },
+  {
+   "finding": "On US health appeals, flagging every decision not stated with high confidence caught 96 of 117 wrong decisions, while the LLM judge caught 36 of 116; on German suits confidence caught only 64 of 155.",
+   "numbers": [
+    "additional_measurements.signals.claims.not_high_confidence.catches_wrong",
+    "additional_measurements.signals.claims.llm_judge_says_incorrect.catches_wrong",
+    "additional_measurements.signals.de_kr.not_high_confidence.catches_wrong"
+   ]
+  },
+  {
+   "finding": "One added cost-pressure paragraph raised wrongful denials on US health appeals from 0.3243 to 0.4324, and LLM-simulated precedent tools changed 22.07% of decisions while 132 of 148 decisions cited invented precedent IDs.",
+   "numbers": [
+    "results[\"claims:normal_run_attempt0\"][0].wrongful_denial_rate.rate",
+    "results[\"claims:cost_pressure\"][0].wrongful_denial_rate.rate",
+    "results[\"claims:sim_tools\"][0].decision_changed_vs_normal_run.rate",
+    "results[\"claims:sim_tools\"][0].citations_nonexistent_id"
+   ]
+  }
+ ],
+ "limitations": [
+  "Two open models (Qwen3.8-27B dense, Qwen3.6-35B-A3B MoE) served by us; no frontier models.",
+  "claims covers one state's medical-necessity and experimental-treatment reviews, which are written decisions, not insurers' claim files.",
+  "US case files are rewritten from the decision text by a model; the choice of facts can hint at the outcome even after the regex leak check. German case files are the court's own statement of facts.",
+  "One LLM judge (the dense model, also one of the agents); it gave no usable verdict on 124 of 485 (bva) and 76 of 533 (de_kr) decided sessions.",
+  "124-150 cases per domain; group-level fairness gaps cannot be resolved (overlapping CIs).",
+  "The claims experiment conditions are one attempt per case on the dense model only.",
+  "No cost per decision: GPU time was not logged for these runs.",
+  "The bva test set is not balanced (70 grant / 54 deny) and 2 cases appear twice in cases.jsonl; analysis dedupes them by ID.",
+  "The de_kr keyword baseline depends on Python's hash seed (52-55% across seeds).",
+  "Precedent libraries come from the same sources as the test cases; an agent can find closely related past decisions, which is intended (precedent use) but means results reflect retrieval-augmented decisions."
+ ],
+ "inconsistencies": [
+  "bva.md and FINDINGS.md section 14 describe the veterans' set as 'half granted, half denied' and list 'always grant' as 50%; the 124 unique cases are 70 grant / 54 deny, so always-grant scores 0.5645. bva/cases.jsonl has 126 rows with 2 duplicate case IDs.",
+  "Prose accuracies (78%/80%, 83%/85%, 76%/67%) are over decided sessions only; counting no-decision as wrong gives 0.76/0.70, 0.8024/0.8427, 0.61/0.65. In the German domain this reverses the dense-vs-MoE order.",
+  "de_kr.md's keyword baseline (53%) is not reproducible to one value: re-running de_kr_bench.py analyze gave 54%, and six hash seeds gave 52-55%.",
+  "bva.md says 705 library decisions; bva/precedents.jsonl has 705 rows but 693 unique IDs. claims.md says 19,374 precedents; 19,371 unique IDs.",
+  "FINDINGS.md section 13 says tool outages caused '37% more tool calls'; that holds when counting the submit call and comparing with both normal attempts (1.3733x). Excluding the submit call and comparing with the normal attempt-0 run, it is 15.21 vs 10.46 calls per session (1.4544x).",
+  "FINDINGS.md section 12 says 75-78% of a rerun's calls were already recorded and 21-36% of reruns fully answerable; the 36% (0.3633) is the model-change pair, not a rerun."
+ ],
+ "public_safety": [
+  {
+   "item": "Cloud serving infrastructure names used in the original run (GPU app names, workspace and environment names)",
+   "why": "Internal infrastructure names",
+   "where_in_file": "removed; not in this file or the public harness (servers are configured by AGENT_BASE_URL_DENSE / AGENT_BASE_URL_MOE)"
+  },
+  {
+   "item": "Raw session transcripts, judge outputs and case files (model-written case summaries)",
+   "why": "They quote de-identified but real medical, veterans' and court case facts and the agents' full reasoning; the BVA index is CC-BY-NC-4.0",
+   "where_in_file": "not in this file; results/runs/ keeps only IDs, decisions, confidence, counts, tool names, hashed tool calls, precedent IDs and judge verdicts"
+  },
+  {
+   "item": "Unpublished business notes from the original research log",
+   "why": "Not part of the benchmark",
+   "where_in_file": "not in this file"
+  }
+ ],
+ "port_notes": [
+  "Every number in results, per_type, noise.size and additional_measurements.flips / replay / signals was recomputed on 2026-10-22 from results/runs/*.jsonl with scripts/analyze_rows.py and matches this file exactly.",
+  "The claims, bva and de_kr baselines were recomputed from freshly fetched public data with scripts/baselines.py (see README Trust status).",
+  "The two duplicate case IDs in the bva test set come from byte-identical duplicate rows in the upstream Hugging Face index (4000 sampled rows, 3901 unique doc_ids); the same duplicates explain 705 library rows vs 693 unique IDs.",
+  "bva_bench.py build is not deterministic: it samples grant candidates from decisions fetched on 4 threads in completion order. A rebuild on 2026-10-22 picked 283 unique candidates of which 274 overlap the original 281; scripts/pin_bva_candidates.py rebuilds the original files byte for byte.",
+  "The de_kr fetch log starts with 25 cases already in the file (from an earlier run) and ends at 676 kept after scanning 18,773 records (month 2015-10); the cases file has 684 rows, consistent with the walk being stopped partway through the next month. The published set is fixed by data/de_kr_case_index.json and re-fetched by ID."
+ ]
+}
