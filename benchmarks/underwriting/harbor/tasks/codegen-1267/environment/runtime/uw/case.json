@@ -1,0 +1,15 @@
+{
+ "id": "codegen-1267",
+ "task": "Product Recommendations",
+ "company": {
+  "company name": "QuickStop Mart & Fuel",
+  "annual revenue": 7800000,
+  "number of employees": 24,
+  "total payroll": 620000,
+  "number of vehicles": 2,
+  "building construction": "Hybrid Non-Combustible / Combustible) \u2013 Examples include concrete tilt-up construction with wood glulam (subdiaphragm) roof.",
+  "state": "Ohio",
+  "company description": "QuickStop Mart & Fuel is a community favorite in suburban Ohio, operating a single, busy location with 8 pumping stations and a 2,500 sq ft convenience store. It offers gasoline, diesel, snacks, drinks, basic groceries, and a small coffee counter. QuickStop also provides a drive-thru car wash and basic automotive fluids but does not have a full-service mechanic. The business is known for its friendly staff, well-lit lot, and locally sourced products inside the store.",
+  "lob": "property"
+ }
+}

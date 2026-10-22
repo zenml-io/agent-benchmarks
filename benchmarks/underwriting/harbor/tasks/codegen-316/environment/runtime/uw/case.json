@@ -1,0 +1,15 @@
+{
+ "id": "codegen-316",
+ "task": "Appetite Check",
+ "company": {
+  "company name": "Abrasive Innovators LLC",
+  "annual revenue": 3500000,
+  "number of employees": 29,
+  "total payroll": 900000,
+  "number of vehicles": 2,
+  "building construction": "Non-combustible \u2013 Examples included steel columns, beams and deck/floors.",
+  "state": "Minnesota",
+  "company description": "Abrasive Innovators LLC develops and manufactures high-efficiency diamond grinding wheels and custom sandpaper rolls for industrial maintenance and construction companies. Their focus is on precision grinding products for metal fabrication and woodworking shops.",
+  "lob": "cyber"
+ }
+}

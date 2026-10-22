@@ -1,0 +1,5 @@
+# An off-the-shelf harness: Claude Code reads instruction.md and uses the task's `underwriting` MCP server.
+# It keeps its own system prompt; the prompt setups above apply to the benchmark's loop only.
+agents:
+  - name: claude-code
+    model_name: anthropic/claude-haiku-5-5

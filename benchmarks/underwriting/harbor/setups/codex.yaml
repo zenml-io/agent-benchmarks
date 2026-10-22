@@ -1,0 +1,4 @@
+# An off-the-shelf harness: Codex reads instruction.md and uses the task's `underwriting` MCP server.
+agents:
+  - name: codex
+    model_name: openai/gpt-6-luna

@@ -1,0 +1,7 @@
+# The benchmark's own agent loop, first prompt, effort / reasoning effort "medium" on the agent's calls.
+agents:
+  - name: copilot-effort-medium
+    import_path: underwriting_agent.agent:UnderwritingCopilot
+    model_name: haiku-5.5  # a key from src/models_client/models.py; Harbor ignores -m when the agent comes from a config
+    kwargs:
+      effort: medium

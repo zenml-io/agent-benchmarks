@@ -1,0 +1,57 @@
+[
+  {
+    "name": "underwriting-sample",
+    "version": "0.1.0",
+    "description": "Underwriting copilot, 12-case sample (2 per question type) of 252 Snorkel AI multi-turn insurance underwriting cases: database and guideline tools, a simulated underwriter and a final-answer tool on an MCP server; graded by two LLM judges with a tie-break (needs OPENAI_API_KEY and EVAL_ANTHROPIC_API_KEY). Build the full, learning and held-out sets with benchmarks/underwriting/harbor/generate_tasks.py.",
+    "tasks": [
+      {
+        "name": "codegen-1050",
+        "path": "benchmarks/underwriting/harbor/tasks/codegen-1050"
+      },
+      {
+        "name": "codegen-1267",
+        "path": "benchmarks/underwriting/harbor/tasks/codegen-1267"
+      },
+      {
+        "name": "codegen-132",
+        "path": "benchmarks/underwriting/harbor/tasks/codegen-132"
+      },
+      {
+        "name": "codegen-1622",
+        "path": "benchmarks/underwriting/harbor/tasks/codegen-1622"
+      },
+      {
+        "name": "codegen-277",
+        "path": "benchmarks/underwriting/harbor/tasks/codegen-277"
+      },
+      {
+        "name": "codegen-316",
+        "path": "benchmarks/underwriting/harbor/tasks/codegen-316"
+      },
+      {
+        "name": "codegen-457",
+        "path": "benchmarks/underwriting/harbor/tasks/codegen-457"
+      },
+      {
+        "name": "codegen-51",
+        "path": "benchmarks/underwriting/harbor/tasks/codegen-51"
+      },
+      {
+        "name": "codegen-718",
+        "path": "benchmarks/underwriting/harbor/tasks/codegen-718"
+      },
+      {
+        "name": "codegen-733",
+        "path": "benchmarks/underwriting/harbor/tasks/codegen-733"
+      },
+      {
+        "name": "codegen-83",
+        "path": "benchmarks/underwriting/harbor/tasks/codegen-83"
+      },
+      {
+        "name": "main-124",
+        "path": "benchmarks/underwriting/harbor/tasks/main-124"
+      }
+    ]
+  }
+]

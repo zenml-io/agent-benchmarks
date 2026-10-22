@@ -1,0 +1,7 @@
+# The benchmark's own agent loop with the shared rewritten prompt (Sonnet 5.5's v1, used unchanged on every model).
+agents:
+  - name: copilot-shared
+    import_path: underwriting_agent.agent:UnderwritingCopilot
+    model_name: haiku-5.5  # a key from src/models_client/models.py; Harbor ignores -m when the agent comes from a config
+    kwargs:
+      prompt_file: ../results/tuned/prompts/sonnet-5.5/v1.txt

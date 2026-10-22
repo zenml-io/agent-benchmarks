@@ -8,7 +8,7 @@ Every benchmark follows the same layout ([STANDARD.md](STANDARD.md)): a README w
 
 | Benchmark | Question | Status | Harbor |
 |---|---|---|---|
-| [underwriting](benchmarks/underwriting) | What does a correct decision cost when 12 models run the same insurance underwriting agent, and how much of the gap is the prompt? | complete (Oct 21-22, 2026) | portable |
+| [underwriting](benchmarks/underwriting) | What does a correct decision cost when 12 models run the same insurance underwriting agent, and how much of the gap is the prompt? | complete (Oct 21-22, 2026) | native ([harbor/](benchmarks/underwriting/harbor): four checks pass on a 12-case sample; no model run yet) |
 | [tau2-telecom](benchmarks/tau2-telecom) | If you swap the model behind a tau2-bench Telecom support agent, or fix its prompt, does it solve more tasks, and does a cheap step screen predict which swaps will? | complete (Oct 22, 2026) | portable (Harbor hosts the tasks) |
 | [model-swap-on-recorded-traffic](benchmarks/model-swap-on-recorded-traffic) | Can a step-level replay of an agent's recorded model calls pick replacement models that keep full-run task success? | complete; full-run ground truth withheld | not applicable (step check) |
 | [swapbench](benchmarks/swapbench) | Is it safe to swap the model behind a production customer-service agent, and which checks can tell? | complete; hosted-provider results withheld | portable |

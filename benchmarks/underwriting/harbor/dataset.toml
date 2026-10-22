@@ -1,0 +1,60 @@
+# Dataset manifest for zenml/underwriting-sample (the 12 committed tasks in tasks/).
+# After changing a task: harbor sync (refreshes the digests). The full sets are built locally by generate_tasks.py.
+
+[dataset]
+name = "zenml/underwriting-sample"
+version = "0.1.0"
+description = "Underwriting copilot, 12-case sample (2 per question type) of the 252 Snorkel AI multi-turn insurance underwriting cases: six read-only database and guideline tools, a simulated underwriter and a final-answer tool on an MCP server; graded by the original two LLM judges with a tie-break. https://github.com/zenml-io/agent-benchmarks/tree/main/benchmarks/underwriting"
+keywords = [ "underwriting", "insurance", "multi-turn", "simulated-user", "mcp",]
+[[dataset.authors]]
+name = "ZenML"
+
+
+[[tasks]]
+name = "zenml/underwriting-codegen-1050"
+digest = "sha256:c905f9bf17700aa6c1ed3cd7aeaff8b090101fe8b7faf2a0b390c59270fc3ecb"
+
+[[tasks]]
+name = "zenml/underwriting-codegen-1267"
+digest = "sha256:e15b5cb2af102527a3edd764957cf7bede82f05717768d37997fd86863c0a30b"
+
+[[tasks]]
+name = "zenml/underwriting-codegen-132"
+digest = "sha256:2ab60b982d9c2cbea968a0242a637fc6ce01db1319ffe47ade3ea74e8a7b56dc"
+
+[[tasks]]
+name = "zenml/underwriting-codegen-1622"
+digest = "sha256:eca753dcff5a36b99261bb3865e38c5a2c1641273a07beb9908765b3294edc25"
+
+[[tasks]]
+name = "zenml/underwriting-codegen-277"
+digest = "sha256:8fe0f9d0fb842b4af9d1e61d8e89f9edfe395e7f5098c4840897573955972482"
+
+[[tasks]]
+name = "zenml/underwriting-codegen-316"
+digest = "sha256:f1dbb0252c00d7ede7037da9351f262f6816bf50bf56c6966a9b72b72879791b"
+
+[[tasks]]
+name = "zenml/underwriting-codegen-457"
+digest = "sha256:cee3fc6b307504b2504c19bfd542620ecf107702ee3581807e69a1b7b4671959"
+
+[[tasks]]
+name = "zenml/underwriting-codegen-51"
+digest = "sha256:2858f6b45be429a101221e2e1743d306dc72eac533ec0ae66fac95db150a2ab7"
+
+[[tasks]]
+name = "zenml/underwriting-codegen-718"
+digest = "sha256:695e47592e7de8b6e442905c11b91cbc36aa31ce98d073ceaaf302afe361f8bd"
+
+[[tasks]]
+name = "zenml/underwriting-codegen-733"
+digest = "sha256:ee1f067811deb69b269df0610a3e04dc8ed103296be10564c0ecedac8f767890"
+
+[[tasks]]
+name = "zenml/underwriting-codegen-83"
+digest = "sha256:15bfa996c4ac8cfad650674da59478ae2965db7390bf81b54cd7cb27305f2d86"
+
+[[tasks]]
+name = "zenml/underwriting-main-124"
+digest = "sha256:1bec96f5324b97053ac661bd8fd0d753bd70c16c8ffbc56d97f287d9bf54b80c"
+

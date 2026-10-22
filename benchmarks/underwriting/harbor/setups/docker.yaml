@@ -1,0 +1,3 @@
+# Run each trial on local Docker.
+environment:
+  type: docker

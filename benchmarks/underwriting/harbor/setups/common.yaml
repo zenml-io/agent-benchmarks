@@ -1,0 +1,6 @@
+# Shared by every run. Stack with an environment file, a task-set file and one setup file:
+#   harbor run -c setups/common.yaml -c setups/modal.yaml -c setups/tasks-sample.yaml -c setups/copilot-first.yaml -m haiku-5.5 ...
+n_attempts: 5
+n_concurrent_trials: 4
+retry:
+  max_retries: 0

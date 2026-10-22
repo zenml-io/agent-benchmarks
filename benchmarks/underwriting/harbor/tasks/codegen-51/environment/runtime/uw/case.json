@@ -1,0 +1,15 @@
+{
+ "id": "codegen-51",
+ "task": "Deductibles",
+ "company": {
+  "company name": "QuickTax Pro",
+  "annual revenue": 920000,
+  "number of employees": 8,
+  "total payroll": 310000,
+  "number of vehicles": 0,
+  "building construction": "Non-combustible \u2013 Examples included steel columns, beams and deck/floors.",
+  "state": "Texas",
+  "company description": "QuickTax Pro in Dallas, Texas provides individual and small business tax return preparation services. The company has a team of experienced tax preparers who focus on maximizing returns and ensuring compliance. They operate on extended hours during tax season and offer remote and in-person appointments.",
+  "lob": "workers compensation"
+ }
+}

@@ -16,3 +16,7 @@ replay/out/
 replay/logs/
 replay/jev_sound.json
 logs/
+# Harbor task sets built locally by harbor/generate_tasks.py (the 12-task sample in harbor/tasks/ is committed)
+harbor/tasks-full/
+harbor/tasks-held/
+harbor/tasks-learn/

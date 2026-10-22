@@ -1,0 +1,15 @@
+{
+ "id": "main-124",
+ "task": "Business Classification",
+ "company": {
+  "company name": "QuickRunner Couriers",
+  "annual revenue": 14800000,
+  "number of employees": 76,
+  "total payroll": 3300000,
+  "number of vehicles": 55,
+  "building construction": "Non-combustible \u2013 Examples included steel columns, beams and deck/floors.",
+  "state": "California",
+  "company description": "QuickRunner Couriers provides same-day and scheduled package, meal, and grocery deliveries within Los Angeles County. The company operates a fleet of cars, small cargo vans, and bicycles, and serves law offices, restaurants, and e-commerce clients with mobile app integration and real-time order tracking.",
+  "lob": "cyber"
+ }
+}

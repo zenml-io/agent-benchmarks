@@ -1,0 +1,15 @@
+{
+ "id": "codegen-718",
+ "task": "Small Business Elibility Check",
+ "company": {
+  "company name": "AdventureQuest Recreation Group",
+  "annual revenue": 12400000,
+  "number of employees": 95,
+  "total payroll": 2750000,
+  "number of vehicles": 22,
+  "building construction": "Hybrid Non-Combustible / Combustible) \u2013 Examples include concrete tilt-up construction with wood glulam (subdiaphragm) roof.",
+  "state": "Colorado",
+  "company description": "AdventureQuest Recreation Group offers a range of recreational activities across Colorado's front range, including whitewater rafting, zip lining, paintball, archery ranges, and seasonal escape room attractions. The company operates four adventure parks, each designed to immerse visitors in themed, family-friendly experiences. AdventureQuest is known for its carefully trained guide staff, innovative team-building corporate retreats, youth adventure camps, and environmentally responsible operations. Their vehicle fleet is used for guest transport and off-site adventure excursions.",
+  "lob": "property"
+ }
+}

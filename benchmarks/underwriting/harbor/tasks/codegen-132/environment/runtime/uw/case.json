@@ -1,0 +1,15 @@
+{
+ "id": "codegen-132",
+ "task": "Policy Limits",
+ "company": {
+  "company name": "Bayou Chocolate Delights",
+  "annual revenue": 3200000,
+  "number of employees": 35,
+  "total payroll": 1100000,
+  "number of vehicles": 1,
+  "building construction": "Wood Frame Construction \u2013 Examples include wood or metal stud construction; this type of construction has low assembly fire resistivity.",
+  "state": "Louisiana",
+  "company description": "Bayou Chocolate Delights specializes in hand-crafted pralines, truffles, and filled bonbons using premium couverture chocolate. The company serves the local market through a flagship boutique and online sales, emphasizing New Orleans-inspired flavors and artisanal techniques. Bayou Chocolate Delights also offers custom gifts for businesses and special occasions.",
+  "lob": "workers compensation"
+ }
+}

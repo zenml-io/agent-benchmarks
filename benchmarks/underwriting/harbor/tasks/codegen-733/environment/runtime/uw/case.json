@@ -1,0 +1,15 @@
+{
+ "id": "codegen-733",
+ "task": "Small Business Elibility Check",
+ "company": {
+  "company name": "MetroShot Ammo Manufacturing",
+  "annual revenue": 160000000,
+  "number of employees": 820,
+  "total payroll": 51000000,
+  "number of vehicles": 17,
+  "building construction": "Non-combustible \u2013 Examples included steel columns, beams and deck/floors.",
+  "state": "North Carolina",
+  "company description": "MetroShot Ammo Manufacturing operates from a secure facility in North Carolina, specializing in the production of high-quality handgun and rifle ammunition. Major customers include law enforcement agencies, sport shooting associations, and retail distributors. MetroShot employs advanced quality assurance and ballistic testing protocols and has developed several proprietary rounds designed for target shooting and personal protection. Their logistics team coordinates deliveries across the southeast by a dedicated vehicle fleet.",
+  "lob": "cyber"
+ }
+}

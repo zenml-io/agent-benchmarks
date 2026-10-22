@@ -1,0 +1,53 @@
+***General***
+We write policies for small businesses only. Any business that fails to qualify as a "small business" is out of appetite, so we will not write a policy for it.
+
+***Property LOB***
+
+For property LOB, business classes pertaining to hospitality or leasing are only in appetite if the building construction is sufficiently fire resistive. 
+This means the building construction codes are either Type I or Type II.
+
+Specifically, this is relevant to the following NAICS codes using the 2022 schema:
+
+531110	Lessors of Residential Buildings and Dwellings
+531120	Lessors of Nonresidential Buildings
+531130	Lessors of Miniwarehouses and Self-Storage Units
+531190	Lessors of Other Real Estate Property
+
+721110	Hotels (except Casino Hotels) and Motels
+721120	Casino Hotels
+721191	Bed-and-Breakfast Inns
+
+***Policy Limits***
+
+For most small business policies we recommend a per-occurence limit of $1 million and an aggregate limit of $2 million.
+
+However, for cyber liability insurance coverage: Industry, business type, amount, and type of customer data handled determine how much cyber insurance businesses need. 
+Specifically we recommend much higher limits of $3 million per-occurence and $5 million aggregate for cyber LOB for the following NAICS classes:
+
+NAICS code 517: Telecommunications
+NAICS code 518: Computing Infrastructure Providers, Data Processing, Web Hosting, and Related Services
+NAICS code 52: Finance and Insurance
+NAICS code 621: Ambulatory Health Care Services
+NAICS code 622310: Specialty Hospitals
+NAICS code 623: Nursing and Residential Care Facilities
+NAICS code 92: Public Administration
+
+***Policy Deductibles***
+
+For most small business policies we recommend a deductible of $500 across LOBs. 
+
+However, for auto insurance we generally recommend a $1000 deductible, and for the following NAICS codes we recommend a $5000 deductible:
+
+NAICS code 484: Freight Trucking
+NAICS code 4853: Taxi and Limousine Services
+NAICS code 4854: School and Employee Bus Transportation
+NAICS code 4855: Charter Bus Services
+NAICS code 4871: Scenic and Sightseeing Transportation (Land)
+
+***Auto LOB***
+
+If our appetite guide for an auto policy indicates "qualified", then we determine final appetite according to whether the applicant has over 20 vehicles, in which case we decline because the exposure is too high.
+
+***Worker's Compensation LOB***
+
+If our appetite guide for a worker's compensation policy indicates "qualified", then we determine final appetite according to whether the applicant has a total annual payroll of over $5M, in which case we decline because the exposure is too high.

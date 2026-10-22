@@ -1,0 +1,3 @@
+# All 252 cases. Build first: python generate_tasks.py --out tasks-full
+datasets:
+  - path: tasks-full

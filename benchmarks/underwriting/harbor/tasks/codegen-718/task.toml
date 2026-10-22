@@ -1,0 +1,32 @@
+schema_version = "1.4"
+
+[task]
+name = "zenml/underwriting-codegen-718"
+version = "0.1.0"
+description = "Underwriting copilot, Small Business Elibility Check: answer an underwriter's request using a read-only insurance database, guidelines and questions to a simulated underwriter (case codegen-718, held split)."
+keywords = ["underwriting", "insurance", "multi-turn", "simulated-user", "mcp"]
+
+[metadata]
+benchmark = "underwriting"
+case_id = "codegen-718"
+question_type = "Small Business Elibility Check"
+source = "codegen"
+split = "held"
+data = "Snorkel AI Multi-Turn Insurance Underwriting (Apache-2.0), environment rebuilt by scripts/fetch_data.sh"
+
+[agent]
+timeout_sec = 1800.0
+
+[verifier]
+timeout_sec = 600.0
+env = { OPENAI_API_KEY = "${OPENAI_API_KEY:-}", EVAL_ANTHROPIC_API_KEY = "${EVAL_ANTHROPIC_API_KEY:-}" }
+
+[environment]
+build_timeout_sec = 900.0
+cpus = 1
+memory_mb = 2048
+
+[[environment.mcp_servers]]
+name = "underwriting"
+transport = "streamable-http"
+url = "http://uw-runtime:8000/mcp"

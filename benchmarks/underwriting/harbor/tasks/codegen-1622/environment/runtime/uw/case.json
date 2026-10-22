@@ -1,0 +1,15 @@
+{
+ "id": "codegen-1622",
+ "task": "Deductibles",
+ "company": {
+  "company name": "Swift Move Logistics",
+  "annual revenue": 5300000,
+  "number of employees": 38,
+  "total payroll": 1720000,
+  "number of vehicles": 14,
+  "building construction": "Non-combustible \u2013 Examples included steel columns, beams and deck/floors.",
+  "state": "Ohio",
+  "company description": "Swift Move Logistics specializes in moving used household goods and office equipment for clients relocating within the Midwest. They offer services such as packing, loading, transit, unloading, and even short-term and long-term storage solutions. Their team handles both local and long-distance relocations, serving individuals and small businesses. The company operates a fleet of trucks tailored for safe and efficient transport, and employs full-time movers, drivers, and logistics personnel.",
+  "lob": "auto"
+ }
+}

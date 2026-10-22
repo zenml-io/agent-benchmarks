@@ -1,0 +1,15 @@
+{
+ "id": "codegen-1050",
+ "task": "Appetite Check",
+ "company": {
+  "company name": "Sleepy Fox Bed & Breakfast",
+  "annual revenue": 430000,
+  "number of employees": 3,
+  "total payroll": 85000,
+  "number of vehicles": 1,
+  "building construction": "Wood Frame Construction \u2013 Examples include wood or metal stud construction; this type of construction has low assembly fire resistivity.",
+  "state": "Vermont",
+  "company description": "The Sleepy Fox Bed & Breakfast is a seven-room historic farmhouse nestled in rural Vermont. It offers a cozy, personalized lodging experience for travelers, with gourmet homemade breakfasts featuring local ingredients. The owners provide onsite hospitality, seasonal farm-to-table dinner events, and guided nature walks on surrounding trails.",
+  "lob": "property"
+ }
+}

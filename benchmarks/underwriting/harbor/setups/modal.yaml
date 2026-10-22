@@ -1,0 +1,3 @@
+# Run each trial in a Modal sandbox (Docker-in-Docker for the two-container task). Needs MODAL_TOKEN_ID/SECRET.
+environment:
+  type: modal

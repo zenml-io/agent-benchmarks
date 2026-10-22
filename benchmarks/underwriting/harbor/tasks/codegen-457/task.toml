@@ -1,0 +1,32 @@
+schema_version = "1.4"
+
+[task]
+name = "zenml/underwriting-codegen-457"
+version = "0.1.0"
+description = "Underwriting copilot, Product Recommendations: answer an underwriter's request using a read-only insurance database, guidelines and questions to a simulated underwriter (case codegen-457, held split)."
+keywords = ["underwriting", "insurance", "multi-turn", "simulated-user", "mcp"]
+
+[metadata]
+benchmark = "underwriting"
+case_id = "codegen-457"
+question_type = "Product Recommendations"
+source = "codegen"
+split = "held"
+data = "Snorkel AI Multi-Turn Insurance Underwriting (Apache-2.0), environment rebuilt by scripts/fetch_data.sh"
+
+[agent]
+timeout_sec = 1800.0
+
+[verifier]
+timeout_sec = 600.0
+env = { OPENAI_API_KEY = "${OPENAI_API_KEY:-}", EVAL_ANTHROPIC_API_KEY = "${EVAL_ANTHROPIC_API_KEY:-}" }
+
+[environment]
+build_timeout_sec = 900.0
+cpus = 1
+memory_mb = 2048
+
+[[environment.mcp_servers]]
+name = "underwriting"
+transport = "streamable-http"
+url = "http://uw-runtime:8000/mcp"

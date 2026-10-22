@@ -1,0 +1,3 @@
+# The committed sample: 12 cases, 2 per question type (harbor/tasks).
+datasets:
+  - path: tasks

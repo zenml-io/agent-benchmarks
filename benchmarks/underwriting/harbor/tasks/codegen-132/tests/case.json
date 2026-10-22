@@ -1,0 +1,5 @@
+{
+ "id": "codegen-132",
+ "task": "Policy Limits",
+ "reference": "You should offer a per-incident policy limit of $1.0 million and an aggregate limit of $2.0 million."
+}

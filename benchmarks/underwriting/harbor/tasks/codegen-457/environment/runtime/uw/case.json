@@ -1,0 +1,15 @@
+{
+ "id": "codegen-457",
+ "task": "Product Recommendations",
+ "company": {
+  "company name": "Summit Dental Labs",
+  "annual revenue": 3200000,
+  "number of employees": 44,
+  "total payroll": 1600000,
+  "number of vehicles": 2,
+  "building construction": "Hybrid Non-Combustible / Combustible) \u2013 Examples include concrete tilt-up construction with wood glulam (subdiaphragm) roof.",
+  "state": "Florida",
+  "company description": "Summit Dental Labs crafts custom dental restorations, including crowns, bridges, implant-supported dentures, and nighttime teeth guards. Using computer-aided design (CAD) and 3D printing, Summit provides precision-fit appliances to dental practices, offering overnight delivery in the Southeast and direct consultation services for challenging cases.",
+  "lob": "auto"
+ }
+}

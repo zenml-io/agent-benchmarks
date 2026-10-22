@@ -1,0 +1,15 @@
+{
+ "id": "codegen-277",
+ "task": "Business Classification",
+ "company": {
+  "company name": "AirFlow Supply Company",
+  "annual revenue": 6200000,
+  "number of employees": 24,
+  "total payroll": 1150000,
+  "number of vehicles": 5,
+  "building construction": "Hybrid Non-Combustible / Combustible) \u2013 Examples include concrete tilt-up construction with wood glulam (subdiaphragm) roof.",
+  "state": "Colorado",
+  "company description": "AirFlow Supply Company supplies HVAC equipment, air-handling units, and replacement parts to mechanical contractors and property management companies throughout Colorado. The company is noted for technical support and expertise in the latest ductless system components.",
+  "lob": "general liability"
+ }
+}
