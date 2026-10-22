@@ -1,0 +1,6642 @@
+{
+ "meta": {
+  "name": "Model swap on recorded traffic",
+  "slug": "model-swap-on-recorded-traffic",
+  "question": "Does a step-level replay of recorded agent calls (Kitaru's model-swap analyzer) pick replacement models that keep full-run task success?",
+  "domain": "Finance and insurance agents: bank support (tau2-bench), invoice extraction, insurance claims triage, KYC checks",
+  "status": "complete; full-run ground truth withheld pending provider review",
+  "run_dates": {
+   "step_checks": "2026-10-21",
+   "recordings": "2026-10-21 (invoice, claims, KYC); bank support recordings are the 2026-10-19/20 grid runs",
+   "full_runs": "2026-10-19 to 2026-10-20 (Haiku Tax grid; the Qwen3.8 27B and DeepSeek V4.1 Flash bank support runs are reused from a 2026-10-15 study)"
+  },
+  "who_ran": "Hamza Tahir (ZenML), with Claude Code agents",
+  "kitaru_version": "0.27.2+dev",
+  "kitaru_details": {
+   "plugin": "kitaru-model-swap 0.1.0 (plugins/packages/model-swap)",
+   "branch": "feature/model-swap-analyzer",
+   "note": "By log timestamps, batches A and B ran (12:53-12:59 UTC, Oct 21) on the analyzer as of kitaru commit 04d52c6, before e96fa2a (13:23 UTC); batch G ran at 13:28 UTC after f1b93ee (Responses API support). The analyzer code was used unchanged; src/swap_calib.py only fed it sessions from memory instead of a Kitaru server and raised its time budget to 3600 s.",
+   "repository": "https://github.com/zenml-io/kitaru",
+   "rerun_pin": "0217140 (latest on the branch on 2026-10-22; picks logic differs from the runs, see RERUN.md)"
+  },
+  "harness_git_commit": "545c38a22f0157ccf69cc96c6af2f1d5273a1bed",
+  "harness_git_commit_note": "Commit of the original private research repository directory the code was ported from; the full-run harness directory was at 4cb3302e37a5a012e0482e4a028dc20dd8afc0f1.",
+  "code_location": "benchmarks/model-swap-on-recorded-traffic/src (full-run harness: benchmarks/haiku-tax/harness)",
+  "total_spend_usd": 74.07,
+  "total_spend_note": "Calibration only, from the study's spend log rows dated 2026-10-21: 71.86 + 2.21. See spend.",
+  "publication_note": "Public version of the internal export. Step-check results, analyzer verdicts and aggregate calibration counts are published; every per-candidate full-run number (success, paired delta vs Sonnet 5.5, cost per correct task, 'holds', failure counts) is withheld because it comes from the withheld Haiku Tax study. Open-weight model inference provider names are replaced by the neutral label provider-a."
+ },
+ "spend": {
+  "items": [
+   {
+    "item": "Sonnet 5.5 re-recorded on invoice extraction, claims triage and KYC with transcripts (100 tasks each)",
+    "usd": 6.55
+   },
+   {
+    "item": "Analyzer runs: 8 runs (4 use cases x batches A and B) x 250 calls against 12 live models plus the Jev judge",
+    "usd": 65.06,
+    "note": "The analyzer's own spent_usd sums to 64.8612 for the 8 runs and 0.1657 for the two KYC smoke runs (out/kyc_checks_smoke{A,B}); the spend log does not itemize the remaining 0.0331."
+   },
+   {
+    "item": "GPT-6 smoke tests and direct API checks",
+    "usd": 0.25,
+    "note": "the spend log writes this as ~$0.25; it is the remainder of the 71.86 row (71.86 - 6.55 - 65.06)."
+   },
+   {
+    "item": "GPT-6 Luna and GPT-6.1 Sol through the Responses API: 30-call KYC live check and 250-call reruns on all four use cases (batches G and R)",
+    "usd": 2.21
+   }
+  ],
+  "total_usd": 74.07,
+  "analyzer_reported_spend_usd": {
+   "support": {
+    "A": "12.48333599",
+    "B": "4.46824866",
+    "G": "0.46145503"
+   },
+   "invoice_extraction": {
+    "A": "12.07548568",
+    "B": "4.30038889",
+    "G": "0.47762599"
+   },
+   "claims_triage": {
+    "A": "11.48657533",
+    "B": "4.08091148",
+    "G": "0.39648311"
+   },
+   "kyc_checks": {
+    "A": "11.76479280",
+    "B": "4.20143023",
+    "G": "0.46782276"
+   }
+  },
+  "reused_not_counted": {
+   "description": "The ground truth reuses the Haiku Tax full-run grid (Oct 19-20; that study's logged total is $521.42 for all ten use cases and all models). The bank support recordings are Sonnet's grid runs converted to transcripts, not new calls.",
+   "full_run_agent_cost_usd_for_these_12_models_and_4_use_cases": 100.648,
+   "full_run_simulated_customer_cost_usd_bank_support": 1.094,
+   "note": "Summed from the cost and sim_cost fields of every full-run row (all 100 tasks, before the audit) for these 12 models and 4 use cases; 200 of these rows (Qwen3.8 27B and DeepSeek V4.1 Flash on bank support) were reused from an earlier study."
+  },
+  "study_running_total_usd_after_calibration": 595.49
+ },
+ "dataset": {
+  "source": "Four synthetic use cases: bank support tickets (the SwapBench bank set run through tau2-bench, hidden split, simulated customer) and three Haiku Tax environments (invoice extraction, insurance claims triage, KYC document checks) with written policies, unwritten prudence rules and deterministic graders. All data is invented.",
+  "url": "https://github.com/sierra-research/tau2-bench",
+  "url_note": "tau2-bench is the framework used for bank support only. The invoice, claims and KYC environments are published in ../haiku-tax/envs (generated from fixed seeds). The bank support scenarios are a private hidden split and are not published.",
+  "license": null,
+  "license_note": "The three synthetic environments are covered by this repository's license; the bank support set is private.",
+  "total_cases": 400,
+  "kept_cases": 351,
+  "dropped_reason": "49 tasks excluded by the grader audit (audit_exclusions.json) as ambiguous hidden rules (the written policy contradicted the hidden rule or nobody could infer it): 9 invoice, 26 claims, 14 KYC; none in bank support. The step-check sample also comes from the kept tasks only.",
+  "split": null,
+  "split_note": "No train/tuning split: nothing was tuned on these tasks. Bank support uses the first 100 scenarios of SwapBench's hidden (test) split; the other use cases use the first 100 generated tasks.",
+  "types": [
+   {
+    "type": "support",
+    "label": "Bank support tickets",
+    "count": 100,
+    "recorded_sessions": 100,
+    "recorded_model_calls": 876,
+    "step_check_calls_sampled": 250
+   },
+   {
+    "type": "invoice_extraction",
+    "label": "Invoice extraction",
+    "count": 91,
+    "recorded_sessions": 91,
+    "recorded_model_calls": 449,
+    "step_check_calls_sampled": 250
+   },
+   {
+    "type": "claims_triage",
+    "label": "Insurance claims triage",
+    "count": 74,
+    "recorded_sessions": 74,
+    "recorded_model_calls": 430,
+    "step_check_calls_sampled": 250
+   },
+   {
+    "type": "kyc_checks",
+    "label": "KYC document checks",
+    "count": 86,
+    "recorded_sessions": 86,
+    "recorded_model_calls": 383,
+    "step_check_calls_sampled": 250
+   }
+  ]
+ },
+ "models": [
+  {
+   "id": "sonnet-5.5",
+   "api_model_id": "claude-sonnet-5-5",
+   "display_name": "Claude Sonnet 5.5",
+   "vendor": "Anthropic",
+   "weights": "closed",
+   "inference_provider_type": "vendor API",
+   "price_per_mtok_input_usd": 2.0,
+   "price_per_mtok_cached_input_usd": 0.1,
+   "price_per_mtok_output_usd": 10.0,
+   "price_date": "2026-10-19",
+   "role": "incumbent (recorded model)",
+   "provider_label": "vendor API"
+  },
+  {
+   "id": "opus-5.5",
+   "api_model_id": "claude-opus-5-5",
+   "display_name": "Claude Opus 5.5",
+   "vendor": "Anthropic",
+   "weights": "closed",
+   "inference_provider_type": "vendor API",
+   "price_per_mtok_input_usd": 4.0,
+   "price_per_mtok_cached_input_usd": 0.2,
+   "price_per_mtok_output_usd": 20.0,
+   "price_date": "2026-10-19",
+   "role": "candidate",
+   "provider_label": "vendor API"
+  },
+  {
+   "id": "haiku-5.5",
+   "api_model_id": "claude-haiku-5-5",
+   "display_name": "Claude Haiku 5.5",
+   "vendor": "Anthropic",
+   "weights": "closed",
+   "inference_provider_type": "vendor API",
+   "price_per_mtok_input_usd": 0.1,
+   "price_per_mtok_cached_input_usd": 0.01,
+   "price_per_mtok_output_usd": 0.5,
+   "price_date": "2026-10-19",
+   "role": "candidate; also the simulated customer in the bank support use case",
+   "provider_label": "vendor API"
+  },
+  {
+   "id": "gpt-6-luna",
+   "api_model_id": "gpt-6-luna",
+   "display_name": "GPT-6 Luna",
+   "vendor": "OpenAI",
+   "weights": "closed",
+   "inference_provider_type": "vendor API",
+   "price_per_mtok_input_usd": 0.1,
+   "price_per_mtok_cached_input_usd": 0.01,
+   "price_per_mtok_output_usd": 0.5,
+   "price_date": "2026-10-19",
+   "role": "candidate",
+   "provider_label": "vendor API"
+  },
+  {
+   "id": "gpt-6.1-sol",
+   "api_model_id": "gpt-6.1-sol",
+   "display_name": "GPT-6.1 Sol",
+   "vendor": "OpenAI",
+   "weights": "closed",
+   "inference_provider_type": "vendor API",
+   "price_per_mtok_input_usd": 2.0,
+   "price_per_mtok_cached_input_usd": 0.1,
+   "price_per_mtok_output_usd": 10.0,
+   "price_date": "2026-10-19",
+   "role": "candidate",
+   "provider_label": "vendor API"
+  },
+  {
+   "id": "deepseek-v4.1-flash@provider-a",
+   "api_model_id": "deepseek-ai/DeepSeek-V4.1-Flash",
+   "display_name": "DeepSeek V4.1 Flash",
+   "vendor": "DeepSeek",
+   "weights": "open",
+   "inference_provider_type": "commercial provider",
+   "price_per_mtok_input_usd": 0.3,
+   "price_per_mtok_cached_input_usd": 0.3,
+   "price_per_mtok_output_usd": 1.2,
+   "price_date": "2026-10-19",
+   "role": "candidate",
+   "price_note": "provider-a list price from the harness table (../haiku-tax/harness/models.py); its price page needs a login, so these prices are UNVERIFIED (earlier pinned table and third-party listings). Cached input billed at the full input price.",
+   "provider_label": "provider-a"
+  },
+  {
+   "id": "deepseek-v4-pro@provider-a",
+   "api_model_id": "deepseek-ai/DeepSeek-V4-Pro-0813",
+   "display_name": "DeepSeek V4 Pro",
+   "vendor": "DeepSeek",
+   "weights": "open",
+   "inference_provider_type": "commercial provider",
+   "price_per_mtok_input_usd": 1.75,
+   "price_per_mtok_cached_input_usd": 0.15,
+   "price_per_mtok_output_usd": 3.5,
+   "price_date": "2026-10-19",
+   "role": "candidate",
+   "price_note": "provider-a list price from the harness table (../haiku-tax/harness/models.py); its price page needs a login, so these prices are UNVERIFIED (earlier pinned table and third-party listings). Cached input billed at the full input price.",
+   "provider_label": "provider-a"
+  },
+  {
+   "id": "glm-5.3@provider-a",
+   "api_model_id": "zai-org/GLM-5.3",
+   "display_name": "GLM 5.3",
+   "vendor": "Z.ai (Zhipu AI)",
+   "weights": "open",
+   "inference_provider_type": "commercial provider",
+   "price_per_mtok_input_usd": 1.4,
+   "price_per_mtok_cached_input_usd": 1.4,
+   "price_per_mtok_output_usd": 4.4,
+   "price_date": "2026-10-19",
+   "role": "candidate",
+   "price_note": "provider-a list price from the harness table (../haiku-tax/harness/models.py); its price page needs a login, so these prices are UNVERIFIED (earlier pinned table and third-party listings). Cached input billed at the full input price.",
+   "provider_label": "provider-a"
+  },
+  {
+   "id": "glm-5.3-flash@provider-a",
+   "api_model_id": "zai-org/GLM-5.3-Flash",
+   "display_name": "GLM 5.3 Flash",
+   "vendor": "Z.ai (Zhipu AI)",
+   "weights": "open",
+   "inference_provider_type": "commercial provider",
+   "price_per_mtok_input_usd": 0.15,
+   "price_per_mtok_cached_input_usd": 0.15,
+   "price_per_mtok_output_usd": 0.5,
+   "price_date": "2026-10-19",
+   "role": "candidate",
+   "price_note": "provider-a list price from the harness table (../haiku-tax/harness/models.py); its price page needs a login, so these prices are UNVERIFIED (earlier pinned table and third-party listings). Cached input billed at the full input price.",
+   "provider_label": "provider-a"
+  },
+  {
+   "id": "gpt-oss-120b@provider-a",
+   "api_model_id": "openai/gpt-oss-120b",
+   "display_name": "gpt-oss-120b",
+   "vendor": "OpenAI",
+   "weights": "open",
+   "inference_provider_type": "commercial provider",
+   "price_per_mtok_input_usd": 0.15,
+   "price_per_mtok_cached_input_usd": 0.15,
+   "price_per_mtok_output_usd": 0.6,
+   "price_date": "2026-10-19",
+   "role": "candidate",
+   "price_note": "provider-a list price from the harness table (../haiku-tax/harness/models.py); its price page needs a login, so these prices are UNVERIFIED (earlier pinned table and third-party listings). Cached input billed at the full input price.",
+   "provider_label": "provider-a"
+  },
+  {
+   "id": "qwen3.8-27b@provider-a",
+   "api_model_id": "Qwen/Qwen3.8-27B",
+   "display_name": "Qwen3.8 27B",
+   "vendor": "Alibaba (Qwen)",
+   "weights": "open",
+   "inference_provider_type": "commercial provider",
+   "price_per_mtok_input_usd": 0.45,
+   "price_per_mtok_cached_input_usd": 0.45,
+   "price_per_mtok_output_usd": 3.0,
+   "price_date": "2026-10-19",
+   "role": "candidate",
+   "price_note": "provider-a list price from the harness table (../haiku-tax/harness/models.py); its price page needs a login, so these prices are UNVERIFIED (earlier pinned table and third-party listings). Cached input billed at the full input price.",
+   "provider_label": "provider-a"
+  },
+  {
+   "id": "minimax-m3@provider-a",
+   "api_model_id": "MiniMaxAI/MiniMax-M3",
+   "display_name": "MiniMax-M3",
+   "vendor": "MiniMax",
+   "weights": "open",
+   "inference_provider_type": "commercial provider",
+   "price_per_mtok_input_usd": 0.3,
+   "price_per_mtok_cached_input_usd": 0.3,
+   "price_per_mtok_output_usd": 1.2,
+   "price_date": "2026-10-19",
+   "role": "candidate",
+   "price_note": "provider-a list price from the harness table (../haiku-tax/harness/models.py); its price page needs a login, so these prices are UNVERIFIED (earlier pinned table and third-party listings). Cached input billed at the full input price.",
+   "provider_label": "provider-a"
+  },
+  {
+   "id": "jev",
+   "api_model_id": "jev-latest",
+   "display_name": "Jev (TypeSafe)",
+   "vendor": "TypeSafe",
+   "weights": "closed",
+   "inference_provider_type": "vendor API",
+   "price_per_mtok_input_usd": 0.042,
+   "price_per_mtok_cached_input_usd": null,
+   "price_per_mtok_output_usd": 0.0,
+   "price_date": "2026-10-21",
+   "role": "step-check judge (equivalence of disagreeing replies); not a candidate",
+   "price_note": "Price passed to the analyzer by src/swap_calib.py; harness/models.py marks it user-given."
+  }
+ ],
+ "setup": {
+  "conditions": [
+   {
+    "name": "full_run",
+    "description": "Each model runs every kept task end to end in the same environment (one run per task), graded deterministically, and paired with Sonnet 5.5 on the same tasks."
+   },
+   {
+    "name": "step_check",
+    "description": "Kitaru's model-swap analyzer samples 250 recorded Sonnet 5.5 model calls per use case, rebuilds each request (conversation so far plus tool schemas) and sends it to every candidate once; it compares the candidate's single next step with Sonnet's recorded step (tool choice, arguments, text), and Jev rules whether disagreeing replies are equivalent. The analyzer then names picks (closest, cheapest, fastest, best open model) using a 'within 10 points of the closest match' rule. The analyzer takes at most 8 candidates per run, so each use case ran in batch A (Sonnet, Opus, Haiku, GPT-6 Luna, GPT-6.1 Sol, DeepSeek V4.1 Flash, DeepSeek V4 Pro, GLM 5.3) and batch B (Sonnet again plus GLM 5.3 Flash, gpt-oss-120b, Qwen3.8 27B, MiniMax-M3); GPT-6 models were re-run in batch G through the Responses API. Results were merged (src/analyze.py)."
+   }
+  ],
+  "prompt_rewriting": null,
+  "prompt_rewriting_note": "No prompt rewriting: candidates got Sonnet's recorded requests unchanged in the step check and the same agent prompt and policy in full runs.",
+  "tools": {
+   "support": {
+    "all": [
+     "verify_identity",
+     "get_account",
+     "get_transactions",
+     "issue_refund",
+     "open_dispute",
+     "freeze_card",
+     "escalate_to_human"
+    ],
+    "state_changing": [
+     "escalate_to_human",
+     "freeze_card",
+     "issue_refund",
+     "open_dispute"
+    ]
+   },
+   "invoice_extraction": {
+    "all": [
+     "get_document",
+     "search_vendors",
+     "get_vendor",
+     "list_invoices_for_vendor",
+     "get_purchase_order",
+     "submit_invoice",
+     "hold_invoice",
+     "reject_invoice",
+     "ask_user",
+     "finish"
+    ],
+    "state_changing": [
+     "hold_invoice",
+     "reject_invoice",
+     "submit_invoice"
+    ]
+   },
+   "claims_triage": {
+    "all": [
+     "get_claim",
+     "find_policies",
+     "get_policy",
+     "get_claim_history",
+     "get_adjuster_roster",
+     "route_claim",
+     "set_reserve",
+     "deny_claim",
+     "request_documents",
+     "ask_user",
+     "finish"
+    ],
+    "state_changing": [
+     "deny_claim",
+     "request_documents",
+     "route_claim",
+     "set_reserve"
+    ]
+   },
+   "kyc_checks": {
+    "all": [
+     "get_application",
+     "get_documents",
+     "check_registry",
+     "screen_names",
+     "get_country_risk",
+     "approve_application",
+     "request_more_info",
+     "escalate_to_compliance",
+     "reject_application",
+     "ask_user",
+     "finish"
+    ],
+    "state_changing": [
+     "approve_application",
+     "escalate_to_compliance",
+     "reject_application",
+     "request_more_info"
+    ]
+   }
+  },
+  "tools_note": "Write tools are recorded and graded, never executed (Haiku Tax environments); bank support tools act on tau2's simulated database.",
+  "user_simulator": "Bank support only: Claude Haiku 5.5 simulates the customer in full runs (its cost is environment cost, not charged to the agent). The step check replays recorded customer turns, so no simulator runs there. The other use cases are single-request tasks.",
+  "limits": {
+   "full_run": "30 steps per task, 8192 output tokens per call (harness/run.py); one run per task",
+   "step_check": "250 sampled calls per use case, one attempt per call, max_tokens 4096, 180 s timeout, 3 retries, concurrency 32, spend cap $25 per batch A/B and $10 per batch G, time budget 3600 s (raised from the analyzer's 840 s cap for this offline run)"
+  }
+ },
+ "grading": {
+  "judges": [
+   {
+    "name": "deterministic graders",
+    "used_for": "full-run task success",
+    "description": "Haiku Tax environments: compare the recorded write actions with gold built by construction. Bank support: tau2 reward under the hidden-rule-adjusted gold. No LLM judge."
+   },
+   {
+    "name": "analyzer compare()",
+    "used_for": "step agreement",
+    "description": "Deterministic: same tool names (multiset), then canonicalized arguments (key order, null keys, whitespace and numeric formatting normalized); text replies compared after whitespace and case normalization."
+   },
+   {
+    "name": "Jev (TypeSafe, jev-latest)",
+    "used_for": "judged agreement",
+    "description": "Rules whether a disagreeing candidate reply is equivalent to Sonnet's recorded reply; rulings are equivalent, different or unsure."
+   }
+  ],
+  "tie_break": null,
+  "tie_break_note": "No tie-break rule. Ties in tool-choice rate were ordered by the analyzer's candidate order when ranking (see limitations).",
+  "human_agreement": null,
+  "human_agreement_note": "Not measured. No human reviewed step disagreements or Jev's rulings in this study.",
+  "self_grading_check": "Full runs use no LLM grader. Jev is not a candidate. Claude models wrote the environments and tasks, the recorded traffic is Sonnet 5.5's, and Haiku 5.5 (a candidate) simulates the bank customer, so authorship and simulator bias toward Claude models is possible and was not tested.",
+  "metrics": [
+   {
+    "name": "accuracy (full-run success)",
+    "definition": "correct / n over the kept (audited) tasks; every task the model attempted stays in n, and empty replies, no-tool-use and step-limit endings count as failures."
+   },
+   {
+    "name": "delta_vs_incumbent",
+    "definition": "Paired difference in success vs Sonnet 5.5 on the same tasks: mean of (candidate success - Sonnet success) per task, with a percentile bootstrap 95% CI (2000 resamples over tasks, random seed 0, src/analyze.py)."
+   },
+   {
+    "name": "holds",
+    "definition": "delta_vs_incumbent >= -0.05 (point estimate, not the CI)."
+   },
+   {
+    "name": "cost_per_correct_cents",
+    "definition": "100 x sum over the n kept tasks of the agent's token cost at list prices ((input - cached) x input price + cached x cached-input price + output x output price, reasoning tokens billed as output) / number of correct tasks. Excludes the simulated customer and any judge."
+   },
+   {
+    "name": "mean_tokens_per_case",
+    "definition": "Mean of input + output tokens per task (input includes cached tokens; output includes reasoning tokens where the API reports them inside output)."
+   },
+   {
+    "name": "mean_calls_per_case",
+    "definition": "Mean model calls (agent steps) per task."
+   },
+   {
+    "name": "tool_choice_rate",
+    "definition": "Among answered sampled calls where Sonnet called a tool, the share where the candidate called the same set of tool names (analyzer `tool_choice_rate`)."
+   },
+   {
+    "name": "args_given_same_tool_rate",
+    "definition": "Among calls with the same tool choice, the share with identical canonicalized arguments (same_tool_same_args / (same_tool_same_args + same_tool_different_args)); computed for this export from calls.jsonl."
+   },
+   {
+    "name": "exact_agreement_rate",
+    "definition": "Among all answered sampled calls, the share with the same tool and arguments, or the same normalized text (analyzer `agreement_rate`)."
+   },
+   {
+    "name": "judged_agreement_rate",
+    "definition": "Among all answered sampled calls, the share that agree exactly or that Jev ruled equivalent (src/analyze.py `judge_adjusted`)."
+   },
+   {
+    "name": "state_changing_steps",
+    "definition": "Sampled calls where Sonnet called a state-changing tool; same_tool_same_args_rate is src/analyze.py `write_exact`."
+   },
+   {
+    "name": "failure_rate (step check)",
+    "definition": "Share of sent calls with a provider failure (rate limit, empty reply, HTTP error); failed calls are left out of every agreement rate."
+   },
+   {
+    "name": "analyzer comparable",
+    "definition": "Candidate failure rate <= 0.2 and tool_choice_rate >= (best tool_choice_rate in the use case, Sonnet's own replay included) - 0.10."
+   }
+  ]
+ },
+ "noise": {
+  "method": "Sonnet 5.5 replayed against its own recorded calls (the analyzer's reference) in batch A and again in batch B, on the same 250 calls; full-run differences use a paired bootstrap over tasks.",
+  "size": {
+   "support": {
+    "sonnet_self_tool_choice_batch_A": {
+     "n": 120,
+     "same_tool": 119,
+     "rate": 0.9917,
+     "ci95": [
+      0.9543,
+      0.9985
+     ]
+    },
+    "sonnet_self_exact_agreement_batch_A": {
+     "n": 250,
+     "agreeing": 120,
+     "rate": 0.48,
+     "ci95": [
+      0.4188,
+      0.5418
+     ]
+    },
+    "sonnet_self_exact_agreement_batch_B": {
+     "n": 250,
+     "agreeing": 127,
+     "rate": 0.508,
+     "ci95": [
+      0.4464,
+      0.5694
+     ]
+    }
+   },
+   "invoice_extraction": {
+    "sonnet_self_tool_choice_batch_A": {
+     "n": 248,
+     "same_tool": 229,
+     "rate": 0.9234,
+     "ci95": [
+      0.8834,
+      0.9504
+     ]
+    },
+    "sonnet_self_exact_agreement_batch_A": {
+     "n": 250,
+     "agreeing": 148,
+     "rate": 0.592,
+     "ci95": [
+      0.5301,
+      0.6511
+     ]
+    },
+    "sonnet_self_exact_agreement_batch_B": {
+     "n": 250,
+     "agreeing": 144,
+     "rate": 0.576,
+     "ci95": [
+      0.514,
+      0.6357
+     ]
+    }
+   },
+   "claims_triage": {
+    "sonnet_self_tool_choice_batch_A": {
+     "n": 246,
+     "same_tool": 228,
+     "rate": 0.9268,
+     "ci95": [
+      0.8873,
+      0.9532
+     ]
+    },
+    "sonnet_self_exact_agreement_batch_A": {
+     "n": 250,
+     "agreeing": 178,
+     "rate": 0.712,
+     "ci95": [
+      0.653,
+      0.7646
+     ]
+    },
+    "sonnet_self_exact_agreement_batch_B": {
+     "n": 250,
+     "agreeing": 179,
+     "rate": 0.716,
+     "ci95": [
+      0.6572,
+      0.7683
+     ]
+    }
+   },
+   "kyc_checks": {
+    "sonnet_self_tool_choice_batch_A": {
+     "n": 250,
+     "same_tool": 250,
+     "rate": 1.0,
+     "ci95": [
+      0.9849,
+      1.0
+     ]
+    },
+    "sonnet_self_exact_agreement_batch_A": {
+     "n": 250,
+     "agreeing": 167,
+     "rate": 0.668,
+     "ci95": [
+      0.6075,
+      0.7234
+     ]
+    },
+    "sonnet_self_exact_agreement_batch_B": {
+     "n": 250,
+     "agreeing": 167,
+     "rate": 0.668,
+     "ci95": [
+      0.6075,
+      0.7234
+     ]
+    }
+   }
+  },
+  "ci_method": "Full runs: percentile bootstrap of the paired per-task difference (src/analyze.py). Step rates: Wilson score 95% interval on the counts, computed for this export.",
+  "resamples": 2000,
+  "tie_threshold": "holds: delta >= -0.05; analyzer comparable window: 0.10 below the best tool-choice rate"
+ },
+ "results": {
+  "support": [
+   {
+    "model": "sonnet-5.5",
+    "role": "incumbent",
+    "step_check": {
+     "n_calls": 250,
+     "answered": 250,
+     "tool_choice_rate": 0.9917,
+     "tool_choice_n": 120,
+     "args_given_same_tool_rate": 0.8824,
+     "exact_agreement_rate": 0.48,
+     "judged_agreement_rate": 0.876,
+     "failure_rate": 0.0
+    },
+    "analyzer_verdict": null,
+    "full_run": null
+   },
+   {
+    "model": "opus-5.5",
+    "role": "candidate",
+    "step_check": {
+     "n_calls": 250,
+     "answered": 250,
+     "tool_choice_rate": 0.975,
+     "tool_choice_n": 120,
+     "args_given_same_tool_rate": 0.8974,
+     "exact_agreement_rate": 0.444,
+     "judged_agreement_rate": 0.808,
+     "failure_rate": 0.0
+    },
+    "analyzer_verdict": {
+     "comparable": true,
+     "rank_by_tool_choice": 2,
+     "picked_as": []
+    },
+    "full_run": null
+   },
+   {
+    "model": "haiku-5.5",
+    "role": "candidate",
+    "step_check": {
+     "n_calls": 250,
+     "answered": 250,
+     "tool_choice_rate": 0.9917,
+     "tool_choice_n": 120,
+     "args_given_same_tool_rate": 0.8739,
+     "exact_agreement_rate": 0.444,
+     "judged_agreement_rate": 0.864,
+     "failure_rate": 0.0
+    },
+    "analyzer_verdict": {
+     "comparable": true,
+     "rank_by_tool_choice": 1,
+     "picked_as": []
+    },
+    "full_run": null
+   },
+   {
+    "model": "deepseek-v4.1-flash@provider-a",
+    "role": "candidate",
+    "step_check": {
+     "n_calls": 250,
+     "answered": 249,
+     "tool_choice_rate": 0.9667,
+     "tool_choice_n": 120,
+     "args_given_same_tool_rate": 0.9138,
+     "exact_agreement_rate": 0.4498,
+     "judged_agreement_rate": 0.8876,
+     "failure_rate": 0.004
+    },
+    "analyzer_verdict": {
+     "comparable": true,
+     "rank_by_tool_choice": 3,
+     "picked_as": [
+      "Best open model"
+     ]
+    },
+    "full_run": null
+   },
+   {
+    "model": "deepseek-v4-pro@provider-a",
+    "role": "candidate",
+    "step_check": {
+     "n_calls": 250,
+     "answered": 250,
+     "tool_choice_rate": 0.9333,
+     "tool_choice_n": 120,
+     "args_given_same_tool_rate": 0.9107,
+     "exact_agreement_rate": 0.428,
+     "judged_agreement_rate": 0.852,
+     "failure_rate": 0.0
+    },
+    "analyzer_verdict": {
+     "comparable": true,
+     "rank_by_tool_choice": 8,
+     "picked_as": []
+    },
+    "full_run": null
+   },
+   {
+    "model": "glm-5.3@provider-a",
+    "role": "candidate",
+    "step_check": {
+     "n_calls": 250,
+     "answered": 250,
+     "tool_choice_rate": 0.9667,
+     "tool_choice_n": 120,
+     "args_given_same_tool_rate": 0.8879,
+     "exact_agreement_rate": 0.436,
+     "judged_agreement_rate": 0.836,
+     "failure_rate": 0.0
+    },
+    "analyzer_verdict": {
+     "comparable": true,
+     "rank_by_tool_choice": 4,
+     "picked_as": []
+    },
+    "full_run": null
+   },
+   {
+    "model": "glm-5.3-flash@provider-a",
+    "role": "candidate",
+    "step_check": {
+     "n_calls": 250,
+     "answered": 207,
+     "tool_choice_rate": 0.9524,
+     "tool_choice_n": 105,
+     "args_given_same_tool_rate": 0.92,
+     "exact_agreement_rate": 0.4638,
+     "judged_agreement_rate": 0.8696,
+     "failure_rate": 0.172
+    },
+    "analyzer_verdict": {
+     "comparable": true,
+     "rank_by_tool_choice": 7,
+     "picked_as": []
+    },
+    "full_run": null
+   },
+   {
+    "model": "gpt-oss-120b@provider-a",
+    "role": "candidate",
+    "step_check": {
+     "n_calls": 250,
+     "answered": 250,
+     "tool_choice_rate": 0.85,
+     "tool_choice_n": 120,
+     "args_given_same_tool_rate": 0.8725,
+     "exact_agreement_rate": 0.38,
+     "judged_agreement_rate": 0.74,
+     "failure_rate": 0.0
+    },
+    "analyzer_verdict": {
+     "comparable": false,
+     "rank_by_tool_choice": 11,
+     "picked_as": []
+    },
+    "full_run": null
+   },
+   {
+    "model": "qwen3.8-27b@provider-a",
+    "role": "candidate",
+    "step_check": {
+     "n_calls": 250,
+     "answered": 250,
+     "tool_choice_rate": 0.9583,
+     "tool_choice_n": 120,
+     "args_given_same_tool_rate": 0.8696,
+     "exact_agreement_rate": 0.424,
+     "judged_agreement_rate": 0.776,
+     "failure_rate": 0.0
+    },
+    "analyzer_verdict": {
+     "comparable": true,
+     "rank_by_tool_choice": 5,
+     "picked_as": [
+      "Fastest"
+     ]
+    },
+    "full_run": null
+   },
+   {
+    "model": "minimax-m3@provider-a",
+    "role": "candidate",
+    "step_check": {
+     "n_calls": 250,
+     "answered": 250,
+     "tool_choice_rate": 0.9167,
+     "tool_choice_n": 120,
+     "args_given_same_tool_rate": 0.8818,
+     "exact_agreement_rate": 0.412,
+     "judged_agreement_rate": 0.796,
+     "failure_rate": 0.0
+    },
+    "analyzer_verdict": {
+     "comparable": true,
+     "rank_by_tool_choice": 9,
+     "picked_as": []
+    },
+    "full_run": null
+   },
+   {
+    "model": "gpt-6-luna",
+    "role": "candidate",
+    "step_check": {
+     "n_calls": 250,
+     "answered": 250,
+     "tool_choice_rate": 0.9583,
+     "tool_choice_n": 120,
+     "args_given_same_tool_rate": 0.8609,
+     "exact_agreement_rate": 0.4,
+     "judged_agreement_rate": 0.82,
+     "failure_rate": 0.0
+    },
+    "analyzer_verdict": {
+     "comparable": true,
+     "rank_by_tool_choice": 6,
+     "picked_as": [
+      "Cheapest"
+     ]
+    },
+    "full_run": null
+   },
+   {
+    "model": "gpt-6.1-sol",
+    "role": "candidate",
+    "step_check": {
+     "n_calls": 250,
+     "answered": 250,
+     "tool_choice_rate": 0.9083,
+     "tool_choice_n": 120,
+     "args_given_same_tool_rate": 0.8899,
+     "exact_agreement_rate": 0.388,
+     "judged_agreement_rate": 0.744,
+     "failure_rate": 0.0
+    },
+    "analyzer_verdict": {
+     "comparable": true,
+     "rank_by_tool_choice": 10,
+     "picked_as": []
+    },
+    "full_run": null
+   }
+  ],
+  "invoice_extraction": [
+   {
+    "model": "sonnet-5.5",
+    "role": "incumbent",
+    "step_check": {
+     "n_calls": 250,
+     "answered": 250,
+     "tool_choice_rate": 0.9234,
+     "tool_choice_n": 248,
+     "args_given_same_tool_rate": 0.6463,
+     "exact_agreement_rate": 0.592,
+     "judged_agreement_rate": 0.764,
+     "failure_rate": 0.0
+    },
+    "analyzer_verdict": null,
+    "full_run": null
+   },
+   {
+    "model": "opus-5.5",
+    "role": "candidate",
+    "step_check": {
+     "n_calls": 250,
+     "answered": 250,
+     "tool_choice_rate": 0.871,
+     "tool_choice_n": 248,
+     "args_given_same_tool_rate": 0.5972,
+     "exact_agreement_rate": 0.516,
+     "judged_agreement_rate": 0.624,
+     "failure_rate": 0.0
+    },
+    "analyzer_verdict": {
+     "comparable": true,
+     "rank_by_tool_choice": 1,
+     "picked_as": []
+    },
+    "full_run": null
+   },
+   {
+    "model": "haiku-5.5",
+    "role": "candidate",
+    "step_check": {
+     "n_calls": 250,
+     "answered": 250,
+     "tool_choice_rate": 0.8024,
+     "tool_choice_n": 248,
+     "args_given_same_tool_rate": 0.5628,
+     "exact_agreement_rate": 0.448,
+     "judged_agreement_rate": 0.588,
+     "failure_rate": 0.0
+    },
+    "analyzer_verdict": {
+     "comparable": false,
+     "rank_by_tool_choice": 3,
+     "picked_as": []
+    },
+    "full_run": null
+   },
+   {
+    "model": "deepseek-v4.1-flash@provider-a",
+    "role": "candidate",
+    "step_check": {
+     "n_calls": 250,
+     "answered": 249,
+     "tool_choice_rate": 0.7287,
+     "tool_choice_n": 247,
+     "args_given_same_tool_rate": 0.6444,
+     "exact_agreement_rate": 0.4659,
+     "judged_agreement_rate": 0.6104,
+     "failure_rate": 0.004
+    },
+    "analyzer_verdict": {
+     "comparable": false,
+     "rank_by_tool_choice": 9,
+     "picked_as": []
+    },
+    "full_run": null
+   },
+   {
+    "model": "deepseek-v4-pro@provider-a",
+    "role": "candidate",
+    "step_check": {
+     "n_calls": 250,
+     "answered": 248,
+     "tool_choice_rate": 0.7764,
+     "tool_choice_n": 246,
+     "args_given_same_tool_rate": 0.6126,
+     "exact_agreement_rate": 0.4718,
+     "judged_agreement_rate": 0.6573,
+     "failure_rate": 0.008
+    },
+    "analyzer_verdict": {
+     "comparable": false,
+     "rank_by_tool_choice": 6,
+     "picked_as": []
+    },
+    "full_run": null
+   },
+   {
+    "model": "glm-5.3@provider-a",
+    "role": "candidate",
+    "step_check": {
+     "n_calls": 250,
+     "answered": 249,
+     "tool_choice_rate": 0.753,
+     "tool_choice_n": 247,
+     "args_given_same_tool_rate": 0.5753,
+     "exact_agreement_rate": 0.4297,
+     "judged_agreement_rate": 0.5703,
+     "failure_rate": 0.004
+    },
+    "analyzer_verdict": {
+     "comparable": false,
+     "rank_by_tool_choice": 7,
+     "picked_as": []
+    },
+    "full_run": null
+   },
+   {
+    "model": "glm-5.3-flash@provider-a",
+    "role": "candidate",
+    "step_check": {
+     "n_calls": 250,
+     "answered": 214,
+     "tool_choice_rate": 0.783,
+     "tool_choice_n": 212,
+     "args_given_same_tool_rate": 0.6084,
+     "exact_agreement_rate": 0.472,
+     "judged_agreement_rate": 0.6168,
+     "failure_rate": 0.144
+    },
+    "analyzer_verdict": {
+     "comparable": false,
+     "rank_by_tool_choice": 4,
+     "picked_as": [
+      "Best open model"
+     ]
+    },
+    "full_run": null
+   },
+   {
+    "model": "gpt-oss-120b@provider-a",
+    "role": "candidate",
+    "step_check": {
+     "n_calls": 250,
+     "answered": 249,
+     "tool_choice_rate": 0.3158,
+     "tool_choice_n": 247,
+     "args_given_same_tool_rate": 0.7564,
+     "exact_agreement_rate": 0.2369,
+     "judged_agreement_rate": 0.2811,
+     "failure_rate": 0.004
+    },
+    "analyzer_verdict": {
+     "comparable": false,
+     "rank_by_tool_choice": 11,
+     "picked_as": []
+    },
+    "full_run": null
+   },
+   {
+    "model": "qwen3.8-27b@provider-a",
+    "role": "candidate",
+    "step_check": {
+     "n_calls": 250,
+     "answered": 250,
+     "tool_choice_rate": 0.7419,
+     "tool_choice_n": 248,
+     "args_given_same_tool_rate": 0.5924,
+     "exact_agreement_rate": 0.436,
+     "judged_agreement_rate": 0.58,
+     "failure_rate": 0.0
+    },
+    "analyzer_verdict": {
+     "comparable": false,
+     "rank_by_tool_choice": 8,
+     "picked_as": []
+    },
+    "full_run": null
+   },
+   {
+    "model": "minimax-m3@provider-a",
+    "role": "candidate",
+    "step_check": {
+     "n_calls": 250,
+     "answered": 249,
+     "tool_choice_rate": 0.7773,
+     "tool_choice_n": 247,
+     "args_given_same_tool_rate": 0.5938,
+     "exact_agreement_rate": 0.4578,
+     "judged_agreement_rate": 0.5904,
+     "failure_rate": 0.004
+    },
+    "analyzer_verdict": {
+     "comparable": false,
+     "rank_by_tool_choice": 5,
+     "picked_as": []
+    },
+    "full_run": null
+   },
+   {
+    "model": "gpt-6-luna",
+    "role": "candidate",
+    "step_check": {
+     "n_calls": 250,
+     "answered": 250,
+     "tool_choice_rate": 0.7218,
+     "tool_choice_n": 248,
+     "args_given_same_tool_rate": 0.5196,
+     "exact_agreement_rate": 0.372,
+     "judged_agreement_rate": 0.46,
+     "failure_rate": 0.0
+    },
+    "analyzer_verdict": {
+     "comparable": false,
+     "rank_by_tool_choice": 10,
+     "picked_as": []
+    },
+    "full_run": null
+   },
+   {
+    "model": "gpt-6.1-sol",
+    "role": "candidate",
+    "step_check": {
+     "n_calls": 250,
+     "answered": 250,
+     "tool_choice_rate": 0.8185,
+     "tool_choice_n": 248,
+     "args_given_same_tool_rate": 0.5764,
+     "exact_agreement_rate": 0.468,
+     "judged_agreement_rate": 0.588,
+     "failure_rate": 0.0
+    },
+    "analyzer_verdict": {
+     "comparable": false,
+     "rank_by_tool_choice": 2,
+     "picked_as": []
+    },
+    "full_run": null
+   }
+  ],
+  "claims_triage": [
+   {
+    "model": "sonnet-5.5",
+    "role": "incumbent",
+    "step_check": {
+     "n_calls": 250,
+     "answered": 250,
+     "tool_choice_rate": 0.9268,
+     "tool_choice_n": 246,
+     "args_given_same_tool_rate": 0.7807,
+     "exact_agreement_rate": 0.712,
+     "judged_agreement_rate": 0.836,
+     "failure_rate": 0.0
+    },
+    "analyzer_verdict": null,
+    "full_run": null
+   },
+   {
+    "model": "opus-5.5",
+    "role": "candidate",
+    "step_check": {
+     "n_calls": 250,
+     "answered": 250,
+     "tool_choice_rate": 0.8374,
+     "tool_choice_n": 246,
+     "args_given_same_tool_rate": 0.7379,
+     "exact_agreement_rate": 0.608,
+     "judged_agreement_rate": 0.704,
+     "failure_rate": 0.0
+    },
+    "analyzer_verdict": {
+     "comparable": true,
+     "rank_by_tool_choice": 1,
+     "picked_as": []
+    },
+    "full_run": null
+   },
+   {
+    "model": "haiku-5.5",
+    "role": "candidate",
+    "step_check": {
+     "n_calls": 250,
+     "answered": 250,
+     "tool_choice_rate": 0.813,
+     "tool_choice_n": 246,
+     "args_given_same_tool_rate": 0.735,
+     "exact_agreement_rate": 0.588,
+     "judged_agreement_rate": 0.68,
+     "failure_rate": 0.0
+    },
+    "analyzer_verdict": {
+     "comparable": false,
+     "rank_by_tool_choice": 3,
+     "picked_as": []
+    },
+    "full_run": null
+   },
+   {
+    "model": "deepseek-v4.1-flash@provider-a",
+    "role": "candidate",
+    "step_check": {
+     "n_calls": 250,
+     "answered": 248,
+     "tool_choice_rate": 0.7869,
+     "tool_choice_n": 244,
+     "args_given_same_tool_rate": 0.6875,
+     "exact_agreement_rate": 0.5323,
+     "judged_agreement_rate": 0.6573,
+     "failure_rate": 0.008
+    },
+    "analyzer_verdict": {
+     "comparable": false,
+     "rank_by_tool_choice": 5,
+     "picked_as": []
+    },
+    "full_run": null
+   },
+   {
+    "model": "deepseek-v4-pro@provider-a",
+    "role": "candidate",
+    "step_check": {
+     "n_calls": 250,
+     "answered": 249,
+     "tool_choice_rate": 0.8286,
+     "tool_choice_n": 245,
+     "args_given_same_tool_rate": 0.7241,
+     "exact_agreement_rate": 0.5904,
+     "judged_agreement_rate": 0.6827,
+     "failure_rate": 0.004
+    },
+    "analyzer_verdict": {
+     "comparable": true,
+     "rank_by_tool_choice": 2,
+     "picked_as": [
+      "Cheapest",
+      "Best open model"
+     ]
+    },
+    "full_run": null
+   },
+   {
+    "model": "glm-5.3@provider-a",
+    "role": "candidate",
+    "step_check": {
+     "n_calls": 250,
+     "answered": 250,
+     "tool_choice_rate": 0.7724,
+     "tool_choice_n": 246,
+     "args_given_same_tool_rate": 0.6895,
+     "exact_agreement_rate": 0.524,
+     "judged_agreement_rate": 0.636,
+     "failure_rate": 0.0
+    },
+    "analyzer_verdict": {
+     "comparable": false,
+     "rank_by_tool_choice": 7,
+     "picked_as": []
+    },
+    "full_run": null
+   },
+   {
+    "model": "glm-5.3-flash@provider-a",
+    "role": "candidate",
+    "step_check": {
+     "n_calls": 250,
+     "answered": 225,
+     "tool_choice_rate": 0.7354,
+     "tool_choice_n": 223,
+     "args_given_same_tool_rate": 0.7561,
+     "exact_agreement_rate": 0.5511,
+     "judged_agreement_rate": 0.6,
+     "failure_rate": 0.1
+    },
+    "analyzer_verdict": {
+     "comparable": false,
+     "rank_by_tool_choice": 8,
+     "picked_as": []
+    },
+    "full_run": null
+   },
+   {
+    "model": "gpt-oss-120b@provider-a",
+    "role": "candidate",
+    "step_check": {
+     "n_calls": 250,
+     "answered": 249,
+     "tool_choice_rate": 0.4408,
+     "tool_choice_n": 245,
+     "args_given_same_tool_rate": 0.7778,
+     "exact_agreement_rate": 0.3373,
+     "judged_agreement_rate": 0.3614,
+     "failure_rate": 0.004
+    },
+    "analyzer_verdict": {
+     "comparable": false,
+     "rank_by_tool_choice": 11,
+     "picked_as": []
+    },
+    "full_run": null
+   },
+   {
+    "model": "qwen3.8-27b@provider-a",
+    "role": "candidate",
+    "step_check": {
+     "n_calls": 250,
+     "answered": 250,
+     "tool_choice_rate": 0.7805,
+     "tool_choice_n": 246,
+     "args_given_same_tool_rate": 0.5833,
+     "exact_agreement_rate": 0.448,
+     "judged_agreement_rate": 0.54,
+     "failure_rate": 0.0
+    },
+    "analyzer_verdict": {
+     "comparable": false,
+     "rank_by_tool_choice": 6,
+     "picked_as": []
+    },
+    "full_run": null
+   },
+   {
+    "model": "minimax-m3@provider-a",
+    "role": "candidate",
+    "step_check": {
+     "n_calls": 250,
+     "answered": 249,
+     "tool_choice_rate": 0.7918,
+     "tool_choice_n": 245,
+     "args_given_same_tool_rate": 0.6598,
+     "exact_agreement_rate": 0.5141,
+     "judged_agreement_rate": 0.5904,
+     "failure_rate": 0.004
+    },
+    "analyzer_verdict": {
+     "comparable": false,
+     "rank_by_tool_choice": 4,
+     "picked_as": []
+    },
+    "full_run": null
+   },
+   {
+    "model": "gpt-6-luna",
+    "role": "candidate",
+    "step_check": {
+     "n_calls": 250,
+     "answered": 250,
+     "tool_choice_rate": 0.7276,
+     "tool_choice_n": 246,
+     "args_given_same_tool_rate": 0.6648,
+     "exact_agreement_rate": 0.476,
+     "judged_agreement_rate": 0.54,
+     "failure_rate": 0.0
+    },
+    "analyzer_verdict": {
+     "comparable": false,
+     "rank_by_tool_choice": 9,
+     "picked_as": []
+    },
+    "full_run": null
+   },
+   {
+    "model": "gpt-6.1-sol",
+    "role": "candidate",
+    "step_check": {
+     "n_calls": 250,
+     "answered": 250,
+     "tool_choice_rate": 0.5813,
+     "tool_choice_n": 246,
+     "args_given_same_tool_rate": 0.6014,
+     "exact_agreement_rate": 0.344,
+     "judged_agreement_rate": 0.42,
+     "failure_rate": 0.0
+    },
+    "analyzer_verdict": {
+     "comparable": false,
+     "rank_by_tool_choice": 10,
+     "picked_as": []
+    },
+    "full_run": null
+   }
+  ],
+  "kyc_checks": [
+   {
+    "model": "sonnet-5.5",
+    "role": "incumbent",
+    "step_check": {
+     "n_calls": 250,
+     "answered": 250,
+     "tool_choice_rate": 1.0,
+     "tool_choice_n": 250,
+     "args_given_same_tool_rate": 0.668,
+     "exact_agreement_rate": 0.668,
+     "judged_agreement_rate": 0.824,
+     "failure_rate": 0.0
+    },
+    "analyzer_verdict": null,
+    "full_run": null
+   },
+   {
+    "model": "opus-5.5",
+    "role": "candidate",
+    "step_check": {
+     "n_calls": 250,
+     "answered": 250,
+     "tool_choice_rate": 0.972,
+     "tool_choice_n": 250,
+     "args_given_same_tool_rate": 0.6626,
+     "exact_agreement_rate": 0.644,
+     "judged_agreement_rate": 0.736,
+     "failure_rate": 0.0
+    },
+    "analyzer_verdict": {
+     "comparable": true,
+     "rank_by_tool_choice": 3,
+     "picked_as": []
+    },
+    "full_run": null
+   },
+   {
+    "model": "haiku-5.5",
+    "role": "candidate",
+    "step_check": {
+     "n_calls": 250,
+     "answered": 250,
+     "tool_choice_rate": 0.968,
+     "tool_choice_n": 250,
+     "args_given_same_tool_rate": 0.624,
+     "exact_agreement_rate": 0.604,
+     "judged_agreement_rate": 0.736,
+     "failure_rate": 0.0
+    },
+    "analyzer_verdict": {
+     "comparable": true,
+     "rank_by_tool_choice": 4,
+     "picked_as": []
+    },
+    "full_run": null
+   },
+   {
+    "model": "deepseek-v4.1-flash@provider-a",
+    "role": "candidate",
+    "step_check": {
+     "n_calls": 250,
+     "answered": 249,
+     "tool_choice_rate": 0.8635,
+     "tool_choice_n": 249,
+     "args_given_same_tool_rate": 0.6326,
+     "exact_agreement_rate": 0.5462,
+     "judged_agreement_rate": 0.6707,
+     "failure_rate": 0.004
+    },
+    "analyzer_verdict": {
+     "comparable": false,
+     "rank_by_tool_choice": 9,
+     "picked_as": []
+    },
+    "full_run": null
+   },
+   {
+    "model": "deepseek-v4-pro@provider-a",
+    "role": "candidate",
+    "step_check": {
+     "n_calls": 250,
+     "answered": 249,
+     "tool_choice_rate": 0.9558,
+     "tool_choice_n": 249,
+     "args_given_same_tool_rate": 0.6303,
+     "exact_agreement_rate": 0.6024,
+     "judged_agreement_rate": 0.747,
+     "failure_rate": 0.004
+    },
+    "analyzer_verdict": {
+     "comparable": true,
+     "rank_by_tool_choice": 6,
+     "picked_as": []
+    },
+    "full_run": null
+   },
+   {
+    "model": "glm-5.3@provider-a",
+    "role": "candidate",
+    "step_check": {
+     "n_calls": 250,
+     "answered": 248,
+     "tool_choice_rate": 0.9798,
+     "tool_choice_n": 248,
+     "args_given_same_tool_rate": 0.642,
+     "exact_agreement_rate": 0.629,
+     "judged_agreement_rate": 0.7702,
+     "failure_rate": 0.008
+    },
+    "analyzer_verdict": {
+     "comparable": true,
+     "rank_by_tool_choice": 1,
+     "picked_as": [
+      "Best open model"
+     ]
+    },
+    "full_run": null
+   },
+   {
+    "model": "glm-5.3-flash@provider-a",
+    "role": "candidate",
+    "step_check": {
+     "n_calls": 250,
+     "answered": 227,
+     "tool_choice_rate": 0.9736,
+     "tool_choice_n": 227,
+     "args_given_same_tool_rate": 0.6335,
+     "exact_agreement_rate": 0.6167,
+     "judged_agreement_rate": 0.7533,
+     "failure_rate": 0.092
+    },
+    "analyzer_verdict": {
+     "comparable": true,
+     "rank_by_tool_choice": 2,
+     "picked_as": []
+    },
+    "full_run": null
+   },
+   {
+    "model": "gpt-oss-120b@provider-a",
+    "role": "candidate",
+    "step_check": {
+     "n_calls": 250,
+     "answered": 250,
+     "tool_choice_rate": 0.496,
+     "tool_choice_n": 250,
+     "args_given_same_tool_rate": 0.8065,
+     "exact_agreement_rate": 0.4,
+     "judged_agreement_rate": 0.408,
+     "failure_rate": 0.0
+    },
+    "analyzer_verdict": {
+     "comparable": false,
+     "rank_by_tool_choice": 11,
+     "picked_as": []
+    },
+    "full_run": null
+   },
+   {
+    "model": "qwen3.8-27b@provider-a",
+    "role": "candidate",
+    "step_check": {
+     "n_calls": 250,
+     "answered": 250,
+     "tool_choice_rate": 0.892,
+     "tool_choice_n": 250,
+     "args_given_same_tool_rate": 0.5919,
+     "exact_agreement_rate": 0.528,
+     "judged_agreement_rate": 0.652,
+     "failure_rate": 0.0
+    },
+    "analyzer_verdict": {
+     "comparable": false,
+     "rank_by_tool_choice": 8,
+     "picked_as": []
+    },
+    "full_run": null
+   },
+   {
+    "model": "minimax-m3@provider-a",
+    "role": "candidate",
+    "step_check": {
+     "n_calls": 250,
+     "answered": 250,
+     "tool_choice_rate": 0.856,
+     "tool_choice_n": 250,
+     "args_given_same_tool_rate": 0.5935,
+     "exact_agreement_rate": 0.508,
+     "judged_agreement_rate": 0.64,
+     "failure_rate": 0.0
+    },
+    "analyzer_verdict": {
+     "comparable": false,
+     "rank_by_tool_choice": 10,
+     "picked_as": []
+    },
+    "full_run": null
+   },
+   {
+    "model": "gpt-6-luna",
+    "role": "candidate",
+    "step_check": {
+     "n_calls": 250,
+     "answered": 250,
+     "tool_choice_rate": 0.92,
+     "tool_choice_n": 250,
+     "args_given_same_tool_rate": 0.6261,
+     "exact_agreement_rate": 0.576,
+     "judged_agreement_rate": 0.62,
+     "failure_rate": 0.0
+    },
+    "analyzer_verdict": {
+     "comparable": true,
+     "rank_by_tool_choice": 7,
+     "picked_as": [
+      "Cheapest"
+     ]
+    },
+    "full_run": null
+   },
+   {
+    "model": "gpt-6.1-sol",
+    "role": "candidate",
+    "step_check": {
+     "n_calls": 250,
+     "answered": 250,
+     "tool_choice_rate": 0.968,
+     "tool_choice_n": 250,
+     "args_given_same_tool_rate": 0.6694,
+     "exact_agreement_rate": 0.648,
+     "judged_agreement_rate": 0.736,
+     "failure_rate": 0.0
+    },
+    "analyzer_verdict": {
+     "comparable": true,
+     "rank_by_tool_choice": 5,
+     "picked_as": []
+    },
+    "full_run": null
+   }
+  ]
+ },
+ "results_note": "One entry per use case and model, in the analyzer's candidate order (ties in tool-choice rank are broken by this order). step_check: the analyzer's numbers for that model (detail in replays_and_step_checks); Sonnet's step_check is its replay against its own recording (batch A). analyzer_verdict: comparable = failure rate <= 0.2 and tool-choice rate within 0.10 of the best rate in the use case (Sonnet's own replay included); rank among candidates with failure rate <= 0.2; picked_as = goals for which the analyzer named this model. full_run: Withheld: computed from the Haiku Tax full runs, an internal draft whose results have not been cleared for publication (inference providers have not seen their numbers). See README.md, Results.",
+ "per_type": {
+  "step_check_tool_choice": {
+   "sonnet-5.5": {
+    "support": {
+     "n": 120,
+     "correct": 119,
+     "accuracy": 0.9917
+    },
+    "invoice_extraction": {
+     "n": 248,
+     "correct": 229,
+     "accuracy": 0.9234
+    },
+    "claims_triage": {
+     "n": 246,
+     "correct": 228,
+     "accuracy": 0.9268
+    },
+    "kyc_checks": {
+     "n": 250,
+     "correct": 250,
+     "accuracy": 1.0
+    }
+   },
+   "opus-5.5": {
+    "support": {
+     "n": 120,
+     "correct": 117,
+     "accuracy": 0.975
+    },
+    "invoice_extraction": {
+     "n": 248,
+     "correct": 216,
+     "accuracy": 0.871
+    },
+    "claims_triage": {
+     "n": 246,
+     "correct": 206,
+     "accuracy": 0.8374
+    },
+    "kyc_checks": {
+     "n": 250,
+     "correct": 243,
+     "accuracy": 0.972
+    }
+   },
+   "haiku-5.5": {
+    "support": {
+     "n": 120,
+     "correct": 119,
+     "accuracy": 0.9917
+    },
+    "invoice_extraction": {
+     "n": 248,
+     "correct": 199,
+     "accuracy": 0.8024
+    },
+    "claims_triage": {
+     "n": 246,
+     "correct": 200,
+     "accuracy": 0.813
+    },
+    "kyc_checks": {
+     "n": 250,
+     "correct": 242,
+     "accuracy": 0.968
+    }
+   },
+   "deepseek-v4.1-flash@provider-a": {
+    "support": {
+     "n": 120,
+     "correct": 116,
+     "accuracy": 0.9667
+    },
+    "invoice_extraction": {
+     "n": 247,
+     "correct": 180,
+     "accuracy": 0.7287
+    },
+    "claims_triage": {
+     "n": 244,
+     "correct": 192,
+     "accuracy": 0.7869
+    },
+    "kyc_checks": {
+     "n": 249,
+     "correct": 215,
+     "accuracy": 0.8635
+    }
+   },
+   "deepseek-v4-pro@provider-a": {
+    "support": {
+     "n": 120,
+     "correct": 112,
+     "accuracy": 0.9333
+    },
+    "invoice_extraction": {
+     "n": 246,
+     "correct": 191,
+     "accuracy": 0.7764
+    },
+    "claims_triage": {
+     "n": 245,
+     "correct": 203,
+     "accuracy": 0.8286
+    },
+    "kyc_checks": {
+     "n": 249,
+     "correct": 238,
+     "accuracy": 0.9558
+    }
+   },
+   "glm-5.3@provider-a": {
+    "support": {
+     "n": 120,
+     "correct": 116,
+     "accuracy": 0.9667
+    },
+    "invoice_extraction": {
+     "n": 247,
+     "correct": 186,
+     "accuracy": 0.753
+    },
+    "claims_triage": {
+     "n": 246,
+     "correct": 190,
+     "accuracy": 0.7724
+    },
+    "kyc_checks": {
+     "n": 248,
+     "correct": 243,
+     "accuracy": 0.9798
+    }
+   },
+   "glm-5.3-flash@provider-a": {
+    "support": {
+     "n": 105,
+     "correct": 100,
+     "accuracy": 0.9524
+    },
+    "invoice_extraction": {
+     "n": 212,
+     "correct": 166,
+     "accuracy": 0.783
+    },
+    "claims_triage": {
+     "n": 223,
+     "correct": 164,
+     "accuracy": 0.7354
+    },
+    "kyc_checks": {
+     "n": 227,
+     "correct": 221,
+     "accuracy": 0.9736
+    }
+   },
+   "gpt-oss-120b@provider-a": {
+    "support": {
+     "n": 120,
+     "correct": 102,
+     "accuracy": 0.85
+    },
+    "invoice_extraction": {
+     "n": 247,
+     "correct": 78,
+     "accuracy": 0.3158
+    },
+    "claims_triage": {
+     "n": 245,
+     "correct": 108,
+     "accuracy": 0.4408
+    },
+    "kyc_checks": {
+     "n": 250,
+     "correct": 124,
+     "accuracy": 0.496
+    }
+   },
+   "qwen3.8-27b@provider-a": {
+    "support": {
+     "n": 120,
+     "correct": 115,
+     "accuracy": 0.9583
+    },
+    "invoice_extraction": {
+     "n": 248,
+     "correct": 184,
+     "accuracy": 0.7419
+    },
+    "claims_triage": {
+     "n": 246,
+     "correct": 192,
+     "accuracy": 0.7805
+    },
+    "kyc_checks": {
+     "n": 250,
+     "correct": 223,
+     "accuracy": 0.892
+    }
+   },
+   "minimax-m3@provider-a": {
+    "support": {
+     "n": 120,
+     "correct": 110,
+     "accuracy": 0.9167
+    },
+    "invoice_extraction": {
+     "n": 247,
+     "correct": 192,
+     "accuracy": 0.7773
+    },
+    "claims_triage": {
+     "n": 245,
+     "correct": 194,
+     "accuracy": 0.7918
+    },
+    "kyc_checks": {
+     "n": 250,
+     "correct": 214,
+     "accuracy": 0.856
+    }
+   },
+   "gpt-6-luna": {
+    "support": {
+     "n": 120,
+     "correct": 115,
+     "accuracy": 0.9583
+    },
+    "invoice_extraction": {
+     "n": 248,
+     "correct": 179,
+     "accuracy": 0.7218
+    },
+    "claims_triage": {
+     "n": 246,
+     "correct": 179,
+     "accuracy": 0.7276
+    },
+    "kyc_checks": {
+     "n": 250,
+     "correct": 230,
+     "accuracy": 0.92
+    }
+   },
+   "gpt-6.1-sol": {
+    "support": {
+     "n": 120,
+     "correct": 109,
+     "accuracy": 0.9083
+    },
+    "invoice_extraction": {
+     "n": 248,
+     "correct": 203,
+     "accuracy": 0.8185
+    },
+    "claims_triage": {
+     "n": 246,
+     "correct": 143,
+     "accuracy": 0.5813
+    },
+    "kyc_checks": {
+     "n": 250,
+     "correct": 242,
+     "accuracy": 0.968
+    }
+   }
+  },
+  "full_run": null,
+  "full_run_note": "Withheld: computed from the Haiku Tax full runs, an internal draft whose results have not been cleared for publication (inference providers have not seen their numbers). See README.md, Results."
+ },
+ "per_type_note": "Types are the four use cases. step_check_tool_choice: correct = same tool as Sonnet among answered tool-call steps.",
+ "failures": [
+  {
+   "category": "step_check_rate_limited",
+   "stage": "step check (replay)",
+   "definition": "The provider answered HTTP 429 after retries, so the replayed call has no reply and is left out of the agreement rates (it counts in the analyzer's failure rate).",
+   "counts": {
+    "sonnet-5.5": 0,
+    "opus-5.5": 0,
+    "haiku-5.5": 0,
+    "gpt-6-luna": 0,
+    "gpt-6.1-sol": 0,
+    "deepseek-v4.1-flash@provider-a": 0,
+    "deepseek-v4-pro@provider-a": 0,
+    "glm-5.3@provider-a": 0,
+    "glm-5.3-flash@provider-a": 123,
+    "gpt-oss-120b@provider-a": 0,
+    "qwen3.8-27b@provider-a": 0,
+    "minimax-m3@provider-a": 0
+   },
+   "example": "HTTP 429 from the provider after three retries."
+  },
+  {
+   "category": "step_check_empty_reply",
+   "stage": "step check (replay)",
+   "definition": "The candidate returned an empty reply to a replayed call; left out of the agreement rates and counted as a failure.",
+   "counts": {
+    "sonnet-5.5": 0,
+    "opus-5.5": 0,
+    "haiku-5.5": 0,
+    "gpt-6-luna": 0,
+    "gpt-6.1-sol": 0,
+    "deepseek-v4.1-flash@provider-a": 5,
+    "deepseek-v4-pro@provider-a": 4,
+    "glm-5.3@provider-a": 3,
+    "glm-5.3-flash@provider-a": 4,
+    "gpt-oss-120b@provider-a": 2,
+    "qwen3.8-27b@provider-a": 0,
+    "minimax-m3@provider-a": 2
+   },
+   "example": "The candidate's reply to a replayed call had neither text nor a tool call."
+  }
+ ],
+ "failures_note": "Full-run failure categories are withheld with the full runs.",
+ "replays_and_step_checks": [
+  {
+   "kind": "step_check",
+   "use_case": "support",
+   "model": "sonnet-5.5",
+   "role": "incumbent replayed against its own recording (noise floor)",
+   "analyzer_batch": "A",
+   "n_calls_sampled": 250,
+   "n_calls_answered": 250,
+   "n_calls_failed": 0,
+   "failure_rate_reported": 0.0,
+   "failure_categories": {},
+   "tool_choice": {
+    "n": 120,
+    "same_tool": 119,
+    "rate": 0.9917,
+    "ci95": [
+     0.9543,
+     0.9985
+    ]
+   },
+   "args_given_same_tool": {
+    "n": 119,
+    "same_args": 105,
+    "rate": 0.8824,
+    "ci95": [
+     0.8122,
+     0.9286
+    ]
+   },
+   "text_replies": {
+    "n": 130,
+    "same_text": 15,
+    "rate": 0.1154
+   },
+   "exact_agreement": {
+    "n": 250,
+    "agreeing": 120,
+    "rate": 0.48,
+    "ci95": [
+     0.4188,
+     0.5418
+    ]
+   },
+   "judged": {
+    "n_disagreements": 130,
+    "judged_equivalent": 99,
+    "judged_different": 9,
+    "judged_unsure_or_unjudged": 22,
+    "judged_agreement": {
+     "n": 250,
+     "agreeing_or_equivalent": 219,
+     "rate": 0.876,
+     "ci95": [
+      0.8294,
+      0.9113
+     ]
+    }
+   },
+   "state_changing_steps": {
+    "n": 44,
+    "same_tool": 44,
+    "same_tool_rate": 1.0,
+    "same_tool_same_args": 38,
+    "same_tool_same_args_rate": 0.8636
+   },
+   "disagreement_breakdown": {
+    "same_tool_different_args": 14,
+    "text_instead_of_tool": 1,
+    "different_text": 115
+   },
+   "step_cost_per_call_cents": 1.2787,
+   "median_latency_s": 1.92
+  },
+  {
+   "kind": "step_check",
+   "use_case": "support",
+   "model": "sonnet-5.5",
+   "role": "incumbent replayed against its own recording (noise floor)",
+   "analyzer_batch": "B",
+   "n_calls_sampled": 250,
+   "n_calls_answered": 250,
+   "n_calls_failed": 0,
+   "failure_rate_reported": 0.0,
+   "failure_categories": {},
+   "tool_choice": {
+    "n": 120,
+    "same_tool": 119,
+    "rate": 0.9917,
+    "ci95": [
+     0.9543,
+     0.9985
+    ]
+   },
+   "args_given_same_tool": {
+    "n": 119,
+    "same_args": 109,
+    "rate": 0.916,
+    "ci95": [
+     0.8522,
+     0.9537
+    ]
+   },
+   "text_replies": {
+    "n": 130,
+    "same_text": 18,
+    "rate": 0.1385
+   },
+   "exact_agreement": {
+    "n": 250,
+    "agreeing": 127,
+    "rate": 0.508,
+    "ci95": [
+     0.4464,
+     0.5694
+    ]
+   },
+   "judged": {
+    "n_disagreements": 123,
+    "judged_equivalent": 91,
+    "judged_different": 6,
+    "judged_unsure_or_unjudged": 26,
+    "judged_agreement": {
+     "n": 250,
+     "agreeing_or_equivalent": 218,
+     "rate": 0.872,
+     "ci95": [
+      0.8249,
+      0.9079
+     ]
+    }
+   },
+   "state_changing_steps": {
+    "n": 44,
+    "same_tool": 44,
+    "same_tool_rate": 1.0,
+    "same_tool_same_args": 39,
+    "same_tool_same_args_rate": 0.8864
+   },
+   "disagreement_breakdown": {
+    "same_tool_different_args": 10,
+    "text_instead_of_tool": 1,
+    "different_text": 112
+   },
+   "step_cost_per_call_cents": 1.2783,
+   "median_latency_s": 1.888
+  },
+  {
+   "kind": "step_check",
+   "use_case": "support",
+   "model": "opus-5.5",
+   "role": "candidate",
+   "analyzer_batch": "A",
+   "n_calls_sampled": 250,
+   "n_calls_answered": 250,
+   "n_calls_failed": 0,
+   "failure_rate_reported": 0.0,
+   "failure_categories": {},
+   "tool_choice": {
+    "n": 120,
+    "same_tool": 117,
+    "rate": 0.975,
+    "ci95": [
+     0.9291,
+     0.9915
+    ]
+   },
+   "args_given_same_tool": {
+    "n": 117,
+    "same_args": 105,
+    "rate": 0.8974,
+    "ci95": [
+     0.8293,
+     0.9404
+    ]
+   },
+   "text_replies": {
+    "n": 130,
+    "same_text": 6,
+    "rate": 0.0462
+   },
+   "exact_agreement": {
+    "n": 250,
+    "agreeing": 111,
+    "rate": 0.444,
+    "ci95": [
+     0.3837,
+     0.506
+    ]
+   },
+   "judged": {
+    "n_disagreements": 139,
+    "judged_equivalent": 91,
+    "judged_different": 7,
+    "judged_unsure_or_unjudged": 41,
+    "judged_agreement": {
+     "n": 250,
+     "agreeing_or_equivalent": 202,
+     "rate": 0.808,
+     "ci95": [
+      0.7547,
+      0.852
+     ]
+    }
+   },
+   "state_changing_steps": {
+    "n": 44,
+    "same_tool": 44,
+    "same_tool_rate": 1.0,
+    "same_tool_same_args": 37,
+    "same_tool_same_args_rate": 0.8409
+   },
+   "disagreement_breakdown": {
+    "same_tool_different_args": 12,
+    "different_tool": 1,
+    "text_instead_of_tool": 2,
+    "different_text": 123,
+    "tool_instead_of_text": 1
+   },
+   "step_cost_per_call_cents": 2.6078,
+   "median_latency_s": 2.519,
+   "full_run_paired_delta_vs_sonnet": {
+    "n_paired": 100,
+    "delta": 0.02,
+    "ci95": [
+     -0.02,
+     0.06
+    ],
+    "tasks_candidate_only_correct": 3,
+    "tasks_incumbent_only_correct": 1
+   },
+   "paired_difference_note": "The step check compares each candidate reply with Sonnet's recorded reply on the same 250 calls; the study computed no paired step-level difference or CI against Sonnet's own replay. The paired difference shown is the full-run task success delta on the same tasks (bootstrap 95% CI)."
+  },
+  {
+   "kind": "step_check",
+   "use_case": "support",
+   "model": "haiku-5.5",
+   "role": "candidate",
+   "analyzer_batch": "A",
+   "n_calls_sampled": 250,
+   "n_calls_answered": 250,
+   "n_calls_failed": 0,
+   "failure_rate_reported": 0.0,
+   "failure_categories": {},
+   "tool_choice": {
+    "n": 120,
+    "same_tool": 119,
+    "rate": 0.9917,
+    "ci95": [
+     0.9543,
+     0.9985
+    ]
+   },
+   "args_given_same_tool": {
+    "n": 119,
+    "same_args": 104,
+    "rate": 0.8739,
+    "ci95": [
+     0.8024,
+     0.9221
+    ]
+   },
+   "text_replies": {
+    "n": 130,
+    "same_text": 7,
+    "rate": 0.0538
+   },
+   "exact_agreement": {
+    "n": 250,
+    "agreeing": 111,
+    "rate": 0.444,
+    "ci95": [
+     0.3837,
+     0.506
+    ]
+   },
+   "judged": {
+    "n_disagreements": 139,
+    "judged_equivalent": 105,
+    "judged_different": 8,
+    "judged_unsure_or_unjudged": 26,
+    "judged_agreement": {
+     "n": 250,
+     "agreeing_or_equivalent": 216,
+     "rate": 0.864,
+     "ci95": [
+      0.816,
+      0.901
+     ]
+    }
+   },
+   "state_changing_steps": {
+    "n": 44,
+    "same_tool": 44,
+    "same_tool_rate": 1.0,
+    "same_tool_same_args": 37,
+    "same_tool_same_args_rate": 0.8409
+   },
+   "disagreement_breakdown": {
+    "same_tool_different_args": 15,
+    "text_instead_of_tool": 1,
+    "different_text": 123
+   },
+   "step_cost_per_call_cents": 0.0651,
+   "median_latency_s": 1.12,
+   "full_run_paired_delta_vs_sonnet": {
+    "n_paired": 100,
+    "delta": -0.01,
+    "ci95": [
+     -0.05,
+     0.03
+    ],
+    "tasks_candidate_only_correct": 2,
+    "tasks_incumbent_only_correct": 3
+   },
+   "paired_difference_note": "The step check compares each candidate reply with Sonnet's recorded reply on the same 250 calls; the study computed no paired step-level difference or CI against Sonnet's own replay. The paired difference shown is the full-run task success delta on the same tasks (bootstrap 95% CI)."
+  },
+  {
+   "kind": "step_check",
+   "use_case": "support",
+   "model": "deepseek-v4.1-flash@provider-a",
+   "role": "candidate",
+   "analyzer_batch": "A",
+   "n_calls_sampled": 250,
+   "n_calls_answered": 249,
+   "n_calls_failed": 1,
+   "failure_rate_reported": 0.004,
+   "failure_categories": {
+    "empty_reply": 1
+   },
+   "tool_choice": {
+    "n": 120,
+    "same_tool": 116,
+    "rate": 0.9667,
+    "ci95": [
+     0.9174,
+     0.987
+    ]
+   },
+   "args_given_same_tool": {
+    "n": 116,
+    "same_args": 106,
+    "rate": 0.9138,
+    "ci95": [
+     0.8486,
+     0.9525
+    ]
+   },
+   "text_replies": {
+    "n": 129,
+    "same_text": 6,
+    "rate": 0.0465
+   },
+   "exact_agreement": {
+    "n": 249,
+    "agreeing": 112,
+    "rate": 0.4498,
+    "ci95": [
+     0.3892,
+     0.5119
+    ]
+   },
+   "judged": {
+    "n_disagreements": 137,
+    "judged_equivalent": 109,
+    "judged_different": 4,
+    "judged_unsure_or_unjudged": 24,
+    "judged_agreement": {
+     "n": 249,
+     "agreeing_or_equivalent": 221,
+     "rate": 0.8876,
+     "ci95": [
+      0.8423,
+      0.921
+     ]
+    }
+   },
+   "state_changing_steps": {
+    "n": 44,
+    "same_tool": 44,
+    "same_tool_rate": 1.0,
+    "same_tool_same_args": 37,
+    "same_tool_same_args_rate": 0.8409
+   },
+   "disagreement_breakdown": {
+    "same_tool_different_args": 10,
+    "text_instead_of_tool": 4,
+    "different_text": 122,
+    "tool_instead_of_text": 1
+   },
+   "step_cost_per_call_cents": 0.1478,
+   "median_latency_s": 2.198,
+   "full_run_paired_delta_vs_sonnet": {
+    "n_paired": 100,
+    "delta": 0.0,
+    "ci95": [
+     -0.05,
+     0.05
+    ],
+    "tasks_candidate_only_correct": 3,
+    "tasks_incumbent_only_correct": 3
+   },
+   "paired_difference_note": "The step check compares each candidate reply with Sonnet's recorded reply on the same 250 calls; the study computed no paired step-level difference or CI against Sonnet's own replay. The paired difference shown is the full-run task success delta on the same tasks (bootstrap 95% CI)."
+  },
+  {
+   "kind": "step_check",
+   "use_case": "support",
+   "model": "deepseek-v4-pro@provider-a",
+   "role": "candidate",
+   "analyzer_batch": "A",
+   "n_calls_sampled": 250,
+   "n_calls_answered": 250,
+   "n_calls_failed": 0,
+   "failure_rate_reported": 0.0,
+   "failure_categories": {},
+   "tool_choice": {
+    "n": 120,
+    "same_tool": 112,
+    "rate": 0.9333,
+    "ci95": [
+     0.8739,
+     0.9658
+    ]
+   },
+   "args_given_same_tool": {
+    "n": 112,
+    "same_args": 102,
+    "rate": 0.9107,
+    "ci95": [
+     0.8434,
+     0.9508
+    ]
+   },
+   "text_replies": {
+    "n": 130,
+    "same_text": 5,
+    "rate": 0.0385
+   },
+   "exact_agreement": {
+    "n": 250,
+    "agreeing": 107,
+    "rate": 0.428,
+    "ci95": [
+     0.3682,
+     0.49
+    ]
+   },
+   "judged": {
+    "n_disagreements": 143,
+    "judged_equivalent": 106,
+    "judged_different": 4,
+    "judged_unsure_or_unjudged": 33,
+    "judged_agreement": {
+     "n": 250,
+     "agreeing_or_equivalent": 213,
+     "rate": 0.852,
+     "ci95": [
+      0.8027,
+      0.8907
+     ]
+    }
+   },
+   "state_changing_steps": {
+    "n": 44,
+    "same_tool": 44,
+    "same_tool_rate": 1.0,
+    "same_tool_same_args": 37,
+    "same_tool_same_args_rate": 0.8409
+   },
+   "disagreement_breakdown": {
+    "same_tool_different_args": 10,
+    "text_instead_of_tool": 8,
+    "different_text": 124,
+    "tool_instead_of_text": 1
+   },
+   "step_cost_per_call_cents": 0.2455,
+   "median_latency_s": 2.629,
+   "full_run_paired_delta_vs_sonnet": {
+    "n_paired": 100,
+    "delta": 0.0,
+    "ci95": [
+     -0.04,
+     0.04
+    ],
+    "tasks_candidate_only_correct": 2,
+    "tasks_incumbent_only_correct": 2
+   },
+   "paired_difference_note": "The step check compares each candidate reply with Sonnet's recorded reply on the same 250 calls; the study computed no paired step-level difference or CI against Sonnet's own replay. The paired difference shown is the full-run task success delta on the same tasks (bootstrap 95% CI)."
+  },
+  {
+   "kind": "step_check",
+   "use_case": "support",
+   "model": "glm-5.3@provider-a",
+   "role": "candidate",
+   "analyzer_batch": "A",
+   "n_calls_sampled": 250,
+   "n_calls_answered": 250,
+   "n_calls_failed": 0,
+   "failure_rate_reported": 0.0,
+   "failure_categories": {},
+   "tool_choice": {
+    "n": 120,
+    "same_tool": 116,
+    "rate": 0.9667,
+    "ci95": [
+     0.9174,
+     0.987
+    ]
+   },
+   "args_given_same_tool": {
+    "n": 116,
+    "same_args": 103,
+    "rate": 0.8879,
+    "ci95": [
+     0.8177,
+     0.9333
+    ]
+   },
+   "text_replies": {
+    "n": 130,
+    "same_text": 6,
+    "rate": 0.0462
+   },
+   "exact_agreement": {
+    "n": 250,
+    "agreeing": 109,
+    "rate": 0.436,
+    "ci95": [
+     0.376,
+     0.498
+    ]
+   },
+   "judged": {
+    "n_disagreements": 141,
+    "judged_equivalent": 100,
+    "judged_different": 8,
+    "judged_unsure_or_unjudged": 33,
+    "judged_agreement": {
+     "n": 250,
+     "agreeing_or_equivalent": 209,
+     "rate": 0.836,
+     "ci95": [
+      0.7851,
+      0.8767
+     ]
+    }
+   },
+   "state_changing_steps": {
+    "n": 44,
+    "same_tool": 44,
+    "same_tool_rate": 1.0,
+    "same_tool_same_args": 37,
+    "same_tool_same_args_rate": 0.8409
+   },
+   "disagreement_breakdown": {
+    "same_tool_different_args": 13,
+    "text_instead_of_tool": 4,
+    "different_text": 123,
+    "tool_instead_of_text": 1
+   },
+   "step_cost_per_call_cents": 0.6291,
+   "median_latency_s": 1.63,
+   "full_run_paired_delta_vs_sonnet": {
+    "n_paired": 100,
+    "delta": -0.01,
+    "ci95": [
+     -0.05,
+     0.03
+    ],
+    "tasks_candidate_only_correct": 2,
+    "tasks_incumbent_only_correct": 3
+   },
+   "paired_difference_note": "The step check compares each candidate reply with Sonnet's recorded reply on the same 250 calls; the study computed no paired step-level difference or CI against Sonnet's own replay. The paired difference shown is the full-run task success delta on the same tasks (bootstrap 95% CI)."
+  },
+  {
+   "kind": "step_check",
+   "use_case": "support",
+   "model": "glm-5.3-flash@provider-a",
+   "role": "candidate",
+   "analyzer_batch": "B",
+   "n_calls_sampled": 250,
+   "n_calls_answered": 207,
+   "n_calls_failed": 43,
+   "failure_rate_reported": 0.172,
+   "failure_categories": {
+    "rate_limited": 43
+   },
+   "tool_choice": {
+    "n": 105,
+    "same_tool": 100,
+    "rate": 0.9524,
+    "ci95": [
+     0.8933,
+     0.9795
+    ]
+   },
+   "args_given_same_tool": {
+    "n": 100,
+    "same_args": 92,
+    "rate": 0.92,
+    "ci95": [
+     0.85,
+     0.9589
+    ]
+   },
+   "text_replies": {
+    "n": 102,
+    "same_text": 4,
+    "rate": 0.0392
+   },
+   "exact_agreement": {
+    "n": 207,
+    "agreeing": 96,
+    "rate": 0.4638,
+    "ci95": [
+     0.3971,
+     0.5317
+    ]
+   },
+   "judged": {
+    "n_disagreements": 111,
+    "judged_equivalent": 84,
+    "judged_different": 3,
+    "judged_unsure_or_unjudged": 24,
+    "judged_agreement": {
+     "n": 207,
+     "agreeing_or_equivalent": 180,
+     "rate": 0.8696,
+     "ci95": [
+      0.8169,
+      0.9088
+     ]
+    }
+   },
+   "state_changing_steps": {
+    "n": 34,
+    "same_tool": 34,
+    "same_tool_rate": 1.0,
+    "same_tool_same_args": 28,
+    "same_tool_same_args_rate": 0.8235
+   },
+   "disagreement_breakdown": {
+    "same_tool_different_args": 8,
+    "different_tool": 3,
+    "text_instead_of_tool": 2,
+    "different_text": 98
+   },
+   "step_cost_per_call_cents": 0.0635,
+   "median_latency_s": 2.778,
+   "full_run_paired_delta_vs_sonnet": {
+    "n_paired": 100,
+    "delta": 0.0,
+    "ci95": [
+     -0.05,
+     0.05
+    ],
+    "tasks_candidate_only_correct": 3,
+    "tasks_incumbent_only_correct": 3
+   },
+   "paired_difference_note": "The step check compares each candidate reply with Sonnet's recorded reply on the same 250 calls; the study computed no paired step-level difference or CI against Sonnet's own replay. The paired difference shown is the full-run task success delta on the same tasks (bootstrap 95% CI)."
+  },
+  {
+   "kind": "step_check",
+   "use_case": "support",
+   "model": "gpt-oss-120b@provider-a",
+   "role": "candidate",
+   "analyzer_batch": "B",
+   "n_calls_sampled": 250,
+   "n_calls_answered": 250,
+   "n_calls_failed": 0,
+   "failure_rate_reported": 0.0,
+   "failure_categories": {},
+   "tool_choice": {
+    "n": 120,
+    "same_tool": 102,
+    "rate": 0.85,
+    "ci95": [
+     0.7753,
+     0.903
+    ]
+   },
+   "args_given_same_tool": {
+    "n": 102,
+    "same_args": 89,
+    "rate": 0.8725,
+    "ci95": [
+     0.7941,
+     0.924
+    ]
+   },
+   "text_replies": {
+    "n": 130,
+    "same_text": 6,
+    "rate": 0.0462
+   },
+   "exact_agreement": {
+    "n": 250,
+    "agreeing": 95,
+    "rate": 0.38,
+    "ci95": [
+     0.3221,
+     0.4416
+    ]
+   },
+   "judged": {
+    "n_disagreements": 155,
+    "judged_equivalent": 90,
+    "judged_different": 14,
+    "judged_unsure_or_unjudged": 51,
+    "judged_agreement": {
+     "n": 250,
+     "agreeing_or_equivalent": 185,
+     "rate": 0.74,
+     "ci95": [
+      0.6823,
+      0.7905
+     ]
+    }
+   },
+   "state_changing_steps": {
+    "n": 44,
+    "same_tool": 43,
+    "same_tool_rate": 0.9773,
+    "same_tool_same_args": 37,
+    "same_tool_same_args_rate": 0.8409
+   },
+   "disagreement_breakdown": {
+    "same_tool_different_args": 13,
+    "different_tool": 7,
+    "text_instead_of_tool": 11,
+    "different_text": 124
+   },
+   "step_cost_per_call_cents": 0.0623,
+   "median_latency_s": 1.018,
+   "full_run_paired_delta_vs_sonnet": {
+    "n_paired": 100,
+    "delta": -0.08,
+    "ci95": [
+     -0.15,
+     -0.01
+    ],
+    "tasks_candidate_only_correct": 2,
+    "tasks_incumbent_only_correct": 10
+   },
+   "paired_difference_note": "The step check compares each candidate reply with Sonnet's recorded reply on the same 250 calls; the study computed no paired step-level difference or CI against Sonnet's own replay. The paired difference shown is the full-run task success delta on the same tasks (bootstrap 95% CI)."
+  },
+  {
+   "kind": "step_check",
+   "use_case": "support",
+   "model": "qwen3.8-27b@provider-a",
+   "role": "candidate",
+   "analyzer_batch": "B",
+   "n_calls_sampled": 250,
+   "n_calls_answered": 250,
+   "n_calls_failed": 0,
+   "failure_rate_reported": 0.0,
+   "failure_categories": {},
+   "tool_choice": {
+    "n": 120,
+    "same_tool": 115,
+    "rate": 0.9583,
+    "ci95": [
+     0.9062,
+     0.9821
+    ]
+   },
+   "args_given_same_tool": {
+    "n": 115,
+    "same_args": 100,
+    "rate": 0.8696,
+    "ci95": [
+     0.7959,
+     0.9193
+    ]
+   },
+   "text_replies": {
+    "n": 130,
+    "same_text": 6,
+    "rate": 0.0462
+   },
+   "exact_agreement": {
+    "n": 250,
+    "agreeing": 106,
+    "rate": 0.424,
+    "ci95": [
+     0.3643,
+     0.486
+    ]
+   },
+   "judged": {
+    "n_disagreements": 144,
+    "judged_equivalent": 88,
+    "judged_different": 12,
+    "judged_unsure_or_unjudged": 44,
+    "judged_agreement": {
+     "n": 250,
+     "agreeing_or_equivalent": 194,
+     "rate": 0.776,
+     "ci95": [
+      0.7204,
+      0.8233
+     ]
+    }
+   },
+   "state_changing_steps": {
+    "n": 44,
+    "same_tool": 44,
+    "same_tool_rate": 1.0,
+    "same_tool_same_args": 37,
+    "same_tool_same_args_rate": 0.8409
+   },
+   "disagreement_breakdown": {
+    "same_tool_different_args": 15,
+    "different_tool": 2,
+    "text_instead_of_tool": 3,
+    "different_text": 122,
+    "tool_instead_of_text": 2
+   },
+   "step_cost_per_call_cents": 0.2471,
+   "median_latency_s": 1.082,
+   "full_run_paired_delta_vs_sonnet": {
+    "n_paired": 100,
+    "delta": -0.11,
+    "ci95": [
+     -0.18,
+     -0.04
+    ],
+    "tasks_candidate_only_correct": 2,
+    "tasks_incumbent_only_correct": 13
+   },
+   "paired_difference_note": "The step check compares each candidate reply with Sonnet's recorded reply on the same 250 calls; the study computed no paired step-level difference or CI against Sonnet's own replay. The paired difference shown is the full-run task success delta on the same tasks (bootstrap 95% CI)."
+  },
+  {
+   "kind": "step_check",
+   "use_case": "support",
+   "model": "minimax-m3@provider-a",
+   "role": "candidate",
+   "analyzer_batch": "B",
+   "n_calls_sampled": 250,
+   "n_calls_answered": 250,
+   "n_calls_failed": 0,
+   "failure_rate_reported": 0.0,
+   "failure_categories": {},
+   "tool_choice": {
+    "n": 120,
+    "same_tool": 110,
+    "rate": 0.9167,
+    "ci95": [
+     0.8534,
+     0.9541
+    ]
+   },
+   "args_given_same_tool": {
+    "n": 110,
+    "same_args": 97,
+    "rate": 0.8818,
+    "ci95": [
+     0.8082,
+     0.9296
+    ]
+   },
+   "text_replies": {
+    "n": 130,
+    "same_text": 6,
+    "rate": 0.0462
+   },
+   "exact_agreement": {
+    "n": 250,
+    "agreeing": 103,
+    "rate": 0.412,
+    "ci95": [
+     0.3528,
+     0.4739
+    ]
+   },
+   "judged": {
+    "n_disagreements": 147,
+    "judged_equivalent": 96,
+    "judged_different": 12,
+    "judged_unsure_or_unjudged": 39,
+    "judged_agreement": {
+     "n": 250,
+     "agreeing_or_equivalent": 199,
+     "rate": 0.796,
+     "ci95": [
+      0.7417,
+      0.8413
+     ]
+    }
+   },
+   "state_changing_steps": {
+    "n": 44,
+    "same_tool": 44,
+    "same_tool_rate": 1.0,
+    "same_tool_same_args": 37,
+    "same_tool_same_args_rate": 0.8409
+   },
+   "disagreement_breakdown": {
+    "same_tool_different_args": 13,
+    "different_tool": 2,
+    "text_instead_of_tool": 8,
+    "different_text": 119,
+    "tool_instead_of_text": 5
+   },
+   "step_cost_per_call_cents": 0.1417,
+   "median_latency_s": 1.288,
+   "full_run_paired_delta_vs_sonnet": {
+    "n_paired": 100,
+    "delta": -0.03,
+    "ci95": [
+     -0.08,
+     0.02
+    ],
+    "tasks_candidate_only_correct": 2,
+    "tasks_incumbent_only_correct": 5
+   },
+   "paired_difference_note": "The step check compares each candidate reply with Sonnet's recorded reply on the same 250 calls; the study computed no paired step-level difference or CI against Sonnet's own replay. The paired difference shown is the full-run task success delta on the same tasks (bootstrap 95% CI)."
+  },
+  {
+   "kind": "step_check",
+   "use_case": "support",
+   "model": "gpt-6-luna",
+   "role": "candidate",
+   "analyzer_batch": "G",
+   "n_calls_sampled": 250,
+   "n_calls_answered": 250,
+   "n_calls_failed": 0,
+   "failure_rate_reported": 0.0,
+   "failure_categories": {},
+   "tool_choice": {
+    "n": 120,
+    "same_tool": 115,
+    "rate": 0.9583,
+    "ci95": [
+     0.9062,
+     0.9821
+    ]
+   },
+   "args_given_same_tool": {
+    "n": 115,
+    "same_args": 99,
+    "rate": 0.8609,
+    "ci95": [
+     0.7859,
+     0.9125
+    ]
+   },
+   "text_replies": {
+    "n": 130,
+    "same_text": 1,
+    "rate": 0.0077
+   },
+   "exact_agreement": {
+    "n": 250,
+    "agreeing": 100,
+    "rate": 0.4,
+    "ci95": [
+     0.3412,
+     0.4618
+    ]
+   },
+   "judged": {
+    "n_disagreements": 150,
+    "judged_equivalent": 105,
+    "judged_different": 13,
+    "judged_unsure_or_unjudged": 32,
+    "judged_agreement": {
+     "n": 250,
+     "agreeing_or_equivalent": 205,
+     "rate": 0.82,
+     "ci95": [
+      0.7676,
+      0.8627
+     ]
+    }
+   },
+   "state_changing_steps": {
+    "n": 44,
+    "same_tool": 44,
+    "same_tool_rate": 1.0,
+    "same_tool_same_args": 37,
+    "same_tool_same_args_rate": 0.8409
+   },
+   "disagreement_breakdown": {
+    "same_tool_different_args": 16,
+    "different_tool": 2,
+    "text_instead_of_tool": 3,
+    "different_text": 126,
+    "tool_instead_of_text": 3
+   },
+   "step_cost_per_call_cents": 0.0118,
+   "median_latency_s": 2.644,
+   "full_run_paired_delta_vs_sonnet": {
+    "n_paired": 100,
+    "delta": -0.05,
+    "ci95": [
+     -0.12,
+     0.01
+    ],
+    "tasks_candidate_only_correct": 3,
+    "tasks_incumbent_only_correct": 8
+   },
+   "paired_difference_note": "The step check compares each candidate reply with Sonnet's recorded reply on the same 250 calls; the study computed no paired step-level difference or CI against Sonnet's own replay. The paired difference shown is the full-run task success delta on the same tasks (bootstrap 95% CI)."
+  },
+  {
+   "kind": "step_check",
+   "use_case": "support",
+   "model": "gpt-6.1-sol",
+   "role": "candidate",
+   "analyzer_batch": "G",
+   "n_calls_sampled": 250,
+   "n_calls_answered": 250,
+   "n_calls_failed": 0,
+   "failure_rate_reported": 0.0,
+   "failure_categories": {},
+   "tool_choice": {
+    "n": 120,
+    "same_tool": 109,
+    "rate": 0.9083,
+    "ci95": [
+     0.8433,
+     0.948
+    ]
+   },
+   "args_given_same_tool": {
+    "n": 109,
+    "same_args": 97,
+    "rate": 0.8899,
+    "ci95": [
+     0.8174,
+     0.9359
+    ]
+   },
+   "text_replies": {
+    "n": 130,
+    "same_text": 0,
+    "rate": 0.0
+   },
+   "exact_agreement": {
+    "n": 250,
+    "agreeing": 97,
+    "rate": 0.388,
+    "ci95": [
+     0.3297,
+     0.4497
+    ]
+   },
+   "judged": {
+    "n_disagreements": 153,
+    "judged_equivalent": 89,
+    "judged_different": 9,
+    "judged_unsure_or_unjudged": 55,
+    "judged_agreement": {
+     "n": 250,
+     "agreeing_or_equivalent": 186,
+     "rate": 0.744,
+     "ci95": [
+      0.6865,
+      0.7941
+     ]
+    }
+   },
+   "state_changing_steps": {
+    "n": 44,
+    "same_tool": 44,
+    "same_tool_rate": 1.0,
+    "same_tool_same_args": 37,
+    "same_tool_same_args_rate": 0.8409
+   },
+   "disagreement_breakdown": {
+    "same_tool_different_args": 12,
+    "different_tool": 6,
+    "text_instead_of_tool": 5,
+    "different_text": 127,
+    "tool_instead_of_text": 3
+   },
+   "step_cost_per_call_cents": 0.1705,
+   "median_latency_s": 2.872,
+   "full_run_paired_delta_vs_sonnet": {
+    "n_paired": 100,
+    "delta": -0.06,
+    "ci95": [
+     -0.12,
+     -0.01
+    ],
+    "tasks_candidate_only_correct": 1,
+    "tasks_incumbent_only_correct": 7
+   },
+   "paired_difference_note": "The step check compares each candidate reply with Sonnet's recorded reply on the same 250 calls; the study computed no paired step-level difference or CI against Sonnet's own replay. The paired difference shown is the full-run task success delta on the same tasks (bootstrap 95% CI)."
+  },
+  {
+   "kind": "step_check",
+   "use_case": "invoice_extraction",
+   "model": "sonnet-5.5",
+   "role": "incumbent replayed against its own recording (noise floor)",
+   "analyzer_batch": "A",
+   "n_calls_sampled": 250,
+   "n_calls_answered": 250,
+   "n_calls_failed": 0,
+   "failure_rate_reported": 0.0,
+   "failure_categories": {},
+   "tool_choice": {
+    "n": 248,
+    "same_tool": 229,
+    "rate": 0.9234,
+    "ci95": [
+     0.8834,
+     0.9504
+    ]
+   },
+   "args_given_same_tool": {
+    "n": 229,
+    "same_args": 148,
+    "rate": 0.6463,
+    "ci95": [
+     0.5824,
+     0.7053
+    ]
+   },
+   "text_replies": {
+    "n": 2,
+    "same_text": 0,
+    "rate": 0.0
+   },
+   "exact_agreement": {
+    "n": 250,
+    "agreeing": 148,
+    "rate": 0.592,
+    "ci95": [
+     0.5301,
+     0.6511
+    ]
+   },
+   "judged": {
+    "n_disagreements": 102,
+    "judged_equivalent": 43,
+    "judged_different": 3,
+    "judged_unsure_or_unjudged": 56,
+    "judged_agreement": {
+     "n": 250,
+     "agreeing_or_equivalent": 191,
+     "rate": 0.764,
+     "ci95": [
+      0.7076,
+      0.8124
+     ]
+    }
+   },
+   "state_changing_steps": {
+    "n": 50,
+    "same_tool": 48,
+    "same_tool_rate": 0.96,
+    "same_tool_same_args": 18,
+    "same_tool_same_args_rate": 0.36
+   },
+   "disagreement_breakdown": {
+    "same_tool_different_args": 81,
+    "different_tool": 18,
+    "text_instead_of_tool": 1,
+    "tool_instead_of_text": 2
+   },
+   "step_cost_per_call_cents": 1.2391,
+   "median_latency_s": 1.707
+  },
+  {
+   "kind": "step_check",
+   "use_case": "invoice_extraction",
+   "model": "sonnet-5.5",
+   "role": "incumbent replayed against its own recording (noise floor)",
+   "analyzer_batch": "B",
+   "n_calls_sampled": 250,
+   "n_calls_answered": 250,
+   "n_calls_failed": 0,
+   "failure_rate_reported": 0.0,
+   "failure_categories": {},
+   "tool_choice": {
+    "n": 248,
+    "same_tool": 231,
+    "rate": 0.9315,
+    "ci95": [
+     0.893,
+     0.9568
+    ]
+   },
+   "args_given_same_tool": {
+    "n": 231,
+    "same_args": 144,
+    "rate": 0.6234,
+    "ci95": [
+     0.5594,
+     0.6834
+    ]
+   },
+   "text_replies": {
+    "n": 2,
+    "same_text": 0,
+    "rate": 0.0
+   },
+   "exact_agreement": {
+    "n": 250,
+    "agreeing": 144,
+    "rate": 0.576,
+    "ci95": [
+     0.514,
+     0.6357
+    ]
+   },
+   "judged": {
+    "n_disagreements": 106,
+    "judged_equivalent": 44,
+    "judged_different": 4,
+    "judged_unsure_or_unjudged": 58,
+    "judged_agreement": {
+     "n": 250,
+     "agreeing_or_equivalent": 188,
+     "rate": 0.752,
+     "ci95": [
+      0.6949,
+      0.8014
+     ]
+    }
+   },
+   "state_changing_steps": {
+    "n": 50,
+    "same_tool": 47,
+    "same_tool_rate": 0.94,
+    "same_tool_same_args": 14,
+    "same_tool_same_args_rate": 0.28
+   },
+   "disagreement_breakdown": {
+    "same_tool_different_args": 87,
+    "different_tool": 17,
+    "tool_instead_of_text": 2
+   },
+   "step_cost_per_call_cents": 1.2402,
+   "median_latency_s": 1.645
+  },
+  {
+   "kind": "step_check",
+   "use_case": "invoice_extraction",
+   "model": "opus-5.5",
+   "role": "candidate",
+   "analyzer_batch": "A",
+   "n_calls_sampled": 250,
+   "n_calls_answered": 250,
+   "n_calls_failed": 0,
+   "failure_rate_reported": 0.0,
+   "failure_categories": {},
+   "tool_choice": {
+    "n": 248,
+    "same_tool": 216,
+    "rate": 0.871,
+    "ci95": [
+     0.8235,
+     0.9071
+    ]
+   },
+   "args_given_same_tool": {
+    "n": 216,
+    "same_args": 129,
+    "rate": 0.5972,
+    "ci95": [
+     0.5307,
+     0.6604
+    ]
+   },
+   "text_replies": {
+    "n": 2,
+    "same_text": 0,
+    "rate": 0.0
+   },
+   "exact_agreement": {
+    "n": 250,
+    "agreeing": 129,
+    "rate": 0.516,
+    "ci95": [
+     0.4543,
+     0.5772
+    ]
+   },
+   "judged": {
+    "n_disagreements": 121,
+    "judged_equivalent": 27,
+    "judged_different": 8,
+    "judged_unsure_or_unjudged": 86,
+    "judged_agreement": {
+     "n": 250,
+     "agreeing_or_equivalent": 156,
+     "rate": 0.624,
+     "ci95": [
+      0.5625,
+      0.6817
+     ]
+    }
+   },
+   "state_changing_steps": {
+    "n": 50,
+    "same_tool": 44,
+    "same_tool_rate": 0.88,
+    "same_tool_same_args": 12,
+    "same_tool_same_args_rate": 0.24
+   },
+   "disagreement_breakdown": {
+    "same_tool_different_args": 87,
+    "different_tool": 32,
+    "tool_instead_of_text": 2
+   },
+   "step_cost_per_call_cents": 2.4945,
+   "median_latency_s": 2.413,
+   "full_run_paired_delta_vs_sonnet": {
+    "n_paired": 91,
+    "delta": 0.0,
+    "ci95": [
+     -0.044,
+     0.044
+    ],
+    "tasks_candidate_only_correct": 2,
+    "tasks_incumbent_only_correct": 2
+   },
+   "paired_difference_note": "The step check compares each candidate reply with Sonnet's recorded reply on the same 250 calls; the study computed no paired step-level difference or CI against Sonnet's own replay. The paired difference shown is the full-run task success delta on the same tasks (bootstrap 95% CI)."
+  },
+  {
+   "kind": "step_check",
+   "use_case": "invoice_extraction",
+   "model": "haiku-5.5",
+   "role": "candidate",
+   "analyzer_batch": "A",
+   "n_calls_sampled": 250,
+   "n_calls_answered": 250,
+   "n_calls_failed": 0,
+   "failure_rate_reported": 0.0,
+   "failure_categories": {},
+   "tool_choice": {
+    "n": 248,
+    "same_tool": 199,
+    "rate": 0.8024,
+    "ci95": [
+     0.7484,
+     0.8472
+    ]
+   },
+   "args_given_same_tool": {
+    "n": 199,
+    "same_args": 112,
+    "rate": 0.5628,
+    "ci95": [
+     0.4933,
+     0.6299
+    ]
+   },
+   "text_replies": {
+    "n": 2,
+    "same_text": 0,
+    "rate": 0.0
+   },
+   "exact_agreement": {
+    "n": 250,
+    "agreeing": 112,
+    "rate": 0.448,
+    "ci95": [
+     0.3876,
+     0.51
+    ]
+   },
+   "judged": {
+    "n_disagreements": 138,
+    "judged_equivalent": 35,
+    "judged_different": 6,
+    "judged_unsure_or_unjudged": 97,
+    "judged_agreement": {
+     "n": 250,
+     "agreeing_or_equivalent": 147,
+     "rate": 0.588,
+     "ci95": [
+      0.5261,
+      0.6472
+     ]
+    }
+   },
+   "state_changing_steps": {
+    "n": 50,
+    "same_tool": 47,
+    "same_tool_rate": 0.94,
+    "same_tool_same_args": 14,
+    "same_tool_same_args_rate": 0.28
+   },
+   "disagreement_breakdown": {
+    "same_tool_different_args": 87,
+    "different_tool": 49,
+    "tool_instead_of_text": 2
+   },
+   "step_cost_per_call_cents": 0.0677,
+   "median_latency_s": 1.328,
+   "full_run_paired_delta_vs_sonnet": {
+    "n_paired": 91,
+    "delta": -0.011,
+    "ci95": [
+     -0.0659,
+     0.044
+    ],
+    "tasks_candidate_only_correct": 3,
+    "tasks_incumbent_only_correct": 4
+   },
+   "paired_difference_note": "The step check compares each candidate reply with Sonnet's recorded reply on the same 250 calls; the study computed no paired step-level difference or CI against Sonnet's own replay. The paired difference shown is the full-run task success delta on the same tasks (bootstrap 95% CI)."
+  },
+  {
+   "kind": "step_check",
+   "use_case": "invoice_extraction",
+   "model": "deepseek-v4.1-flash@provider-a",
+   "role": "candidate",
+   "analyzer_batch": "A",
+   "n_calls_sampled": 250,
+   "n_calls_answered": 249,
+   "n_calls_failed": 1,
+   "failure_rate_reported": 0.004,
+   "failure_categories": {
+    "empty_reply": 1
+   },
+   "tool_choice": {
+    "n": 247,
+    "same_tool": 180,
+    "rate": 0.7287,
+    "ci95": [
+     0.6701,
+     0.7804
+    ]
+   },
+   "args_given_same_tool": {
+    "n": 180,
+    "same_args": 116,
+    "rate": 0.6444,
+    "ci95": [
+     0.5722,
+     0.7107
+    ]
+   },
+   "text_replies": {
+    "n": 2,
+    "same_text": 0,
+    "rate": 0.0
+   },
+   "exact_agreement": {
+    "n": 249,
+    "agreeing": 116,
+    "rate": 0.4659,
+    "ci95": [
+     0.4049,
+     0.5279
+    ]
+   },
+   "judged": {
+    "n_disagreements": 133,
+    "judged_equivalent": 36,
+    "judged_different": 5,
+    "judged_unsure_or_unjudged": 92,
+    "judged_agreement": {
+     "n": 249,
+     "agreeing_or_equivalent": 152,
+     "rate": 0.6104,
+     "ci95": [
+      0.5486,
+      0.6689
+     ]
+    }
+   },
+   "state_changing_steps": {
+    "n": 49,
+    "same_tool": 42,
+    "same_tool_rate": 0.8571,
+    "same_tool_same_args": 16,
+    "same_tool_same_args_rate": 0.3265
+   },
+   "disagreement_breakdown": {
+    "same_tool_different_args": 64,
+    "different_tool": 47,
+    "text_instead_of_tool": 20,
+    "tool_instead_of_text": 2
+   },
+   "step_cost_per_call_cents": 0.14,
+   "median_latency_s": 2.53,
+   "full_run_paired_delta_vs_sonnet": {
+    "n_paired": 91,
+    "delta": -0.0549,
+    "ci95": [
+     -0.1209,
+     0.011
+    ],
+    "tasks_candidate_only_correct": 2,
+    "tasks_incumbent_only_correct": 7
+   },
+   "paired_difference_note": "The step check compares each candidate reply with Sonnet's recorded reply on the same 250 calls; the study computed no paired step-level difference or CI against Sonnet's own replay. The paired difference shown is the full-run task success delta on the same tasks (bootstrap 95% CI)."
+  },
+  {
+   "kind": "step_check",
+   "use_case": "invoice_extraction",
+   "model": "deepseek-v4-pro@provider-a",
+   "role": "candidate",
+   "analyzer_batch": "A",
+   "n_calls_sampled": 250,
+   "n_calls_answered": 248,
+   "n_calls_failed": 2,
+   "failure_rate_reported": 0.008,
+   "failure_categories": {
+    "empty_reply": 2
+   },
+   "tool_choice": {
+    "n": 246,
+    "same_tool": 191,
+    "rate": 0.7764,
+    "ci95": [
+     0.7203,
+     0.824
+    ]
+   },
+   "args_given_same_tool": {
+    "n": 191,
+    "same_args": 117,
+    "rate": 0.6126,
+    "ci95": [
+     0.5419,
+     0.6788
+    ]
+   },
+   "text_replies": {
+    "n": 2,
+    "same_text": 0,
+    "rate": 0.0
+   },
+   "exact_agreement": {
+    "n": 248,
+    "agreeing": 117,
+    "rate": 0.4718,
+    "ci95": [
+     0.4105,
+     0.5339
+    ]
+   },
+   "judged": {
+    "n_disagreements": 131,
+    "judged_equivalent": 46,
+    "judged_different": 2,
+    "judged_unsure_or_unjudged": 83,
+    "judged_agreement": {
+     "n": 248,
+     "agreeing_or_equivalent": 163,
+     "rate": 0.6573,
+     "ci95": [
+      0.5962,
+      0.7135
+     ]
+    }
+   },
+   "state_changing_steps": {
+    "n": 48,
+    "same_tool": 40,
+    "same_tool_rate": 0.8333,
+    "same_tool_same_args": 16,
+    "same_tool_same_args_rate": 0.3333
+   },
+   "disagreement_breakdown": {
+    "same_tool_different_args": 74,
+    "different_tool": 52,
+    "text_instead_of_tool": 3,
+    "tool_instead_of_text": 2
+   },
+   "step_cost_per_call_cents": 0.2708,
+   "median_latency_s": 2.863,
+   "full_run_paired_delta_vs_sonnet": {
+    "n_paired": 91,
+    "delta": -0.1648,
+    "ci95": [
+     -0.2527,
+     -0.0879
+    ],
+    "tasks_candidate_only_correct": 1,
+    "tasks_incumbent_only_correct": 16
+   },
+   "paired_difference_note": "The step check compares each candidate reply with Sonnet's recorded reply on the same 250 calls; the study computed no paired step-level difference or CI against Sonnet's own replay. The paired difference shown is the full-run task success delta on the same tasks (bootstrap 95% CI)."
+  },
+  {
+   "kind": "step_check",
+   "use_case": "invoice_extraction",
+   "model": "glm-5.3@provider-a",
+   "role": "candidate",
+   "analyzer_batch": "A",
+   "n_calls_sampled": 250,
+   "n_calls_answered": 249,
+   "n_calls_failed": 1,
+   "failure_rate_reported": 0.004,
+   "failure_categories": {
+    "empty_reply": 1
+   },
+   "tool_choice": {
+    "n": 247,
+    "same_tool": 186,
+    "rate": 0.753,
+    "ci95": [
+     0.6957,
+     0.8027
+    ]
+   },
+   "args_given_same_tool": {
+    "n": 186,
+    "same_args": 107,
+    "rate": 0.5753,
+    "ci95": [
+     0.5034,
+     0.6441
+    ]
+   },
+   "text_replies": {
+    "n": 2,
+    "same_text": 0,
+    "rate": 0.0
+   },
+   "exact_agreement": {
+    "n": 249,
+    "agreeing": 107,
+    "rate": 0.4297,
+    "ci95": [
+     0.3698,
+     0.4918
+    ]
+   },
+   "judged": {
+    "n_disagreements": 142,
+    "judged_equivalent": 35,
+    "judged_different": 5,
+    "judged_unsure_or_unjudged": 102,
+    "judged_agreement": {
+     "n": 249,
+     "agreeing_or_equivalent": 142,
+     "rate": 0.5703,
+     "ci95": [
+      0.5082,
+      0.6302
+     ]
+    }
+   },
+   "state_changing_steps": {
+    "n": 49,
+    "same_tool": 39,
+    "same_tool_rate": 0.7959,
+    "same_tool_same_args": 14,
+    "same_tool_same_args_rate": 0.2857
+   },
+   "disagreement_breakdown": {
+    "same_tool_different_args": 79,
+    "different_tool": 59,
+    "text_instead_of_tool": 2,
+    "tool_instead_of_text": 2
+   },
+   "step_cost_per_call_cents": 0.5841,
+   "median_latency_s": 1.679,
+   "full_run_paired_delta_vs_sonnet": {
+    "n_paired": 91,
+    "delta": -0.0659,
+    "ci95": [
+     -0.1209,
+     -0.011
+    ],
+    "tasks_candidate_only_correct": 1,
+    "tasks_incumbent_only_correct": 7
+   },
+   "paired_difference_note": "The step check compares each candidate reply with Sonnet's recorded reply on the same 250 calls; the study computed no paired step-level difference or CI against Sonnet's own replay. The paired difference shown is the full-run task success delta on the same tasks (bootstrap 95% CI)."
+  },
+  {
+   "kind": "step_check",
+   "use_case": "invoice_extraction",
+   "model": "glm-5.3-flash@provider-a",
+   "role": "candidate",
+   "analyzer_batch": "B",
+   "n_calls_sampled": 250,
+   "n_calls_answered": 214,
+   "n_calls_failed": 36,
+   "failure_rate_reported": 0.144,
+   "failure_categories": {
+    "rate_limited": 33,
+    "empty_reply": 3
+   },
+   "tool_choice": {
+    "n": 212,
+    "same_tool": 166,
+    "rate": 0.783,
+    "ci95": [
+     0.7228,
+     0.8332
+    ]
+   },
+   "args_given_same_tool": {
+    "n": 166,
+    "same_args": 101,
+    "rate": 0.6084,
+    "ci95": [
+     0.5325,
+     0.6794
+    ]
+   },
+   "text_replies": {
+    "n": 2,
+    "same_text": 0,
+    "rate": 0.0
+   },
+   "exact_agreement": {
+    "n": 214,
+    "agreeing": 101,
+    "rate": 0.472,
+    "ci95": [
+     0.4062,
+     0.5388
+    ]
+   },
+   "judged": {
+    "n_disagreements": 113,
+    "judged_equivalent": 31,
+    "judged_different": 3,
+    "judged_unsure_or_unjudged": 79,
+    "judged_agreement": {
+     "n": 214,
+     "agreeing_or_equivalent": 132,
+     "rate": 0.6168,
+     "ci95": [
+      0.5502,
+      0.6794
+     ]
+    }
+   },
+   "state_changing_steps": {
+    "n": 39,
+    "same_tool": 35,
+    "same_tool_rate": 0.8974,
+    "same_tool_same_args": 9,
+    "same_tool_same_args_rate": 0.2308
+   },
+   "disagreement_breakdown": {
+    "same_tool_different_args": 65,
+    "different_tool": 43,
+    "text_instead_of_tool": 3,
+    "different_text": 1,
+    "tool_instead_of_text": 1
+   },
+   "step_cost_per_call_cents": 0.0696,
+   "median_latency_s": 14.069,
+   "full_run_paired_delta_vs_sonnet": {
+    "n_paired": 91,
+    "delta": -0.0659,
+    "ci95": [
+     -0.1319,
+     0.0
+    ],
+    "tasks_candidate_only_correct": 2,
+    "tasks_incumbent_only_correct": 8
+   },
+   "paired_difference_note": "The step check compares each candidate reply with Sonnet's recorded reply on the same 250 calls; the study computed no paired step-level difference or CI against Sonnet's own replay. The paired difference shown is the full-run task success delta on the same tasks (bootstrap 95% CI)."
+  },
+  {
+   "kind": "step_check",
+   "use_case": "invoice_extraction",
+   "model": "gpt-oss-120b@provider-a",
+   "role": "candidate",
+   "analyzer_batch": "B",
+   "n_calls_sampled": 250,
+   "n_calls_answered": 249,
+   "n_calls_failed": 1,
+   "failure_rate_reported": 0.004,
+   "failure_categories": {
+    "empty_reply": 1
+   },
+   "tool_choice": {
+    "n": 247,
+    "same_tool": 78,
+    "rate": 0.3158,
+    "ci95": [
+     0.261,
+     0.3762
+    ]
+   },
+   "args_given_same_tool": {
+    "n": 78,
+    "same_args": 59,
+    "rate": 0.7564,
+    "ci95": [
+     0.6506,
+     0.8381
+    ]
+   },
+   "text_replies": {
+    "n": 2,
+    "same_text": 0,
+    "rate": 0.0
+   },
+   "exact_agreement": {
+    "n": 249,
+    "agreeing": 59,
+    "rate": 0.2369,
+    "ci95": [
+     0.1884,
+     0.2935
+    ]
+   },
+   "judged": {
+    "n_disagreements": 190,
+    "judged_equivalent": 11,
+    "judged_different": 1,
+    "judged_unsure_or_unjudged": 178,
+    "judged_agreement": {
+     "n": 249,
+     "agreeing_or_equivalent": 70,
+     "rate": 0.2811,
+     "ci95": [
+      0.2289,
+      0.34
+     ]
+    }
+   },
+   "state_changing_steps": {
+    "n": 50,
+    "same_tool": 31,
+    "same_tool_rate": 0.62,
+    "same_tool_same_args": 15,
+    "same_tool_same_args_rate": 0.3
+   },
+   "disagreement_breakdown": {
+    "same_tool_different_args": 19,
+    "different_tool": 122,
+    "text_instead_of_tool": 47,
+    "different_text": 2
+   },
+   "step_cost_per_call_cents": 0.0543,
+   "median_latency_s": 0.917,
+   "full_run_paired_delta_vs_sonnet": {
+    "n_paired": 91,
+    "delta": -0.3297,
+    "ci95": [
+     -0.4286,
+     -0.2198
+    ],
+    "tasks_candidate_only_correct": 1,
+    "tasks_incumbent_only_correct": 31
+   },
+   "paired_difference_note": "The step check compares each candidate reply with Sonnet's recorded reply on the same 250 calls; the study computed no paired step-level difference or CI against Sonnet's own replay. The paired difference shown is the full-run task success delta on the same tasks (bootstrap 95% CI)."
+  },
+  {
+   "kind": "step_check",
+   "use_case": "invoice_extraction",
+   "model": "qwen3.8-27b@provider-a",
+   "role": "candidate",
+   "analyzer_batch": "B",
+   "n_calls_sampled": 250,
+   "n_calls_answered": 250,
+   "n_calls_failed": 0,
+   "failure_rate_reported": 0.0,
+   "failure_categories": {},
+   "tool_choice": {
+    "n": 248,
+    "same_tool": 184,
+    "rate": 0.7419,
+    "ci95": [
+     0.6841,
+     0.7924
+    ]
+   },
+   "args_given_same_tool": {
+    "n": 184,
+    "same_args": 109,
+    "rate": 0.5924,
+    "ci95": [
+     0.5202,
+     0.6608
+    ]
+   },
+   "text_replies": {
+    "n": 2,
+    "same_text": 0,
+    "rate": 0.0
+   },
+   "exact_agreement": {
+    "n": 250,
+    "agreeing": 109,
+    "rate": 0.436,
+    "ci95": [
+     0.376,
+     0.498
+    ]
+   },
+   "judged": {
+    "n_disagreements": 141,
+    "judged_equivalent": 36,
+    "judged_different": 9,
+    "judged_unsure_or_unjudged": 96,
+    "judged_agreement": {
+     "n": 250,
+     "agreeing_or_equivalent": 145,
+     "rate": 0.58,
+     "ci95": [
+      0.5181,
+      0.6395
+     ]
+    }
+   },
+   "state_changing_steps": {
+    "n": 50,
+    "same_tool": 33,
+    "same_tool_rate": 0.66,
+    "same_tool_same_args": 11,
+    "same_tool_same_args_rate": 0.22
+   },
+   "disagreement_breakdown": {
+    "same_tool_different_args": 75,
+    "different_tool": 64,
+    "tool_instead_of_text": 2
+   },
+   "step_cost_per_call_cents": 0.2182,
+   "median_latency_s": 1.066,
+   "full_run_paired_delta_vs_sonnet": {
+    "n_paired": 91,
+    "delta": -0.3956,
+    "ci95": [
+     -0.4945,
+     -0.2857
+    ],
+    "tasks_candidate_only_correct": 1,
+    "tasks_incumbent_only_correct": 37
+   },
+   "paired_difference_note": "The step check compares each candidate reply with Sonnet's recorded reply on the same 250 calls; the study computed no paired step-level difference or CI against Sonnet's own replay. The paired difference shown is the full-run task success delta on the same tasks (bootstrap 95% CI)."
+  },
+  {
+   "kind": "step_check",
+   "use_case": "invoice_extraction",
+   "model": "minimax-m3@provider-a",
+   "role": "candidate",
+   "analyzer_batch": "B",
+   "n_calls_sampled": 250,
+   "n_calls_answered": 249,
+   "n_calls_failed": 1,
+   "failure_rate_reported": 0.004,
+   "failure_categories": {
+    "empty_reply": 1
+   },
+   "tool_choice": {
+    "n": 247,
+    "same_tool": 192,
+    "rate": 0.7773,
+    "ci95": [
+     0.7214,
+     0.8247
+    ]
+   },
+   "args_given_same_tool": {
+    "n": 192,
+    "same_args": 114,
+    "rate": 0.5938,
+    "ci95": [
+     0.5231,
+     0.6607
+    ]
+   },
+   "text_replies": {
+    "n": 2,
+    "same_text": 0,
+    "rate": 0.0
+   },
+   "exact_agreement": {
+    "n": 249,
+    "agreeing": 114,
+    "rate": 0.4578,
+    "ci95": [
+     0.3971,
+     0.5199
+    ]
+   },
+   "judged": {
+    "n_disagreements": 135,
+    "judged_equivalent": 33,
+    "judged_different": 5,
+    "judged_unsure_or_unjudged": 97,
+    "judged_agreement": {
+     "n": 249,
+     "agreeing_or_equivalent": 147,
+     "rate": 0.5904,
+     "ci95": [
+      0.5284,
+      0.6496
+     ]
+    }
+   },
+   "state_changing_steps": {
+    "n": 49,
+    "same_tool": 40,
+    "same_tool_rate": 0.8163,
+    "same_tool_same_args": 16,
+    "same_tool_same_args_rate": 0.3265
+   },
+   "disagreement_breakdown": {
+    "same_tool_different_args": 78,
+    "different_tool": 53,
+    "text_instead_of_tool": 2,
+    "tool_instead_of_text": 2
+   },
+   "step_cost_per_call_cents": 0.1392,
+   "median_latency_s": 1.608,
+   "full_run_paired_delta_vs_sonnet": {
+    "n_paired": 91,
+    "delta": -0.1868,
+    "ci95": [
+     -0.2747,
+     -0.0989
+    ],
+    "tasks_candidate_only_correct": 1,
+    "tasks_incumbent_only_correct": 18
+   },
+   "paired_difference_note": "The step check compares each candidate reply with Sonnet's recorded reply on the same 250 calls; the study computed no paired step-level difference or CI against Sonnet's own replay. The paired difference shown is the full-run task success delta on the same tasks (bootstrap 95% CI)."
+  },
+  {
+   "kind": "step_check",
+   "use_case": "invoice_extraction",
+   "model": "gpt-6-luna",
+   "role": "candidate",
+   "analyzer_batch": "G",
+   "n_calls_sampled": 250,
+   "n_calls_answered": 250,
+   "n_calls_failed": 0,
+   "failure_rate_reported": 0.0,
+   "failure_categories": {},
+   "tool_choice": {
+    "n": 248,
+    "same_tool": 179,
+    "rate": 0.7218,
+    "ci95": [
+     0.6629,
+     0.7738
+    ]
+   },
+   "args_given_same_tool": {
+    "n": 179,
+    "same_args": 93,
+    "rate": 0.5196,
+    "ci95": [
+     0.4467,
+     0.5916
+    ]
+   },
+   "text_replies": {
+    "n": 2,
+    "same_text": 0,
+    "rate": 0.0
+   },
+   "exact_agreement": {
+    "n": 250,
+    "agreeing": 93,
+    "rate": 0.372,
+    "ci95": [
+     0.3144,
+     0.4334
+    ]
+   },
+   "judged": {
+    "n_disagreements": 157,
+    "judged_equivalent": 22,
+    "judged_different": 6,
+    "judged_unsure_or_unjudged": 129,
+    "judged_agreement": {
+     "n": 250,
+     "agreeing_or_equivalent": 115,
+     "rate": 0.46,
+     "ci95": [
+      0.3993,
+      0.5219
+     ]
+    }
+   },
+   "state_changing_steps": {
+    "n": 50,
+    "same_tool": 47,
+    "same_tool_rate": 0.94,
+    "same_tool_same_args": 14,
+    "same_tool_same_args_rate": 0.28
+   },
+   "disagreement_breakdown": {
+    "same_tool_different_args": 86,
+    "different_tool": 69,
+    "tool_instead_of_text": 2
+   },
+   "step_cost_per_call_cents": 0.011,
+   "median_latency_s": 2.086,
+   "full_run_paired_delta_vs_sonnet": {
+    "n_paired": 91,
+    "delta": -0.033,
+    "ci95": [
+     -0.0879,
+     0.022
+    ],
+    "tasks_candidate_only_correct": 2,
+    "tasks_incumbent_only_correct": 5
+   },
+   "paired_difference_note": "The step check compares each candidate reply with Sonnet's recorded reply on the same 250 calls; the study computed no paired step-level difference or CI against Sonnet's own replay. The paired difference shown is the full-run task success delta on the same tasks (bootstrap 95% CI)."
+  },
+  {
+   "kind": "step_check",
+   "use_case": "invoice_extraction",
+   "model": "gpt-6.1-sol",
+   "role": "candidate",
+   "analyzer_batch": "G",
+   "n_calls_sampled": 250,
+   "n_calls_answered": 250,
+   "n_calls_failed": 0,
+   "failure_rate_reported": 0.0,
+   "failure_categories": {},
+   "tool_choice": {
+    "n": 248,
+    "same_tool": 203,
+    "rate": 0.8185,
+    "ci95": [
+     0.7658,
+     0.8615
+    ]
+   },
+   "args_given_same_tool": {
+    "n": 203,
+    "same_args": 117,
+    "rate": 0.5764,
+    "ci95": [
+     0.5076,
+     0.6423
+    ]
+   },
+   "text_replies": {
+    "n": 2,
+    "same_text": 0,
+    "rate": 0.0
+   },
+   "exact_agreement": {
+    "n": 250,
+    "agreeing": 117,
+    "rate": 0.468,
+    "ci95": [
+     0.4071,
+     0.5299
+    ]
+   },
+   "judged": {
+    "n_disagreements": 133,
+    "judged_equivalent": 30,
+    "judged_different": 3,
+    "judged_unsure_or_unjudged": 100,
+    "judged_agreement": {
+     "n": 250,
+     "agreeing_or_equivalent": 147,
+     "rate": 0.588,
+     "ci95": [
+      0.5261,
+      0.6472
+     ]
+    }
+   },
+   "state_changing_steps": {
+    "n": 50,
+    "same_tool": 48,
+    "same_tool_rate": 0.96,
+    "same_tool_same_args": 14,
+    "same_tool_same_args_rate": 0.28
+   },
+   "disagreement_breakdown": {
+    "same_tool_different_args": 86,
+    "different_tool": 45,
+    "tool_instead_of_text": 2
+   },
+   "step_cost_per_call_cents": 0.1784,
+   "median_latency_s": 3.117,
+   "full_run_paired_delta_vs_sonnet": {
+    "n_paired": 91,
+    "delta": 0.022,
+    "ci95": [
+     0.0,
+     0.0549
+    ],
+    "tasks_candidate_only_correct": 2,
+    "tasks_incumbent_only_correct": 0
+   },
+   "paired_difference_note": "The step check compares each candidate reply with Sonnet's recorded reply on the same 250 calls; the study computed no paired step-level difference or CI against Sonnet's own replay. The paired difference shown is the full-run task success delta on the same tasks (bootstrap 95% CI)."
+  },
+  {
+   "kind": "step_check",
+   "use_case": "claims_triage",
+   "model": "sonnet-5.5",
+   "role": "incumbent replayed against its own recording (noise floor)",
+   "analyzer_batch": "A",
+   "n_calls_sampled": 250,
+   "n_calls_answered": 250,
+   "n_calls_failed": 0,
+   "failure_rate_reported": 0.0,
+   "failure_categories": {},
+   "tool_choice": {
+    "n": 246,
+    "same_tool": 228,
+    "rate": 0.9268,
+    "ci95": [
+     0.8873,
+     0.9532
+    ]
+   },
+   "args_given_same_tool": {
+    "n": 228,
+    "same_args": 178,
+    "rate": 0.7807,
+    "ci95": [
+     0.7226,
+     0.8295
+    ]
+   },
+   "text_replies": {
+    "n": 4,
+    "same_text": 0,
+    "rate": 0.0
+   },
+   "exact_agreement": {
+    "n": 250,
+    "agreeing": 178,
+    "rate": 0.712,
+    "ci95": [
+     0.653,
+     0.7646
+    ]
+   },
+   "judged": {
+    "n_disagreements": 72,
+    "judged_equivalent": 31,
+    "judged_different": 9,
+    "judged_unsure_or_unjudged": 32,
+    "judged_agreement": {
+     "n": 250,
+     "agreeing_or_equivalent": 209,
+     "rate": 0.836,
+     "ci95": [
+      0.7851,
+      0.8767
+     ]
+    }
+   },
+   "state_changing_steps": {
+    "n": 49,
+    "same_tool": 47,
+    "same_tool_rate": 0.9592,
+    "same_tool_same_args": 47,
+    "same_tool_same_args_rate": 0.9592
+   },
+   "disagreement_breakdown": {
+    "same_tool_different_args": 50,
+    "different_tool": 18,
+    "tool_instead_of_text": 4
+   },
+   "step_cost_per_call_cents": 1.1747,
+   "median_latency_s": 1.727
+  },
+  {
+   "kind": "step_check",
+   "use_case": "claims_triage",
+   "model": "sonnet-5.5",
+   "role": "incumbent replayed against its own recording (noise floor)",
+   "analyzer_batch": "B",
+   "n_calls_sampled": 250,
+   "n_calls_answered": 250,
+   "n_calls_failed": 0,
+   "failure_rate_reported": 0.0,
+   "failure_categories": {},
+   "tool_choice": {
+    "n": 246,
+    "same_tool": 230,
+    "rate": 0.935,
+    "ci95": [
+     0.897,
+     0.9596
+    ]
+   },
+   "args_given_same_tool": {
+    "n": 230,
+    "same_args": 179,
+    "rate": 0.7783,
+    "ci95": [
+     0.7202,
+     0.8271
+    ]
+   },
+   "text_replies": {
+    "n": 4,
+    "same_text": 0,
+    "rate": 0.0
+   },
+   "exact_agreement": {
+    "n": 250,
+    "agreeing": 179,
+    "rate": 0.716,
+    "ci95": [
+     0.6572,
+     0.7683
+    ]
+   },
+   "judged": {
+    "n_disagreements": 71,
+    "judged_equivalent": 30,
+    "judged_different": 10,
+    "judged_unsure_or_unjudged": 31,
+    "judged_agreement": {
+     "n": 250,
+     "agreeing_or_equivalent": 209,
+     "rate": 0.836,
+     "ci95": [
+      0.7851,
+      0.8767
+     ]
+    }
+   },
+   "state_changing_steps": {
+    "n": 49,
+    "same_tool": 48,
+    "same_tool_rate": 0.9796,
+    "same_tool_same_args": 48,
+    "same_tool_same_args_rate": 0.9796
+   },
+   "disagreement_breakdown": {
+    "same_tool_different_args": 51,
+    "different_tool": 15,
+    "text_instead_of_tool": 1,
+    "tool_instead_of_text": 4
+   },
+   "step_cost_per_call_cents": 1.1783,
+   "median_latency_s": 1.63
+  },
+  {
+   "kind": "step_check",
+   "use_case": "claims_triage",
+   "model": "opus-5.5",
+   "role": "candidate",
+   "analyzer_batch": "A",
+   "n_calls_sampled": 250,
+   "n_calls_answered": 250,
+   "n_calls_failed": 0,
+   "failure_rate_reported": 0.0,
+   "failure_categories": {},
+   "tool_choice": {
+    "n": 246,
+    "same_tool": 206,
+    "rate": 0.8374,
+    "ci95": [
+     0.7862,
+     0.8783
+    ]
+   },
+   "args_given_same_tool": {
+    "n": 206,
+    "same_args": 152,
+    "rate": 0.7379,
+    "ci95": [
+     0.6738,
+     0.7932
+    ]
+   },
+   "text_replies": {
+    "n": 4,
+    "same_text": 0,
+    "rate": 0.0
+   },
+   "exact_agreement": {
+    "n": 250,
+    "agreeing": 152,
+    "rate": 0.608,
+    "ci95": [
+     0.5463,
+     0.6664
+    ]
+   },
+   "judged": {
+    "n_disagreements": 98,
+    "judged_equivalent": 24,
+    "judged_different": 13,
+    "judged_unsure_or_unjudged": 61,
+    "judged_agreement": {
+     "n": 250,
+     "agreeing_or_equivalent": 176,
+     "rate": 0.704,
+     "ci95": [
+      0.6447,
+      0.7572
+     ]
+    }
+   },
+   "state_changing_steps": {
+    "n": 49,
+    "same_tool": 31,
+    "same_tool_rate": 0.6327,
+    "same_tool_same_args": 31,
+    "same_tool_same_args_rate": 0.6327
+   },
+   "disagreement_breakdown": {
+    "same_tool_different_args": 54,
+    "different_tool": 39,
+    "text_instead_of_tool": 1,
+    "different_text": 1,
+    "tool_instead_of_text": 3
+   },
+   "step_cost_per_call_cents": 2.3863,
+   "median_latency_s": 2.629,
+   "full_run_paired_delta_vs_sonnet": {
+    "n_paired": 74,
+    "delta": -0.027,
+    "ci95": [
+     -0.0946,
+     0.0405
+    ],
+    "tasks_candidate_only_correct": 2,
+    "tasks_incumbent_only_correct": 4
+   },
+   "paired_difference_note": "The step check compares each candidate reply with Sonnet's recorded reply on the same 250 calls; the study computed no paired step-level difference or CI against Sonnet's own replay. The paired difference shown is the full-run task success delta on the same tasks (bootstrap 95% CI)."
+  },
+  {
+   "kind": "step_check",
+   "use_case": "claims_triage",
+   "model": "haiku-5.5",
+   "role": "candidate",
+   "analyzer_batch": "A",
+   "n_calls_sampled": 250,
+   "n_calls_answered": 250,
+   "n_calls_failed": 0,
+   "failure_rate_reported": 0.0,
+   "failure_categories": {},
+   "tool_choice": {
+    "n": 246,
+    "same_tool": 200,
+    "rate": 0.813,
+    "ci95": [
+     0.7596,
+     0.8568
+    ]
+   },
+   "args_given_same_tool": {
+    "n": 200,
+    "same_args": 147,
+    "rate": 0.735,
+    "ci95": [
+     0.6698,
+     0.7913
+    ]
+   },
+   "text_replies": {
+    "n": 4,
+    "same_text": 0,
+    "rate": 0.0
+   },
+   "exact_agreement": {
+    "n": 250,
+    "agreeing": 147,
+    "rate": 0.588,
+    "ci95": [
+     0.5261,
+     0.6472
+    ]
+   },
+   "judged": {
+    "n_disagreements": 103,
+    "judged_equivalent": 23,
+    "judged_different": 11,
+    "judged_unsure_or_unjudged": 69,
+    "judged_agreement": {
+     "n": 250,
+     "agreeing_or_equivalent": 170,
+     "rate": 0.68,
+     "ci95": [
+      0.6198,
+      0.7347
+     ]
+    }
+   },
+   "state_changing_steps": {
+    "n": 49,
+    "same_tool": 39,
+    "same_tool_rate": 0.7959,
+    "same_tool_same_args": 38,
+    "same_tool_same_args_rate": 0.7755
+   },
+   "disagreement_breakdown": {
+    "same_tool_different_args": 53,
+    "different_tool": 42,
+    "text_instead_of_tool": 4,
+    "tool_instead_of_text": 4
+   },
+   "step_cost_per_call_cents": 0.0679,
+   "median_latency_s": 1.71,
+   "full_run_paired_delta_vs_sonnet": {
+    "n_paired": 74,
+    "delta": -0.0405,
+    "ci95": [
+     -0.1081,
+     0.0135
+    ],
+    "tasks_candidate_only_correct": 1,
+    "tasks_incumbent_only_correct": 4
+   },
+   "paired_difference_note": "The step check compares each candidate reply with Sonnet's recorded reply on the same 250 calls; the study computed no paired step-level difference or CI against Sonnet's own replay. The paired difference shown is the full-run task success delta on the same tasks (bootstrap 95% CI)."
+  },
+  {
+   "kind": "step_check",
+   "use_case": "claims_triage",
+   "model": "deepseek-v4.1-flash@provider-a",
+   "role": "candidate",
+   "analyzer_batch": "A",
+   "n_calls_sampled": 250,
+   "n_calls_answered": 248,
+   "n_calls_failed": 2,
+   "failure_rate_reported": 0.008,
+   "failure_categories": {
+    "empty_reply": 2
+   },
+   "tool_choice": {
+    "n": 244,
+    "same_tool": 192,
+    "rate": 0.7869,
+    "ci95": [
+     0.7313,
+     0.8336
+    ]
+   },
+   "args_given_same_tool": {
+    "n": 192,
+    "same_args": 132,
+    "rate": 0.6875,
+    "ci95": [
+     0.6188,
+     0.7488
+    ]
+   },
+   "text_replies": {
+    "n": 4,
+    "same_text": 0,
+    "rate": 0.0
+   },
+   "exact_agreement": {
+    "n": 248,
+    "agreeing": 132,
+    "rate": 0.5323,
+    "ci95": [
+     0.4701,
+     0.5934
+    ]
+   },
+   "judged": {
+    "n_disagreements": 116,
+    "judged_equivalent": 31,
+    "judged_different": 23,
+    "judged_unsure_or_unjudged": 62,
+    "judged_agreement": {
+     "n": 248,
+     "agreeing_or_equivalent": 163,
+     "rate": 0.6573,
+     "ci95": [
+      0.5962,
+      0.7135
+     ]
+    }
+   },
+   "state_changing_steps": {
+    "n": 49,
+    "same_tool": 38,
+    "same_tool_rate": 0.7755,
+    "same_tool_same_args": 30,
+    "same_tool_same_args_rate": 0.6122
+   },
+   "disagreement_breakdown": {
+    "same_tool_different_args": 60,
+    "different_tool": 48,
+    "text_instead_of_tool": 4,
+    "different_text": 2,
+    "tool_instead_of_text": 2
+   },
+   "step_cost_per_call_cents": 0.1314,
+   "median_latency_s": 2.31,
+   "full_run_paired_delta_vs_sonnet": {
+    "n_paired": 74,
+    "delta": -0.1622,
+    "ci95": [
+     -0.2568,
+     -0.0676
+    ],
+    "tasks_candidate_only_correct": 2,
+    "tasks_incumbent_only_correct": 14
+   },
+   "paired_difference_note": "The step check compares each candidate reply with Sonnet's recorded reply on the same 250 calls; the study computed no paired step-level difference or CI against Sonnet's own replay. The paired difference shown is the full-run task success delta on the same tasks (bootstrap 95% CI)."
+  },
+  {
+   "kind": "step_check",
+   "use_case": "claims_triage",
+   "model": "deepseek-v4-pro@provider-a",
+   "role": "candidate",
+   "analyzer_batch": "A",
+   "n_calls_sampled": 250,
+   "n_calls_answered": 249,
+   "n_calls_failed": 1,
+   "failure_rate_reported": 0.004,
+   "failure_categories": {
+    "empty_reply": 1
+   },
+   "tool_choice": {
+    "n": 245,
+    "same_tool": 203,
+    "rate": 0.8286,
+    "ci95": [
+     0.7764,
+     0.8706
+    ]
+   },
+   "args_given_same_tool": {
+    "n": 203,
+    "same_args": 147,
+    "rate": 0.7241,
+    "ci95": [
+     0.6589,
+     0.781
+    ]
+   },
+   "text_replies": {
+    "n": 4,
+    "same_text": 0,
+    "rate": 0.0
+   },
+   "exact_agreement": {
+    "n": 249,
+    "agreeing": 147,
+    "rate": 0.5904,
+    "ci95": [
+     0.5284,
+     0.6496
+    ]
+   },
+   "judged": {
+    "n_disagreements": 102,
+    "judged_equivalent": 23,
+    "judged_different": 15,
+    "judged_unsure_or_unjudged": 64,
+    "judged_agreement": {
+     "n": 249,
+     "agreeing_or_equivalent": 170,
+     "rate": 0.6827,
+     "ci95": [
+      0.6225,
+      0.7374
+     ]
+    }
+   },
+   "state_changing_steps": {
+    "n": 48,
+    "same_tool": 40,
+    "same_tool_rate": 0.8333,
+    "same_tool_same_args": 38,
+    "same_tool_same_args_rate": 0.7917
+   },
+   "disagreement_breakdown": {
+    "same_tool_different_args": 56,
+    "different_tool": 41,
+    "text_instead_of_tool": 1,
+    "tool_instead_of_text": 4
+   },
+   "step_cost_per_call_cents": 0.2488,
+   "median_latency_s": 2.822,
+   "full_run_paired_delta_vs_sonnet": {
+    "n_paired": 74,
+    "delta": -0.0541,
+    "ci95": [
+     -0.1216,
+     0.0
+    ],
+    "tasks_candidate_only_correct": 1,
+    "tasks_incumbent_only_correct": 5
+   },
+   "paired_difference_note": "The step check compares each candidate reply with Sonnet's recorded reply on the same 250 calls; the study computed no paired step-level difference or CI against Sonnet's own replay. The paired difference shown is the full-run task success delta on the same tasks (bootstrap 95% CI)."
+  },
+  {
+   "kind": "step_check",
+   "use_case": "claims_triage",
+   "model": "glm-5.3@provider-a",
+   "role": "candidate",
+   "analyzer_batch": "A",
+   "n_calls_sampled": 250,
+   "n_calls_answered": 250,
+   "n_calls_failed": 0,
+   "failure_rate_reported": 0.0,
+   "failure_categories": {},
+   "tool_choice": {
+    "n": 246,
+    "same_tool": 190,
+    "rate": 0.7724,
+    "ci95": [
+     0.716,
+     0.8203
+    ]
+   },
+   "args_given_same_tool": {
+    "n": 190,
+    "same_args": 131,
+    "rate": 0.6895,
+    "ci95": [
+     0.6205,
+     0.751
+    ]
+   },
+   "text_replies": {
+    "n": 4,
+    "same_text": 0,
+    "rate": 0.0
+   },
+   "exact_agreement": {
+    "n": 250,
+    "agreeing": 131,
+    "rate": 0.524,
+    "ci95": [
+     0.4622,
+     0.5851
+    ]
+   },
+   "judged": {
+    "n_disagreements": 119,
+    "judged_equivalent": 28,
+    "judged_different": 15,
+    "judged_unsure_or_unjudged": 76,
+    "judged_agreement": {
+     "n": 250,
+     "agreeing_or_equivalent": 159,
+     "rate": 0.636,
+     "ci95": [
+      0.5747,
+      0.6932
+     ]
+    }
+   },
+   "state_changing_steps": {
+    "n": 49,
+    "same_tool": 30,
+    "same_tool_rate": 0.6122,
+    "same_tool_same_args": 26,
+    "same_tool_same_args_rate": 0.5306
+   },
+   "disagreement_breakdown": {
+    "same_tool_different_args": 59,
+    "different_tool": 54,
+    "text_instead_of_tool": 2,
+    "tool_instead_of_text": 4
+   },
+   "step_cost_per_call_cents": 0.5645,
+   "median_latency_s": 1.88,
+   "full_run_paired_delta_vs_sonnet": {
+    "n_paired": 74,
+    "delta": -0.1486,
+    "ci95": [
+     -0.2432,
+     -0.0541
+    ],
+    "tasks_candidate_only_correct": 1,
+    "tasks_incumbent_only_correct": 12
+   },
+   "paired_difference_note": "The step check compares each candidate reply with Sonnet's recorded reply on the same 250 calls; the study computed no paired step-level difference or CI against Sonnet's own replay. The paired difference shown is the full-run task success delta on the same tasks (bootstrap 95% CI)."
+  },
+  {
+   "kind": "step_check",
+   "use_case": "claims_triage",
+   "model": "glm-5.3-flash@provider-a",
+   "role": "candidate",
+   "analyzer_batch": "B",
+   "n_calls_sampled": 250,
+   "n_calls_answered": 225,
+   "n_calls_failed": 25,
+   "failure_rate_reported": 0.1,
+   "failure_categories": {
+    "rate_limited": 25
+   },
+   "tool_choice": {
+    "n": 223,
+    "same_tool": 164,
+    "rate": 0.7354,
+    "ci95": [
+     0.6739,
+     0.789
+    ]
+   },
+   "args_given_same_tool": {
+    "n": 164,
+    "same_args": 124,
+    "rate": 0.7561,
+    "ci95": [
+     0.685,
+     0.8155
+    ]
+   },
+   "text_replies": {
+    "n": 2,
+    "same_text": 0,
+    "rate": 0.0
+   },
+   "exact_agreement": {
+    "n": 225,
+    "agreeing": 124,
+    "rate": 0.5511,
+    "ci95": [
+     0.4858,
+     0.6147
+    ]
+   },
+   "judged": {
+    "n_disagreements": 101,
+    "judged_equivalent": 11,
+    "judged_different": 16,
+    "judged_unsure_or_unjudged": 74,
+    "judged_agreement": {
+     "n": 225,
+     "agreeing_or_equivalent": 135,
+     "rate": 0.6,
+     "ci95": [
+      0.5348,
+      0.6618
+     ]
+    }
+   },
+   "state_changing_steps": {
+    "n": 45,
+    "same_tool": 31,
+    "same_tool_rate": 0.6889,
+    "same_tool_same_args": 25,
+    "same_tool_same_args_rate": 0.5556
+   },
+   "disagreement_breakdown": {
+    "same_tool_different_args": 40,
+    "different_tool": 51,
+    "text_instead_of_tool": 8,
+    "different_text": 1,
+    "tool_instead_of_text": 1
+   },
+   "step_cost_per_call_cents": 0.0574,
+   "median_latency_s": 14.117,
+   "full_run_paired_delta_vs_sonnet": {
+    "n_paired": 74,
+    "delta": -0.2432,
+    "ci95": [
+     -0.3514,
+     -0.1351
+    ],
+    "tasks_candidate_only_correct": 2,
+    "tasks_incumbent_only_correct": 20
+   },
+   "paired_difference_note": "The step check compares each candidate reply with Sonnet's recorded reply on the same 250 calls; the study computed no paired step-level difference or CI against Sonnet's own replay. The paired difference shown is the full-run task success delta on the same tasks (bootstrap 95% CI)."
+  },
+  {
+   "kind": "step_check",
+   "use_case": "claims_triage",
+   "model": "gpt-oss-120b@provider-a",
+   "role": "candidate",
+   "analyzer_batch": "B",
+   "n_calls_sampled": 250,
+   "n_calls_answered": 249,
+   "n_calls_failed": 1,
+   "failure_rate_reported": 0.004,
+   "failure_categories": {
+    "empty_reply": 1
+   },
+   "tool_choice": {
+    "n": 245,
+    "same_tool": 108,
+    "rate": 0.4408,
+    "ci95": [
+     0.38,
+     0.5034
+    ]
+   },
+   "args_given_same_tool": {
+    "n": 108,
+    "same_args": 84,
+    "rate": 0.7778,
+    "ci95": [
+     0.6906,
+     0.8459
+    ]
+   },
+   "text_replies": {
+    "n": 4,
+    "same_text": 0,
+    "rate": 0.0
+   },
+   "exact_agreement": {
+    "n": 249,
+    "agreeing": 84,
+    "rate": 0.3373,
+    "ci95": [
+     0.2815,
+     0.3982
+    ]
+   },
+   "judged": {
+    "n_disagreements": 165,
+    "judged_equivalent": 6,
+    "judged_different": 15,
+    "judged_unsure_or_unjudged": 144,
+    "judged_agreement": {
+     "n": 249,
+     "agreeing_or_equivalent": 90,
+     "rate": 0.3614,
+     "ci95": [
+      0.3043,
+      0.4228
+     ]
+    }
+   },
+   "state_changing_steps": {
+    "n": 49,
+    "same_tool": 13,
+    "same_tool_rate": 0.2653,
+    "same_tool_same_args": 13,
+    "same_tool_same_args_rate": 0.2653
+   },
+   "disagreement_breakdown": {
+    "same_tool_different_args": 24,
+    "different_tool": 105,
+    "text_instead_of_tool": 32,
+    "different_text": 4
+   },
+   "step_cost_per_call_cents": 0.0575,
+   "median_latency_s": 0.987,
+   "full_run_paired_delta_vs_sonnet": {
+    "n_paired": 74,
+    "delta": -0.0811,
+    "ci95": [
+     -0.1622,
+     -0.0135
+    ],
+    "tasks_candidate_only_correct": 1,
+    "tasks_incumbent_only_correct": 7
+   },
+   "paired_difference_note": "The step check compares each candidate reply with Sonnet's recorded reply on the same 250 calls; the study computed no paired step-level difference or CI against Sonnet's own replay. The paired difference shown is the full-run task success delta on the same tasks (bootstrap 95% CI)."
+  },
+  {
+   "kind": "step_check",
+   "use_case": "claims_triage",
+   "model": "qwen3.8-27b@provider-a",
+   "role": "candidate",
+   "analyzer_batch": "B",
+   "n_calls_sampled": 250,
+   "n_calls_answered": 250,
+   "n_calls_failed": 0,
+   "failure_rate_reported": 0.0,
+   "failure_categories": {},
+   "tool_choice": {
+    "n": 246,
+    "same_tool": 192,
+    "rate": 0.7805,
+    "ci95": [
+     0.7247,
+     0.8277
+    ]
+   },
+   "args_given_same_tool": {
+    "n": 192,
+    "same_args": 112,
+    "rate": 0.5833,
+    "ci95": [
+     0.5126,
+     0.6508
+    ]
+   },
+   "text_replies": {
+    "n": 4,
+    "same_text": 0,
+    "rate": 0.0
+   },
+   "exact_agreement": {
+    "n": 250,
+    "agreeing": 112,
+    "rate": 0.448,
+    "ci95": [
+     0.3876,
+     0.51
+    ]
+   },
+   "judged": {
+    "n_disagreements": 138,
+    "judged_equivalent": 23,
+    "judged_different": 40,
+    "judged_unsure_or_unjudged": 75,
+    "judged_agreement": {
+     "n": 250,
+     "agreeing_or_equivalent": 135,
+     "rate": 0.54,
+     "ci95": [
+      0.4781,
+      0.6007
+     ]
+    }
+   },
+   "state_changing_steps": {
+    "n": 49,
+    "same_tool": 34,
+    "same_tool_rate": 0.6939,
+    "same_tool_same_args": 10,
+    "same_tool_same_args_rate": 0.2041
+   },
+   "disagreement_breakdown": {
+    "same_tool_different_args": 80,
+    "different_tool": 54,
+    "tool_instead_of_text": 4
+   },
+   "step_cost_per_call_cents": 0.2062,
+   "median_latency_s": 1.029,
+   "full_run_paired_delta_vs_sonnet": {
+    "n_paired": 74,
+    "delta": -0.5405,
+    "ci95": [
+     -0.6486,
+     -0.4189
+    ],
+    "tasks_candidate_only_correct": 0,
+    "tasks_incumbent_only_correct": 40
+   },
+   "paired_difference_note": "The step check compares each candidate reply with Sonnet's recorded reply on the same 250 calls; the study computed no paired step-level difference or CI against Sonnet's own replay. The paired difference shown is the full-run task success delta on the same tasks (bootstrap 95% CI)."
+  },
+  {
+   "kind": "step_check",
+   "use_case": "claims_triage",
+   "model": "minimax-m3@provider-a",
+   "role": "candidate",
+   "analyzer_batch": "B",
+   "n_calls_sampled": 250,
+   "n_calls_answered": 249,
+   "n_calls_failed": 1,
+   "failure_rate_reported": 0.004,
+   "failure_categories": {
+    "empty_reply": 1
+   },
+   "tool_choice": {
+    "n": 245,
+    "same_tool": 194,
+    "rate": 0.7918,
+    "ci95": [
+     0.7367,
+     0.838
+    ]
+   },
+   "args_given_same_tool": {
+    "n": 194,
+    "same_args": 128,
+    "rate": 0.6598,
+    "ci95": [
+     0.5906,
+     0.7228
+    ]
+   },
+   "text_replies": {
+    "n": 4,
+    "same_text": 0,
+    "rate": 0.0
+   },
+   "exact_agreement": {
+    "n": 249,
+    "agreeing": 128,
+    "rate": 0.5141,
+    "ci95": [
+     0.4522,
+     0.5755
+    ]
+   },
+   "judged": {
+    "n_disagreements": 121,
+    "judged_equivalent": 19,
+    "judged_different": 25,
+    "judged_unsure_or_unjudged": 77,
+    "judged_agreement": {
+     "n": 249,
+     "agreeing_or_equivalent": 147,
+     "rate": 0.5904,
+     "ci95": [
+      0.5284,
+      0.6496
+     ]
+    }
+   },
+   "state_changing_steps": {
+    "n": 49,
+    "same_tool": 38,
+    "same_tool_rate": 0.7755,
+    "same_tool_same_args": 27,
+    "same_tool_same_args_rate": 0.551
+   },
+   "disagreement_breakdown": {
+    "same_tool_different_args": 66,
+    "different_tool": 50,
+    "text_instead_of_tool": 1,
+    "tool_instead_of_text": 4
+   },
+   "step_cost_per_call_cents": 0.136,
+   "median_latency_s": 1.491,
+   "full_run_paired_delta_vs_sonnet": {
+    "n_paired": 74,
+    "delta": -0.2297,
+    "ci95": [
+     -0.3378,
+     -0.1351
+    ],
+    "tasks_candidate_only_correct": 1,
+    "tasks_incumbent_only_correct": 18
+   },
+   "paired_difference_note": "The step check compares each candidate reply with Sonnet's recorded reply on the same 250 calls; the study computed no paired step-level difference or CI against Sonnet's own replay. The paired difference shown is the full-run task success delta on the same tasks (bootstrap 95% CI)."
+  },
+  {
+   "kind": "step_check",
+   "use_case": "claims_triage",
+   "model": "gpt-6-luna",
+   "role": "candidate",
+   "analyzer_batch": "G",
+   "n_calls_sampled": 250,
+   "n_calls_answered": 250,
+   "n_calls_failed": 0,
+   "failure_rate_reported": 0.0,
+   "failure_categories": {},
+   "tool_choice": {
+    "n": 246,
+    "same_tool": 179,
+    "rate": 0.7276,
+    "ci95": [
+     0.6688,
+     0.7795
+    ]
+   },
+   "args_given_same_tool": {
+    "n": 179,
+    "same_args": 119,
+    "rate": 0.6648,
+    "ci95": [
+     0.5928,
+     0.7299
+    ]
+   },
+   "text_replies": {
+    "n": 4,
+    "same_text": 0,
+    "rate": 0.0
+   },
+   "exact_agreement": {
+    "n": 250,
+    "agreeing": 119,
+    "rate": 0.476,
+    "ci95": [
+     0.4149,
+     0.5378
+    ]
+   },
+   "judged": {
+    "n_disagreements": 131,
+    "judged_equivalent": 16,
+    "judged_different": 18,
+    "judged_unsure_or_unjudged": 97,
+    "judged_agreement": {
+     "n": 250,
+     "agreeing_or_equivalent": 135,
+     "rate": 0.54,
+     "ci95": [
+      0.4781,
+      0.6007
+     ]
+    }
+   },
+   "state_changing_steps": {
+    "n": 49,
+    "same_tool": 29,
+    "same_tool_rate": 0.5918,
+    "same_tool_same_args": 27,
+    "same_tool_same_args_rate": 0.551
+   },
+   "disagreement_breakdown": {
+    "same_tool_different_args": 60,
+    "different_tool": 67,
+    "tool_instead_of_text": 4
+   },
+   "step_cost_per_call_cents": 0.0101,
+   "median_latency_s": 2.197,
+   "full_run_paired_delta_vs_sonnet": {
+    "n_paired": 74,
+    "delta": -0.0811,
+    "ci95": [
+     -0.1622,
+     -0.0135
+    ],
+    "tasks_candidate_only_correct": 1,
+    "tasks_incumbent_only_correct": 7
+   },
+   "paired_difference_note": "The step check compares each candidate reply with Sonnet's recorded reply on the same 250 calls; the study computed no paired step-level difference or CI against Sonnet's own replay. The paired difference shown is the full-run task success delta on the same tasks (bootstrap 95% CI)."
+  },
+  {
+   "kind": "step_check",
+   "use_case": "claims_triage",
+   "model": "gpt-6.1-sol",
+   "role": "candidate",
+   "analyzer_batch": "G",
+   "n_calls_sampled": 250,
+   "n_calls_answered": 250,
+   "n_calls_failed": 0,
+   "failure_rate_reported": 0.0,
+   "failure_categories": {},
+   "tool_choice": {
+    "n": 246,
+    "same_tool": 143,
+    "rate": 0.5813,
+    "ci95": [
+     0.5189,
+     0.6412
+    ]
+   },
+   "args_given_same_tool": {
+    "n": 143,
+    "same_args": 86,
+    "rate": 0.6014,
+    "ci95": [
+     0.5195,
+     0.678
+    ]
+   },
+   "text_replies": {
+    "n": 4,
+    "same_text": 0,
+    "rate": 0.0
+   },
+   "exact_agreement": {
+    "n": 250,
+    "agreeing": 86,
+    "rate": 0.344,
+    "ci95": [
+     0.2879,
+     0.4048
+    ]
+   },
+   "judged": {
+    "n_disagreements": 164,
+    "judged_equivalent": 19,
+    "judged_different": 15,
+    "judged_unsure_or_unjudged": 130,
+    "judged_agreement": {
+     "n": 250,
+     "agreeing_or_equivalent": 105,
+     "rate": 0.42,
+     "ci95": [
+      0.3605,
+      0.4819
+     ]
+    }
+   },
+   "state_changing_steps": {
+    "n": 49,
+    "same_tool": 14,
+    "same_tool_rate": 0.2857,
+    "same_tool_same_args": 14,
+    "same_tool_same_args_rate": 0.2857
+   },
+   "disagreement_breakdown": {
+    "same_tool_different_args": 57,
+    "different_tool": 103,
+    "tool_instead_of_text": 4
+   },
+   "step_cost_per_call_cents": 0.1475,
+   "median_latency_s": 2.788,
+   "full_run_paired_delta_vs_sonnet": {
+    "n_paired": 74,
+    "delta": -0.0811,
+    "ci95": [
+     -0.1622,
+     0.0
+    ],
+    "tasks_candidate_only_correct": 2,
+    "tasks_incumbent_only_correct": 8
+   },
+   "paired_difference_note": "The step check compares each candidate reply with Sonnet's recorded reply on the same 250 calls; the study computed no paired step-level difference or CI against Sonnet's own replay. The paired difference shown is the full-run task success delta on the same tasks (bootstrap 95% CI)."
+  },
+  {
+   "kind": "step_check",
+   "use_case": "kyc_checks",
+   "model": "sonnet-5.5",
+   "role": "incumbent replayed against its own recording (noise floor)",
+   "analyzer_batch": "A",
+   "n_calls_sampled": 250,
+   "n_calls_answered": 250,
+   "n_calls_failed": 0,
+   "failure_rate_reported": 0.0,
+   "failure_categories": {},
+   "tool_choice": {
+    "n": 250,
+    "same_tool": 250,
+    "rate": 1.0,
+    "ci95": [
+     0.9849,
+     1.0
+    ]
+   },
+   "args_given_same_tool": {
+    "n": 250,
+    "same_args": 167,
+    "rate": 0.668,
+    "ci95": [
+     0.6075,
+     0.7234
+    ]
+   },
+   "text_replies": {
+    "n": 0,
+    "same_text": 0,
+    "rate": null
+   },
+   "exact_agreement": {
+    "n": 250,
+    "agreeing": 167,
+    "rate": 0.668,
+    "ci95": [
+     0.6075,
+     0.7234
+    ]
+   },
+   "judged": {
+    "n_disagreements": 83,
+    "judged_equivalent": 39,
+    "judged_different": 3,
+    "judged_unsure_or_unjudged": 41,
+    "judged_agreement": {
+     "n": 250,
+     "agreeing_or_equivalent": 206,
+     "rate": 0.824,
+     "ci95": [
+      0.772,
+      0.8662
+     ]
+    }
+   },
+   "state_changing_steps": {
+    "n": 56,
+    "same_tool": 56,
+    "same_tool_rate": 1.0,
+    "same_tool_same_args": 30,
+    "same_tool_same_args_rate": 0.5357
+   },
+   "disagreement_breakdown": {
+    "same_tool_different_args": 83
+   },
+   "step_cost_per_call_cents": 1.1863,
+   "median_latency_s": 1.972
+  },
+  {
+   "kind": "step_check",
+   "use_case": "kyc_checks",
+   "model": "sonnet-5.5",
+   "role": "incumbent replayed against its own recording (noise floor)",
+   "analyzer_batch": "B",
+   "n_calls_sampled": 250,
+   "n_calls_answered": 250,
+   "n_calls_failed": 0,
+   "failure_rate_reported": 0.0,
+   "failure_categories": {},
+   "tool_choice": {
+    "n": 250,
+    "same_tool": 249,
+    "rate": 0.996,
+    "ci95": [
+     0.9777,
+     0.9993
+    ]
+   },
+   "args_given_same_tool": {
+    "n": 249,
+    "same_args": 167,
+    "rate": 0.6707,
+    "ci95": [
+     0.6101,
+     0.7261
+    ]
+   },
+   "text_replies": {
+    "n": 0,
+    "same_text": 0,
+    "rate": null
+   },
+   "exact_agreement": {
+    "n": 250,
+    "agreeing": 167,
+    "rate": 0.668,
+    "ci95": [
+     0.6075,
+     0.7234
+    ]
+   },
+   "judged": {
+    "n_disagreements": 83,
+    "judged_equivalent": 35,
+    "judged_different": 4,
+    "judged_unsure_or_unjudged": 44,
+    "judged_agreement": {
+     "n": 250,
+     "agreeing_or_equivalent": 202,
+     "rate": 0.808,
+     "ci95": [
+      0.7547,
+      0.852
+     ]
+    }
+   },
+   "state_changing_steps": {
+    "n": 56,
+    "same_tool": 56,
+    "same_tool_rate": 1.0,
+    "same_tool_same_args": 29,
+    "same_tool_same_args_rate": 0.5179
+   },
+   "disagreement_breakdown": {
+    "same_tool_different_args": 82,
+    "text_instead_of_tool": 1
+   },
+   "step_cost_per_call_cents": 1.1884,
+   "median_latency_s": 2.016
+  },
+  {
+   "kind": "step_check",
+   "use_case": "kyc_checks",
+   "model": "opus-5.5",
+   "role": "candidate",
+   "analyzer_batch": "A",
+   "n_calls_sampled": 250,
+   "n_calls_answered": 250,
+   "n_calls_failed": 0,
+   "failure_rate_reported": 0.0,
+   "failure_categories": {},
+   "tool_choice": {
+    "n": 250,
+    "same_tool": 243,
+    "rate": 0.972,
+    "ci95": [
+     0.9433,
+     0.9864
+    ]
+   },
+   "args_given_same_tool": {
+    "n": 243,
+    "same_args": 161,
+    "rate": 0.6626,
+    "ci95": [
+     0.601,
+     0.7191
+    ]
+   },
+   "text_replies": {
+    "n": 0,
+    "same_text": 0,
+    "rate": null
+   },
+   "exact_agreement": {
+    "n": 250,
+    "agreeing": 161,
+    "rate": 0.644,
+    "ci95": [
+     0.5829,
+     0.7008
+    ]
+   },
+   "judged": {
+    "n_disagreements": 89,
+    "judged_equivalent": 23,
+    "judged_different": 6,
+    "judged_unsure_or_unjudged": 60,
+    "judged_agreement": {
+     "n": 250,
+     "agreeing_or_equivalent": 184,
+     "rate": 0.736,
+     "ci95": [
+      0.6781,
+      0.7868
+     ]
+    }
+   },
+   "state_changing_steps": {
+    "n": 56,
+    "same_tool": 51,
+    "same_tool_rate": 0.9107,
+    "same_tool_same_args": 28,
+    "same_tool_same_args_rate": 0.5
+   },
+   "disagreement_breakdown": {
+    "same_tool_different_args": 82,
+    "different_tool": 6,
+    "text_instead_of_tool": 1
+   },
+   "step_cost_per_call_cents": 2.3336,
+   "median_latency_s": 2.575,
+   "full_run_paired_delta_vs_sonnet": {
+    "n_paired": 86,
+    "delta": 0.0,
+    "ci95": [
+     0.0,
+     0.0
+    ],
+    "tasks_candidate_only_correct": 0,
+    "tasks_incumbent_only_correct": 0
+   },
+   "paired_difference_note": "The step check compares each candidate reply with Sonnet's recorded reply on the same 250 calls; the study computed no paired step-level difference or CI against Sonnet's own replay. The paired difference shown is the full-run task success delta on the same tasks (bootstrap 95% CI)."
+  },
+  {
+   "kind": "step_check",
+   "use_case": "kyc_checks",
+   "model": "haiku-5.5",
+   "role": "candidate",
+   "analyzer_batch": "A",
+   "n_calls_sampled": 250,
+   "n_calls_answered": 250,
+   "n_calls_failed": 0,
+   "failure_rate_reported": 0.0,
+   "failure_categories": {},
+   "tool_choice": {
+    "n": 250,
+    "same_tool": 242,
+    "rate": 0.968,
+    "ci95": [
+     0.9381,
+     0.9837
+    ]
+   },
+   "args_given_same_tool": {
+    "n": 242,
+    "same_args": 151,
+    "rate": 0.624,
+    "ci95": [
+     0.5614,
+     0.6826
+    ]
+   },
+   "text_replies": {
+    "n": 0,
+    "same_text": 0,
+    "rate": null
+   },
+   "exact_agreement": {
+    "n": 250,
+    "agreeing": 151,
+    "rate": 0.604,
+    "ci95": [
+     0.5422,
+     0.6626
+    ]
+   },
+   "judged": {
+    "n_disagreements": 99,
+    "judged_equivalent": 33,
+    "judged_different": 5,
+    "judged_unsure_or_unjudged": 61,
+    "judged_agreement": {
+     "n": 250,
+     "agreeing_or_equivalent": 184,
+     "rate": 0.736,
+     "ci95": [
+      0.6781,
+      0.7868
+     ]
+    }
+   },
+   "state_changing_steps": {
+    "n": 56,
+    "same_tool": 51,
+    "same_tool_rate": 0.9107,
+    "same_tool_same_args": 25,
+    "same_tool_same_args_rate": 0.4464
+   },
+   "disagreement_breakdown": {
+    "same_tool_different_args": 91,
+    "different_tool": 8
+   },
+   "step_cost_per_call_cents": 0.071,
+   "median_latency_s": 2.118,
+   "full_run_paired_delta_vs_sonnet": {
+    "n_paired": 86,
+    "delta": -0.0814,
+    "ci95": [
+     -0.1395,
+     -0.0233
+    ],
+    "tasks_candidate_only_correct": 0,
+    "tasks_incumbent_only_correct": 7
+   },
+   "paired_difference_note": "The step check compares each candidate reply with Sonnet's recorded reply on the same 250 calls; the study computed no paired step-level difference or CI against Sonnet's own replay. The paired difference shown is the full-run task success delta on the same tasks (bootstrap 95% CI)."
+  },
+  {
+   "kind": "step_check",
+   "use_case": "kyc_checks",
+   "model": "deepseek-v4.1-flash@provider-a",
+   "role": "candidate",
+   "analyzer_batch": "A",
+   "n_calls_sampled": 250,
+   "n_calls_answered": 249,
+   "n_calls_failed": 1,
+   "failure_rate_reported": 0.004,
+   "failure_categories": {
+    "empty_reply": 1
+   },
+   "tool_choice": {
+    "n": 249,
+    "same_tool": 215,
+    "rate": 0.8635,
+    "ci95": [
+     0.8152,
+     0.9006
+    ]
+   },
+   "args_given_same_tool": {
+    "n": 215,
+    "same_args": 136,
+    "rate": 0.6326,
+    "ci95": [
+     0.5663,
+     0.6941
+    ]
+   },
+   "text_replies": {
+    "n": 0,
+    "same_text": 0,
+    "rate": null
+   },
+   "exact_agreement": {
+    "n": 249,
+    "agreeing": 136,
+    "rate": 0.5462,
+    "ci95": [
+     0.4841,
+     0.6069
+    ]
+   },
+   "judged": {
+    "n_disagreements": 113,
+    "judged_equivalent": 31,
+    "judged_different": 9,
+    "judged_unsure_or_unjudged": 73,
+    "judged_agreement": {
+     "n": 249,
+     "agreeing_or_equivalent": 167,
+     "rate": 0.6707,
+     "ci95": [
+      0.6101,
+      0.7261
+     ]
+    }
+   },
+   "state_changing_steps": {
+    "n": 55,
+    "same_tool": 50,
+    "same_tool_rate": 0.9091,
+    "same_tool_same_args": 27,
+    "same_tool_same_args_rate": 0.4909
+   },
+   "disagreement_breakdown": {
+    "same_tool_different_args": 79,
+    "different_tool": 27,
+    "text_instead_of_tool": 7
+   },
+   "step_cost_per_call_cents": 0.1501,
+   "median_latency_s": 3.712,
+   "full_run_paired_delta_vs_sonnet": {
+    "n_paired": 86,
+    "delta": -0.0465,
+    "ci95": [
+     -0.093,
+     -0.0116
+    ],
+    "tasks_candidate_only_correct": 0,
+    "tasks_incumbent_only_correct": 4
+   },
+   "paired_difference_note": "The step check compares each candidate reply with Sonnet's recorded reply on the same 250 calls; the study computed no paired step-level difference or CI against Sonnet's own replay. The paired difference shown is the full-run task success delta on the same tasks (bootstrap 95% CI)."
+  },
+  {
+   "kind": "step_check",
+   "use_case": "kyc_checks",
+   "model": "deepseek-v4-pro@provider-a",
+   "role": "candidate",
+   "analyzer_batch": "A",
+   "n_calls_sampled": 250,
+   "n_calls_answered": 249,
+   "n_calls_failed": 1,
+   "failure_rate_reported": 0.004,
+   "failure_categories": {
+    "empty_reply": 1
+   },
+   "tool_choice": {
+    "n": 249,
+    "same_tool": 238,
+    "rate": 0.9558,
+    "ci95": [
+     0.9226,
+     0.9752
+    ]
+   },
+   "args_given_same_tool": {
+    "n": 238,
+    "same_args": 150,
+    "rate": 0.6303,
+    "ci95": [
+     0.5673,
+     0.6891
+    ]
+   },
+   "text_replies": {
+    "n": 0,
+    "same_text": 0,
+    "rate": null
+   },
+   "exact_agreement": {
+    "n": 249,
+    "agreeing": 150,
+    "rate": 0.6024,
+    "ci95": [
+     0.5405,
+     0.6612
+    ]
+   },
+   "judged": {
+    "n_disagreements": 99,
+    "judged_equivalent": 36,
+    "judged_different": 6,
+    "judged_unsure_or_unjudged": 57,
+    "judged_agreement": {
+     "n": 249,
+     "agreeing_or_equivalent": 186,
+     "rate": 0.747,
+     "ci95": [
+      0.6895,
+      0.797
+     ]
+    }
+   },
+   "state_changing_steps": {
+    "n": 55,
+    "same_tool": 54,
+    "same_tool_rate": 0.9818,
+    "same_tool_same_args": 27,
+    "same_tool_same_args_rate": 0.4909
+   },
+   "disagreement_breakdown": {
+    "same_tool_different_args": 88,
+    "different_tool": 10,
+    "text_instead_of_tool": 1
+   },
+   "step_cost_per_call_cents": 0.2997,
+   "median_latency_s": 5.228,
+   "full_run_paired_delta_vs_sonnet": {
+    "n_paired": 86,
+    "delta": -0.0116,
+    "ci95": [
+     -0.0465,
+     0.0
+    ],
+    "tasks_candidate_only_correct": 0,
+    "tasks_incumbent_only_correct": 1
+   },
+   "paired_difference_note": "The step check compares each candidate reply with Sonnet's recorded reply on the same 250 calls; the study computed no paired step-level difference or CI against Sonnet's own replay. The paired difference shown is the full-run task success delta on the same tasks (bootstrap 95% CI)."
+  },
+  {
+   "kind": "step_check",
+   "use_case": "kyc_checks",
+   "model": "glm-5.3@provider-a",
+   "role": "candidate",
+   "analyzer_batch": "A",
+   "n_calls_sampled": 250,
+   "n_calls_answered": 248,
+   "n_calls_failed": 2,
+   "failure_rate_reported": 0.008,
+   "failure_categories": {
+    "empty_reply": 2
+   },
+   "tool_choice": {
+    "n": 248,
+    "same_tool": 243,
+    "rate": 0.9798,
+    "ci95": [
+     0.9537,
+     0.9914
+    ]
+   },
+   "args_given_same_tool": {
+    "n": 243,
+    "same_args": 156,
+    "rate": 0.642,
+    "ci95": [
+     0.5799,
+     0.6996
+    ]
+   },
+   "text_replies": {
+    "n": 0,
+    "same_text": 0,
+    "rate": null
+   },
+   "exact_agreement": {
+    "n": 248,
+    "agreeing": 156,
+    "rate": 0.629,
+    "ci95": [
+     0.5674,
+     0.6868
+    ]
+   },
+   "judged": {
+    "n_disagreements": 92,
+    "judged_equivalent": 35,
+    "judged_different": 9,
+    "judged_unsure_or_unjudged": 48,
+    "judged_agreement": {
+     "n": 248,
+     "agreeing_or_equivalent": 191,
+     "rate": 0.7702,
+     "ci95": [
+      0.7139,
+      0.8182
+     ]
+    }
+   },
+   "state_changing_steps": {
+    "n": 54,
+    "same_tool": 52,
+    "same_tool_rate": 0.963,
+    "same_tool_same_args": 26,
+    "same_tool_same_args_rate": 0.4815
+   },
+   "disagreement_breakdown": {
+    "same_tool_different_args": 87,
+    "different_tool": 4,
+    "text_instead_of_tool": 1
+   },
+   "step_cost_per_call_cents": 0.6295,
+   "median_latency_s": 2.857,
+   "full_run_paired_delta_vs_sonnet": {
+    "n_paired": 86,
+    "delta": -0.0116,
+    "ci95": [
+     -0.0349,
+     0.0
+    ],
+    "tasks_candidate_only_correct": 0,
+    "tasks_incumbent_only_correct": 1
+   },
+   "paired_difference_note": "The step check compares each candidate reply with Sonnet's recorded reply on the same 250 calls; the study computed no paired step-level difference or CI against Sonnet's own replay. The paired difference shown is the full-run task success delta on the same tasks (bootstrap 95% CI)."
+  },
+  {
+   "kind": "step_check",
+   "use_case": "kyc_checks",
+   "model": "glm-5.3-flash@provider-a",
+   "role": "candidate",
+   "analyzer_batch": "B",
+   "n_calls_sampled": 250,
+   "n_calls_answered": 227,
+   "n_calls_failed": 23,
+   "failure_rate_reported": 0.092,
+   "failure_categories": {
+    "rate_limited": 22,
+    "empty_reply": 1
+   },
+   "tool_choice": {
+    "n": 227,
+    "same_tool": 221,
+    "rate": 0.9736,
+    "ci95": [
+     0.9435,
+     0.9878
+    ]
+   },
+   "args_given_same_tool": {
+    "n": 221,
+    "same_args": 140,
+    "rate": 0.6335,
+    "ci95": [
+     0.5682,
+     0.6942
+    ]
+   },
+   "text_replies": {
+    "n": 0,
+    "same_text": 0,
+    "rate": null
+   },
+   "exact_agreement": {
+    "n": 227,
+    "agreeing": 140,
+    "rate": 0.6167,
+    "ci95": [
+     0.552,
+     0.6775
+    ]
+   },
+   "judged": {
+    "n_disagreements": 87,
+    "judged_equivalent": 31,
+    "judged_different": 7,
+    "judged_unsure_or_unjudged": 49,
+    "judged_agreement": {
+     "n": 227,
+     "agreeing_or_equivalent": 171,
+     "rate": 0.7533,
+     "ci95": [
+      0.6933,
+      0.8049
+     ]
+    }
+   },
+   "state_changing_steps": {
+    "n": 47,
+    "same_tool": 46,
+    "same_tool_rate": 0.9787,
+    "same_tool_same_args": 19,
+    "same_tool_same_args_rate": 0.4043
+   },
+   "disagreement_breakdown": {
+    "same_tool_different_args": 81,
+    "different_tool": 4,
+    "text_instead_of_tool": 2
+   },
+   "step_cost_per_call_cents": 0.0719,
+   "median_latency_s": 12.038,
+   "full_run_paired_delta_vs_sonnet": {
+    "n_paired": 86,
+    "delta": -0.0233,
+    "ci95": [
+     -0.0581,
+     0.0
+    ],
+    "tasks_candidate_only_correct": 0,
+    "tasks_incumbent_only_correct": 2
+   },
+   "paired_difference_note": "The step check compares each candidate reply with Sonnet's recorded reply on the same 250 calls; the study computed no paired step-level difference or CI against Sonnet's own replay. The paired difference shown is the full-run task success delta on the same tasks (bootstrap 95% CI)."
+  },
+  {
+   "kind": "step_check",
+   "use_case": "kyc_checks",
+   "model": "gpt-oss-120b@provider-a",
+   "role": "candidate",
+   "analyzer_batch": "B",
+   "n_calls_sampled": 250,
+   "n_calls_answered": 250,
+   "n_calls_failed": 0,
+   "failure_rate_reported": 0.0,
+   "failure_categories": {},
+   "tool_choice": {
+    "n": 250,
+    "same_tool": 124,
+    "rate": 0.496,
+    "ci95": [
+     0.4346,
+     0.5576
+    ]
+   },
+   "args_given_same_tool": {
+    "n": 124,
+    "same_args": 100,
+    "rate": 0.8065,
+    "ci95": [
+     0.7281,
+     0.8663
+    ]
+   },
+   "text_replies": {
+    "n": 0,
+    "same_text": 0,
+    "rate": null
+   },
+   "exact_agreement": {
+    "n": 250,
+    "agreeing": 100,
+    "rate": 0.4,
+    "ci95": [
+     0.3412,
+     0.4618
+    ]
+   },
+   "judged": {
+    "n_disagreements": 150,
+    "judged_equivalent": 2,
+    "judged_different": 10,
+    "judged_unsure_or_unjudged": 138,
+    "judged_agreement": {
+     "n": 250,
+     "agreeing_or_equivalent": 102,
+     "rate": 0.408,
+     "ci95": [
+      0.3489,
+      0.4699
+     ]
+    }
+   },
+   "state_changing_steps": {
+    "n": 56,
+    "same_tool": 40,
+    "same_tool_rate": 0.7143,
+    "same_tool_same_args": 22,
+    "same_tool_same_args_rate": 0.3929
+   },
+   "disagreement_breakdown": {
+    "same_tool_different_args": 24,
+    "different_tool": 77,
+    "text_instead_of_tool": 49
+   },
+   "step_cost_per_call_cents": 0.0569,
+   "median_latency_s": 1.139,
+   "full_run_paired_delta_vs_sonnet": {
+    "n_paired": 86,
+    "delta": -0.314,
+    "ci95": [
+     -0.4186,
+     -0.2093
+    ],
+    "tasks_candidate_only_correct": 0,
+    "tasks_incumbent_only_correct": 27
+   },
+   "paired_difference_note": "The step check compares each candidate reply with Sonnet's recorded reply on the same 250 calls; the study computed no paired step-level difference or CI against Sonnet's own replay. The paired difference shown is the full-run task success delta on the same tasks (bootstrap 95% CI)."
+  },
+  {
+   "kind": "step_check",
+   "use_case": "kyc_checks",
+   "model": "qwen3.8-27b@provider-a",
+   "role": "candidate",
+   "analyzer_batch": "B",
+   "n_calls_sampled": 250,
+   "n_calls_answered": 250,
+   "n_calls_failed": 0,
+   "failure_rate_reported": 0.0,
+   "failure_categories": {},
+   "tool_choice": {
+    "n": 250,
+    "same_tool": 223,
+    "rate": 0.892,
+    "ci95": [
+     0.8474,
+     0.9247
+    ]
+   },
+   "args_given_same_tool": {
+    "n": 223,
+    "same_args": 132,
+    "rate": 0.5919,
+    "ci95": [
+     0.5264,
+     0.6543
+    ]
+   },
+   "text_replies": {
+    "n": 0,
+    "same_text": 0,
+    "rate": null
+   },
+   "exact_agreement": {
+    "n": 250,
+    "agreeing": 132,
+    "rate": 0.528,
+    "ci95": [
+     0.4662,
+     0.589
+    ]
+   },
+   "judged": {
+    "n_disagreements": 118,
+    "judged_equivalent": 31,
+    "judged_different": 22,
+    "judged_unsure_or_unjudged": 65,
+    "judged_agreement": {
+     "n": 250,
+     "agreeing_or_equivalent": 163,
+     "rate": 0.652,
+     "ci95": [
+      0.5911,
+      0.7083
+     ]
+    }
+   },
+   "state_changing_steps": {
+    "n": 56,
+    "same_tool": 46,
+    "same_tool_rate": 0.8214,
+    "same_tool_same_args": 25,
+    "same_tool_same_args_rate": 0.4464
+   },
+   "disagreement_breakdown": {
+    "same_tool_different_args": 91,
+    "different_tool": 27
+   },
+   "step_cost_per_call_cents": 0.2139,
+   "median_latency_s": 1.185,
+   "full_run_paired_delta_vs_sonnet": {
+    "n_paired": 86,
+    "delta": -0.2093,
+    "ci95": [
+     -0.2907,
+     -0.1279
+    ],
+    "tasks_candidate_only_correct": 0,
+    "tasks_incumbent_only_correct": 18
+   },
+   "paired_difference_note": "The step check compares each candidate reply with Sonnet's recorded reply on the same 250 calls; the study computed no paired step-level difference or CI against Sonnet's own replay. The paired difference shown is the full-run task success delta on the same tasks (bootstrap 95% CI)."
+  },
+  {
+   "kind": "step_check",
+   "use_case": "kyc_checks",
+   "model": "minimax-m3@provider-a",
+   "role": "candidate",
+   "analyzer_batch": "B",
+   "n_calls_sampled": 250,
+   "n_calls_answered": 250,
+   "n_calls_failed": 0,
+   "failure_rate_reported": 0.0,
+   "failure_categories": {},
+   "tool_choice": {
+    "n": 250,
+    "same_tool": 214,
+    "rate": 0.856,
+    "ci95": [
+     0.8071,
+     0.8941
+    ]
+   },
+   "args_given_same_tool": {
+    "n": 214,
+    "same_args": 127,
+    "rate": 0.5935,
+    "ci95": [
+     0.5266,
+     0.6571
+    ]
+   },
+   "text_replies": {
+    "n": 0,
+    "same_text": 0,
+    "rate": null
+   },
+   "exact_agreement": {
+    "n": 250,
+    "agreeing": 127,
+    "rate": 0.508,
+    "ci95": [
+     0.4464,
+     0.5694
+    ]
+   },
+   "judged": {
+    "n_disagreements": 123,
+    "judged_equivalent": 33,
+    "judged_different": 9,
+    "judged_unsure_or_unjudged": 81,
+    "judged_agreement": {
+     "n": 250,
+     "agreeing_or_equivalent": 160,
+     "rate": 0.64,
+     "ci95": [
+      0.5788,
+      0.697
+     ]
+    }
+   },
+   "state_changing_steps": {
+    "n": 56,
+    "same_tool": 45,
+    "same_tool_rate": 0.8036,
+    "same_tool_same_args": 23,
+    "same_tool_same_args_rate": 0.4107
+   },
+   "disagreement_breakdown": {
+    "same_tool_different_args": 87,
+    "different_tool": 36
+   },
+   "step_cost_per_call_cents": 0.1511,
+   "median_latency_s": 2.175,
+   "full_run_paired_delta_vs_sonnet": {
+    "n_paired": 86,
+    "delta": -0.093,
+    "ci95": [
+     -0.1628,
+     -0.0349
+    ],
+    "tasks_candidate_only_correct": 0,
+    "tasks_incumbent_only_correct": 8
+   },
+   "paired_difference_note": "The step check compares each candidate reply with Sonnet's recorded reply on the same 250 calls; the study computed no paired step-level difference or CI against Sonnet's own replay. The paired difference shown is the full-run task success delta on the same tasks (bootstrap 95% CI)."
+  },
+  {
+   "kind": "step_check",
+   "use_case": "kyc_checks",
+   "model": "gpt-6-luna",
+   "role": "candidate",
+   "analyzer_batch": "G",
+   "n_calls_sampled": 250,
+   "n_calls_answered": 250,
+   "n_calls_failed": 0,
+   "failure_rate_reported": 0.0,
+   "failure_categories": {},
+   "tool_choice": {
+    "n": 250,
+    "same_tool": 230,
+    "rate": 0.92,
+    "ci95": [
+     0.8797,
+     0.9476
+    ]
+   },
+   "args_given_same_tool": {
+    "n": 230,
+    "same_args": 144,
+    "rate": 0.6261,
+    "ci95": [
+     0.562,
+     0.6861
+    ]
+   },
+   "text_replies": {
+    "n": 0,
+    "same_text": 0,
+    "rate": null
+   },
+   "exact_agreement": {
+    "n": 250,
+    "agreeing": 144,
+    "rate": 0.576,
+    "ci95": [
+     0.514,
+     0.6357
+    ]
+   },
+   "judged": {
+    "n_disagreements": 106,
+    "judged_equivalent": 11,
+    "judged_different": 6,
+    "judged_unsure_or_unjudged": 89,
+    "judged_agreement": {
+     "n": 250,
+     "agreeing_or_equivalent": 155,
+     "rate": 0.62,
+     "ci95": [
+      0.5584,
+      0.6779
+     ]
+    }
+   },
+   "state_changing_steps": {
+    "n": 56,
+    "same_tool": 50,
+    "same_tool_rate": 0.8929,
+    "same_tool_same_args": 24,
+    "same_tool_same_args_rate": 0.4286
+   },
+   "disagreement_breakdown": {
+    "same_tool_different_args": 86,
+    "different_tool": 20
+   },
+   "step_cost_per_call_cents": 0.0125,
+   "median_latency_s": 2.506,
+   "full_run_paired_delta_vs_sonnet": {
+    "n_paired": 86,
+    "delta": -0.0465,
+    "ci95": [
+     -0.093,
+     -0.0116
+    ],
+    "tasks_candidate_only_correct": 0,
+    "tasks_incumbent_only_correct": 4
+   },
+   "paired_difference_note": "The step check compares each candidate reply with Sonnet's recorded reply on the same 250 calls; the study computed no paired step-level difference or CI against Sonnet's own replay. The paired difference shown is the full-run task success delta on the same tasks (bootstrap 95% CI)."
+  },
+  {
+   "kind": "step_check",
+   "use_case": "kyc_checks",
+   "model": "gpt-6.1-sol",
+   "role": "candidate",
+   "analyzer_batch": "G",
+   "n_calls_sampled": 250,
+   "n_calls_answered": 250,
+   "n_calls_failed": 0,
+   "failure_rate_reported": 0.0,
+   "failure_categories": {},
+   "tool_choice": {
+    "n": 250,
+    "same_tool": 242,
+    "rate": 0.968,
+    "ci95": [
+     0.9381,
+     0.9837
+    ]
+   },
+   "args_given_same_tool": {
+    "n": 242,
+    "same_args": 162,
+    "rate": 0.6694,
+    "ci95": [
+     0.6079,
+     0.7256
+    ]
+   },
+   "text_replies": {
+    "n": 0,
+    "same_text": 0,
+    "rate": null
+   },
+   "exact_agreement": {
+    "n": 250,
+    "agreeing": 162,
+    "rate": 0.648,
+    "ci95": [
+     0.587,
+     0.7046
+    ]
+   },
+   "judged": {
+    "n_disagreements": 88,
+    "judged_equivalent": 22,
+    "judged_different": 4,
+    "judged_unsure_or_unjudged": 62,
+    "judged_agreement": {
+     "n": 250,
+     "agreeing_or_equivalent": 184,
+     "rate": 0.736,
+     "ci95": [
+      0.6781,
+      0.7868
+     ]
+    }
+   },
+   "state_changing_steps": {
+    "n": 56,
+    "same_tool": 53,
+    "same_tool_rate": 0.9464,
+    "same_tool_same_args": 28,
+    "same_tool_same_args_rate": 0.5
+   },
+   "disagreement_breakdown": {
+    "same_tool_different_args": 80,
+    "different_tool": 8
+   },
+   "step_cost_per_call_cents": 0.1731,
+   "median_latency_s": 3.152,
+   "full_run_paired_delta_vs_sonnet": {
+    "n_paired": 86,
+    "delta": 0.0,
+    "ci95": [
+     0.0,
+     0.0
+    ],
+    "tasks_candidate_only_correct": 0,
+    "tasks_incumbent_only_correct": 0
+   },
+   "paired_difference_note": "The step check compares each candidate reply with Sonnet's recorded reply on the same 250 calls; the study computed no paired step-level difference or CI against Sonnet's own replay. The paired difference shown is the full-run task success delta on the same tasks (bootstrap 95% CI)."
+  },
+  {
+   "kind": "use_case_summary",
+   "use_case": "support",
+   "label": "Bank support tickets",
+   "incumbent_full_run": null,
+   "analyzer_picks": {
+    "Closest to today": {
+     "model": "sonnet-5.5"
+    },
+    "Cheapest": {
+     "model": "gpt-6-luna"
+    },
+    "Fastest": {
+     "model": "qwen3.8-27b@provider-a"
+    },
+    "Best open model": {
+     "model": "deepseek-v4.1-flash@provider-a"
+    }
+   },
+   "verdict_vs_full_run": {
+    "n": 11,
+    "agree": 9,
+    "note": "Counts only; which candidates matched is withheld with the full runs."
+   },
+   "top3_by_tool_choice": [
+    "haiku-5.5",
+    "opus-5.5",
+    "deepseek-v4.1-flash@provider-a"
+   ],
+   "spearman_vs_full_run_success": {
+    "tool_choice": 0.4965,
+    "exact": 0.795,
+    "judge_adjusted": 0.7265,
+    "write_exact": -0.3035,
+    "write_tool": 0.4046
+   },
+   "noise_floor": {
+    "sonnet_self_tool_choice_batch_A": 0.9917,
+    "sonnet_self_exact_agreement_batch_A": 0.48,
+    "sonnet_self_exact_agreement_batch_B": 0.508
+   },
+   "analyzer_spend_usd": {
+    "A": "12.48333599",
+    "B": "4.46824866",
+    "G": "0.46145503"
+   },
+   "calls_seen": 876,
+   "sessions": 100,
+   "calls_sampled": 250,
+   "withheld": "top3_that_hold, cheapest_model_that_holds, cheapest_holder_rank_by_tool_choice, incumbent_full_run: Withheld: computed from the Haiku Tax full runs, an internal draft whose results have not been cleared for publication (inference providers have not seen their numbers). See README.md, Results."
+  },
+  {
+   "kind": "use_case_summary",
+   "use_case": "invoice_extraction",
+   "label": "Invoice extraction",
+   "incumbent_full_run": null,
+   "analyzer_picks": {
+    "Closest to today": {
+     "model": "sonnet-5.5"
+    },
+    "Cheapest": {
+     "model": "sonnet-5.5"
+    },
+    "Fastest": {
+     "model": "sonnet-5.5"
+    },
+    "Best open model": {
+     "model": "glm-5.3-flash@provider-a"
+    }
+   },
+   "verdict_vs_full_run": {
+    "n": 11,
+    "agree": 8,
+    "note": "Counts only; which candidates matched is withheld with the full runs."
+   },
+   "top3_by_tool_choice": [
+    "opus-5.5",
+    "gpt-6.1-sol",
+    "haiku-5.5"
+   ],
+   "spearman_vs_full_run_success": {
+    "tool_choice": 0.5877,
+    "exact": 0.3964,
+    "judge_adjusted": 0.21,
+    "write_exact": -0.1889,
+    "write_tool": 0.8676
+   },
+   "noise_floor": {
+    "sonnet_self_tool_choice_batch_A": 0.9234,
+    "sonnet_self_exact_agreement_batch_A": 0.592,
+    "sonnet_self_exact_agreement_batch_B": 0.576
+   },
+   "analyzer_spend_usd": {
+    "A": "12.07548568",
+    "B": "4.30038889",
+    "G": "0.47762599"
+   },
+   "calls_seen": 449,
+   "sessions": 91,
+   "calls_sampled": 250,
+   "withheld": "top3_that_hold, cheapest_model_that_holds, cheapest_holder_rank_by_tool_choice, incumbent_full_run: Withheld: computed from the Haiku Tax full runs, an internal draft whose results have not been cleared for publication (inference providers have not seen their numbers). See README.md, Results."
+  },
+  {
+   "kind": "use_case_summary",
+   "use_case": "claims_triage",
+   "label": "Insurance claims triage",
+   "incumbent_full_run": null,
+   "analyzer_picks": {
+    "Closest to today": {
+     "model": "sonnet-5.5"
+    },
+    "Cheapest": {
+     "model": "deepseek-v4-pro@provider-a"
+    },
+    "Fastest": {
+     "model": "sonnet-5.5"
+    },
+    "Best open model": {
+     "model": "deepseek-v4-pro@provider-a"
+    }
+   },
+   "verdict_vs_full_run": {
+    "n": 11,
+    "agree": 9,
+    "note": "Counts only; which candidates matched is withheld with the full runs."
+   },
+   "top3_by_tool_choice": [
+    "opus-5.5",
+    "deepseek-v4-pro@provider-a",
+    "haiku-5.5"
+   ],
+   "spearman_vs_full_run_success": {
+    "tool_choice": 0.3486,
+    "exact": 0.422,
+    "judge_adjusted": 0.4414,
+    "write_exact": 0.5425,
+    "write_tool": -0.0138
+   },
+   "noise_floor": {
+    "sonnet_self_tool_choice_batch_A": 0.9268,
+    "sonnet_self_exact_agreement_batch_A": 0.712,
+    "sonnet_self_exact_agreement_batch_B": 0.716
+   },
+   "analyzer_spend_usd": {
+    "A": "11.48657533",
+    "B": "4.08091148",
+    "G": "0.39648311"
+   },
+   "calls_seen": 430,
+   "sessions": 74,
+   "calls_sampled": 250,
+   "withheld": "top3_that_hold, cheapest_model_that_holds, cheapest_holder_rank_by_tool_choice, incumbent_full_run: Withheld: computed from the Haiku Tax full runs, an internal draft whose results have not been cleared for publication (inference providers have not seen their numbers). See README.md, Results."
+  },
+  {
+   "kind": "use_case_summary",
+   "use_case": "kyc_checks",
+   "label": "KYC document checks",
+   "incumbent_full_run": null,
+   "analyzer_picks": {
+    "Closest to today": {
+     "model": "sonnet-5.5"
+    },
+    "Cheapest": {
+     "model": "gpt-6-luna"
+    },
+    "Fastest": {
+     "model": "sonnet-5.5"
+    },
+    "Best open model": {
+     "model": "glm-5.3@provider-a"
+    }
+   },
+   "verdict_vs_full_run": {
+    "n": 11,
+    "agree": 9,
+    "note": "Counts only; which candidates matched is withheld with the full runs."
+   },
+   "top3_by_tool_choice": [
+    "glm-5.3@provider-a",
+    "glm-5.3-flash@provider-a",
+    "opus-5.5"
+   ],
+   "spearman_vs_full_run_success": {
+    "tool_choice": 0.7408,
+    "exact": 0.9016,
+    "judge_adjusted": 0.6975,
+    "write_exact": 0.7558,
+    "write_tool": 0.7775
+   },
+   "noise_floor": {
+    "sonnet_self_tool_choice_batch_A": 1.0,
+    "sonnet_self_exact_agreement_batch_A": 0.668,
+    "sonnet_self_exact_agreement_batch_B": 0.668
+   },
+   "analyzer_spend_usd": {
+    "A": "11.76479280",
+    "B": "4.20143023",
+    "G": "0.46782276"
+   },
+   "calls_seen": 383,
+   "sessions": 86,
+   "calls_sampled": 250,
+   "withheld": "top3_that_hold, cheapest_model_that_holds, cheapest_holder_rank_by_tool_choice, incumbent_full_run: Withheld: computed from the Haiku Tax full runs, an internal draft whose results have not been cleared for publication (inference providers have not seen their numbers). See README.md, Results."
+  },
+  {
+   "kind": "verdict_vs_full_run_overall",
+   "rule": "comparable = analyzer tool-choice rate within 10 points of the best rate among candidates with failure rate <= 0.2 (Sonnet's own replay included, as in the analyzer version that ran); holds = full-run success at most 5 points below Sonnet (point estimate)",
+   "n": 44,
+   "agree": 35,
+   "agree_rate": 0.7955,
+   "misses": 9,
+   "comparable_but_loses": 4,
+   "not_comparable_but_holds": 5,
+   "top3_shortlists": {
+    "use_cases": 4,
+    "use_cases_with_at_least_2_holders_in_top3": 4,
+    "use_cases_with_all_3_holding": 3,
+    "use_cases_where_cheapest_holder_in_top3": 1
+   },
+   "withheld": "miss_list and cheapest_picks (per-candidate full-run outcomes): Withheld: computed from the Haiku Tax full runs, an internal draft whose results have not been cleared for publication (inference providers have not seen their numbers). See README.md, Results.",
+   "reproducible_from_this_repo": false
+  },
+  {
+   "kind": "spearman_mean_within_use_case",
+   "definition": "Spearman rank correlation, over the 11 candidates of one use case, between a step metric and full-run success; averaged over the four use cases.",
+   "n_use_cases": 4,
+   "n_candidates_per_use_case": 11,
+   "values": {
+    "tool_choice": 0.5434,
+    "exact": 0.6287,
+    "judge_adjusted": 0.5188,
+    "write_exact": 0.2015,
+    "write_tool": 0.509
+   },
+   "reproducible_from_this_repo": false
+  },
+  {
+   "kind": "superseded_step_checks",
+   "note": "Kept for completeness, not used in the analysis. Batch A sent GPT-6 models through /chat/completions with reasoning off (Luna) or could not run them (Sol: GPT-6 rejects function tools with reasoning on there). Batch G re-ran both through the Responses API with default reasoning, as in their full runs.",
+   "entries": [
+    {
+     "use_case": "support",
+     "model": "gpt-6-luna",
+     "batch": "A",
+     "n_calls_sampled": 250,
+     "tool_choice_rate": 0.95,
+     "exact_agreement_rate": 0.416
+    },
+    {
+     "use_case": "invoice_extraction",
+     "model": "gpt-6-luna",
+     "batch": "A",
+     "n_calls_sampled": 250,
+     "tool_choice_rate": 0.6815,
+     "exact_agreement_rate": 0.392
+    },
+    {
+     "use_case": "claims_triage",
+     "model": "gpt-6-luna",
+     "batch": "A",
+     "n_calls_sampled": 250,
+     "tool_choice_rate": 0.6545,
+     "exact_agreement_rate": 0.44
+    },
+    {
+     "use_case": "kyc_checks",
+     "model": "gpt-6-luna",
+     "batch": "A",
+     "n_calls_sampled": 250,
+     "tool_choice_rate": 0.696,
+     "exact_agreement_rate": 0.372
+    },
+    {
+     "use_case": "all four",
+     "model": "gpt-6.1-sol",
+     "batch": "A",
+     "n_calls_sampled": 250,
+     "failure_rate": 1.0,
+     "note": "every call failed"
+    },
+    {
+     "use_case": "kyc_checks",
+     "model": "sonnet-5.5 / gpt-6-luna / gpt-6.1-sol",
+     "batch": "R (Responses API live check)",
+     "n_calls_sampled": 30,
+     "tool_choice_rate": {
+      "sonnet-5.5": 1.0,
+      "gpt-6-luna": 0.9,
+      "gpt-6.1-sol": 0.9333
+     },
+     "exact_agreement_rate": {
+      "sonnet-5.5": 0.7333,
+      "gpt-6-luna": 0.6,
+      "gpt-6.1-sol": 0.6333
+     }
+    },
+    {
+     "use_case": "kyc_checks",
+     "model": "all 12",
+     "batch": "smoke A/B",
+     "n_calls_sampled": 3,
+     "note": "pipeline smoke test, 2 sessions; not analyzed"
+    }
+   ]
+  }
+ ],
+ "headline_findings": [
+  {
+   "finding": "The analyzer's comparable / not-comparable verdict matched the full runs for 35 of 44 candidate-use case pairs; of the 9 misses, 4 were called comparable but lost and 5 were ruled out but held.",
+   "numbers": [
+    "replays_and_step_checks[kind=verdict_vs_full_run_overall].agree",
+    "replays_and_step_checks[kind=verdict_vs_full_run_overall].n",
+    "replays_and_step_checks[kind=verdict_vs_full_run_overall].comparable_but_loses",
+    "replays_and_step_checks[kind=verdict_vs_full_run_overall].not_comparable_but_holds"
+   ]
+  },
+  {
+   "finding": "As a filter it worked: in every use case at least two of the top three models by tool-choice agreement held full-run success, and in three of four all three did.",
+   "numbers": [
+    "replays_and_step_checks[kind=verdict_vs_full_run_overall].top3_shortlists.use_cases_with_at_least_2_holders_in_top3",
+    "replays_and_step_checks[kind=verdict_vs_full_run_overall].top3_shortlists.use_cases_with_all_3_holding"
+   ]
+  },
+  {
+   "finding": "In three of four use cases the cheapest candidate that held full-run success was outside the analyzer's top three by tool choice, so a top-three shortlist alone would have missed the cheapest safe swap.",
+   "numbers": [
+    "replays_and_step_checks[kind=verdict_vs_full_run_overall].top3_shortlists.use_cases_where_cheapest_holder_in_top3"
+   ]
+  },
+  {
+   "finding": "On bank support, tool choice is saturated (0.85 to 0.9917 across candidates), and Sonnet repeats its own exact step only 0.48 of the time.",
+   "numbers": [
+    "results.support[model=gpt-oss-120b@provider-a].step_check.tool_choice_rate",
+    "results.support[model=haiku-5.5].step_check.tool_choice_rate",
+    "results.support[model=sonnet-5.5].step_check.exact_agreement_rate"
+   ]
+  },
+  {
+   "finding": "Step metrics track full-run success only moderately: the mean within-use-case Spearman correlation is 0.5434 for tool choice and 0.6287 for exact agreement, over 11 candidates each.",
+   "numbers": [
+    "replays_and_step_checks[kind=spearman_mean_within_use_case].values.tool_choice",
+    "replays_and_step_checks[kind=spearman_mean_within_use_case].values.exact"
+   ]
+  }
+ ],
+ "headline_findings_note": "Findings 1, 2, 3 and 5 rest on the withheld full runs and are given as aggregate counts only; they cannot be recomputed from this repository. Finding 4 is recomputed from results/runs/.",
+ "limitations": [
+  "Synthetic tasks in simulated environments with deterministic graders, modeled on real workflows but not taken from production.",
+  "Possible authorship and simulator bias toward Claude models: Claude models wrote the environments and tasks, the recorded traffic is Sonnet 5.5's, and Haiku 5.5 (a candidate) simulates the bank customer.",
+  "One run per task. Paired 95% intervals on the full-run deltas are wide (about +/-5 to +/-7 points), and 'holds' uses the point estimate, not a non-inferiority test on the interval; some candidates sit at the line.",
+  "11 candidates per use case, so the rank correlations are rough.",
+  "Each candidate replied once per sampled call (no repeats); 250 of 383 to 876 recorded calls per use case were sampled.",
+  "No human reviewed step disagreements; Jev's equivalence rulings were not checked against people.",
+  "The recorded traffic for invoice, claims and KYC comes from a fresh Sonnet 5.5 run on Oct 21, not from the baseline full runs it is compared with; bank support recordings are the baseline tau2 runs themselves.",
+  "The analyzer accepts at most 8 candidates per run, so each use case ran in two batches with Sonnet as reference in both, plus a third batch for the GPT-6 models; src/analyze.py merged them and recomputed the picks with the analyzer's own _best_for.",
+  "Batch A sent GPT-6 models through /chat/completions with reasoning off (Luna) and could not run GPT-6.1 Sol at all; those results are superseded by batch G (Responses API, reasoning on) and kept only under superseded_step_checks.",
+  "The verdict rule is the analyzer's at the time of the runs: 'comparable' = within 10 points of the closest match, where the closest match was usually Sonnet's own replay. Later commits changed this (see the Kitaru changes below).",
+  "Ties in tool-choice rate decide ranks by candidate order: on bank support DeepSeek V4.1 Flash and GLM 5.3 tie at 0.9667 for third place, and GPT-6 Luna (rank 6) ties with Qwen3.8 27B at 0.9583.",
+  "calibration.json's tool_choice_ci uses all answered calls as n, but the tool-choice rate is over calls where Sonnet called a tool (for example 120, not 250, on bank support); this export recomputes Wilson intervals with the right n, so they are wider than calibration.json's.",
+  "Rate limits removed 9.2% to 17.2% of GLM 5.3 Flash's step-check calls (HTTP 429), so its rates rest on 207 to 227 answered calls.",
+  "Costs use list prices from the harness price table (checked 2026-10-19); the open-model provider's prices are marked unverified there, and its cached input is billed at the full input price. Step-check per-call costs assume the recorded number of steps and do not hit the warm prompt cache that recorded calls did.",
+  "The bank support full runs for Qwen3.8 27B and DeepSeek V4.1 Flash were reused from the Oct 15 expert-deciders study (same 100 scenarios, first trial) rather than re-run.",
+  "The analyzer ran offline: sessions were built in memory from transcripts instead of fetched from a Kitaru server, and the time budget was raised to 3600 s; everything after session loading was the plugin's code.",
+  "Changes made to the analyzer afterward because of this study (kitaru commit e96fa2a): the best mix now works per step, named by what precedes the call (what a router can see), and needs at least min_mix_calls (default 20) answered calls per step; the Compare table shows Wilson 95% intervals; provider error messages are kept; today's cost comes from the reference's replay instead of the cache-warm recording; the docs add a small-samples warning and say a mix is a shortlist to confirm with a full replay. Later commits on the same branch: Responses API support for GPT-6 models (f1b93ee), picks measured against Sonnet's own replay as the bar with no cheapest/fastest pick when nothing is comparable (e81e4d0), finalists no longer cut to a fixed top three, keeping the cheapest candidate and dropping only clear failures (7903d9b), judge order-swap and held-out best-mix checks (60551f6, ca49608), and the report framed as a screen, not a picker (0217140).",
+  "The full-run ground truth (Haiku Tax) is withheld, so the calibration counts and correlations in this file cannot be recomputed from this repository.",
+  "Bank support step checks ran on traffic from a private hidden split; those rows are published with anonymized task ids and without texts or arguments."
+ ],
+ "public_safety": [
+  {
+   "item": "Per-candidate full-run results",
+   "why": "Withheld: computed from the Haiku Tax full runs, an internal draft whose results have not been cleared for publication (inference providers have not seen their numbers). See README.md, Results.",
+   "where_in_file": "results[].full_run, per_type.full_run, use_case_summary.withheld, verdict_vs_full_run_overall.withheld"
+  },
+  {
+   "item": "Inference provider name",
+   "why": "Replaced by the neutral label provider-a; the mapping is kept privately.",
+   "where_in_file": "models[].provider_label"
+  },
+  {
+   "item": "Open-model prices",
+   "why": "provider-a prices are unverified list prices from the harness table; they could identify the provider. Kept because step costs and the harness need them; flagged for the owner.",
+   "where_in_file": "models[].price_per_mtok_*, step_cost_per_call_cents"
+  },
+  {
+   "item": "Bank support scenarios (SwapBench hidden split)",
+   "why": "Private leaderboard set; no task ids, texts or arguments are published.",
+   "where_in_file": "dataset; results/runs/step_calls.jsonl (support task ids anonymized)"
+  },
+  {
+   "item": "Kitaru model-swap analyzer status",
+   "why": "The plugin (0.1.0) is on an unmerged feature branch; do not describe it as generally available.",
+   "where_in_file": "meta.kitaru_details"
+  }
+ ]
+}

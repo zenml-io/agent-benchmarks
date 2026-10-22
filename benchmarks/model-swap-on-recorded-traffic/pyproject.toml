@@ -1,0 +1,18 @@
+[project]
+name = "model-swap-on-recorded-traffic"
+version = "0.1.0"
+description = "Calibrate Kitaru's model-swap analyzer (step-level replay of recorded agent calls) against full-run task success"
+requires-python = ">=3.11"
+# scripts/step_check_tables.py needs only the standard library. src/swap_calib.py and src/analyze.py need Kitaru and
+# its model-swap plugin, pinned to a commit on the feature/model-swap-analyzer branch (the plugin is unreleased).
+dependencies = [
+    "kitaru",
+    "kitaru-model-swap",
+]
+
+[tool.uv]
+package = false
+
+[tool.uv.sources]
+kitaru = { git = "https://github.com/zenml-io/kitaru", rev = "0217140c9bd6fc1b0569abefbaea30be20a6fde4" }
+kitaru-model-swap = { git = "https://github.com/zenml-io/kitaru", rev = "0217140c9bd6fc1b0569abefbaea30be20a6fde4", subdirectory = "plugins/packages/model-swap" }

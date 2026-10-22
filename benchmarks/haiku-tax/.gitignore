@@ -1,0 +1,12 @@
+.venv/
+__pycache__/
+# local run outputs (the original results are withheld; do not commit reruns without review)
+results/
+smoke/
+dev/
+logs/
+charts/
+results.csv
+results_full_set.csv
+tables.md
+tables_full.md

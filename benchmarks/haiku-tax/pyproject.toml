@@ -1,0 +1,10 @@
+[project]
+name = "haiku-tax"
+version = "0.1.0"
+description = "Which closed or open-weight model gives the most successful tasks per dollar on synthetic enterprise agent tasks"
+requires-python = ">=3.11"
+# The harness, the nine environments and the analysis scripts use the Python standard library only.
+dependencies = []
+
+[tool.uv]
+package = false
