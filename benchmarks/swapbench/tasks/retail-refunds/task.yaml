@@ -1,0 +1,33 @@
+# SwapBench task 1: retail customer-support agent (refunds, returns, exchanges, order changes)
+name: retail-refunds
+source:
+  repo: https://github.com/sierra-research/tau2-bench   # MIT
+  commit: dd8757d4c8791dad7b3cdaf02a105a3d5f9d86bd
+  domain: retail
+agent: tau2 llm_agent (policy.md as system prompt, 16 tools over the order DB)
+mock_layer: simulator          # tau2's deterministic DB tools; any call sequence is valid
+user_simulator:
+  model: anthropic/claude-haiku-5-5   # different vendor from the incumbent and the OpenAI candidates
+  args: {}
+incumbent:
+  model: gpt-5-2025-08-07            # snapshot scheduled for removal Dec 11 2026
+  args: {}
+sets:
+  visible: {split: train, scenarios: 74, incumbent_trials: 1}   # traces given to the agent
+  hidden:  {split: test,  scenarios: 40, trials: 3}             # grader only (pilot size; v1 target >= 200 fresh scenarios)
+acceptance:
+  margin_pts: 5          # non-inferiority margin on pass^1 for the pilot (v1: 3 with a larger H)
+  harm_rise: 0.01        # harmful writes per episode; a CI above this counts as a regression
+  target_cost_cut: 0.5
+budget:
+  candidate_inference_usd: 5     # soft cap in the pilot; enforced by the metered gateway in v1
+  wall_hours: 2
+allowed_models:          # pinned prices in swapbench/pricing.py
+  - gpt-6-luna
+  - gpt-5-mini-2025-08-07
+  - gpt-5-nano-2025-08-07
+  - gpt-5.4-mini
+  - gpt-5.4-nano
+  - gpt-4.1-mini-2025-04-14
+  - claude-haiku-5-5
+  - gpt-5-2025-08-07

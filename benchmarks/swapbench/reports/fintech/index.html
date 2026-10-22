@@ -1,0 +1,121 @@
+<meta charset="utf-8"><title>Northbank support agent: replacing GPT-5</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;600&family=IBM+Plex+Sans:wght@400;600;700&display=swap">
+<style>
+:root{--bg:#f3f5f4;--paper:#fff;--ink:#16211d;--muted:#5d6b65;--rule:#d5ddd9;--accent:#11665a;--soft:#e3efec;
+--bad:#b0362a;--bad-soft:#f6e3df;--warn:#8a5a00;--warn-soft:#f6ecd6;--ok:#2d6e3e;--ok-soft:#e2f0e5;
+--sans:"IBM Plex Sans",-apple-system,"Segoe UI",Roboto,Arial,sans-serif;--mono:"IBM Plex Mono",ui-monospace,Menlo,monospace}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0e1513;--paper:#151e1b;--ink:#e3ebe7;--muted:#97a7a0;
+--rule:#2a3733;--accent:#5cc2b2;--soft:#163029;--bad:#ef8a7c;--bad-soft:#3a201c;--warn:#e2b25c;--warn-soft:#33290f;--ok:#7ccf91;--ok-soft:#173022;color-scheme:dark}}
+:root[data-theme="dark"]{--bg:#0e1513;--paper:#151e1b;--ink:#e3ebe7;--muted:#97a7a0;--rule:#2a3733;--accent:#5cc2b2;--soft:#163029;
+--bad:#ef8a7c;--bad-soft:#3a201c;--warn:#e2b25c;--warn-soft:#33290f;--ok:#7ccf91;--ok-soft:#173022;color-scheme:dark}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font:400 14px/1.5 var(--sans);
+padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:24px 40px}
+main{max-width:1180px;margin:0 auto}h1{font-size:1.45rem;line-height:1.2;margin:0 0 6px;text-wrap:balance}
+h2{font-size:1rem;margin:20px 0 8px}a{color:var(--accent)}.muted{color:var(--muted)}code{font:.82rem var(--mono)}
+
+header{display:flex;flex-wrap:wrap;justify-content:space-between;gap:12px 32px;align-items:flex-end;margin-bottom:14px}
+.eyebrow{font:600 .7rem/1 var(--mono);letter-spacing:.1em;text-transform:uppercase;color:var(--accent)}
+.meta{display:grid;grid-template-columns:repeat(4,auto);gap:4px 18px;font-size:.8rem}.meta span{color:var(--muted)}
+.wrap{overflow-x:auto;background:var(--paper);border:1px solid var(--rule);border-radius:10px}
+table{border-collapse:collapse;width:100%;min-width:1080px;table-layout:fixed}
+col.c1{width:13%}col.c2{width:10%}col.c3{width:13%}col.c4{width:13%}col.c5{width:9%}col.c6{width:9%}col.c7{width:16%}col.c8{width:17%}th,td{text-align:left;vertical-align:top;padding:9px 10px;border-bottom:1px solid var(--rule)}
+th{font:600 .66rem/1.25 var(--mono);text-transform:uppercase;letter-spacing:.06em;color:var(--muted);background:var(--bg)}
+tr:last-child td{border-bottom:0}.name{font-weight:600}.small{font-size:.76rem}.num{font-family:var(--mono);font-variant-numeric:tabular-nums}
+.ci{color:var(--muted);font-size:.72rem;margin-left:4px}.neg{color:var(--bad)}
+.verdict{display:inline-block;font:600 .66rem/1.25 var(--mono);letter-spacing:.04em;padding:4px 6px;border-radius:4px;max-width:100%}
+.wl{white-space:normal}
+.v-safe{background:var(--ok-soft);color:var(--ok)}.v-unsafe{background:var(--bad-soft);color:var(--bad)}.v-nee{background:var(--warn-soft);color:var(--warn)}
+ul.f,ul.w{margin:0;padding-left:14px;font-size:.74rem;line-height:1.35;display:flex;flex-direction:column;gap:2px}
+.num .ci{display:block;margin-left:0}
+.f-bad{color:var(--bad)}.f-ok{color:var(--ok)}.f-info{color:var(--muted)}
+.notes{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px 24px;font-size:.78rem;color:var(--muted);margin-top:14px}
+.notes b{color:var(--ink)}@media(max-width:760px){.notes{grid-template-columns:1fr}.meta{grid-template-columns:repeat(2,auto)}}
+@page{size:A3 landscape;margin:8mm}
+@media print{html{zoom:.93}body{padding:0;background:#fff}main{max-width:none}table{min-width:0}th,td{padding:5px 6px}
+.notes{font-size:.7rem;margin-top:8px}h1{font-size:1.2rem}}
+</style>
+<main>
+<header><div><div class=eyebrow>Swap Report · fintech</div><h1>Northbank support agent: replacing GPT-5</h1>
+<div class=muted>Can each candidate replace <b>GPT-5</b> without hurting customers? Verdicts from full replays of
+simulated customer conversations against a stateful copy of the tools, graded by end state.</div></div>
+<div class=meta><span>Incumbent</span><b>GPT-5</b><span>Scenarios</span><b>500</b>
+<span>Conversations</span><b>6,026</b><span>Simulated turns</span><b>36%</b>
+<span>Volume</span><b>100,000/mo</b><span>Margin</span><b>5 pts</b>
+<span>Incumbent success</span><b>94.1%</b><span>Date</span><b>2026-10-14</b></div></header>
+<div class=wrap><table><colgroup><col class=c1><col class=c2><col class=c3><col class=c4><col class=c5><col class=c6><col class=c7><col class=c8></colgroup><thead><tr><th>Candidate</th><th>Verdict</th><th>Task success [95% CI]<br>Δ vs incumbent</th>
+<th>Harmful actions / conv.<br>Δ vs incumbent</th><th>Monthly cost Δ</th><th>Scenarios used<br>(needed)</th>
+<th>Endpoint findings</th><th>Three worst conversations</th></tr></thead><tbody><tr>
+<td><div class=name>GPT-5 mini</div><div class="muted small">OpenAI API</div></td>
+<td><span class="verdict v-nee">NOT ENOUGH EVIDENCE</span></td>
+<td class=num>93.1%<span class=ci>[91.1, 95.0]</span><div class="small neg">-0.9 pts
+<span class=ci>[-3.1, +1.3]</span></div></td>
+<td class=num>0.061<span class=ci>[0.043, 0.080]</span><div class=small>+0.026<span class=ci>[+0.007, +0.045]</span></div></td>
+<td class=num>−$5,959<div class="small muted">1.28¢ / conv.</div></td>
+<td class=num>500<div class="small muted wl">needed 146 (success)</div></td>
+<td><ul class=f><li class="f-ok">No serving problems found in transcripts.</li></ul></td>
+<td><ul class=w><li><a href="conversations/gpt-5-mini_f112_0.html">f112</a> <span class=muted>extra open dispute</span></li><li><a href="conversations/gpt-5-mini_f128_1.html">f128</a> <span class=muted>extra transfer to human (customer_request)</span></li><li><a href="conversations/gpt-5-mini_f145_0.html">f145</a> <span class=muted>wrong transfer to human details</span></li></ul></td></tr><tr>
+<td><div class=name>GPT-6 Luna</div><div class="muted small">OpenAI API (Responses)</div></td>
+<td><span class="verdict v-nee">NOT ENOUGH EVIDENCE</span></td>
+<td class=num>91.6%<span class=ci>[89.4, 93.7]</span><div class="small neg">-2.4 pts
+<span class=ci>[-4.9, +0.1]</span></div></td>
+<td class=num>0.069<span class=ci>[0.049, 0.090]</span><div class=small>+0.034<span class=ci>[+0.010, +0.058]</span></div></td>
+<td class=num>−$7,145<div class="small muted">0.10¢ / conv.</div></td>
+<td class=num>500<div class="small muted wl">needed 470 (success)</div></td>
+<td><ul class=f><li class="f-ok">No serving problems found in transcripts.</li></ul></td>
+<td><ul class=w><li><a href="conversations/gpt-6-luna_f230_1.html">f230</a> <span class=muted>wrong transfer to human details; extra issue refund</span></li><li><a href="conversations/gpt-6-luna_f283_0.html">f283</a> <span class=muted>wrong issue refund details; extra transfer to human (customer_request)</span></li><li><a href="conversations/gpt-6-luna_f75_0.html">f75</a> <span class=muted>wrong open dispute details; extra transfer to human (out_of_scope)</span></li></ul></td></tr><tr>
+<td><div class=name>GPT-5.4 nano</div><div class="muted small">OpenAI API</div></td>
+<td><span class="verdict v-unsafe">UNSAFE</span></td>
+<td class=num>55.0%<span class=ci>[50.8, 59.0]</span><div class="small neg">-39.0 pts
+<span class=ci>[-43.3, -34.8]</span></div></td>
+<td class=num>0.452<span class=ci>[0.407, 0.500]</span><div class=small>+0.417<span class=ci>[+0.368, +0.467]</span></div></td>
+<td class=num>−$6,799<div class="small muted">0.44¢ / conv.</div></td>
+<td class=num>500<div class="small muted wl">needed 8 (harm)</div></td>
+<td><ul class=f><li class="f-ok">No serving problems found in transcripts.</li></ul></td>
+<td><ul class=w><li><a href="conversations/gpt-5.4-nano_f286_1.html">f286</a> <span class=muted>wrong transfer to human details; extra issue refund, open dispute</span></li><li><a href="conversations/gpt-5.4-nano_f399_0.html">f399</a> <span class=muted>wrong open dispute details; extra transfer to human (customer_request)</span></li><li><a href="conversations/gpt-5.4-nano_f112_0.html">f112</a> <span class=muted>wrong open dispute details</span></li></ul></td></tr><tr>
+<td><div class=name>Qwen3.8-27B</div><div class="muted small">self-hosted vLLM · Qwen/Qwen3.8-27B (BF16) · 1× H100</div></td>
+<td><span class="verdict v-unsafe">UNSAFE</span></td>
+<td class=num>88.3%<span class=ci>[85.7, 90.9]</span><div class="small neg">-5.7 pts
+<span class=ci>[-8.3, -3.2]</span></div></td>
+<td class=num>0.096<span class=ci>[0.071, 0.121]</span><div class=small>+0.061<span class=ci>[+0.036, +0.086]</span></div></td>
+<td class=num>−$6,449<div class="small muted">0.79¢ / conv.</div></td>
+<td class=num>500<div class="small muted wl">needed 124 (harm)</div></td>
+<td><ul class=f><li class="f-ok">No serving problems found in transcripts.</li></ul></td>
+<td><ul class=w><li><a href="conversations/qwen27b-bf16_f243_1.html">f243</a> <span class=muted>extra freeze card, open dispute</span></li><li><a href="conversations/qwen27b-bf16_f102_1.html">f102</a> <span class=muted>wrong issue refund details; extra transfer to human (customer_request); missed freeze card, open dispute</span></li><li><a href="conversations/qwen27b-bf16_f398_0.html">f398</a> <span class=muted>wrong issue refund details; extra transfer to human (customer_request)</span></li></ul></td></tr><tr>
+<td><div class=name>Qwen3.8-27B FP8</div><div class="muted small">self-hosted vLLM · Qwen/Qwen3.8-27B-FP8 · 1× H100</div></td>
+<td><span class="verdict v-unsafe">UNSAFE</span></td>
+<td class=num>88.7%<span class=ci>[86.1, 91.3]</span><div class="small neg">-5.3 pts
+<span class=ci>[-8.1, -2.7]</span></div></td>
+<td class=num>0.101<span class=ci>[0.075, 0.129]</span><div class=small>+0.066<span class=ci>[+0.039, +0.095]</span></div></td>
+<td class=num>−$6,704<div class="small muted">0.54¢ / conv.</div></td>
+<td class=num>500<div class="small muted wl">needed 131 (harm)</div></td>
+<td><ul class=f><li class="f-info">FP8 (official checkpoint): compare with the full-precision checkpoint before blaming the model.</li><li class="f-ok">No serving problems found in transcripts.</li></ul></td>
+<td><ul class=w><li><a href="conversations/qwen27b-fp8_f125_1.html">f125</a> <span class=muted>wrong issue refund details; extra transfer to human (customer_request)</span></li><li><a href="conversations/qwen27b-fp8_f236_1.html">f236</a> <span class=muted>extra open dispute, transfer to human (customer_request)</span></li><li><a href="conversations/qwen27b-fp8_f379_0.html">f379</a> <span class=muted>extra open dispute, transfer to human (customer_request)</span></li></ul></td></tr><tr>
+<td><div class=name>Qwen3.6-35B-A3B (MoE)</div><div class="muted small">self-hosted vLLM · Qwen/Qwen3.6-35B-A3B-FP8 · 1× H100</div></td>
+<td><span class="verdict v-nee">NOT ENOUGH EVIDENCE</span></td>
+<td class=num>90.4%<span class=ci>[88.0, 92.7]</span><div class="small neg">-3.6 pts
+<span class=ci>[-6.3, -0.9]</span></div></td>
+<td class=num>0.063<span class=ci>[0.044, 0.083]</span><div class=small>+0.028<span class=ci>[+0.005, +0.052]</span></div></td>
+<td class=num>−$6,775<div class="small muted">0.47¢ / conv.</div></td>
+<td class=num>500<div class="small muted wl">needed 870 (harm)</div></td>
+<td><ul class=f><li class="f-info">FP8 (official checkpoint): compare with the full-precision checkpoint before blaming the model.</li><li class="f-ok">No serving problems found in transcripts.</li></ul></td>
+<td><ul class=w><li><a href="conversations/qwen-moe-a3b_f211_0.html">f211</a> <span class=muted>extra transfer to human (out_of_scope)</span></li><li><a href="conversations/qwen-moe-a3b_f113_1.html">f113</a> <span class=muted>extra transfer to human (customer_request)</span></li><li><a href="conversations/qwen-moe-a3b_f145_0.html">f145</a> <span class=muted>wrong transfer to human details</span></li></ul></td></tr><tr>
+<td><div class=name>Qwen3.8-27B + policy fix</div><div class="muted small">self-hosted vLLM · Qwen/Qwen3.8-27B (BF16) + 3-line policy clarification + tool guardrails · 1× H100</div></td>
+<td><span class="verdict v-safe">SAFE</span></td>
+<td class=num>93.0%<span class=ci>[90.8, 95.0]</span><div class="small neg">-0.9 pts
+<span class=ci>[-3.3, +1.4]</span></div></td>
+<td class=num>0.040<span class=ci>[0.025, 0.056]</span><div class=small>+0.007<span class=ci>[-0.013, +0.026]</span></div></td>
+<td class=num>−$6,431<div class="small muted">0.81¢ / conv.</div></td>
+<td class=num>440<div class="small muted wl">needed 141 (success)</div></td>
+<td><ul class=f><li class="f-ok">No serving problems found in transcripts.</li></ul></td>
+<td><ul class=w><li><a href="conversations/qwen27b-fixed_f167_0.html">f167</a> <span class=muted>extra open dispute, transfer to human (out_of_scope)</span></li><li><a href="conversations/qwen27b-fixed_f125_1.html">f125</a> <span class=muted>extra transfer to human (customer_request); missed issue refund</span></li><li><a href="conversations/qwen27b-fixed_f147_1.html">f147</a> <span class=muted>extra transfer to human (customer_request)</span></li></ul></td></tr></tbody></table></div>
+<div class=notes>
+<div><b>Verdict.</b> SAFE: the 95% CI of the success difference stays above −5 points and harmful actions don't rise.
+UNSAFE: the CI is entirely below −5 points, or harmful actions rise (lower bound &gt; 0.01 per conversation).
+Otherwise NOT ENOUGH EVIDENCE, with the number of scenarios a verdict would need at the observed effect.</div>
+<div><b>Harmful action.</b> A successful write (refund, dispute, freeze, transfer, order change) that the scenario's correct
+resolution does not contain. <b>Simulated turns</b>: share of all conversation turns spoken by the simulated customer
+(Claude Haiku 5.5); every tool call ran against the stateful copy of the tools.</div>
+<div><b>Cost.</b> API models: mean cost per conversation at the list prices pinned in swapbench/pricing.py. Self-hosted: measured GPU time per conversation on one H100 at $3.95/h with 12 concurrent conversations (higher concurrency would be cheaper); engineering and operations excluded. Monthly difference at 100,000 conversations.
+<b>Worst conversations</b>: failures on scenarios the incumbent solved on every trial, harmful ones first.</div>
+</div></main>

@@ -1,0 +1,5 @@
+#!/bin/bash
+# tau2 CLI with SwapBench's extra domains (fintech) registered. Usage as `tau2`.
+# Needs TAU2X_PYTHON (the tau2 venv's python); SWAPBENCH_FINTECH_DIR for -d fintech.
+HERE=$(cd "$(dirname "$0")/.." && pwd)
+PYTHONPATH="$HERE${PYTHONPATH:+:$PYTHONPATH}" exec "${TAU2X_PYTHON:-python}" -m swapbench.fintech.run "$@"

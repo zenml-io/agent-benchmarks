@@ -1,0 +1,4 @@
+{
+  "provider-a": {"deepseek-v4.1-flash": "<model id on this provider>", "gpt-oss-120b": "<model id>"},
+  "provider-b": {"deepseek-v4.1-flash": "<model id on this provider>", "gpt-oss-120b": "<model id>"}
+}

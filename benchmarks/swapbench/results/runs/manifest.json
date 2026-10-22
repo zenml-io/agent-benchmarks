@@ -1,0 +1,63 @@
+{
+ "fintech": {
+  "incumbent": "gpt-5",
+  "runs": {
+   "gpt-5": {
+    "note": "incumbent; next-step file is its self-agreement"
+   },
+   "gpt-5-mini": {
+    "note": ""
+   },
+   "gpt-6-luna": {
+    "note": ""
+   },
+   "gpt-5.4-nano": {
+    "note": ""
+   },
+   "qwen27b-bf16": {
+    "note": "vLLM, one H100"
+   },
+   "qwen27b-fp8": {
+    "note": "official FP8 checkpoint; hidden-set trial 2 cut short by a restart (205 of 240)"
+   },
+   "qwen-moe-a3b": {
+    "note": "Qwen3.6-35B-A3B-FP8"
+   },
+   "qwen27b-rft": {
+    "note": "LoRA RFT on its own successful conversations"
+   },
+   "qwen27b-guards": {
+    "note": "SWAPBENCH_GUARDS=1"
+   },
+   "qwen27b-fixed": {
+    "note": "guards + policy_addendum.md; pool has 2 trials"
+   }
+  }
+ },
+ "retail": {
+  "incumbent": "haiku-5.5",
+  "runs": {
+   "haiku-5.5": {
+    "note": "incumbent; next-step file is its self-agreement"
+   },
+   "haiku-5.5-rerun": {
+    "note": "null candidate: the incumbent re-run"
+   },
+   "qwen27b-fp8": {
+    "note": ""
+   },
+   "qwen-moe-a3b": {
+    "note": ""
+   },
+   "qwen27b-nothink": {
+    "note": ""
+   },
+   "qwen27b-hermes": {
+    "note": "generic hermes tool parser (misconfiguration)"
+   },
+   "qwen27b-bf16": {
+    "note": "BF16 Qwen3.8-27B, same serving config as the FP8 run (only the checkpoint differs)"
+   }
+  }
+ }
+}
