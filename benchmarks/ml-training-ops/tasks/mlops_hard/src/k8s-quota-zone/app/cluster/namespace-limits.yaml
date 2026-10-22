@@ -1,0 +1,20 @@
+# kubectl get resourcequota,limitrange -n training -o yaml (trimmed)
+apiVersion: v1
+kind: List
+items:
+  - apiVersion: v1
+    kind: ResourceQuota
+    metadata: {name: training-quota, namespace: training}
+    spec:
+      hard: {requests.cpu: "700", requests.memory: 7000Gi, requests.nvidia.com/gpu: "48", limits.memory: 9000Gi}
+    status:
+      hard: {requests.cpu: "700", requests.memory: 7000Gi, requests.nvidia.com/gpu: "48", limits.memory: 9000Gi}
+      used: {requests.cpu: "320", requests.memory: 2800Gi, requests.nvidia.com/gpu: "16", limits.memory: 2800Gi}
+  - apiVersion: v1
+    kind: LimitRange
+    metadata: {name: training-limits, namespace: training}
+    spec:
+      limits:
+        - type: Container
+          max: {memory: 1500Gi, cpu: "180"}
+          maxLimitRequestRatio: {memory: "1.5"}

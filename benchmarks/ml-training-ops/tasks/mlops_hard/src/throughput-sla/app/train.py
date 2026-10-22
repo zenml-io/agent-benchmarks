@@ -1,0 +1,52 @@
+"""Nightly scorer training. Usage: python train.py [--steps N] [--out metrics.json]
+
+The job must finish inside its slot; it currently takes far too long."""
+import argparse
+import json
+import os
+import time
+
+import torch
+from torch.utils.data import DataLoader
+
+from trainer.data import Events
+from trainer.model import Scorer
+
+BATCH = 256
+
+
+def main():
+    ap = argparse.ArgumentParser()
+    ap.add_argument("--steps", type=int, default=400)
+    ap.add_argument("--out", default="metrics.json")
+    a = ap.parse_args()
+    torch.manual_seed(0)
+    train = DataLoader(Events(200_000, seed=1), batch_size=BATCH, shuffle=True)
+    test_x, test_y = zip(*[Events(5_000, seed=2)[i] for i in range(5_000)])
+    test_x, test_y = torch.stack(test_x), torch.stack(test_y)
+    model = Scorer()
+    opt = torch.optim.AdamW(model.parameters(), lr=1e-3)
+    log = open("train_log.jsonl", "w")
+    t0 = time.time()
+    step = 0
+    while step < a.steps:
+        for x, y in train:
+            loss = torch.nn.functional.cross_entropy(model(x), y)
+            opt.zero_grad()
+            loss.backward()
+            opt.step()
+            log.write(json.dumps({"step": step, "loss": loss.item()}) + "\n")
+            log.flush()
+            os.fsync(log.fileno())
+            step += 1
+            if step >= a.steps:
+                break
+    model.eval()
+    with torch.no_grad():
+        acc = (model(test_x).argmax(1) == test_y).double().mean().item()
+    json.dump({"accuracy": acc, "steps": step, "train_seconds": time.time() - t0}, open(a.out, "w"))
+    print(f"accuracy {acc:.4f} in {time.time() - t0:.1f}s", flush=True)
+
+
+if __name__ == "__main__":
+    main()

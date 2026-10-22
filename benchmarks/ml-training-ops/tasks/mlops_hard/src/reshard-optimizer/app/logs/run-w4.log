@@ -1,0 +1,15 @@
+WARNING:__main__:
+*****************************************
+Setting OMP_NUM_THREADS environment variable for each process to be 1 in default, to avoid your system being overloaded, please further tune the variable for optimal performance in your application as needed. 
+*****************************************
+[W1010 13:02:28.114613871 socket.cpp:752] [c10d] The client socket cannot be initialized to connect to [localhost]:44079 (errno: 97 - Address family not supported by protocol).
+[W1010 13:02:30.596319504 socket.cpp:752] [c10d] The client socket cannot be initialized to connect to [localhost]:44079 (errno: 97 - Address family not supported by protocol).
+[W1010 13:02:30.597580986 socket.cpp:752] [c10d] The client socket cannot be initialized to connect to [localhost]:44079 (errno: 97 - Address family not supported by protocol).
+[W1010 13:02:30.621550030 socket.cpp:752] [c10d] The client socket cannot be initialized to connect to [localhost]:44079 (errno: 97 - Address family not supported by protocol).
+[W1010 13:02:30.710360255 socket.cpp:752] [c10d] The client socket cannot be initialized to connect to [localhost]:44079 (errno: 97 - Address family not supported by protocol).
+step 0 local loss 0.41301
+step 20 local loss 0.03312
+step 40 local loss 0.03053
+[2026-10-09T02:41:07Z] node pool-b-2 reclaimed: run-0909 preempted after saving ckpt/step-60
+[2026-10-09T02:55:31Z] restart with 3 workers (pool b has 3 nodes left):
+RuntimeError: no optimizer shard ckpt/step-60/optim-rank0-of-3.pt: checkpoint was written with a different world size

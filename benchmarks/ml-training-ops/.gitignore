@@ -1,0 +1,15 @@
+.venv/
+__pycache__/
+# new runs land in the benchmark dir; published rows live in results/runs/
+/jobs/
+/attempts.jsonl
+/api_attempts*.jsonl
+/report.md
+/mlops_hard.md
+/hard_trace_signals.md
+/PAUSE
+*.log
+# task inputs the agent reads (the original repo lost these to a *.log rule)
+!tasks/**/*.log
+# built from tasks/mlops_hard/src by build.py
+/tasks/mlops_hard/tasks/

@@ -1,0 +1,2937 @@
+{
+  "meta": {
+    "slug": "ml-training-ops",
+    "name": "ML-training-operations agent benchmark",
+    "question": "Can agents do ML training operations (distributed jobs, checkpoints, OOMs, stragglers, Kubernetes quotas, torchtitan), and does the serving setup of a self-hosted model change how many they solve?",
+    "domain": "ML infrastructure / training operations (fault diagnosis and repair in sandboxed multi-process jobs)",
+    "status": "stopped",
+    "status_reason": "Stopped building frontier-hard tasks on Oct 13, 2026: across five rounds (v1, v2, v3, titan-fork-drift, titan-silent-divergence), Codex with OpenAI models solved 88-100% of every round, so the tasks have no headroom as a frontier capability test. The self-hosted result stands: on the same tasks a 27B open model's solve rate moves 15-25 points with GPU, load and serving settings.",
+    "run_dates": {
+      "start": "2026-10-10",
+      "end": "2026-10-13",
+      "note": "Self-hosted runs Oct 10, 12 and 13; vendor-API runs Oct 12-13 (attempts.jsonl, api_attempts*.jsonl)."
+    },
+    "who_ran": "Hamza Tahir (ZenML), with Claude Code agents",
+    "kitaru_version": null,
+    "kitaru_version_note": "Kitaru was not used.",
+    "harness_git_commit": "f6079351ca2eb607965c5ea11eb0a8b32c9b8403",
+    "harness_git_commit_note": "`git log -1 --format=%H -- mlops_hard mlops_tasks api_runs.py mlops_hard_analysis.py titan`; self-hosted runs use experiment.py (5b1fdf6e52629c15d27af3125098d10b164c6bf2).",
+    "code_location": "the private research repo (paths at its root): mlops_tasks/ (v1), mlops_hard/ (hard, v2, v3 and torchtitan tasks; build.py), titan/, api_runs.py, mlops_hard_analysis.py, hard_trace_signals.py, experiment.py, tasks_mlops*.json, mlops_bench_plan.md",
+    "total_spend_usd": null,
+    "total_spend_usd_note": "No exact total for this bench. Exact recorded pieces: vendor API cost $29.2653 (OpenAI $29.2477, Anthropic $0.0176; api_attempts*.jsonl, token counts x the price table or the harness's own figure, whichever is higher; sandboxes for these runs not included); self-hosted GPU run time $94.0053 and estimated sandboxes $56.8279 (attempts.jsonl, valid runs). Partial Modal bills quoted in mlops_bench_plan.md: $28.35 for Oct 10 13:00-15:00 UTC and $186.20 for Oct 12 (complete hours only), both incl. sandboxes."
+  },
+  "dataset": {
+    "source": "Tasks built for this benchmark: injected faults in multi-process training setups, each graded by an independent test (Harbor task format). Families from published failure taxonomies (ByteRobust, L4, SIGMA).",
+    "url": null,
+    "url_note": "Not published; tasks live in the repo (mlops_tasks/, mlops_hard/tasks/).",
+    "license": null,
+    "license_note": "Own tasks; no license chosen. titan tasks contain a modified fork of torchtitan v0.2.2 (check torchtitan's license before publishing).",
+    "total_cases": 24,
+    "kept_cases": 24,
+    "dropped_reason": "None dropped. Every task was validated: the reference (oracle) solution passes and a no-op agent fails on Modal.",
+    "split": null,
+    "split_note": "No split; all tasks are evaluation tasks. Later rounds were designed after seeing earlier results.",
+    "types": [
+      {
+        "type": "v1 pilot (script-level bugs)",
+        "count": 6
+      },
+      {
+        "type": "A. distributed jobs",
+        "count": 2
+      },
+      {
+        "type": "B. diagnosis from telemetry",
+        "count": 3
+      },
+      {
+        "type": "C. checkpointing and recovery",
+        "count": 3
+      },
+      {
+        "type": "D. resource limits and scheduling",
+        "count": 3
+      },
+      {
+        "type": "v3 (designed frontier-hard)",
+        "count": 5
+      },
+      {
+        "type": "real-system (torchtitan, 2 GPUs)",
+        "count": 2
+      }
+    ],
+    "types_note": "Hard set = 8 tasks (2 per family A-D); v2 set = 3 new tasks (exact-resume, k8s-quota-zone, two-stragglers) plus atomic-checkpoint; 'hard + v2' = 11 tasks."
+  },
+  "models": [
+    {
+      "id": "Qwen/Qwen3.8-27B",
+      "display_name": "Qwen3.8-27B (dense)",
+      "vendor": "Qwen (Alibaba)",
+      "weights": "open",
+      "inference_provider_type": "self-hosted",
+      "price_per_mtok_input_usd": null,
+      "price_per_mtok_output_usd": null,
+      "price_date": null
+    },
+    {
+      "id": "Qwen/Qwen3.6-35B-A3B-FP8",
+      "display_name": "Qwen3.6-35B-A3B (MoE, FP8)",
+      "vendor": "Qwen (Alibaba)",
+      "weights": "open",
+      "inference_provider_type": "self-hosted",
+      "price_per_mtok_input_usd": null,
+      "price_per_mtok_output_usd": null,
+      "price_date": null
+    },
+    {
+      "id": "claude-haiku-5-5",
+      "harness_model_string": "anthropic/claude-haiku-5-5",
+      "display_name": "Claude Haiku 5.5",
+      "vendor": "Anthropic",
+      "weights": "closed",
+      "inference_provider_type": "vendor API",
+      "price_per_mtok_input_usd": 0.1,
+      "price_per_mtok_cached_input_usd": 0.01,
+      "price_per_mtok_output_usd": 0.5,
+      "price_date": "2026-10-12 to 2026-10-13",
+      "price_date_note": "Run date(s); api_runs.py's table is labelled only 'Oct 2026' (Anthropic: claude-api skill table; OpenAI: third-party aggregators, 'verify before relying on them')."
+    },
+    {
+      "id": "gpt-6-astra",
+      "harness_model_string": "openai/gpt-6-astra",
+      "display_name": "GPT-6 Astra",
+      "vendor": "OpenAI",
+      "weights": "closed",
+      "inference_provider_type": "vendor API",
+      "price_per_mtok_input_usd": 10.0,
+      "price_per_mtok_cached_input_usd": 1.0,
+      "price_per_mtok_output_usd": 50.0,
+      "price_date": "2026-10-13",
+      "price_date_note": "Run date(s); api_runs.py's table is labelled only 'Oct 2026' (Anthropic: claude-api skill table; OpenAI: third-party aggregators, 'verify before relying on them')."
+    },
+    {
+      "id": "gpt-6-luna",
+      "harness_model_string": "openai/gpt-6-luna",
+      "display_name": "GPT-6 Luna",
+      "vendor": "OpenAI",
+      "weights": "closed",
+      "inference_provider_type": "vendor API",
+      "price_per_mtok_input_usd": 0.1,
+      "price_per_mtok_cached_input_usd": 0.01,
+      "price_per_mtok_output_usd": 0.5,
+      "price_date": "2026-10-12 to 2026-10-13",
+      "price_date_note": "Run date(s); api_runs.py's table is labelled only 'Oct 2026' (Anthropic: claude-api skill table; OpenAI: third-party aggregators, 'verify before relying on them')."
+    },
+    {
+      "id": "gpt-6.1-sol",
+      "harness_model_string": "openai/gpt-6.1-sol",
+      "display_name": "GPT-6.1 Sol",
+      "vendor": "OpenAI",
+      "weights": "closed",
+      "inference_provider_type": "vendor API",
+      "price_per_mtok_input_usd": 2.0,
+      "price_per_mtok_cached_input_usd": 0.1,
+      "price_per_mtok_output_usd": 10.0,
+      "price_date": "2026-10-13",
+      "price_date_note": "Run date(s); api_runs.py's table is labelled only 'Oct 2026' (Anthropic: claude-api skill table; OpenAI: third-party aggregators, 'verify before relying on them')."
+    }
+  ],
+  "models_note": "Self-hosted models ran on our vLLM 0.31.0 servers on Modal (GPU billed per hour, no token price; 'self-hosted' is outside the spec's two provider types). Vendor-API models are listed by bare ID; prices from api_runs.py PRICES (USD per 1M tokens), which also has a cached-input price.",
+  "setup": {
+    "conditions": [
+      {
+        "name": "self-hosted | v1 pilot (6 tasks) | mini-swe-agent | defaults | c6",
+        "description": "Qwen on our own vLLM server: vLLM defaults on an H100; harness mini-swe-agent; 6 agents at once; v1 pilot (6 tasks), 5 attempts per task per run; 1 run(s)."
+      },
+      {
+        "name": "self-hosted | v1 pilot (6 tasks) | mini-swe-agent | defaults | c30",
+        "description": "Qwen on our own vLLM server: vLLM defaults on an H100; harness mini-swe-agent; 30 agents at once; v1 pilot (6 tasks), 5 attempts per task per run; 1 run(s)."
+      },
+      {
+        "name": "self-hosted | v1 pilot (6 tasks) | terminus-2 | defaults | c6",
+        "description": "Qwen on our own vLLM server: vLLM defaults on an H100; harness terminus-2; 6 agents at once; v1 pilot (6 tasks), 5 attempts per task per run; 1 run(s)."
+      },
+      {
+        "name": "self-hosted | v1 pilot (6 tasks) | terminus-2 | defaults | c30",
+        "description": "Qwen on our own vLLM server: vLLM defaults on an H100; harness terminus-2; 30 agents at once; v1 pilot (6 tasks), 5 attempts per task per run; 1 run(s)."
+      },
+      {
+        "name": "self-hosted | hard set (8 tasks) | mini-swe-agent | defaults | c8",
+        "description": "Qwen on our own vLLM server: vLLM defaults on an H100; harness mini-swe-agent; 8 agents at once; hard set (8 tasks), 3 attempts per task per run; 2 run(s)."
+      },
+      {
+        "name": "self-hosted | hard set (8 tasks) | mini-swe-agent | defaults | c24",
+        "description": "Qwen on our own vLLM server: vLLM defaults on an H100; harness mini-swe-agent; 24 agents at once; hard set (8 tasks), 3 attempts per task per run; 2 run(s)."
+      },
+      {
+        "name": "self-hosted | hard set (8 tasks) | mini-swe-agent | defaults-2x-time | c24",
+        "description": "Qwen on our own vLLM server: defaults on an H100, agent time limit doubled (60 min); harness mini-swe-agent; 24 agents at once; hard set (8 tasks), 3 attempts per task per run; 2 run(s)."
+      },
+      {
+        "name": "self-hosted | hard set (8 tasks) | mini-swe-agent | h200 | c24",
+        "description": "Qwen on our own vLLM server: vLLM defaults on an H200; harness mini-swe-agent; 24 agents at once; hard set (8 tasks), 3 attempts per task per run; 2 run(s)."
+      },
+      {
+        "name": "self-hosted | hard set (8 tasks) | mini-swe-agent | max-out-16k | c24",
+        "description": "Qwen on our own vLLM server: server caps output at 16,384 tokens per call, H100; harness mini-swe-agent; 24 agents at once; hard set (8 tasks), 3 attempts per task per run; 1 run(s)."
+      },
+      {
+        "name": "self-hosted | hard set (8 tasks) | mini-swe-agent | max-out-4k | c24",
+        "description": "Qwen on our own vLLM server: server caps output at 4,096 tokens per call, H100; harness mini-swe-agent; 24 agents at once; hard set (8 tasks), 3 attempts per task per run; 1 run(s)."
+      },
+      {
+        "name": "self-hosted | hard set (8 tasks) | mini-swe-agent | max-out-8k | c24",
+        "description": "Qwen on our own vLLM server: server caps output at 8,192 tokens per call, H100; harness mini-swe-agent; 24 agents at once; hard set (8 tasks), 3 attempts per task per run; 2 run(s)."
+      },
+      {
+        "name": "self-hosted | hard set (8 tasks) | mini-swe-agent | moe-a3b | c24",
+        "description": "Qwen on our own vLLM server: MoE model Qwen/Qwen3.6-35B-A3B-FP8 on an H100; harness mini-swe-agent; 24 agents at once; hard set (8 tasks), 3 attempts per task per run; 1 run(s)."
+      },
+      {
+        "name": "self-hosted | hard set (8 tasks) | mini-swe-agent | no-thinking | c24",
+        "description": "Qwen on our own vLLM server: reasoning off, H100; harness mini-swe-agent; 24 agents at once; hard set (8 tasks), 3 attempts per task per run; 2 run(s)."
+      },
+      {
+        "name": "self-hosted | hard set (8 tasks) | terminus-2 | defaults | c8",
+        "description": "Qwen on our own vLLM server: vLLM defaults on an H100; harness terminus-2; 8 agents at once; hard set (8 tasks), 3 attempts per task per run; 2 run(s)."
+      },
+      {
+        "name": "self-hosted | hard set (8 tasks) | terminus-2 | defaults | c24",
+        "description": "Qwen on our own vLLM server: vLLM defaults on an H100; harness terminus-2; 24 agents at once; hard set (8 tasks), 3 attempts per task per run; 2 run(s)."
+      },
+      {
+        "name": "self-hosted | hard set (8 tasks) | terminus-2 | defaults-2x-time | c24",
+        "description": "Qwen on our own vLLM server: defaults on an H100, agent time limit doubled (60 min); harness terminus-2; 24 agents at once; hard set (8 tasks), 3 attempts per task per run; 2 run(s)."
+      },
+      {
+        "name": "self-hosted | hard set (8 tasks) | terminus-2 | h200 | c24",
+        "description": "Qwen on our own vLLM server: vLLM defaults on an H200; harness terminus-2; 24 agents at once; hard set (8 tasks), 3 attempts per task per run; 2 run(s)."
+      },
+      {
+        "name": "self-hosted | hard set (8 tasks) | terminus-2 | max-out-16k | c24",
+        "description": "Qwen on our own vLLM server: server caps output at 16,384 tokens per call, H100; harness terminus-2; 24 agents at once; hard set (8 tasks), 3 attempts per task per run; 1 run(s)."
+      },
+      {
+        "name": "self-hosted | hard set (8 tasks) | terminus-2 | max-out-4k | c24",
+        "description": "Qwen on our own vLLM server: server caps output at 4,096 tokens per call, H100; harness terminus-2; 24 agents at once; hard set (8 tasks), 3 attempts per task per run; 1 run(s)."
+      },
+      {
+        "name": "self-hosted | hard set (8 tasks) | terminus-2 | max-out-8k | c24",
+        "description": "Qwen on our own vLLM server: server caps output at 8,192 tokens per call, H100; harness terminus-2; 24 agents at once; hard set (8 tasks), 3 attempts per task per run; 2 run(s)."
+      },
+      {
+        "name": "self-hosted | hard set (8 tasks) | terminus-2 | moe-a3b | c24",
+        "description": "Qwen on our own vLLM server: MoE model Qwen/Qwen3.6-35B-A3B-FP8 on an H100; harness terminus-2; 24 agents at once; hard set (8 tasks), 3 attempts per task per run; 1 run(s)."
+      },
+      {
+        "name": "self-hosted | hard set (8 tasks) | terminus-2 | no-thinking | c24",
+        "description": "Qwen on our own vLLM server: reasoning off, H100; harness terminus-2; 24 agents at once; hard set (8 tasks), 3 attempts per task per run; 2 run(s)."
+      },
+      {
+        "name": "self-hosted | v2 set (4 tasks) | mini-swe-agent | defaults | c24",
+        "description": "Qwen on our own vLLM server: vLLM defaults on an H100; harness mini-swe-agent; 24 agents at once; v2 set (4 tasks), 6 attempts per task per run; 1 run(s)."
+      },
+      {
+        "name": "self-hosted | v2 set (4 tasks) | mini-swe-agent | h200 | c24",
+        "description": "Qwen on our own vLLM server: vLLM defaults on an H200; harness mini-swe-agent; 24 agents at once; v2 set (4 tasks), 6 attempts per task per run; 1 run(s)."
+      },
+      {
+        "name": "self-hosted | v2 set (4 tasks) | terminus-2 | defaults | c24",
+        "description": "Qwen on our own vLLM server: vLLM defaults on an H100; harness terminus-2; 24 agents at once; v2 set (4 tasks), 6 attempts per task per run; 1 run(s)."
+      },
+      {
+        "name": "self-hosted | v2 set (4 tasks) | terminus-2 | h200 | c24",
+        "description": "Qwen on our own vLLM server: vLLM defaults on an H200; harness terminus-2; 24 agents at once; v2 set (4 tasks), 6 attempts per task per run; 1 run(s)."
+      },
+      {
+        "name": "vendor API | hard + v2 sets (11 tasks) | codex | gpt-6-astra",
+        "description": "codex harness calling openai/gpt-6-astra through the vendor API (no GPU server of ours); hard + v2 sets (11 tasks); [3] attempt(s) per task; 1 run(s); task sandboxes on Modal."
+      },
+      {
+        "name": "vendor API | hard + v2 sets (11 tasks) | codex | gpt-6-luna",
+        "description": "codex harness calling openai/gpt-6-luna through the vendor API (no GPU server of ours); hard + v2 sets (11 tasks); [3] attempt(s) per task; 2 run(s); task sandboxes on Modal."
+      },
+      {
+        "name": "vendor API | hard + v2 sets (11 tasks) | codex | gpt-6.1-sol",
+        "description": "codex harness calling openai/gpt-6.1-sol through the vendor API (no GPU server of ours); hard + v2 sets (11 tasks); [3] attempt(s) per task; 1 run(s); task sandboxes on Modal."
+      },
+      {
+        "name": "vendor API | hard + v2 sets (11 tasks) | terminus-2 | gpt-6.1-sol",
+        "description": "terminus-2 harness calling openai/gpt-6.1-sol through the vendor API (no GPU server of ours); hard + v2 sets (11 tasks); [3] attempt(s) per task; 1 run(s); task sandboxes on Modal."
+      },
+      {
+        "name": "vendor API | hard set (8 tasks) | claude-code | claude-haiku-5-5",
+        "description": "claude-code harness calling anthropic/claude-haiku-5-5 through the vendor API (no GPU server of ours); hard set (8 tasks); [1] attempt(s) per task; 1 run(s); task sandboxes on Modal."
+      },
+      {
+        "name": "vendor API | hard set (8 tasks) | codex | gpt-6-luna",
+        "description": "codex harness calling openai/gpt-6-luna through the vendor API (no GPU server of ours); hard set (8 tasks); [1] attempt(s) per task; 1 run(s); task sandboxes on Modal."
+      },
+      {
+        "name": "vendor API | partial (2 tasks: atomic-checkpoint, corrupt-shard) | claude-code | claude-haiku-5-5",
+        "description": "claude-code harness calling anthropic/claude-haiku-5-5 through the vendor API (no GPU server of ours); partial (2 tasks: atomic-checkpoint, corrupt-shard); [1] attempt(s) per task; 1 run(s); task sandboxes on Modal."
+      },
+      {
+        "name": "vendor API | real-system tasks (2 torchtitan tasks) | codex | gpt-6-luna",
+        "description": "codex harness calling openai/gpt-6-luna through the vendor API (no GPU server of ours); real-system tasks (2 torchtitan tasks); [2] attempt(s) per task; 2 run(s); task sandboxes on Modal."
+      },
+      {
+        "name": "vendor API | real-system tasks (2 torchtitan tasks) | codex | gpt-6.1-sol",
+        "description": "codex harness calling openai/gpt-6.1-sol through the vendor API (no GPU server of ours); real-system tasks (2 torchtitan tasks); [2] attempt(s) per task; 2 run(s); task sandboxes on Modal."
+      },
+      {
+        "name": "vendor API | v3 set (5 tasks) | codex | gpt-6-luna",
+        "description": "codex harness calling openai/gpt-6-luna through the vendor API (no GPU server of ours); v3 set (5 tasks); [3] attempt(s) per task; 5 run(s); task sandboxes on Modal."
+      },
+      {
+        "name": "vendor API | v3 set (5 tasks) | codex | gpt-6.1-sol",
+        "description": "codex harness calling openai/gpt-6.1-sol through the vendor API (no GPU server of ours); v3 set (5 tasks); [3] attempt(s) per task; 5 run(s); task sandboxes on Modal."
+      }
+    ],
+    "prompt_rewriting": null,
+    "prompt_rewriting_note": "Not applicable.",
+    "tools": "Harness's own tools in a Modal sandbox per task (terminus-2: tmux; mini-swe-agent: bash; Codex and Claude Code: their CLIs' tools). CPU sandboxes (4 CPU, 8 GB for hard/v2/v3; 2 CPU, 4 GB for v1); torchtitan tasks get 8 CPU, 32 GB and 2 GPUs (L40S per mlops_bench_plan.md).",
+    "user_simulator": null,
+    "user_simulator_note": "Not applicable.",
+    "limits": {
+      "agent_time_limit_s": {
+        "v1": 1200,
+        "hard/v2/v3": 1800,
+        "titan-fork-drift": 3600,
+        "titan-silent-divergence": 5400,
+        "defaults-2x-time": 3600
+      },
+      "self_hosted_context_tokens": 65536,
+      "sandbox_lifetime_cap_s": 7200
+    }
+  },
+  "grading": {
+    "judges": [
+      {
+        "name": "task test",
+        "type": "deterministic test per task (recomputes results, fault injection, hidden seeds, golden loss curves for torchtitan)",
+        "rule": "solved if reward >= 1"
+      }
+    ],
+    "tie_break": null,
+    "tie_break_note": "Not applicable.",
+    "human_agreement": null,
+    "human_agreement_note": "Not applicable: deterministic tests.",
+    "self_grading_check": "No model grades. Each task validated with oracle (pass) and no-op agent (fail); three hard-set tasks also checked with a partial fix that fails.",
+    "metrics": [
+      {
+        "name": "accuracy (solve rate)",
+        "definition": "solved trials / attempted trials, pooled over runs of the condition."
+      },
+      {
+        "name": "cost_per_correct_cents (self-hosted)",
+        "definition": "100 x sum of (gpu_cost_usd + sandbox_cost_est_usd) / solved trials; gpu_cost_usd = run seconds / 3600 x $/GPU-hour (H100 $3.95, H200 $4.54); sandbox estimate = trial seconds x (CPUs x $0.1419 + GiB x $0.024) per hour."
+      },
+      {
+        "name": "cost_per_correct_cents (vendor API)",
+        "definition": "100 x api_cost_usd / solved trials; api_cost per trial = max(harness-reported cost, ((input - cached) x input price + cached x cached price + output x output price) / 1e6). Task sandboxes not included."
+      },
+      {
+        "name": "ci95",
+        "definition": "95% bootstrap interval of the solve rate resampling tasks with all their trials (2000 resamples, seed 0); null with fewer than 2 tasks."
+      },
+      {
+        "name": "mean_calls_per_case",
+        "definition": "mean agent steps per trial (self-hosted, from trajectories); not recorded for API runs."
+      }
+    ]
+  },
+  "noise": {
+    "method": "Every self-hosted hard-set setup run twice (rep 0/1, 3 attempts per task each) except the 4k/16k caps and the MoE model.",
+    "size": "Identical self-hosted runs differed by up to 7 solves of 24 (mini-swe-agent, reasoning off: 8/24 vs 15/24); defaults repeated at 17/24 and 17/24 (terminus-2) and 14/24 and 17/24 (mini-swe-agent).",
+    "ci_method": "Paired bootstrap over the 8 tasks (mlops_hard_analysis.py, 10000 resamples, seed 0) for differences vs H100 defaults at 24 agents.",
+    "resamples": 10000,
+    "tie_threshold": "A paired 95% CI that includes 0 is no difference; the plan treats single-run differences of 3 or fewer solves out of 24 as noise."
+  },
+  "results": {
+    "self-hosted | v1 pilot (6 tasks) | mini-swe-agent | defaults | c6": [
+      {
+        "model": "Qwen/Qwen3.8-27B",
+        "gpu": "H100",
+        "runs": 1,
+        "n": 30,
+        "correct": 30,
+        "accuracy": 1.0,
+        "ci95": [
+          1.0,
+          1.0
+        ],
+        "per_run_solved": [
+          "30/30"
+        ],
+        "cost_per_correct_cents": 8.4103,
+        "gpu_only_cost_per_correct_cents": 6.7103,
+        "gpu_cost_usd": 2.0131,
+        "sandbox_cost_est_usd": 0.51,
+        "mean_tokens_per_case": 118988.2,
+        "mean_calls_per_case": 13.4,
+        "calls_counted_trials": 30,
+        "kv_cache_mean_per_run": [
+          0.095
+        ],
+        "failures": {},
+        "per_task": {
+          "ddp-sharding": "5/5",
+          "eval-mode": "5/5",
+          "label-shuffle": "5/5",
+          "nan-loss": "5/5",
+          "oom-grad-accum": "5/5",
+          "resume-checkpoint": "5/5"
+        }
+      }
+    ],
+    "self-hosted | v1 pilot (6 tasks) | mini-swe-agent | defaults | c30": [
+      {
+        "model": "Qwen/Qwen3.8-27B",
+        "gpu": "H100",
+        "runs": 1,
+        "n": 30,
+        "correct": 30,
+        "accuracy": 1.0,
+        "ci95": [
+          1.0,
+          1.0
+        ],
+        "per_run_solved": [
+          "30/30"
+        ],
+        "cost_per_correct_cents": 6.8027,
+        "gpu_only_cost_per_correct_cents": 4.4027,
+        "gpu_cost_usd": 1.3208,
+        "sandbox_cost_est_usd": 0.72,
+        "mean_tokens_per_case": 144091.8,
+        "mean_calls_per_case": 14.5,
+        "calls_counted_trials": 30,
+        "kv_cache_mean_per_run": [
+          0.236
+        ],
+        "failures": {},
+        "per_task": {
+          "ddp-sharding": "5/5",
+          "eval-mode": "5/5",
+          "label-shuffle": "5/5",
+          "nan-loss": "5/5",
+          "oom-grad-accum": "5/5",
+          "resume-checkpoint": "5/5"
+        }
+      }
+    ],
+    "self-hosted | v1 pilot (6 tasks) | terminus-2 | defaults | c6": [
+      {
+        "model": "Qwen/Qwen3.8-27B",
+        "gpu": "H100",
+        "runs": 1,
+        "n": 30,
+        "correct": 30,
+        "accuracy": 1.0,
+        "ci95": [
+          1.0,
+          1.0
+        ],
+        "per_run_solved": [
+          "30/30"
+        ],
+        "cost_per_correct_cents": 7.7697,
+        "gpu_only_cost_per_correct_cents": 6.2617,
+        "gpu_cost_usd": 1.8785,
+        "sandbox_cost_est_usd": 0.4524,
+        "mean_tokens_per_case": 34221.5,
+        "mean_calls_per_case": 7.83,
+        "calls_counted_trials": 30,
+        "kv_cache_mean_per_run": [
+          0.063
+        ],
+        "failures": {},
+        "per_task": {
+          "ddp-sharding": "5/5",
+          "eval-mode": "5/5",
+          "label-shuffle": "5/5",
+          "nan-loss": "5/5",
+          "oom-grad-accum": "5/5",
+          "resume-checkpoint": "5/5"
+        }
+      }
+    ],
+    "self-hosted | v1 pilot (6 tasks) | terminus-2 | defaults | c30": [
+      {
+        "model": "Qwen/Qwen3.8-27B",
+        "gpu": "H100",
+        "runs": 1,
+        "n": 30,
+        "correct": 30,
+        "accuracy": 1.0,
+        "ci95": [
+          1.0,
+          1.0
+        ],
+        "per_run_solved": [
+          "30/30"
+        ],
+        "cost_per_correct_cents": 4.6533,
+        "gpu_only_cost_per_correct_cents": 3.1537,
+        "gpu_cost_usd": 0.9461,
+        "sandbox_cost_est_usd": 0.4499,
+        "mean_tokens_per_case": 33397.5,
+        "mean_calls_per_case": 7.87,
+        "calls_counted_trials": 30,
+        "kv_cache_mean_per_run": [
+          0.12
+        ],
+        "failures": {},
+        "per_task": {
+          "ddp-sharding": "5/5",
+          "eval-mode": "5/5",
+          "label-shuffle": "5/5",
+          "nan-loss": "5/5",
+          "oom-grad-accum": "5/5",
+          "resume-checkpoint": "5/5"
+        }
+      }
+    ],
+    "self-hosted | hard set (8 tasks) | mini-swe-agent | defaults | c8": [
+      {
+        "model": "Qwen/Qwen3.8-27B",
+        "gpu": "H100",
+        "runs": 2,
+        "n": 48,
+        "correct": 43,
+        "accuracy": 0.8958,
+        "ci95": [
+          0.7917,
+          1.0
+        ],
+        "per_run_solved": [
+          "21/24",
+          "22/24"
+        ],
+        "cost_per_correct_cents": 23.133,
+        "gpu_only_cost_per_correct_cents": 18.0009,
+        "gpu_cost_usd": 7.7404,
+        "sandbox_cost_est_usd": 2.2068,
+        "mean_tokens_per_case": 460072.6,
+        "mean_calls_per_case": 20.04,
+        "calls_counted_trials": 47,
+        "kv_cache_mean_per_run": [
+          0.251,
+          0.371
+        ],
+        "failures": {
+          "finished wrong": 1,
+          "other error (SandboxLikelyOutOfMemoryError)": 1,
+          "timeout": 3
+        },
+        "per_task": {
+          "atomic-checkpoint": "4/6",
+          "corrupt-shard": "6/6",
+          "ddp-replica-drift": "5/6",
+          "k8s-unschedulable": "6/6",
+          "memory-leak-oom": "6/6",
+          "reshard-optimizer": "6/6",
+          "straggler-diagnosis": "6/6",
+          "uneven-shard-hang": "4/6"
+        }
+      }
+    ],
+    "self-hosted | hard set (8 tasks) | mini-swe-agent | defaults | c24": [
+      {
+        "model": "Qwen/Qwen3.8-27B",
+        "gpu": "H100",
+        "runs": 2,
+        "n": 48,
+        "correct": 31,
+        "accuracy": 0.6458,
+        "ci95": [
+          0.4375,
+          0.8125
+        ],
+        "per_run_solved": [
+          "14/24",
+          "17/24"
+        ],
+        "cost_per_correct_cents": 26.2658,
+        "gpu_only_cost_per_correct_cents": 13.8316,
+        "gpu_cost_usd": 4.2878,
+        "sandbox_cost_est_usd": 3.8546,
+        "mean_tokens_per_case": 295732.9,
+        "mean_calls_per_case": 14.6,
+        "calls_counted_trials": 48,
+        "kv_cache_mean_per_run": [
+          0.54,
+          0.772
+        ],
+        "failures": {
+          "agent exited with error": 1,
+          "timeout": 16
+        },
+        "per_task": {
+          "atomic-checkpoint": "0/6",
+          "corrupt-shard": "6/6",
+          "ddp-replica-drift": "3/6",
+          "k8s-unschedulable": "4/6",
+          "memory-leak-oom": "4/6",
+          "reshard-optimizer": "4/6",
+          "straggler-diagnosis": "5/6",
+          "uneven-shard-hang": "5/6"
+        }
+      }
+    ],
+    "self-hosted | hard set (8 tasks) | mini-swe-agent | defaults-2x-time | c24": [
+      {
+        "model": "Qwen/Qwen3.8-27B",
+        "gpu": "H100",
+        "runs": 2,
+        "n": 48,
+        "correct": 34,
+        "accuracy": 0.7083,
+        "ci95": [
+          0.4583,
+          0.9167
+        ],
+        "per_run_solved": [
+          "17/24",
+          "17/24"
+        ],
+        "cost_per_correct_cents": 39.7206,
+        "gpu_only_cost_per_correct_cents": 24.0012,
+        "gpu_cost_usd": 8.1604,
+        "sandbox_cost_est_usd": 5.3446,
+        "mean_tokens_per_case": 312127.5,
+        "mean_calls_per_case": 14.85,
+        "calls_counted_trials": 48,
+        "kv_cache_mean_per_run": [
+          0.377,
+          0.408
+        ],
+        "failures": {
+          "timeout": 14
+        },
+        "per_task": {
+          "atomic-checkpoint": "0/6",
+          "corrupt-shard": "6/6",
+          "ddp-replica-drift": "3/6",
+          "k8s-unschedulable": "4/6",
+          "memory-leak-oom": "5/6",
+          "reshard-optimizer": "6/6",
+          "straggler-diagnosis": "6/6",
+          "uneven-shard-hang": "4/6"
+        }
+      }
+    ],
+    "self-hosted | hard set (8 tasks) | mini-swe-agent | h200 | c24": [
+      {
+        "model": "Qwen/Qwen3.8-27B",
+        "gpu": "H200",
+        "runs": 2,
+        "n": 48,
+        "correct": 40,
+        "accuracy": 0.8333,
+        "ci95": [
+          0.6042,
+          0.9792
+        ],
+        "per_run_solved": [
+          "20/24",
+          "20/24"
+        ],
+        "cost_per_correct_cents": 16.838,
+        "gpu_only_cost_per_correct_cents": 11.638,
+        "gpu_cost_usd": 4.6552,
+        "sandbox_cost_est_usd": 2.08,
+        "mean_tokens_per_case": 401485.5,
+        "mean_calls_per_case": 18.19,
+        "calls_counted_trials": 48,
+        "kv_cache_mean_per_run": [
+          0.12,
+          0.134
+        ],
+        "failures": {
+          "agent exited with error": 2,
+          "finished wrong": 2,
+          "timeout": 4
+        },
+        "per_task": {
+          "atomic-checkpoint": "1/6",
+          "corrupt-shard": "6/6",
+          "ddp-replica-drift": "6/6",
+          "k8s-unschedulable": "6/6",
+          "memory-leak-oom": "5/6",
+          "reshard-optimizer": "6/6",
+          "straggler-diagnosis": "4/6",
+          "uneven-shard-hang": "6/6"
+        }
+      }
+    ],
+    "self-hosted | hard set (8 tasks) | mini-swe-agent | max-out-16k | c24": [
+      {
+        "model": "Qwen/Qwen3.8-27B",
+        "gpu": "H100",
+        "runs": 1,
+        "n": 24,
+        "correct": 19,
+        "accuracy": 0.7917,
+        "ci95": [
+          0.5417,
+          1.0
+        ],
+        "per_run_solved": [
+          "19/24"
+        ],
+        "cost_per_correct_cents": 20.6211,
+        "gpu_only_cost_per_correct_cents": 10.7721,
+        "gpu_cost_usd": 2.0467,
+        "sandbox_cost_est_usd": 1.8713,
+        "mean_tokens_per_case": 314951.7,
+        "mean_calls_per_case": 15.38,
+        "calls_counted_trials": 24,
+        "kv_cache_mean_per_run": [
+          0.727
+        ],
+        "failures": {
+          "timeout": 5
+        },
+        "per_task": {
+          "atomic-checkpoint": "0/3",
+          "corrupt-shard": "3/3",
+          "ddp-replica-drift": "3/3",
+          "k8s-unschedulable": "3/3",
+          "memory-leak-oom": "3/3",
+          "reshard-optimizer": "3/3",
+          "straggler-diagnosis": "2/3",
+          "uneven-shard-hang": "2/3"
+        }
+      }
+    ],
+    "self-hosted | hard set (8 tasks) | mini-swe-agent | max-out-4k | c24": [
+      {
+        "model": "Qwen/Qwen3.8-27B",
+        "gpu": "H100",
+        "runs": 1,
+        "n": 24,
+        "correct": 16,
+        "accuracy": 0.6667,
+        "ci95": [
+          0.375,
+          0.9167
+        ],
+        "per_run_solved": [
+          "16/24"
+        ],
+        "cost_per_correct_cents": 17.8475,
+        "gpu_only_cost_per_correct_cents": 9.7975,
+        "gpu_cost_usd": 1.5676,
+        "sandbox_cost_est_usd": 1.288,
+        "mean_tokens_per_case": 241495.1,
+        "mean_calls_per_case": 14.12,
+        "calls_counted_trials": 24,
+        "kv_cache_mean_per_run": [
+          0.757
+        ],
+        "failures": {
+          "finished wrong": 8
+        },
+        "per_task": {
+          "atomic-checkpoint": "0/3",
+          "corrupt-shard": "2/3",
+          "ddp-replica-drift": "0/3",
+          "k8s-unschedulable": "2/3",
+          "memory-leak-oom": "3/3",
+          "reshard-optimizer": "3/3",
+          "straggler-diagnosis": "3/3",
+          "uneven-shard-hang": "3/3"
+        }
+      }
+    ],
+    "self-hosted | hard set (8 tasks) | mini-swe-agent | max-out-8k | c24": [
+      {
+        "model": "Qwen/Qwen3.8-27B",
+        "gpu": "H100",
+        "runs": 2,
+        "n": 48,
+        "correct": 38,
+        "accuracy": 0.7917,
+        "ci95": [
+          0.6458,
+          0.9167
+        ],
+        "per_run_solved": [
+          "20/24",
+          "18/24"
+        ],
+        "cost_per_correct_cents": 22.1863,
+        "gpu_only_cost_per_correct_cents": 12.0205,
+        "gpu_cost_usd": 4.5678,
+        "sandbox_cost_est_usd": 3.863,
+        "mean_tokens_per_case": 347273.2,
+        "mean_calls_per_case": 17.69,
+        "calls_counted_trials": 48,
+        "kv_cache_mean_per_run": [
+          0.666,
+          0.798
+        ],
+        "failures": {
+          "agent exited with error": 1,
+          "finished wrong": 3,
+          "timeout": 6
+        },
+        "per_task": {
+          "atomic-checkpoint": "2/6",
+          "corrupt-shard": "5/6",
+          "ddp-replica-drift": "4/6",
+          "k8s-unschedulable": "5/6",
+          "memory-leak-oom": "6/6",
+          "reshard-optimizer": "6/6",
+          "straggler-diagnosis": "5/6",
+          "uneven-shard-hang": "5/6"
+        }
+      }
+    ],
+    "self-hosted | hard set (8 tasks) | mini-swe-agent | moe-a3b | c24": [
+      {
+        "model": "Qwen/Qwen3.6-35B-A3B-FP8",
+        "gpu": "H100",
+        "runs": 1,
+        "n": 24,
+        "correct": 11,
+        "accuracy": 0.4583,
+        "ci95": [
+          0.2083,
+          0.7083
+        ],
+        "per_run_solved": [
+          "11/24"
+        ],
+        "cost_per_correct_cents": 24.3445,
+        "gpu_only_cost_per_correct_cents": 18.4145,
+        "gpu_cost_usd": 2.0256,
+        "sandbox_cost_est_usd": 0.6523,
+        "mean_tokens_per_case": 768010.6,
+        "mean_calls_per_case": 33.04,
+        "calls_counted_trials": 24,
+        "kv_cache_mean_per_run": [
+          0.038
+        ],
+        "failures": {
+          "agent exited with error": 2,
+          "finished wrong": 9,
+          "timeout": 2
+        },
+        "per_task": {
+          "atomic-checkpoint": "1/3",
+          "corrupt-shard": "3/3",
+          "ddp-replica-drift": "0/3",
+          "k8s-unschedulable": "1/3",
+          "memory-leak-oom": "1/3",
+          "reshard-optimizer": "2/3",
+          "straggler-diagnosis": "0/3",
+          "uneven-shard-hang": "3/3"
+        }
+      }
+    ],
+    "self-hosted | hard set (8 tasks) | mini-swe-agent | no-thinking | c24": [
+      {
+        "model": "Qwen/Qwen3.8-27B",
+        "gpu": "H100",
+        "runs": 2,
+        "n": 48,
+        "correct": 23,
+        "accuracy": 0.4792,
+        "ci95": [
+          0.2917,
+          0.6667
+        ],
+        "per_run_solved": [
+          "8/24",
+          "15/24"
+        ],
+        "cost_per_correct_cents": 28.6817,
+        "gpu_only_cost_per_correct_cents": 18.5878,
+        "gpu_cost_usd": 4.2752,
+        "sandbox_cost_est_usd": 2.3216,
+        "mean_tokens_per_case": 767992.0,
+        "mean_calls_per_case": 35.25,
+        "calls_counted_trials": 48,
+        "kv_cache_mean_per_run": [
+          0.388,
+          0.591
+        ],
+        "failures": {
+          "agent exited with error": 7,
+          "finished wrong": 15,
+          "timeout": 3
+        },
+        "per_task": {
+          "atomic-checkpoint": "2/6",
+          "corrupt-shard": "5/6",
+          "ddp-replica-drift": "0/6",
+          "k8s-unschedulable": "4/6",
+          "memory-leak-oom": "3/6",
+          "reshard-optimizer": "3/6",
+          "straggler-diagnosis": "1/6",
+          "uneven-shard-hang": "5/6"
+        }
+      }
+    ],
+    "self-hosted | hard set (8 tasks) | terminus-2 | defaults | c8": [
+      {
+        "model": "Qwen/Qwen3.8-27B",
+        "gpu": "H100",
+        "runs": 2,
+        "n": 48,
+        "correct": 40,
+        "accuracy": 0.8333,
+        "ci95": [
+          0.5625,
+          0.9792
+        ],
+        "per_run_solved": [
+          "20/24",
+          "20/24"
+        ],
+        "cost_per_correct_cents": 27.7923,
+        "gpu_only_cost_per_correct_cents": 20.7945,
+        "gpu_cost_usd": 8.3178,
+        "sandbox_cost_est_usd": 2.7991,
+        "mean_tokens_per_case": 208039.0,
+        "mean_calls_per_case": 13.31,
+        "calls_counted_trials": 48,
+        "kv_cache_mean_per_run": [
+          0.29,
+          0.276
+        ],
+        "failures": {
+          "finished wrong": 1,
+          "timeout": 7
+        },
+        "per_task": {
+          "atomic-checkpoint": "0/6",
+          "corrupt-shard": "5/6",
+          "ddp-replica-drift": "6/6",
+          "k8s-unschedulable": "6/6",
+          "memory-leak-oom": "5/6",
+          "reshard-optimizer": "6/6",
+          "straggler-diagnosis": "6/6",
+          "uneven-shard-hang": "6/6"
+        }
+      }
+    ],
+    "self-hosted | hard set (8 tasks) | terminus-2 | defaults | c24": [
+      {
+        "model": "Qwen/Qwen3.8-27B",
+        "gpu": "H100",
+        "runs": 2,
+        "n": 48,
+        "correct": 34,
+        "accuracy": 0.7083,
+        "ci95": [
+          0.4792,
+          0.8958
+        ],
+        "per_run_solved": [
+          "17/24",
+          "17/24"
+        ],
+        "cost_per_correct_cents": 23.0156,
+        "gpu_only_cost_per_correct_cents": 12.2894,
+        "gpu_cost_usd": 4.1784,
+        "sandbox_cost_est_usd": 3.6469,
+        "mean_tokens_per_case": 156363.5,
+        "mean_calls_per_case": 11.35,
+        "calls_counted_trials": 48,
+        "kv_cache_mean_per_run": [
+          0.808,
+          0.646
+        ],
+        "failures": {
+          "finished wrong": 2,
+          "timeout": 12
+        },
+        "per_task": {
+          "atomic-checkpoint": "1/6",
+          "corrupt-shard": "6/6",
+          "ddp-replica-drift": "2/6",
+          "k8s-unschedulable": "6/6",
+          "memory-leak-oom": "4/6",
+          "reshard-optimizer": "5/6",
+          "straggler-diagnosis": "4/6",
+          "uneven-shard-hang": "6/6"
+        }
+      }
+    ],
+    "self-hosted | hard set (8 tasks) | terminus-2 | defaults-2x-time | c24": [
+      {
+        "model": "Qwen/Qwen3.8-27B",
+        "gpu": "H100",
+        "runs": 2,
+        "n": 48,
+        "correct": 46,
+        "accuracy": 0.9583,
+        "ci95": [
+          0.8958,
+          1.0
+        ],
+        "per_run_solved": [
+          "23/24",
+          "23/24"
+        ],
+        "cost_per_correct_cents": 27.6585,
+        "gpu_only_cost_per_correct_cents": 17.5191,
+        "gpu_cost_usd": 8.0588,
+        "sandbox_cost_est_usd": 4.6641,
+        "mean_tokens_per_case": 242661.5,
+        "mean_calls_per_case": 15.06,
+        "calls_counted_trials": 48,
+        "kv_cache_mean_per_run": [
+          0.488,
+          0.545
+        ],
+        "failures": {
+          "finished wrong": 1,
+          "timeout": 1
+        },
+        "per_task": {
+          "atomic-checkpoint": "5/6",
+          "corrupt-shard": "6/6",
+          "ddp-replica-drift": "5/6",
+          "k8s-unschedulable": "6/6",
+          "memory-leak-oom": "6/6",
+          "reshard-optimizer": "6/6",
+          "straggler-diagnosis": "6/6",
+          "uneven-shard-hang": "6/6"
+        }
+      }
+    ],
+    "self-hosted | hard set (8 tasks) | terminus-2 | h200 | c24": [
+      {
+        "model": "Qwen/Qwen3.8-27B",
+        "gpu": "H200",
+        "runs": 2,
+        "n": 48,
+        "correct": 45,
+        "accuracy": 0.9375,
+        "ci95": [
+          0.875,
+          1.0
+        ],
+        "per_run_solved": [
+          "21/24",
+          "24/24"
+        ],
+        "cost_per_correct_cents": 16.0936,
+        "gpu_only_cost_per_correct_cents": 10.5169,
+        "gpu_cost_usd": 4.7326,
+        "sandbox_cost_est_usd": 2.5095,
+        "mean_tokens_per_case": 208930.8,
+        "mean_calls_per_case": 13.88,
+        "calls_counted_trials": 48,
+        "kv_cache_mean_per_run": [
+          0.12,
+          0.121
+        ],
+        "failures": {
+          "finished wrong": 2,
+          "timeout": 1
+        },
+        "per_task": {
+          "atomic-checkpoint": "5/6",
+          "corrupt-shard": "6/6",
+          "ddp-replica-drift": "6/6",
+          "k8s-unschedulable": "5/6",
+          "memory-leak-oom": "6/6",
+          "reshard-optimizer": "6/6",
+          "straggler-diagnosis": "5/6",
+          "uneven-shard-hang": "6/6"
+        }
+      }
+    ],
+    "self-hosted | hard set (8 tasks) | terminus-2 | max-out-16k | c24": [
+      {
+        "model": "Qwen/Qwen3.8-27B",
+        "gpu": "H100",
+        "runs": 1,
+        "n": 24,
+        "correct": 19,
+        "accuracy": 0.7917,
+        "ci95": [
+          0.5417,
+          0.9583
+        ],
+        "per_run_solved": [
+          "19/24"
+        ],
+        "cost_per_correct_cents": 20.6242,
+        "gpu_only_cost_per_correct_cents": 10.9268,
+        "gpu_cost_usd": 2.0761,
+        "sandbox_cost_est_usd": 1.8425,
+        "mean_tokens_per_case": 144530.6,
+        "mean_calls_per_case": 10.54,
+        "calls_counted_trials": 24,
+        "kv_cache_mean_per_run": [
+          0.738
+        ],
+        "failures": {
+          "finished wrong": 1,
+          "timeout": 4
+        },
+        "per_task": {
+          "atomic-checkpoint": "0/3",
+          "corrupt-shard": "3/3",
+          "ddp-replica-drift": "2/3",
+          "k8s-unschedulable": "3/3",
+          "memory-leak-oom": "2/3",
+          "reshard-optimizer": "3/3",
+          "straggler-diagnosis": "3/3",
+          "uneven-shard-hang": "3/3"
+        }
+      }
+    ],
+    "self-hosted | hard set (8 tasks) | terminus-2 | max-out-4k | c24": [
+      {
+        "model": "Qwen/Qwen3.8-27B",
+        "gpu": "H100",
+        "runs": 1,
+        "n": 24,
+        "correct": 20,
+        "accuracy": 0.8333,
+        "ci95": [
+          0.6667,
+          0.9583
+        ],
+        "per_run_solved": [
+          "20/24"
+        ],
+        "cost_per_correct_cents": 17.9485,
+        "gpu_only_cost_per_correct_cents": 10.2745,
+        "gpu_cost_usd": 2.0549,
+        "sandbox_cost_est_usd": 1.5348,
+        "mean_tokens_per_case": 168900.6,
+        "mean_calls_per_case": 13.33,
+        "calls_counted_trials": 24,
+        "kv_cache_mean_per_run": [
+          0.647
+        ],
+        "failures": {
+          "finished wrong": 4
+        },
+        "per_task": {
+          "atomic-checkpoint": "2/3",
+          "corrupt-shard": "3/3",
+          "ddp-replica-drift": "1/3",
+          "k8s-unschedulable": "3/3",
+          "memory-leak-oom": "2/3",
+          "reshard-optimizer": "3/3",
+          "straggler-diagnosis": "3/3",
+          "uneven-shard-hang": "3/3"
+        }
+      }
+    ],
+    "self-hosted | hard set (8 tasks) | terminus-2 | max-out-8k | c24": [
+      {
+        "model": "Qwen/Qwen3.8-27B",
+        "gpu": "H100",
+        "runs": 2,
+        "n": 48,
+        "correct": 43,
+        "accuracy": 0.8958,
+        "ci95": [
+          0.8125,
+          0.9792
+        ],
+        "per_run_solved": [
+          "21/24",
+          "22/24"
+        ],
+        "cost_per_correct_cents": 17.26,
+        "gpu_only_cost_per_correct_cents": 9.5965,
+        "gpu_cost_usd": 4.1265,
+        "sandbox_cost_est_usd": 3.2953,
+        "mean_tokens_per_case": 179484.4,
+        "mean_calls_per_case": 12.98,
+        "calls_counted_trials": 48,
+        "kv_cache_mean_per_run": [
+          0.706,
+          0.742
+        ],
+        "failures": {
+          "finished wrong": 1,
+          "timeout": 4
+        },
+        "per_task": {
+          "atomic-checkpoint": "5/6",
+          "corrupt-shard": "6/6",
+          "ddp-replica-drift": "5/6",
+          "k8s-unschedulable": "5/6",
+          "memory-leak-oom": "6/6",
+          "reshard-optimizer": "6/6",
+          "straggler-diagnosis": "4/6",
+          "uneven-shard-hang": "6/6"
+        }
+      }
+    ],
+    "self-hosted | hard set (8 tasks) | terminus-2 | moe-a3b | c24": [
+      {
+        "model": "Qwen/Qwen3.6-35B-A3B-FP8",
+        "gpu": "H100",
+        "runs": 1,
+        "n": 24,
+        "correct": 14,
+        "accuracy": 0.5833,
+        "ci95": [
+          0.2917,
+          0.8333
+        ],
+        "per_run_solved": [
+          "14/24"
+        ],
+        "cost_per_correct_cents": 18.5307,
+        "gpu_only_cost_per_correct_cents": 14.4086,
+        "gpu_cost_usd": 2.0172,
+        "sandbox_cost_est_usd": 0.5771,
+        "mean_tokens_per_case": 319318.9,
+        "mean_calls_per_case": 17.62,
+        "calls_counted_trials": 24,
+        "kv_cache_mean_per_run": [
+          0.021
+        ],
+        "failures": {
+          "finished wrong": 9,
+          "timeout": 1
+        },
+        "per_task": {
+          "atomic-checkpoint": "2/3",
+          "corrupt-shard": "3/3",
+          "ddp-replica-drift": "1/3",
+          "k8s-unschedulable": "0/3",
+          "memory-leak-oom": "3/3",
+          "reshard-optimizer": "2/3",
+          "straggler-diagnosis": "0/3",
+          "uneven-shard-hang": "3/3"
+        }
+      }
+    ],
+    "self-hosted | hard set (8 tasks) | terminus-2 | no-thinking | c24": [
+      {
+        "model": "Qwen/Qwen3.8-27B",
+        "gpu": "H100",
+        "runs": 2,
+        "n": 48,
+        "correct": 30,
+        "accuracy": 0.625,
+        "ci95": [
+          0.3958,
+          0.8333
+        ],
+        "per_run_solved": [
+          "17/24",
+          "13/24"
+        ],
+        "cost_per_correct_cents": 20.7827,
+        "gpu_only_cost_per_correct_cents": 13.623,
+        "gpu_cost_usd": 4.0869,
+        "sandbox_cost_est_usd": 2.1479,
+        "mean_tokens_per_case": 418234.7,
+        "mean_calls_per_case": 19.85,
+        "calls_counted_trials": 48,
+        "kv_cache_mean_per_run": [
+          0.538,
+          0.385
+        ],
+        "failures": {
+          "finished wrong": 13,
+          "timeout": 5
+        },
+        "per_task": {
+          "atomic-checkpoint": "2/6",
+          "corrupt-shard": "6/6",
+          "ddp-replica-drift": "0/6",
+          "k8s-unschedulable": "4/6",
+          "memory-leak-oom": "4/6",
+          "reshard-optimizer": "3/6",
+          "straggler-diagnosis": "5/6",
+          "uneven-shard-hang": "6/6"
+        }
+      }
+    ],
+    "self-hosted | v2 set (4 tasks) | mini-swe-agent | defaults | c24": [
+      {
+        "model": "Qwen/Qwen3.8-27B",
+        "gpu": "H100",
+        "runs": 1,
+        "n": 24,
+        "correct": 4,
+        "accuracy": 0.1667,
+        "ci95": [
+          0.0417,
+          0.2917
+        ],
+        "per_run_solved": [
+          "4/24"
+        ],
+        "cost_per_correct_cents": 109.1225,
+        "gpu_only_cost_per_correct_cents": 51.9125,
+        "gpu_cost_usd": 2.0765,
+        "sandbox_cost_est_usd": 2.2884,
+        "mean_tokens_per_case": 217856.3,
+        "mean_calls_per_case": 8.5,
+        "calls_counted_trials": 24,
+        "kv_cache_mean_per_run": [
+          0.857
+        ],
+        "failures": {
+          "agent exited with error": 2,
+          "timeout": 18
+        },
+        "per_task": {
+          "atomic-checkpoint": "1/6",
+          "exact-resume": "0/6",
+          "k8s-quota-zone": "2/6",
+          "two-stragglers": "1/6"
+        }
+      }
+    ],
+    "self-hosted | v2 set (4 tasks) | mini-swe-agent | h200 | c24": [
+      {
+        "model": "Qwen/Qwen3.8-27B",
+        "gpu": "H200",
+        "runs": 1,
+        "n": 24,
+        "correct": 13,
+        "accuracy": 0.5417,
+        "ci95": [
+          0.3333,
+          0.8333
+        ],
+        "per_run_solved": [
+          "13/24"
+        ],
+        "cost_per_correct_cents": 30.4038,
+        "gpu_only_cost_per_correct_cents": 18.3323,
+        "gpu_cost_usd": 2.3832,
+        "sandbox_cost_est_usd": 1.5693,
+        "mean_tokens_per_case": 584904.3,
+        "mean_calls_per_case": 17.5,
+        "calls_counted_trials": 24,
+        "kv_cache_mean_per_run": [
+          0.223
+        ],
+        "failures": {
+          "agent exited with error": 3,
+          "finished wrong": 1,
+          "timeout": 7
+        },
+        "per_task": {
+          "atomic-checkpoint": "2/6",
+          "exact-resume": "3/6",
+          "k8s-quota-zone": "6/6",
+          "two-stragglers": "2/6"
+        }
+      }
+    ],
+    "self-hosted | v2 set (4 tasks) | terminus-2 | defaults | c24": [
+      {
+        "model": "Qwen/Qwen3.8-27B",
+        "gpu": "H100",
+        "runs": 1,
+        "n": 24,
+        "correct": 2,
+        "accuracy": 0.0833,
+        "ci95": [
+          0.0,
+          0.1667
+        ],
+        "per_run_solved": [
+          "2/24"
+        ],
+        "cost_per_correct_cents": 215.06,
+        "gpu_only_cost_per_correct_cents": 102.64,
+        "gpu_cost_usd": 2.0528,
+        "sandbox_cost_est_usd": 2.2484,
+        "mean_tokens_per_case": 74362.9,
+        "mean_calls_per_case": 6.25,
+        "calls_counted_trials": 24,
+        "kv_cache_mean_per_run": [
+          0.885
+        ],
+        "failures": {
+          "finished wrong": 1,
+          "timeout": 21
+        },
+        "per_task": {
+          "atomic-checkpoint": "1/6",
+          "exact-resume": "0/6",
+          "k8s-quota-zone": "1/6",
+          "two-stragglers": "0/6"
+        }
+      }
+    ],
+    "self-hosted | v2 set (4 tasks) | terminus-2 | h200 | c24": [
+      {
+        "model": "Qwen/Qwen3.8-27B",
+        "gpu": "H200",
+        "runs": 1,
+        "n": 24,
+        "correct": 11,
+        "accuracy": 0.4583,
+        "ci95": [
+          0.1667,
+          0.75
+        ],
+        "per_run_solved": [
+          "11/24"
+        ],
+        "cost_per_correct_cents": 40.4409,
+        "gpu_only_cost_per_correct_cents": 21.44,
+        "gpu_cost_usd": 2.3584,
+        "sandbox_cost_est_usd": 2.0901,
+        "mean_tokens_per_case": 224706.4,
+        "mean_calls_per_case": 10.25,
+        "calls_counted_trials": 24,
+        "kv_cache_mean_per_run": [
+          0.342
+        ],
+        "failures": {
+          "timeout": 13
+        },
+        "per_task": {
+          "atomic-checkpoint": "2/6",
+          "exact-resume": "0/6",
+          "k8s-quota-zone": "5/6",
+          "two-stragglers": "4/6"
+        }
+      }
+    ],
+    "vendor API | hard + v2 sets (11 tasks) | codex | gpt-6-astra": [
+      {
+        "model": "gpt-6-astra",
+        "runs": 1,
+        "n": 33,
+        "correct": 29,
+        "accuracy": 0.8788,
+        "ci95": [
+          0.7273,
+          1.0
+        ],
+        "per_run_solved": [
+          "29/33"
+        ],
+        "api_cost_usd": 19.7637,
+        "cost_per_correct_cents": 68.1507,
+        "mean_tokens_per_case": 185297.8,
+        "mean_input_tokens_per_case": 182546.1,
+        "mean_output_tokens_per_case": 2751.8,
+        "mean_calls_per_case": null,
+        "failures": {
+          "agent exited with error": 1,
+          "finished wrong": 3
+        },
+        "harbor_exit_codes": [
+          0
+        ],
+        "per_task": {
+          "atomic-checkpoint": "1/3",
+          "corrupt-shard": "3/3",
+          "ddp-replica-drift": "3/3",
+          "exact-resume": "3/3",
+          "k8s-quota-zone": "2/3",
+          "k8s-unschedulable": "3/3",
+          "memory-leak-oom": "3/3",
+          "reshard-optimizer": "3/3",
+          "straggler-diagnosis": "3/3",
+          "two-stragglers": "3/3",
+          "uneven-shard-hang": "2/3"
+        }
+      }
+    ],
+    "vendor API | hard + v2 sets (11 tasks) | codex | gpt-6-luna": [
+      {
+        "model": "gpt-6-luna",
+        "runs": 2,
+        "n": 66,
+        "correct": 61,
+        "accuracy": 0.9242,
+        "ci95": [
+          0.8182,
+          1.0
+        ],
+        "per_run_solved": [
+          "30/33",
+          "31/33"
+        ],
+        "api_cost_usd": 0.6237,
+        "cost_per_correct_cents": 1.0225,
+        "mean_tokens_per_case": 244415.2,
+        "mean_input_tokens_per_case": 237742.6,
+        "mean_output_tokens_per_case": 6672.6,
+        "mean_calls_per_case": null,
+        "failures": {
+          "agent exited with error": 1,
+          "finished wrong": 4
+        },
+        "harbor_exit_codes": [
+          0
+        ],
+        "per_task": {
+          "atomic-checkpoint": "3/6",
+          "corrupt-shard": "5/6",
+          "ddp-replica-drift": "6/6",
+          "exact-resume": "6/6",
+          "k8s-quota-zone": "6/6",
+          "k8s-unschedulable": "6/6",
+          "memory-leak-oom": "5/6",
+          "reshard-optimizer": "6/6",
+          "straggler-diagnosis": "6/6",
+          "two-stragglers": "6/6",
+          "uneven-shard-hang": "6/6"
+        }
+      }
+    ],
+    "vendor API | hard + v2 sets (11 tasks) | codex | gpt-6.1-sol": [
+      {
+        "model": "gpt-6.1-sol",
+        "runs": 1,
+        "n": 33,
+        "correct": 31,
+        "accuracy": 0.9394,
+        "ci95": [
+          0.8485,
+          1.0
+        ],
+        "per_run_solved": [
+          "31/33"
+        ],
+        "api_cost_usd": 3.3046,
+        "cost_per_correct_cents": 10.66,
+        "mean_tokens_per_case": 175776.9,
+        "mean_input_tokens_per_case": 173240.6,
+        "mean_output_tokens_per_case": 2536.4,
+        "mean_calls_per_case": null,
+        "failures": {
+          "agent exited with error": 1,
+          "finished wrong": 1
+        },
+        "harbor_exit_codes": [
+          0
+        ],
+        "per_task": {
+          "atomic-checkpoint": "2/3",
+          "corrupt-shard": "3/3",
+          "ddp-replica-drift": "3/3",
+          "exact-resume": "3/3",
+          "k8s-quota-zone": "3/3",
+          "k8s-unschedulable": "3/3",
+          "memory-leak-oom": "3/3",
+          "reshard-optimizer": "3/3",
+          "straggler-diagnosis": "3/3",
+          "two-stragglers": "2/3",
+          "uneven-shard-hang": "3/3"
+        }
+      }
+    ],
+    "vendor API | hard + v2 sets (11 tasks) | terminus-2 | gpt-6.1-sol": [
+      {
+        "model": "gpt-6.1-sol",
+        "runs": 1,
+        "n": 33,
+        "correct": 33,
+        "accuracy": 1.0,
+        "ci95": [
+          1.0,
+          1.0
+        ],
+        "per_run_solved": [
+          "33/33"
+        ],
+        "api_cost_usd": 2.2117,
+        "cost_per_correct_cents": 6.7021,
+        "mean_tokens_per_case": 69411.3,
+        "mean_input_tokens_per_case": 66205.2,
+        "mean_output_tokens_per_case": 3206.1,
+        "mean_calls_per_case": null,
+        "failures": {},
+        "harbor_exit_codes": [
+          0
+        ],
+        "per_task": {
+          "atomic-checkpoint": "3/3",
+          "corrupt-shard": "3/3",
+          "ddp-replica-drift": "3/3",
+          "exact-resume": "3/3",
+          "k8s-quota-zone": "3/3",
+          "k8s-unschedulable": "3/3",
+          "memory-leak-oom": "3/3",
+          "reshard-optimizer": "3/3",
+          "straggler-diagnosis": "3/3",
+          "two-stragglers": "3/3",
+          "uneven-shard-hang": "3/3"
+        }
+      }
+    ],
+    "vendor API | hard set (8 tasks) | claude-code | claude-haiku-5-5": [
+      {
+        "model": "claude-haiku-5-5",
+        "runs": 1,
+        "n": 8,
+        "correct": 0,
+        "accuracy": 0.0,
+        "ci95": [
+          0.0,
+          0.0
+        ],
+        "per_run_solved": [
+          "0/8"
+        ],
+        "api_cost_usd": 0.0,
+        "cost_per_correct_cents": null,
+        "mean_tokens_per_case": 0.0,
+        "mean_input_tokens_per_case": 0.0,
+        "mean_output_tokens_per_case": 0.0,
+        "mean_calls_per_case": null,
+        "failures": {
+          "agent exited with error": 8
+        },
+        "harbor_exit_codes": [
+          0
+        ],
+        "per_task": {
+          "atomic-checkpoint": "0/1",
+          "corrupt-shard": "0/1",
+          "ddp-replica-drift": "0/1",
+          "k8s-unschedulable": "0/1",
+          "memory-leak-oom": "0/1",
+          "reshard-optimizer": "0/1",
+          "straggler-diagnosis": "0/1",
+          "uneven-shard-hang": "0/1"
+        }
+      }
+    ],
+    "vendor API | hard set (8 tasks) | codex | gpt-6-luna": [
+      {
+        "model": "gpt-6-luna",
+        "runs": 1,
+        "n": 8,
+        "correct": 8,
+        "accuracy": 1.0,
+        "ci95": [
+          1.0,
+          1.0
+        ],
+        "per_run_solved": [
+          "8/8"
+        ],
+        "api_cost_usd": 0.0696,
+        "cost_per_correct_cents": 0.87,
+        "mean_tokens_per_case": 215338.8,
+        "mean_input_tokens_per_case": 208679.8,
+        "mean_output_tokens_per_case": 6659.0,
+        "mean_calls_per_case": null,
+        "failures": {},
+        "harbor_exit_codes": [
+          0
+        ],
+        "per_task": {
+          "atomic-checkpoint": "1/1",
+          "corrupt-shard": "1/1",
+          "ddp-replica-drift": "1/1",
+          "k8s-unschedulable": "1/1",
+          "memory-leak-oom": "1/1",
+          "reshard-optimizer": "1/1",
+          "straggler-diagnosis": "1/1",
+          "uneven-shard-hang": "1/1"
+        }
+      }
+    ],
+    "vendor API | partial (2 tasks: atomic-checkpoint, corrupt-shard) | claude-code | claude-haiku-5-5": [
+      {
+        "model": "claude-haiku-5-5",
+        "runs": 1,
+        "n": 2,
+        "correct": 1,
+        "accuracy": 0.5,
+        "ci95": [
+          0.0,
+          1.0
+        ],
+        "per_run_solved": [
+          "1/2"
+        ],
+        "api_cost_usd": 0.0176,
+        "cost_per_correct_cents": 1.76,
+        "mean_tokens_per_case": 259519.0,
+        "mean_input_tokens_per_case": 251235.5,
+        "mean_output_tokens_per_case": 8283.5,
+        "mean_calls_per_case": null,
+        "failures": {
+          "other error (CancelledError)": 1
+        },
+        "harbor_exit_codes": [
+          130
+        ],
+        "per_task": {
+          "atomic-checkpoint": "1/1",
+          "corrupt-shard": "0/1"
+        }
+      }
+    ],
+    "vendor API | real-system tasks (2 torchtitan tasks) | codex | gpt-6-luna": [
+      {
+        "model": "gpt-6-luna",
+        "runs": 2,
+        "n": 4,
+        "correct": 4,
+        "accuracy": 1.0,
+        "ci95": [
+          1.0,
+          1.0
+        ],
+        "per_run_solved": [
+          "2/2",
+          "2/2"
+        ],
+        "api_cost_usd": 0.0878,
+        "cost_per_correct_cents": 2.195,
+        "mean_tokens_per_case": 1221929.5,
+        "mean_input_tokens_per_case": 1214010.8,
+        "mean_output_tokens_per_case": 7918.8,
+        "mean_calls_per_case": null,
+        "failures": {},
+        "harbor_exit_codes": [
+          0
+        ],
+        "per_task": {
+          "titan-fork-drift": "2/2",
+          "titan-silent-divergence": "2/2"
+        }
+      }
+    ],
+    "vendor API | real-system tasks (2 torchtitan tasks) | codex | gpt-6.1-sol": [
+      {
+        "model": "gpt-6.1-sol",
+        "runs": 2,
+        "n": 4,
+        "correct": 4,
+        "accuracy": 1.0,
+        "ci95": [
+          1.0,
+          1.0
+        ],
+        "per_run_solved": [
+          "2/2",
+          "2/2"
+        ],
+        "api_cost_usd": 0.5217,
+        "cost_per_correct_cents": 13.0425,
+        "mean_tokens_per_case": 372226.2,
+        "mean_input_tokens_per_case": 369829.2,
+        "mean_output_tokens_per_case": 2397.0,
+        "mean_calls_per_case": null,
+        "failures": {},
+        "harbor_exit_codes": [
+          0
+        ],
+        "per_task": {
+          "titan-fork-drift": "2/2",
+          "titan-silent-divergence": "2/2"
+        }
+      }
+    ],
+    "vendor API | v3 set (5 tasks) | codex | gpt-6-luna": [
+      {
+        "model": "gpt-6-luna",
+        "runs": 5,
+        "n": 15,
+        "correct": 15,
+        "accuracy": 1.0,
+        "ci95": [
+          1.0,
+          1.0
+        ],
+        "per_run_solved": [
+          "3/3",
+          "3/3",
+          "3/3",
+          "3/3",
+          "3/3"
+        ],
+        "api_cost_usd": 0.2856,
+        "cost_per_correct_cents": 1.904,
+        "mean_tokens_per_case": 704449.9,
+        "mean_input_tokens_per_case": 688746.1,
+        "mean_output_tokens_per_case": 15703.8,
+        "mean_calls_per_case": null,
+        "failures": {},
+        "harbor_exit_codes": [
+          0
+        ],
+        "per_task": {
+          "elastic-churn": "3/3",
+          "gang-controller": "3/3",
+          "ray-exactly-once": "3/3",
+          "regression-bisect": "3/3",
+          "throughput-sla": "3/3"
+        }
+      }
+    ],
+    "vendor API | v3 set (5 tasks) | codex | gpt-6.1-sol": [
+      {
+        "model": "gpt-6.1-sol",
+        "runs": 5,
+        "n": 15,
+        "correct": 15,
+        "accuracy": 1.0,
+        "ci95": [
+          1.0,
+          1.0
+        ],
+        "per_run_solved": [
+          "3/3",
+          "3/3",
+          "3/3",
+          "3/3",
+          "3/3"
+        ],
+        "api_cost_usd": 2.3793,
+        "cost_per_correct_cents": 15.862,
+        "mean_tokens_per_case": 389326.1,
+        "mean_input_tokens_per_case": 383696.4,
+        "mean_output_tokens_per_case": 5629.7,
+        "mean_calls_per_case": null,
+        "failures": {},
+        "harbor_exit_codes": [
+          0
+        ],
+        "per_task": {
+          "elastic-churn": "3/3",
+          "gang-controller": "3/3",
+          "ray-exactly-once": "3/3",
+          "regression-bisect": "3/3",
+          "throughput-sla": "3/3"
+        }
+      }
+    ]
+  },
+  "results_note": "Keys: 'self-hosted | <task set> | <harness> | <config> | cN' and 'vendor API | <task round> | <harness> | <model>'. Every attempted trial is in n; timeouts, harness errors and setup failures count as unsolved. Excluded: one self-hosted run that recorded no trials (excluded_runs). Vendor-API runs: the Claude Code + Claude Haiku 5.5 hard-set run failed in setup on every trial (0/8, all NonZeroAgentExitCodeError) and stays in n; a second Claude Code + Haiku 5.5 run (job tagged mlops_hard2, 1 attempt) recorded only 2 trials (atomic-checkpoint, corrupt-shard), 1 passed, and Harbor exited with code 130 (interrupted).",
+  "excluded_runs": [
+    {
+      "task_set": "mlops_hard-k3",
+      "harness": "terminus-2",
+      "config": "defaults",
+      "concurrency": 8,
+      "ts": "2026-10-10T14:32:09",
+      "attempted": 0,
+      "reason": "SystemExit: 143"
+    }
+  ],
+  "per_type": {
+    "self-hosted | v1 pilot (6 tasks) | mini-swe-agent | defaults | c6": {
+      "Qwen/Qwen3.8-27B": {
+        "v1 pilot (script-level bugs)": {
+          "n": 30,
+          "correct": 30,
+          "accuracy": 1.0
+        }
+      }
+    },
+    "self-hosted | v1 pilot (6 tasks) | mini-swe-agent | defaults | c30": {
+      "Qwen/Qwen3.8-27B": {
+        "v1 pilot (script-level bugs)": {
+          "n": 30,
+          "correct": 30,
+          "accuracy": 1.0
+        }
+      }
+    },
+    "self-hosted | v1 pilot (6 tasks) | terminus-2 | defaults | c6": {
+      "Qwen/Qwen3.8-27B": {
+        "v1 pilot (script-level bugs)": {
+          "n": 30,
+          "correct": 30,
+          "accuracy": 1.0
+        }
+      }
+    },
+    "self-hosted | v1 pilot (6 tasks) | terminus-2 | defaults | c30": {
+      "Qwen/Qwen3.8-27B": {
+        "v1 pilot (script-level bugs)": {
+          "n": 30,
+          "correct": 30,
+          "accuracy": 1.0
+        }
+      }
+    },
+    "self-hosted | hard set (8 tasks) | mini-swe-agent | defaults | c8": {
+      "Qwen/Qwen3.8-27B": {
+        "A. distributed jobs": {
+          "n": 12,
+          "correct": 9,
+          "accuracy": 0.75
+        },
+        "B. diagnosis from telemetry": {
+          "n": 12,
+          "correct": 12,
+          "accuracy": 1.0
+        },
+        "C. checkpointing and recovery": {
+          "n": 12,
+          "correct": 10,
+          "accuracy": 0.8333
+        },
+        "D. resource limits and scheduling": {
+          "n": 12,
+          "correct": 12,
+          "accuracy": 1.0
+        }
+      }
+    },
+    "self-hosted | hard set (8 tasks) | mini-swe-agent | defaults | c24": {
+      "Qwen/Qwen3.8-27B": {
+        "A. distributed jobs": {
+          "n": 12,
+          "correct": 8,
+          "accuracy": 0.6667
+        },
+        "B. diagnosis from telemetry": {
+          "n": 12,
+          "correct": 11,
+          "accuracy": 0.9167
+        },
+        "C. checkpointing and recovery": {
+          "n": 12,
+          "correct": 4,
+          "accuracy": 0.3333
+        },
+        "D. resource limits and scheduling": {
+          "n": 12,
+          "correct": 8,
+          "accuracy": 0.6667
+        }
+      }
+    },
+    "self-hosted | hard set (8 tasks) | mini-swe-agent | defaults-2x-time | c24": {
+      "Qwen/Qwen3.8-27B": {
+        "A. distributed jobs": {
+          "n": 12,
+          "correct": 7,
+          "accuracy": 0.5833
+        },
+        "B. diagnosis from telemetry": {
+          "n": 12,
+          "correct": 12,
+          "accuracy": 1.0
+        },
+        "C. checkpointing and recovery": {
+          "n": 12,
+          "correct": 6,
+          "accuracy": 0.5
+        },
+        "D. resource limits and scheduling": {
+          "n": 12,
+          "correct": 9,
+          "accuracy": 0.75
+        }
+      }
+    },
+    "self-hosted | hard set (8 tasks) | mini-swe-agent | h200 | c24": {
+      "Qwen/Qwen3.8-27B": {
+        "A. distributed jobs": {
+          "n": 12,
+          "correct": 12,
+          "accuracy": 1.0
+        },
+        "B. diagnosis from telemetry": {
+          "n": 12,
+          "correct": 10,
+          "accuracy": 0.8333
+        },
+        "C. checkpointing and recovery": {
+          "n": 12,
+          "correct": 7,
+          "accuracy": 0.5833
+        },
+        "D. resource limits and scheduling": {
+          "n": 12,
+          "correct": 11,
+          "accuracy": 0.9167
+        }
+      }
+    },
+    "self-hosted | hard set (8 tasks) | mini-swe-agent | max-out-16k | c24": {
+      "Qwen/Qwen3.8-27B": {
+        "A. distributed jobs": {
+          "n": 6,
+          "correct": 5,
+          "accuracy": 0.8333
+        },
+        "B. diagnosis from telemetry": {
+          "n": 6,
+          "correct": 5,
+          "accuracy": 0.8333
+        },
+        "C. checkpointing and recovery": {
+          "n": 6,
+          "correct": 3,
+          "accuracy": 0.5
+        },
+        "D. resource limits and scheduling": {
+          "n": 6,
+          "correct": 6,
+          "accuracy": 1.0
+        }
+      }
+    },
+    "self-hosted | hard set (8 tasks) | mini-swe-agent | max-out-4k | c24": {
+      "Qwen/Qwen3.8-27B": {
+        "A. distributed jobs": {
+          "n": 6,
+          "correct": 3,
+          "accuracy": 0.5
+        },
+        "B. diagnosis from telemetry": {
+          "n": 6,
+          "correct": 5,
+          "accuracy": 0.8333
+        },
+        "C. checkpointing and recovery": {
+          "n": 6,
+          "correct": 3,
+          "accuracy": 0.5
+        },
+        "D. resource limits and scheduling": {
+          "n": 6,
+          "correct": 5,
+          "accuracy": 0.8333
+        }
+      }
+    },
+    "self-hosted | hard set (8 tasks) | mini-swe-agent | max-out-8k | c24": {
+      "Qwen/Qwen3.8-27B": {
+        "A. distributed jobs": {
+          "n": 12,
+          "correct": 9,
+          "accuracy": 0.75
+        },
+        "B. diagnosis from telemetry": {
+          "n": 12,
+          "correct": 10,
+          "accuracy": 0.8333
+        },
+        "C. checkpointing and recovery": {
+          "n": 12,
+          "correct": 8,
+          "accuracy": 0.6667
+        },
+        "D. resource limits and scheduling": {
+          "n": 12,
+          "correct": 11,
+          "accuracy": 0.9167
+        }
+      }
+    },
+    "self-hosted | hard set (8 tasks) | mini-swe-agent | moe-a3b | c24": {
+      "Qwen/Qwen3.6-35B-A3B-FP8": {
+        "A. distributed jobs": {
+          "n": 6,
+          "correct": 3,
+          "accuracy": 0.5
+        },
+        "B. diagnosis from telemetry": {
+          "n": 6,
+          "correct": 3,
+          "accuracy": 0.5
+        },
+        "C. checkpointing and recovery": {
+          "n": 6,
+          "correct": 3,
+          "accuracy": 0.5
+        },
+        "D. resource limits and scheduling": {
+          "n": 6,
+          "correct": 2,
+          "accuracy": 0.3333
+        }
+      }
+    },
+    "self-hosted | hard set (8 tasks) | mini-swe-agent | no-thinking | c24": {
+      "Qwen/Qwen3.8-27B": {
+        "A. distributed jobs": {
+          "n": 12,
+          "correct": 5,
+          "accuracy": 0.4167
+        },
+        "B. diagnosis from telemetry": {
+          "n": 12,
+          "correct": 6,
+          "accuracy": 0.5
+        },
+        "C. checkpointing and recovery": {
+          "n": 12,
+          "correct": 5,
+          "accuracy": 0.4167
+        },
+        "D. resource limits and scheduling": {
+          "n": 12,
+          "correct": 7,
+          "accuracy": 0.5833
+        }
+      }
+    },
+    "self-hosted | hard set (8 tasks) | terminus-2 | defaults | c8": {
+      "Qwen/Qwen3.8-27B": {
+        "A. distributed jobs": {
+          "n": 12,
+          "correct": 12,
+          "accuracy": 1.0
+        },
+        "B. diagnosis from telemetry": {
+          "n": 12,
+          "correct": 11,
+          "accuracy": 0.9167
+        },
+        "C. checkpointing and recovery": {
+          "n": 12,
+          "correct": 6,
+          "accuracy": 0.5
+        },
+        "D. resource limits and scheduling": {
+          "n": 12,
+          "correct": 11,
+          "accuracy": 0.9167
+        }
+      }
+    },
+    "self-hosted | hard set (8 tasks) | terminus-2 | defaults | c24": {
+      "Qwen/Qwen3.8-27B": {
+        "A. distributed jobs": {
+          "n": 12,
+          "correct": 8,
+          "accuracy": 0.6667
+        },
+        "B. diagnosis from telemetry": {
+          "n": 12,
+          "correct": 10,
+          "accuracy": 0.8333
+        },
+        "C. checkpointing and recovery": {
+          "n": 12,
+          "correct": 6,
+          "accuracy": 0.5
+        },
+        "D. resource limits and scheduling": {
+          "n": 12,
+          "correct": 10,
+          "accuracy": 0.8333
+        }
+      }
+    },
+    "self-hosted | hard set (8 tasks) | terminus-2 | defaults-2x-time | c24": {
+      "Qwen/Qwen3.8-27B": {
+        "A. distributed jobs": {
+          "n": 12,
+          "correct": 11,
+          "accuracy": 0.9167
+        },
+        "B. diagnosis from telemetry": {
+          "n": 12,
+          "correct": 12,
+          "accuracy": 1.0
+        },
+        "C. checkpointing and recovery": {
+          "n": 12,
+          "correct": 11,
+          "accuracy": 0.9167
+        },
+        "D. resource limits and scheduling": {
+          "n": 12,
+          "correct": 12,
+          "accuracy": 1.0
+        }
+      }
+    },
+    "self-hosted | hard set (8 tasks) | terminus-2 | h200 | c24": {
+      "Qwen/Qwen3.8-27B": {
+        "A. distributed jobs": {
+          "n": 12,
+          "correct": 12,
+          "accuracy": 1.0
+        },
+        "B. diagnosis from telemetry": {
+          "n": 12,
+          "correct": 11,
+          "accuracy": 0.9167
+        },
+        "C. checkpointing and recovery": {
+          "n": 12,
+          "correct": 11,
+          "accuracy": 0.9167
+        },
+        "D. resource limits and scheduling": {
+          "n": 12,
+          "correct": 11,
+          "accuracy": 0.9167
+        }
+      }
+    },
+    "self-hosted | hard set (8 tasks) | terminus-2 | max-out-16k | c24": {
+      "Qwen/Qwen3.8-27B": {
+        "A. distributed jobs": {
+          "n": 6,
+          "correct": 5,
+          "accuracy": 0.8333
+        },
+        "B. diagnosis from telemetry": {
+          "n": 6,
+          "correct": 6,
+          "accuracy": 1.0
+        },
+        "C. checkpointing and recovery": {
+          "n": 6,
+          "correct": 3,
+          "accuracy": 0.5
+        },
+        "D. resource limits and scheduling": {
+          "n": 6,
+          "correct": 5,
+          "accuracy": 0.8333
+        }
+      }
+    },
+    "self-hosted | hard set (8 tasks) | terminus-2 | max-out-4k | c24": {
+      "Qwen/Qwen3.8-27B": {
+        "A. distributed jobs": {
+          "n": 6,
+          "correct": 4,
+          "accuracy": 0.6667
+        },
+        "B. diagnosis from telemetry": {
+          "n": 6,
+          "correct": 6,
+          "accuracy": 1.0
+        },
+        "C. checkpointing and recovery": {
+          "n": 6,
+          "correct": 5,
+          "accuracy": 0.8333
+        },
+        "D. resource limits and scheduling": {
+          "n": 6,
+          "correct": 5,
+          "accuracy": 0.8333
+        }
+      }
+    },
+    "self-hosted | hard set (8 tasks) | terminus-2 | max-out-8k | c24": {
+      "Qwen/Qwen3.8-27B": {
+        "A. distributed jobs": {
+          "n": 12,
+          "correct": 11,
+          "accuracy": 0.9167
+        },
+        "B. diagnosis from telemetry": {
+          "n": 12,
+          "correct": 10,
+          "accuracy": 0.8333
+        },
+        "C. checkpointing and recovery": {
+          "n": 12,
+          "correct": 11,
+          "accuracy": 0.9167
+        },
+        "D. resource limits and scheduling": {
+          "n": 12,
+          "correct": 11,
+          "accuracy": 0.9167
+        }
+      }
+    },
+    "self-hosted | hard set (8 tasks) | terminus-2 | moe-a3b | c24": {
+      "Qwen/Qwen3.6-35B-A3B-FP8": {
+        "A. distributed jobs": {
+          "n": 6,
+          "correct": 4,
+          "accuracy": 0.6667
+        },
+        "B. diagnosis from telemetry": {
+          "n": 6,
+          "correct": 3,
+          "accuracy": 0.5
+        },
+        "C. checkpointing and recovery": {
+          "n": 6,
+          "correct": 4,
+          "accuracy": 0.6667
+        },
+        "D. resource limits and scheduling": {
+          "n": 6,
+          "correct": 3,
+          "accuracy": 0.5
+        }
+      }
+    },
+    "self-hosted | hard set (8 tasks) | terminus-2 | no-thinking | c24": {
+      "Qwen/Qwen3.8-27B": {
+        "A. distributed jobs": {
+          "n": 12,
+          "correct": 6,
+          "accuracy": 0.5
+        },
+        "B. diagnosis from telemetry": {
+          "n": 12,
+          "correct": 11,
+          "accuracy": 0.9167
+        },
+        "C. checkpointing and recovery": {
+          "n": 12,
+          "correct": 5,
+          "accuracy": 0.4167
+        },
+        "D. resource limits and scheduling": {
+          "n": 12,
+          "correct": 8,
+          "accuracy": 0.6667
+        }
+      }
+    },
+    "self-hosted | v2 set (4 tasks) | mini-swe-agent | defaults | c24": {
+      "Qwen/Qwen3.8-27B": {
+        "B. diagnosis from telemetry": {
+          "n": 6,
+          "correct": 1,
+          "accuracy": 0.1667
+        },
+        "C. checkpointing and recovery": {
+          "n": 12,
+          "correct": 1,
+          "accuracy": 0.0833
+        },
+        "D. resource limits and scheduling": {
+          "n": 6,
+          "correct": 2,
+          "accuracy": 0.3333
+        }
+      }
+    },
+    "self-hosted | v2 set (4 tasks) | mini-swe-agent | h200 | c24": {
+      "Qwen/Qwen3.8-27B": {
+        "B. diagnosis from telemetry": {
+          "n": 6,
+          "correct": 2,
+          "accuracy": 0.3333
+        },
+        "C. checkpointing and recovery": {
+          "n": 12,
+          "correct": 5,
+          "accuracy": 0.4167
+        },
+        "D. resource limits and scheduling": {
+          "n": 6,
+          "correct": 6,
+          "accuracy": 1.0
+        }
+      }
+    },
+    "self-hosted | v2 set (4 tasks) | terminus-2 | defaults | c24": {
+      "Qwen/Qwen3.8-27B": {
+        "B. diagnosis from telemetry": {
+          "n": 6,
+          "correct": 0,
+          "accuracy": 0.0
+        },
+        "C. checkpointing and recovery": {
+          "n": 12,
+          "correct": 1,
+          "accuracy": 0.0833
+        },
+        "D. resource limits and scheduling": {
+          "n": 6,
+          "correct": 1,
+          "accuracy": 0.1667
+        }
+      }
+    },
+    "self-hosted | v2 set (4 tasks) | terminus-2 | h200 | c24": {
+      "Qwen/Qwen3.8-27B": {
+        "B. diagnosis from telemetry": {
+          "n": 6,
+          "correct": 4,
+          "accuracy": 0.6667
+        },
+        "C. checkpointing and recovery": {
+          "n": 12,
+          "correct": 2,
+          "accuracy": 0.1667
+        },
+        "D. resource limits and scheduling": {
+          "n": 6,
+          "correct": 5,
+          "accuracy": 0.8333
+        }
+      }
+    },
+    "vendor API | hard + v2 sets (11 tasks) | codex | gpt-6-astra": {
+      "gpt-6-astra": {
+        "A. distributed jobs": {
+          "n": 6,
+          "correct": 5,
+          "accuracy": 0.8333
+        },
+        "B. diagnosis from telemetry": {
+          "n": 9,
+          "correct": 9,
+          "accuracy": 1.0
+        },
+        "C. checkpointing and recovery": {
+          "n": 9,
+          "correct": 7,
+          "accuracy": 0.7778
+        },
+        "D. resource limits and scheduling": {
+          "n": 9,
+          "correct": 8,
+          "accuracy": 0.8889
+        }
+      }
+    },
+    "vendor API | hard + v2 sets (11 tasks) | codex | gpt-6-luna": {
+      "gpt-6-luna": {
+        "A. distributed jobs": {
+          "n": 12,
+          "correct": 12,
+          "accuracy": 1.0
+        },
+        "B. diagnosis from telemetry": {
+          "n": 18,
+          "correct": 17,
+          "accuracy": 0.9444
+        },
+        "C. checkpointing and recovery": {
+          "n": 18,
+          "correct": 15,
+          "accuracy": 0.8333
+        },
+        "D. resource limits and scheduling": {
+          "n": 18,
+          "correct": 17,
+          "accuracy": 0.9444
+        }
+      }
+    },
+    "vendor API | hard + v2 sets (11 tasks) | codex | gpt-6.1-sol": {
+      "gpt-6.1-sol": {
+        "A. distributed jobs": {
+          "n": 6,
+          "correct": 6,
+          "accuracy": 1.0
+        },
+        "B. diagnosis from telemetry": {
+          "n": 9,
+          "correct": 8,
+          "accuracy": 0.8889
+        },
+        "C. checkpointing and recovery": {
+          "n": 9,
+          "correct": 8,
+          "accuracy": 0.8889
+        },
+        "D. resource limits and scheduling": {
+          "n": 9,
+          "correct": 9,
+          "accuracy": 1.0
+        }
+      }
+    },
+    "vendor API | hard + v2 sets (11 tasks) | terminus-2 | gpt-6.1-sol": {
+      "gpt-6.1-sol": {
+        "A. distributed jobs": {
+          "n": 6,
+          "correct": 6,
+          "accuracy": 1.0
+        },
+        "B. diagnosis from telemetry": {
+          "n": 9,
+          "correct": 9,
+          "accuracy": 1.0
+        },
+        "C. checkpointing and recovery": {
+          "n": 9,
+          "correct": 9,
+          "accuracy": 1.0
+        },
+        "D. resource limits and scheduling": {
+          "n": 9,
+          "correct": 9,
+          "accuracy": 1.0
+        }
+      }
+    },
+    "vendor API | hard set (8 tasks) | claude-code | claude-haiku-5-5": {
+      "claude-haiku-5-5": {
+        "A. distributed jobs": {
+          "n": 2,
+          "correct": 0,
+          "accuracy": 0.0
+        },
+        "B. diagnosis from telemetry": {
+          "n": 2,
+          "correct": 0,
+          "accuracy": 0.0
+        },
+        "C. checkpointing and recovery": {
+          "n": 2,
+          "correct": 0,
+          "accuracy": 0.0
+        },
+        "D. resource limits and scheduling": {
+          "n": 2,
+          "correct": 0,
+          "accuracy": 0.0
+        }
+      }
+    },
+    "vendor API | hard set (8 tasks) | codex | gpt-6-luna": {
+      "gpt-6-luna": {
+        "A. distributed jobs": {
+          "n": 2,
+          "correct": 2,
+          "accuracy": 1.0
+        },
+        "B. diagnosis from telemetry": {
+          "n": 2,
+          "correct": 2,
+          "accuracy": 1.0
+        },
+        "C. checkpointing and recovery": {
+          "n": 2,
+          "correct": 2,
+          "accuracy": 1.0
+        },
+        "D. resource limits and scheduling": {
+          "n": 2,
+          "correct": 2,
+          "accuracy": 1.0
+        }
+      }
+    },
+    "vendor API | partial (2 tasks: atomic-checkpoint, corrupt-shard) | claude-code | claude-haiku-5-5": {
+      "claude-haiku-5-5": {
+        "B. diagnosis from telemetry": {
+          "n": 1,
+          "correct": 0,
+          "accuracy": 0.0
+        },
+        "C. checkpointing and recovery": {
+          "n": 1,
+          "correct": 1,
+          "accuracy": 1.0
+        }
+      }
+    },
+    "vendor API | real-system tasks (2 torchtitan tasks) | codex | gpt-6-luna": {
+      "gpt-6-luna": {
+        "real-system (torchtitan, 2 GPUs)": {
+          "n": 4,
+          "correct": 4,
+          "accuracy": 1.0
+        }
+      }
+    },
+    "vendor API | real-system tasks (2 torchtitan tasks) | codex | gpt-6.1-sol": {
+      "gpt-6.1-sol": {
+        "real-system (torchtitan, 2 GPUs)": {
+          "n": 4,
+          "correct": 4,
+          "accuracy": 1.0
+        }
+      }
+    },
+    "vendor API | v3 set (5 tasks) | codex | gpt-6-luna": {
+      "gpt-6-luna": {
+        "v3 (designed frontier-hard)": {
+          "n": 15,
+          "correct": 15,
+          "accuracy": 1.0
+        }
+      }
+    },
+    "vendor API | v3 set (5 tasks) | codex | gpt-6.1-sol": {
+      "gpt-6.1-sol": {
+        "v3 (designed frontier-hard)": {
+          "n": 15,
+          "correct": 15,
+          "accuracy": 1.0
+        }
+      }
+    }
+  },
+  "per_type_note": "Types are task families (A-D for the hard and v2 tasks) or rounds (v1 pilot, v3, real-system).",
+  "paired_comparisons": {
+    "note": "Computed with mlops_hard_analysis.py's per_task and boot (reward.txt per trial). Hard set: each setup vs H100 defaults at 24 agents with both runs pooled, 8 tasks. v2 set: H200 vs H100 at 24 agents, one run each, 4 tasks.",
+    "comparisons": [
+      {
+        "harness": "terminus-2",
+        "change": "defaults c8",
+        "baseline": "defaults c24 H100 (both runs pooled)",
+        "diff_pts": 12.5,
+        "ci95_pts": [
+          -4.17,
+          31.25
+        ],
+        "tasks": 8
+      },
+      {
+        "harness": "terminus-2",
+        "change": "defaults-2x-time c24",
+        "baseline": "defaults c24 H100 (both runs pooled)",
+        "diff_pts": 25.0,
+        "ci95_pts": [
+          10.42,
+          41.67
+        ],
+        "tasks": 8
+      },
+      {
+        "harness": "terminus-2",
+        "change": "h200 c24",
+        "baseline": "defaults c24 H100 (both runs pooled)",
+        "diff_pts": 22.92,
+        "ci95_pts": [
+          4.17,
+          43.75
+        ],
+        "tasks": 8
+      },
+      {
+        "harness": "terminus-2",
+        "change": "max-out-16k c24",
+        "baseline": "defaults c24 H100 (both runs pooled)",
+        "diff_pts": 8.33,
+        "ci95_pts": [
+          -2.08,
+          20.83
+        ],
+        "tasks": 8
+      },
+      {
+        "harness": "terminus-2",
+        "change": "max-out-4k c24",
+        "baseline": "defaults c24 H100 (both runs pooled)",
+        "diff_pts": 12.5,
+        "ci95_pts": [
+          2.08,
+          27.08
+        ],
+        "tasks": 8
+      },
+      {
+        "harness": "terminus-2",
+        "change": "max-out-8k c24",
+        "baseline": "defaults c24 H100 (both runs pooled)",
+        "diff_pts": 18.75,
+        "ci95_pts": [
+          0.0,
+          37.5
+        ],
+        "tasks": 8
+      },
+      {
+        "harness": "terminus-2",
+        "change": "moe-a3b c24",
+        "baseline": "defaults c24 H100 (both runs pooled)",
+        "diff_pts": -12.5,
+        "ci95_pts": [
+          -45.83,
+          16.67
+        ],
+        "tasks": 8
+      },
+      {
+        "harness": "terminus-2",
+        "change": "no-thinking c24",
+        "baseline": "defaults c24 H100 (both runs pooled)",
+        "diff_pts": -8.33,
+        "ci95_pts": [
+          -22.92,
+          6.25
+        ],
+        "tasks": 8
+      },
+      {
+        "harness": "mini-swe-agent",
+        "change": "defaults c8",
+        "baseline": "defaults c24 H100 (both runs pooled)",
+        "diff_pts": 25.0,
+        "ci95_pts": [
+          8.33,
+          41.67
+        ],
+        "tasks": 8
+      },
+      {
+        "harness": "mini-swe-agent",
+        "change": "defaults-2x-time c24",
+        "baseline": "defaults c24 H100 (both runs pooled)",
+        "diff_pts": 6.25,
+        "ci95_pts": [
+          -2.08,
+          16.67
+        ],
+        "tasks": 8
+      },
+      {
+        "harness": "mini-swe-agent",
+        "change": "h200 c24",
+        "baseline": "defaults c24 H100 (both runs pooled)",
+        "diff_pts": 18.75,
+        "ci95_pts": [
+          6.25,
+          31.25
+        ],
+        "tasks": 8
+      },
+      {
+        "harness": "mini-swe-agent",
+        "change": "max-out-16k c24",
+        "baseline": "defaults c24 H100 (both runs pooled)",
+        "diff_pts": 14.58,
+        "ci95_pts": [
+          -2.08,
+          31.25
+        ],
+        "tasks": 8
+      },
+      {
+        "harness": "mini-swe-agent",
+        "change": "max-out-4k c24",
+        "baseline": "defaults c24 H100 (both runs pooled)",
+        "diff_pts": 2.08,
+        "ci95_pts": [
+          -18.75,
+          20.83
+        ],
+        "tasks": 8
+      },
+      {
+        "harness": "mini-swe-agent",
+        "change": "max-out-8k c24",
+        "baseline": "defaults c24 H100 (both runs pooled)",
+        "diff_pts": 14.58,
+        "ci95_pts": [
+          2.08,
+          27.08
+        ],
+        "tasks": 8
+      },
+      {
+        "harness": "mini-swe-agent",
+        "change": "moe-a3b c24",
+        "baseline": "defaults c24 H100 (both runs pooled)",
+        "diff_pts": -18.75,
+        "ci95_pts": [
+          -43.75,
+          6.25
+        ],
+        "tasks": 8
+      },
+      {
+        "harness": "mini-swe-agent",
+        "change": "no-thinking c24",
+        "baseline": "defaults c24 H100 (both runs pooled)",
+        "diff_pts": -16.67,
+        "ci95_pts": [
+          -37.5,
+          2.08
+        ],
+        "tasks": 8
+      },
+      {
+        "harness": "terminus-2",
+        "change": "h200 c24 (v2 set)",
+        "baseline": "defaults c24 H100 (v2 set, one run)",
+        "diff_pts": 37.5,
+        "ci95_pts": [
+          8.33,
+          66.67
+        ],
+        "tasks": 4
+      },
+      {
+        "harness": "mini-swe-agent",
+        "change": "h200 c24 (v2 set)",
+        "baseline": "defaults c24 H100 (v2 set, one run)",
+        "diff_pts": 37.5,
+        "ci95_pts": [
+          16.67,
+          58.33
+        ],
+        "tasks": 4
+      }
+    ]
+  },
+  "trace_signals": {
+    "source": "hard_trace_signals.md (hard_trace_signals.py; 536 trials with 3+ steps, first 5 steps only)",
+    "auc_low_generation_rate_to_timeout": {
+      "terminus-2": {
+        "auc": 0.62,
+        "trials": 275,
+        "timeouts": 39
+      },
+      "mini-swe-agent": {
+        "auc": 0.68,
+        "trials": 261,
+        "timeouts": 36
+      }
+    },
+    "note": "Copied from the generated file (rounded to 2 decimals there); weak early-warning signal on these tasks."
+  },
+  "failures": [
+    {
+      "category": "agent exited with error",
+      "definition": "The harness process exited non-zero (NonZeroAgentExitCodeError).",
+      "counts": {
+        "Qwen/Qwen3.8-27B": 16,
+        "Qwen/Qwen3.6-35B-A3B-FP8": 2,
+        "gpt-6-astra": 1,
+        "gpt-6-luna": 1,
+        "gpt-6.1-sol": 1,
+        "claude-haiku-5-5": 8
+      },
+      "example": "The vendor CLI harness exited with an error before doing any work."
+    },
+    {
+      "category": "finished wrong",
+      "definition": "The agent finished on its own and the task's independent test failed.",
+      "counts": {
+        "Qwen/Qwen3.8-27B": 56,
+        "Qwen/Qwen3.6-35B-A3B-FP8": 18,
+        "gpt-6-astra": 3,
+        "gpt-6-luna": 4,
+        "gpt-6.1-sol": 1
+      },
+      "example": "The agent submitted a diagnosis of the wrong GPU among the decoys."
+    },
+    {
+      "category": "other error (CancelledError)",
+      "definition": "Harness run cancelled (CancelledError).",
+      "counts": {
+        "claude-haiku-5-5": 1
+      },
+      "example": "The run was cancelled before the trial finished."
+    },
+    {
+      "category": "other error (SandboxLikelyOutOfMemoryError)",
+      "definition": "other error (SandboxLikelyOutOfMemoryError)",
+      "counts": {
+        "Qwen/Qwen3.8-27B": 1
+      },
+      "example": "Harness exception."
+    },
+    {
+      "category": "timeout",
+      "definition": "Hit the task's agent time limit (AgentTimeoutError) before finishing.",
+      "counts": {
+        "Qwen/Qwen3.8-27B": 144,
+        "Qwen/Qwen3.6-35B-A3B-FP8": 3
+      },
+      "example": "The agent's model call never returned before the 30-minute limit after it had read the two source files."
+    }
+  ],
+  "failures_note": "Counts over every condition per model (self-hosted and API). Self-hosted categories come from Harbor exception types per trial, not from the trajectory classifier used in agentperf-infra (no 'looping' split).",
+  "replays_and_step_checks": [],
+  "replays_and_step_checks_note": "No Kitaru replays or step checks were run.",
+  "headline_findings": [
+    {
+      "finding": "On the 8-task hard set, an H200 instead of an H100 at 24 agents raised Qwen3.8-27B's solve rate by 22.92 points with terminus-2 and 18.75 with mini-swe-agent.",
+      "numbers": [
+        "paired_comparisons.comparisons[harness=terminus-2,change=h200 c24].diff_pts",
+        "paired_comparisons.comparisons[harness=mini-swe-agent,change=h200 c24].diff_pts"
+      ]
+    },
+    {
+      "finding": "A one-flag server cap of 8,192 output tokens per call raised mini-swe-agent's solve rate by 14.58 points and gave terminus-2 its lowest H100 cost per solve.",
+      "numbers": [
+        "paired_comparisons.comparisons[harness=mini-swe-agent,change=max-out-8k c24].diff_pts",
+        "results[\"self-hosted | hard set (8 tasks) | terminus-2 | max-out-8k | c24\"][0].cost_per_correct_cents",
+        "results[\"self-hosted | hard set (8 tasks) | terminus-2 | defaults | c24\"][0].cost_per_correct_cents"
+      ]
+    },
+    {
+      "finding": "On the harder v2 tasks the GPU change was larger: terminus-2 solved 2 of 24 on the H100 and 11 of 24 on the H200.",
+      "numbers": [
+        "results[\"self-hosted | v2 set (4 tasks) | terminus-2 | defaults | c24\"][0].correct",
+        "results[\"self-hosted | v2 set (4 tasks) | terminus-2 | h200 | c24\"][0].correct",
+        "paired_comparisons.comparisons[harness=terminus-2,change=h200 c24 (v2 set)].diff_pts"
+      ]
+    },
+    {
+      "finding": "Frontier API agents saturated the tasks: Codex with GPT-6 Luna solved 61 of 66 trials on the 11 hard and v2 tasks at 1.0225 cents per solve, and every OpenAI run on the v3 and torchtitan tasks solved every trial.",
+      "numbers": [
+        "results[\"vendor API | hard + v2 sets (11 tasks) | codex | gpt-6-luna\"][0].correct",
+        "results[\"vendor API | hard + v2 sets (11 tasks) | codex | gpt-6-luna\"][0].cost_per_correct_cents",
+        "results[\"vendor API | v3 set (5 tasks) | codex | gpt-6-luna\"][0].accuracy",
+        "results[\"vendor API | real-system tasks (2 torchtitan tasks) | codex | gpt-6.1-sol\"][0].accuracy"
+      ]
+    },
+    {
+      "finding": "The easy v1 pilot showed no serving effect: every self-hosted cell solved 30 of 30.",
+      "numbers": [
+        "results[\"self-hosted | v1 pilot (6 tasks) | terminus-2 | defaults | c30\"][0].accuracy",
+        "results[\"self-hosted | v1 pilot (6 tasks) | mini-swe-agent | defaults | c6\"][0].accuracy"
+      ]
+    }
+  ],
+  "limitations": [
+    "Small task sets: 6 (v1), 8 (hard), 4 (v2), 5 (v3), 2 (torchtitan); bootstrap CIs over 4-8 tasks are wide.",
+    "Tasks were built by the same team that ran the agents, and later rounds were designed after seeing earlier results.",
+    "One self-hosted model family (Qwen3.8-27B, plus one MoE run per harness) on one engine (vLLM 0.31.0).",
+    "Frontier coverage is mostly OpenAI models through Codex; Anthropic runs failed in setup (Claude Code + Haiku 5.5: 0/8, all agent-exit errors) or were partial (2 trials recorded, 1 passed, Harbor exit code 130), so they say nothing about Anthropic models' ability.",
+    "API cost excludes Modal sandboxes (and the 2-GPU sandboxes of the torchtitan tasks); OpenAI prices come from third-party aggregators per api_runs.py.",
+    "v3 and torchtitan tasks were only run with frontier API models, not the self-hosted model.",
+    "The 4k/16k output caps and the MoE model are single runs.",
+    "Self-hosted failure categories come from Harbor exception types; they do not separate looping from working timeouts.",
+    "Sandbox cost for self-hosted runs is an estimate that under-counts the bill."
+  ],
+  "inconsistencies": [
+    "BENCHMARKS.md says the hard set and v2/v3 total '18 tasks incl. titan'; mlops_hard/tasks has 18 task directories (8 hard + 3 v2 + 5 v3 + 2 titan), so with the 6 v1 tasks the benchmark has 24 tasks.",
+    "Two OpenAI runs over the same 11 tasks have job names tagged 'mlops_hard2' and 'mlops_hard' but task_set 'mlops_all' in api_attempts.jsonl; both ran all 11 tasks (pooled here).",
+    "mlops_bench_plan.md's frontier table and 'Every OpenAI model ... solves 88-100%' omit the Anthropic runs (0/8 setup failures; 1/2 partial).",
+    "mlops_bench_plan.md (Oct 10) reports +29 points (CI 8-50) for mini-swe-agent at 8 vs 24 agents from single runs; after repeats mlops_hard.md and this file give +25 (pooled baseline).",
+    "mlops_bench_plan.md 'Learnings' says mini-swe-agent gains '+6 points, CI [-6, +19]' from 60 minutes; the later table and mlops_hard.md give +6 [-2, +17].",
+    "BENCHMARKS.md says the open-model result is 'serving setup moves a 27B model's solve rate 15-25 pts'; on the v2 set the H200 effect is +37.5 (terminus-2) and +37.5 (mini-swe-agent) points (mlops_bench_plan.md: '+38').",
+    "Total spend is not separable: the plan quotes partial bills and running totals of the whole research project (not reproduced here) rather than this bench."
+  ],
+  "public_safety": [
+    {
+      "item": "Internal business notes in the original plan document",
+      "why": "Not results; kept out of the public repo",
+      "where_in_file": "not in this file; the plan document is not ported"
+    },
+    {
+      "item": "Budget figures and running spend totals",
+      "why": "Internal planning",
+      "where_in_file": "meta.total_spend_usd_note quotes only the partial bill figures from mlops_bench_plan.md; remove if spend is not to be published"
+    },
+    {
+      "item": "research_notes/ and reports/ (gitignored)",
+      "why": "Unpublished research notes and opportunity analyses",
+      "where_in_file": "not in this file"
+    },
+    {
+      "item": "Modal environment and app names (now env vars in the public code); harness model strings with vendor prefixes (openai/..., anthropic/...)",
+      "why": "Internal infrastructure; vendor prefixes are routing strings, not public IDs",
+      "where_in_file": "models[*].harness_model_string"
+    },
+    {
+      "item": "Vendor-API results not shared with the vendors",
+      "why": "Results for OpenAI and Anthropic models; the Anthropic runs are setup failures, not capability results",
+      "where_in_file": "results['vendor API | ...']"
+    },
+    {
+      "item": "Model names GPT-6 Luna / GPT-6.1 Sol / GPT-6 Astra / Claude Haiku 5.5 and their prices",
+      "why": "Prices for OpenAI come from third-party aggregators per api_runs.py; verify against the vendors' own price pages before publishing",
+      "where_in_file": "models[*].price_*"
+    }
+  ]
+}

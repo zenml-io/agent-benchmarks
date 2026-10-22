@@ -1,0 +1,6 @@
+# training hyperparameters (moved out of train.py)
+batch_size: 1024
+lr: 0.008
+epochs: 14
+weight_decay: 0.1
+label_smoothing: 0.1

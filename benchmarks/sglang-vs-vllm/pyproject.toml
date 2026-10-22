@@ -1,0 +1,11 @@
+[project]
+name = "sglang-vs-vllm"
+version = "0.1.0"
+description = "Replay recorded agent traffic against stock vLLM and SGLang on one H100 (no agents)."
+requires-python = ">=3.11"
+# Table rebuilding and replay_bench.py use only the standard library. Paid replays need the
+# Modal CLI and the shared harness's serve_vllm.py / serve_sglang.py (see RERUN.md).
+dependencies = []
+
+[tool.uv]
+package = false

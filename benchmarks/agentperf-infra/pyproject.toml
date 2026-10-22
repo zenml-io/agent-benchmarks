@@ -1,0 +1,11 @@
+[project]
+name = "agentperf-infra"
+version = "0.1.0"
+description = "Does serving infrastructure change what a self-hosted agent solves? Terminal-Bench 2.0 + GAIA on Qwen via vLLM on Modal, through Harbor."
+requires-python = ">=3.11"
+# Analysis and table rebuilding use only the standard library. Paid runs need the shared
+# harness (../self-hosted-agents-harness) and its Modal/Harbor CLIs; see RERUN.md.
+dependencies = []
+
+[tool.uv]
+package = false

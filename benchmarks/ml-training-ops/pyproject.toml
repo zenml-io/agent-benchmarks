@@ -1,0 +1,23 @@
+[project]
+name = "ml-training-ops"
+version = "0.1.0"
+description = "ML-training-operations tasks (Harbor format) for coding agents: self-hosted Qwen on Modal vLLM and vendor-API agents."
+requires-python = ">=3.11"
+# Analysis, table rebuilding and task building use only the standard library. Local task checks
+# (build.py --check, make_tasks.py --check) need the task images' packages: install the
+# `taskcheck` group (`uv sync --group taskcheck`, CPU torch index below).
+dependencies = []
+
+[dependency-groups]
+taskcheck = ["torch==2.5.1", "numpy==2.1.3", "pytest==8.4.1", "pyyaml==6.0.2", "ray==2.50.1"]
+
+[tool.uv]
+package = false
+
+[tool.uv.sources]
+torch = { index = "pytorch-cpu" }
+
+[[tool.uv.index]]
+name = "pytorch-cpu"
+url = "https://download.pytorch.org/whl/cpu"
+explicit = true

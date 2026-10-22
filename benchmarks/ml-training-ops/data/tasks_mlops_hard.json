@@ -1,0 +1,1 @@
+{"path": "tasks/mlops_hard/tasks", "tasks": ["ddp-replica-drift", "uneven-shard-hang", "straggler-diagnosis", "corrupt-shard", "atomic-checkpoint", "reshard-optimizer", "k8s-unschedulable", "memory-leak-oom"]}

@@ -1,0 +1,13 @@
+[project]
+name = "self-hosted-agents-harness"
+version = "0.1.0"
+description = "Shared harness: serve an open model on Modal with vLLM or SGLang, run agent harnesses on it through Harbor, record one row per run."
+requires-python = ">=3.11"
+# experiment.py, vllm_metrics.py and the tests use only the standard library. The Modal and
+# Harbor CLIs are installed as uv tools (see README.md), pinned to the versions used in the runs:
+#   uv tool install 'modal[api-proxy-support]==1.6.1'
+#   uv tool install 'harbor[modal]==0.24.0' --with 'modal[api-proxy-support]==1.6.1'
+dependencies = []
+
+[tool.uv]
+package = false

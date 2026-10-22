@@ -1,0 +1,2 @@
+{"crash_shard": "shard-0037.npy", "crash_rank": 5, "crash_step": 173,
+ "bad_rows": {"shard-0037.npy": [9800, 13454], "shard-0040.npy": [9169], "shard-0042.npy": [18395]}}

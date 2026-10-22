@@ -1,0 +1,354 @@
+{
+  "meta": {
+    "slug": "sglang-vs-vllm",
+    "name": "SGLang vs vLLM on replayed agent traffic",
+    "question": "At equal hardware and identical agent traffic, does the serving engine (stock vLLM vs SGLang) change throughput and latency for this hybrid-attention model?",
+    "domain": "LLM serving for coding agents (no agents run; recorded traffic replayed)",
+    "status": "complete",
+    "run_dates": {
+      "start": "2026-10-09",
+      "end": "2026-10-09",
+      "note": "Four runs between 15:17 and 16:21 UTC (bench.jsonl `ts`)."
+    },
+    "who_ran": "Hamza Tahir (ZenML), with Claude Code agents",
+    "kitaru_version": null,
+    "kitaru_version_note": "Kitaru was not used.",
+    "harness_git_commit": "e7262e4ea7f0b435fb5721706ce342ba052c4cba",
+    "harness_git_commit_note": "`git log -1 --format=%H -- replay_bench.py serve_sglang.py`; bench.jsonl last committed in ec9420707285f3e778bbe9bd60a5b02cd1dc4464.",
+    "code_location": "the private research repo (paths at its root): replay_bench.py, serve_sglang.py, serve_vllm.py, bench.jsonl (repo root)",
+    "total_spend_usd": 4.5206,
+    "total_spend_usd_note": "Sum of the four records' `cost` in bench.jsonl: server up-time (startup + replay) x $3.95 per H100-hour. No sandboxes. Computed by replay_bench.py, not taken from the Modal bill; outside attempts.jsonl."
+  },
+  "dataset": {
+    "source": "Recorded mini-swe-agent trajectories from this repo's own Terminal-Bench 2.0 runs at 32 agents with vLLM defaults (jobs/full*__mini-swe-agent__defaults__c32__*)",
+    "url": null,
+    "url_note": "Internal recordings; not published.",
+    "license": null,
+    "license_note": "Derived from Terminal-Bench 2.0 task runs; license not recorded in the repo.",
+    "total_cases": 124,
+    "total_cases_note": "124 recorded sessions with 1,465 model turns (bench_vllm.log); turns whose recorded prompt exceeded 60,000 tokens were cut.",
+    "kept_cases": 124,
+    "dropped_reason": "None dropped; each run replays sessions in a fixed order until the 720 s window ends, so runs reach different numbers of sessions (see results[*].sessions_touched).",
+    "split": null,
+    "split_note": "Not applicable.",
+    "types": [
+      {
+        "type": "mini-swe-agent Terminal-Bench session",
+        "count": 124
+      }
+    ]
+  },
+  "models": [
+    {
+      "id": "Qwen/Qwen3.8-27B",
+      "display_name": "Qwen3.8-27B (dense, hybrid Gated DeltaNet + attention)",
+      "vendor": "Qwen (Alibaba)",
+      "weights": "open",
+      "inference_provider_type": "self-hosted",
+      "price_per_mtok_input_usd": null,
+      "price_per_mtok_output_usd": null,
+      "price_date": null
+    }
+  ],
+  "models_note": "Served by us on one Modal H100 ('self-hosted' is outside the spec's two provider types); cost is GPU time at $3.95/h, not per token.",
+  "setup": {
+    "conditions": [
+      {
+        "name": "stock vLLM",
+        "description": "vLLM 0.31.0, same flags as the agent study's defaults (serve_vllm.py COMMON), no extra args; one H100, 32 concurrent replayed sessions, 3 s gap between turns, 720 s replay window."
+      },
+      {
+        "name": "stock SGLang",
+        "description": "SGLang 0.5.20 (lmsysorg/sglang:v0.5.20) with the equivalent common flags, no extra args; one H100, 32 concurrent replayed sessions, 3 s gap between turns, 720 s replay window."
+      },
+      {
+        "name": "SGLang, lazy radix + bf16 states",
+        "description": "SGLang with --mem-fraction-static 0.85, --mamba-radix-cache-strategy extra_buffer_lazy, --mamba-ssm-dtype bfloat16, --max-mamba-cache-size 128; one H100, 32 concurrent replayed sessions, 3 s gap between turns, 720 s replay window."
+      },
+      {
+        "name": "SGLang, radix cache off",
+        "description": "SGLang with --mem-fraction-static 0.85, --disable-radix-cache, --max-mamba-cache-size 48; one H100, 32 concurrent replayed sessions, 3 s gap between turns, 720 s replay window."
+      }
+    ],
+    "prompt_rewriting": null,
+    "prompt_rewriting_note": "Not applicable.",
+    "tools": "None executed: each request re-sends the conversation exactly as the agent sent it before its i-th reply, with the bash tool schema, and asks for exactly as many tokens as the recorded reply (ignore_eos, temperature 0.6, streaming).",
+    "user_simulator": null,
+    "user_simulator_note": "Not applicable.",
+    "limits": {
+      "concurrency": 32,
+      "replay_window_s": 720,
+      "gap_between_turns_s": 3.0,
+      "gpu": "H100 (Modal 'H100!', no substitution)",
+      "max_recorded_prompt_tokens": 60000
+    }
+  },
+  "grading": {
+    "judges": [],
+    "judges_note": "No accuracy: this measures serving only, so there is nothing to grade.",
+    "tie_break": null,
+    "human_agreement": null,
+    "self_grading_check": null,
+    "self_grading_check_note": "Not applicable.",
+    "metrics": [
+      {
+        "name": "requests_completed",
+        "definition": "requests that returned without error and with a usage block within the run."
+      },
+      {
+        "name": "generated_tokens_per_s",
+        "definition": "completion tokens of completed requests / measured_window_s (the actual replay duration, which runs past 720 s while in-flight requests finish)."
+      },
+      {
+        "name": "request_latency_p50_s / p90_s",
+        "definition": "median / 90th percentile of request wall time over completed requests."
+      },
+      {
+        "name": "ttft_p50_s",
+        "definition": "median time to the first streamed chunk."
+      },
+      {
+        "name": "time_per_output_token_p50_ms",
+        "definition": "median of (latency - ttft) / (completion tokens - 1)."
+      },
+      {
+        "name": "running_requests_peak",
+        "definition": "peak of the engine's running-requests gauge, scraped every 10 s."
+      },
+      {
+        "name": "cost_per_correct_cents",
+        "definition": "not applicable (no correctness)."
+      }
+    ]
+  },
+  "noise": {
+    "method": null,
+    "size": null,
+    "ci_method": null,
+    "resamples": null,
+    "tie_threshold": null,
+    "note": "One run per setting; no repeats, so no run-to-run noise estimate or CIs. In the agent study, identical runs varied about 20% in time."
+  },
+  "results": {
+    "stock vLLM": [
+      {
+        "model": "Qwen/Qwen3.8-27B",
+        "n": 504,
+        "n_definition": "requests sent",
+        "correct": null,
+        "accuracy": null,
+        "ci95": null,
+        "cost_per_correct_cents": null,
+        "requests_completed": 504,
+        "requests_errored": 0,
+        "error_types": [],
+        "sessions_touched": 55,
+        "measured_window_s": 832.8,
+        "generated_tokens": 326395,
+        "prompt_tokens": 3737986,
+        "generated_tokens_per_s": 391.94,
+        "request_latency_p50_s": 27.92,
+        "request_latency_p90_s": 107.44,
+        "ttft_p50_s": 8.66,
+        "time_per_output_token_p50_ms": 53.94,
+        "client_prefix_cache_hit": 0.0652,
+        "prompt_tokens_vs_recorded_median": 0.8769,
+        "kv_or_token_usage_peak": 1.0,
+        "running_requests_peak": 31.0,
+        "waiting_requests_peak": 11.0,
+        "server_startup_s": 163.6,
+        "gpu_cost_usd": 1.0943,
+        "mean_tokens_per_case": 8064.2,
+        "mean_calls_per_case": null,
+        "failures": {},
+        "requests_completed_vs_vllm": 1.0,
+        "generated_tokens_per_s_vs_vllm": 1.0
+      }
+    ],
+    "stock SGLang": [
+      {
+        "model": "Qwen/Qwen3.8-27B",
+        "n": 277,
+        "n_definition": "requests sent",
+        "correct": null,
+        "accuracy": null,
+        "ci95": null,
+        "cost_per_correct_cents": null,
+        "requests_completed": 277,
+        "requests_errored": 0,
+        "error_types": [],
+        "sessions_touched": 39,
+        "measured_window_s": 815.2,
+        "generated_tokens": 167763,
+        "prompt_tokens": 1349475,
+        "generated_tokens_per_s": 205.79,
+        "request_latency_p50_s": 88.09,
+        "request_latency_p90_s": 142.25,
+        "ttft_p50_s": 76.29,
+        "time_per_output_token_p50_ms": 22.51,
+        "client_prefix_cache_hit": 0.0826,
+        "prompt_tokens_vs_recorded_median": 0.9256,
+        "kv_or_token_usage_peak": 0.76,
+        "running_requests_peak": 5.0,
+        "waiting_requests_peak": 27.0,
+        "server_startup_s": 167.2,
+        "gpu_cost_usd": 1.079,
+        "mean_tokens_per_case": 5477.4,
+        "mean_calls_per_case": null,
+        "failures": {},
+        "requests_completed_vs_vllm": 0.5496,
+        "generated_tokens_per_s_vs_vllm": 0.5251
+      }
+    ],
+    "SGLang, lazy radix + bf16 states": [
+      {
+        "model": "Qwen/Qwen3.8-27B",
+        "n": 417,
+        "n_definition": "requests sent",
+        "correct": null,
+        "accuracy": null,
+        "ci95": null,
+        "cost_per_correct_cents": null,
+        "requests_completed": 417,
+        "requests_errored": 0,
+        "error_types": [],
+        "sessions_touched": 47,
+        "measured_window_s": 903.2,
+        "generated_tokens": 272742,
+        "prompt_tokens": 2793678,
+        "generated_tokens_per_s": 301.97,
+        "request_latency_p50_s": 54.04,
+        "request_latency_p90_s": 115.88,
+        "ttft_p50_s": 36.49,
+        "time_per_output_token_p50_ms": 31.34,
+        "client_prefix_cache_hit": 0.0987,
+        "prompt_tokens_vs_recorded_median": 0.8858,
+        "kv_or_token_usage_peak": 0.98,
+        "running_requests_peak": 27.0,
+        "waiting_requests_peak": 26.0,
+        "server_startup_s": 167.6,
+        "gpu_cost_usd": 1.1762,
+        "mean_tokens_per_case": 7353.5,
+        "mean_calls_per_case": null,
+        "failures": {},
+        "requests_completed_vs_vllm": 0.8274,
+        "generated_tokens_per_s_vs_vllm": 0.7704
+      }
+    ],
+    "SGLang, radix cache off": [
+      {
+        "model": "Qwen/Qwen3.8-27B",
+        "n": 446,
+        "n_definition": "requests sent",
+        "correct": null,
+        "accuracy": null,
+        "ci95": null,
+        "cost_per_correct_cents": null,
+        "requests_completed": 435,
+        "requests_errored": 11,
+        "error_types": [
+          "ConnectionResetError"
+        ],
+        "sessions_touched": 47,
+        "measured_window_s": 855.4,
+        "generated_tokens": 281150,
+        "prompt_tokens": 2998166,
+        "generated_tokens_per_s": 328.68,
+        "request_latency_p50_s": 45.97,
+        "request_latency_p90_s": 95.75,
+        "ttft_p50_s": 29.39,
+        "time_per_output_token_p50_ms": 38.52,
+        "client_prefix_cache_hit": 0.0,
+        "prompt_tokens_vs_recorded_median": 0.8821,
+        "kv_or_token_usage_peak": 0.99,
+        "running_requests_peak": 31.0,
+        "waiting_requests_peak": 24.0,
+        "server_startup_s": 210.9,
+        "gpu_cost_usd": 1.1711,
+        "mean_tokens_per_case": 7538.7,
+        "mean_calls_per_case": null,
+        "failures": {
+          "ConnectionResetError": 11
+        },
+        "requests_completed_vs_vllm": 0.8631,
+        "generated_tokens_per_s_vs_vllm": 0.8386
+      }
+    ]
+  },
+  "results_note": "One entry per engine setting. n = requests sent; errored requests are counted in requests_errored and excluded from throughput and latency. Ratios vs stock vLLM are computed from the values shown.",
+  "per_type": {},
+  "per_type_note": "Not applicable: one traffic type.",
+  "failures": [
+    {
+      "category": "ConnectionResetError",
+      "definition": "Request failed with a connection reset from the server.",
+      "counts": {
+        "Qwen/Qwen3.8-27B": 11
+      },
+      "example": "A streamed request was reset by the SGLang server while the radix cache was off."
+    }
+  ],
+  "failures_note": "Only the SGLang radix-cache-off run had errors; the other three runs had none.",
+  "replays_and_step_checks": [],
+  "replays_and_step_checks_note": "No Kitaru replays. (The benchmark itself replays recorded traffic, but that is load generation, not a replay evaluation.)",
+  "headline_findings": [
+    {
+      "finding": "Stock SGLang completed 277 requests to stock vLLM's 504 on the same replayed traffic and H100.",
+      "numbers": [
+        "results[\"stock SGLang\"][0].requests_completed",
+        "results[\"stock vLLM\"][0].requests_completed",
+        "results[\"stock SGLang\"][0].requests_completed_vs_vllm"
+      ]
+    },
+    {
+      "finding": "Stock SGLang ran at most 5 requests at once for this hybrid model (its prefix cache reserves linear-attention state per request), so the rest queued.",
+      "numbers": [
+        "results[\"stock SGLang\"][0].running_requests_peak",
+        "results[\"stock SGLang\"][0].waiting_requests_peak",
+        "results[\"stock vLLM\"][0].running_requests_peak"
+      ]
+    },
+    {
+      "finding": "Turning SGLang's radix cache off was its best setting tried, still behind stock vLLM in completed requests and generated tokens per second, with 11 connection resets.",
+      "numbers": [
+        "results[\"SGLang, radix cache off\"][0].requests_completed_vs_vllm",
+        "results[\"SGLang, radix cache off\"][0].generated_tokens_per_s_vs_vllm",
+        "results[\"SGLang, radix cache off\"][0].requests_errored"
+      ]
+    },
+    {
+      "finding": "Median request time was 27.92 s on stock vLLM and 88.09 s on stock SGLang.",
+      "numbers": [
+        "results[\"stock vLLM\"][0].request_latency_p50_s",
+        "results[\"stock SGLang\"][0].request_latency_p50_s"
+      ]
+    }
+  ],
+  "limitations": [
+    "One run per setting; no repeats or confidence intervals.",
+    "One model (a hybrid Gated DeltaNet + attention model, where SGLang's per-request linear-attention state is the bottleneck), one GPU type (H100), one workload (mini-swe-agent traffic at 32 sessions).",
+    "Only two non-default SGLang settings were tried, following its cookbook; not an exhaustive tuning of either engine.",
+    "Measures serving throughput and latency only, not agent outcomes.",
+    "Replay re-sends recorded prompts with fixed generation lengths (ignore_eos); real agents would react to slower responses (fewer turns per time limit).",
+    "Runs reached different numbers of sessions (39-55 of 124) within the window, so later sessions with longer prompts are weighted differently across engines.",
+    "Replayed prompts were a median 0.8769-0.9256 of the recorded prompt token counts (reasoning text is not re-sent), so prefix sharing is close to but not identical with the original run."
+  ],
+  "inconsistencies": [
+    "FINDINGS.md section 10 says each replay ran 12 minutes; the recorded measured windows are 815.2-903.2 s (13.6-15.1 min), because in-flight requests finish after the 720 s deadline. Throughput is divided by the measured window.",
+    "FINDINGS.md says SGLang with radix cache off was '14% behind stock vLLM'; that matches completed requests (435 vs 504, ratio 0.8631); by generated tokens per second it is 0.8386 (16% behind).",
+    "FINDINGS.md section 10 does not mention the 11 errored requests (ConnectionResetError) in the radix-cache-off run.",
+    "FINDINGS.md says the claim tested against was 'SGLang about 50% faster than vLLM, measured on 3090s with a different model'; no source for that claim is recorded in the repo."
+  ],
+  "public_safety": [
+    {
+      "item": "Modal app names and the Modal environment (now env vars in the public code)",
+      "why": "Internal infrastructure names",
+      "where_in_file": "not in this file; replaced by env vars in the public replay_bench.py / serve_sglang.py"
+    },
+    {
+      "item": "Raw replay files jobs/bench-*.json",
+      "why": "Contain the replayed agent conversations (Terminal-Bench task content)",
+      "where_in_file": "not in this file"
+    }
+  ]
+}

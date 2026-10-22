@@ -1,0 +1,4010 @@
+{
+  "meta": {
+    "slug": "agentperf-infra",
+    "name": "agentperf: does serving infrastructure change what a self-hosted agent solves?",
+    "question": "Do GPU, load and serving settings change how many tasks a self-hosted agent solves, and what each solved task costs?",
+    "domain": "Coding agents (Terminal-Bench 2.0) and web research agents (GAIA) on a self-hosted open model served by vLLM",
+    "status": "complete",
+    "run_dates": {
+      "start": "2026-10-08",
+      "end": "2026-10-09",
+      "note": "First (failed) quickcheck attempts 2026-10-08; all valid Terminal-Bench and GAIA runs between 2026-10-09T03:46 and 2026-10-09T13:52 (attempts.jsonl `ts`, runner clock)."
+    },
+    "who_ran": "Hamza Tahir (ZenML), with Claude Code agents",
+    "kitaru_version": null,
+    "kitaru_version_note": "Kitaru was not used; runs are Harbor 0.24.0 jobs recorded in attempts.jsonl.",
+    "harness_git_commit": "5b1fdf6e52629c15d27af3125098d10b164c6bf2",
+    "harness_git_commit_note": "`git log -1 --format=%H -- experiment.py serve_vllm.py vllm_metrics.py`. This commit (2026-10-13) postdates the runs; it added the max-out-* configs used only by the ML-training-ops bench. attempts.jsonl was last committed in 6f799c79b0a774e01af9f8adcc0261fd4b49d702.",
+    "code_location": "the private research repo (paths at its root): experiment.py, serve_vllm.py, vllm_metrics.py, analysis.py, trajectories.py, mechanisms.py, confirmatory.py, attempts.jsonl (repo root)",
+    "total_spend_usd": null,
+    "total_spend_usd_note": "No exact bill export is in the repo. CLAUDE.md and FINDINGS.md give the real Modal bill for the study as approximately $390 (GPUs and sandboxes), $218 of it GPU time, both rounded. Recorded in attempts.jsonl for these task sets (incl. the quickcheck and invalid runs): GPU run time $194.5856, GPU startup $18.6399, estimated sandboxes $165.2641; the sandbox estimate under-counts the bill (ADVERSARIAL_CHECKS.md: $38 estimated vs $48 billed for the same window)."
+  },
+  "dataset": {
+    "source": "Terminal-Bench 2.0 (Harbor dataset terminal-bench@2.0) and GAIA (Harbor dataset gaia/gaia)",
+    "url": {
+      "terminal-bench-2.0": "https://www.tbench.ai",
+      "gaia": "https://huggingface.co/datasets/gaia-benchmark/GAIA"
+    },
+    "license": null,
+    "license_note": "Not recorded in the repo; check both upstream licenses before publishing task-level data.",
+    "total_cases": {
+      "terminal-bench-2.0": 89,
+      "gaia": 165
+    },
+    "kept_cases": {
+      "terminal-bench-2.0": 36,
+      "gaia": 60
+    },
+    "dropped_reason": "Terminal-Bench: random sample (seed 0) of tasks with an agent time limit of 20 minutes or less (63% of the benchmark), to fit the budget; GAIA: 60 of 165 tasks stratified by level (seed 0), 10-minute agent limit. Task lists fixed before the first run (tasks.json, tasks_gaia.json).",
+    "split": null,
+    "split_note": "No train/tuning/held-out split: nothing was tuned on these tasks; every task is evaluation-only.",
+    "types": [
+      {
+        "type": "terminal-bench-2.0/easy",
+        "count": 4
+      },
+      {
+        "type": "terminal-bench-2.0/medium",
+        "count": 24
+      },
+      {
+        "type": "terminal-bench-2.0/hard",
+        "count": 8
+      },
+      {
+        "type": "gaia/level1",
+        "count": 19
+      },
+      {
+        "type": "gaia/level2",
+        "count": 31
+      },
+      {
+        "type": "gaia/level3",
+        "count": 10
+      }
+    ],
+    "types_note": "Terminal-Bench difficulty from each task's task.toml; GAIA levels from tasks_gaia.json (per-task levels are not stored, so per_type does not split GAIA by level)."
+  },
+  "models": [
+    {
+      "id": "Qwen/Qwen3.8-27B",
+      "display_name": "Qwen3.8-27B (dense, BF16)",
+      "vendor": "Qwen (Alibaba)",
+      "weights": "open",
+      "inference_provider_type": "self-hosted",
+      "price_per_mtok_input_usd": null,
+      "price_per_mtok_output_usd": null,
+      "price_date": null,
+      "used_in": "every config except weights-fp8 and moe-a3b"
+    },
+    {
+      "id": "Qwen/Qwen3.8-27B-FP8",
+      "display_name": "Qwen3.8-27B (official FP8 checkpoint)",
+      "vendor": "Qwen (Alibaba)",
+      "weights": "open",
+      "inference_provider_type": "self-hosted",
+      "price_per_mtok_input_usd": null,
+      "price_per_mtok_output_usd": null,
+      "price_date": null,
+      "used_in": "weights-fp8"
+    },
+    {
+      "id": "Qwen/Qwen3.6-35B-A3B-FP8",
+      "display_name": "Qwen3.6-35B-A3B (MoE, 3B active, FP8)",
+      "vendor": "Qwen (Alibaba)",
+      "weights": "open",
+      "inference_provider_type": "self-hosted",
+      "price_per_mtok_input_usd": null,
+      "price_per_mtok_output_usd": null,
+      "price_date": null,
+      "used_in": "moe-a3b"
+    }
+  ],
+  "models_note": "All models were served by us with vLLM 0.31.0 on Modal GPUs ('self-hosted' is outside the spec's two provider types). There is no per-token price: cost is GPU time x Modal's $/GPU-hour (experiment.py GPU_PRICES, `modal billing rates`, Oct 2026): H100 $3.95, H200 $4.54, B200 $6.25; sandboxes $0.1419 per core-hour + $0.024 per GiB-hour.",
+  "setup": {
+    "conditions": [
+      {
+        "name": "mini-swe-agent | b200 | c32",
+        "description": "mini-swe-agent 2.4.6 (bash-only, actions parsed from text; large prompts; runs inside the task sandbox); serving config 'b200': vLLM defaults on a B200 instead of an H100; 32 agents share one GPU server."
+      },
+      {
+        "name": "mini-swe-agent | defaults | c16",
+        "description": "mini-swe-agent 2.4.6 (bash-only, actions parsed from text; large prompts; runs inside the task sandbox); serving config 'defaults': vLLM 0.31.0 defaults (prefix caching and chunked prefill on), BF16 weights, H100; 16 agents share one GPU server."
+      },
+      {
+        "name": "mini-swe-agent | defaults | c32",
+        "description": "mini-swe-agent 2.4.6 (bash-only, actions parsed from text; large prompts; runs inside the task sandbox); serving config 'defaults': vLLM 0.31.0 defaults (prefix caching and chunked prefill on), BF16 weights, H100; 32 agents share one GPU server."
+      },
+      {
+        "name": "mini-swe-agent | defaults | c48",
+        "description": "mini-swe-agent 2.4.6 (bash-only, actions parsed from text; large prompts; runs inside the task sandbox); serving config 'defaults': vLLM 0.31.0 defaults (prefix caching and chunked prefill on), BF16 weights, H100; 48 agents share one GPU server."
+      },
+      {
+        "name": "mini-swe-agent | defaults | c64",
+        "description": "mini-swe-agent 2.4.6 (bash-only, actions parsed from text; large prompts; runs inside the task sandbox); serving config 'defaults': vLLM 0.31.0 defaults (prefix caching and chunked prefill on), BF16 weights, H100; 64 agents share one GPU server."
+      },
+      {
+        "name": "mini-swe-agent | defaults | c8",
+        "description": "mini-swe-agent 2.4.6 (bash-only, actions parsed from text; large prompts; runs inside the task sandbox); serving config 'defaults': vLLM 0.31.0 defaults (prefix caching and chunked prefill on), BF16 weights, H100; 8 agents share one GPU server."
+      },
+      {
+        "name": "mini-swe-agent | defaults-2x-time | c32",
+        "description": "mini-swe-agent 2.4.6 (bash-only, actions parsed from text; large prompts; runs inside the task sandbox); serving config 'defaults-2x-time': defaults server on H100; agents get 2x each task's time limit; 32 agents share one GPU server."
+      },
+      {
+        "name": "mini-swe-agent | defaults-4x-time | c16",
+        "description": "mini-swe-agent 2.4.6 (bash-only, actions parsed from text; large prompts; runs inside the task sandbox); serving config 'defaults-4x-time': defaults server on H100; agents get 4x each task's time limit; 16 agents share one GPU server."
+      },
+      {
+        "name": "mini-swe-agent | defaults-4x-time | c32",
+        "description": "mini-swe-agent 2.4.6 (bash-only, actions parsed from text; large prompts; runs inside the task sandbox); serving config 'defaults-4x-time': defaults server on H100; agents get 4x each task's time limit; 32 agents share one GPU server."
+      },
+      {
+        "name": "mini-swe-agent | h200 | c32",
+        "description": "mini-swe-agent 2.4.6 (bash-only, actions parsed from text; large prompts; runs inside the task sandbox); serving config 'h200': vLLM defaults on an H200 instead of an H100; 32 agents share one GPU server."
+      },
+      {
+        "name": "mini-swe-agent | h200-spec-mtp | c32",
+        "description": "mini-swe-agent 2.4.6 (bash-only, actions parsed from text; large prompts; runs inside the task sandbox); serving config 'h200-spec-mtp': spec-mtp on an H200 (speculative decoding with KV headroom); 32 agents share one GPU server."
+      },
+      {
+        "name": "mini-swe-agent | kv-fp8 | c32",
+        "description": "mini-swe-agent 2.4.6 (bash-only, actions parsed from text; large prompts; runs inside the task sandbox); serving config 'kv-fp8': KV cache stored in FP8 (--kv-cache-dtype fp8), H100; 32 agents share one GPU server."
+      },
+      {
+        "name": "mini-swe-agent | moe-a3b | c16",
+        "description": "mini-swe-agent 2.4.6 (bash-only, actions parsed from text; large prompts; runs inside the task sandbox); serving config 'moe-a3b': second model Qwen/Qwen3.6-35B-A3B-FP8 (MoE, 3B active, small KV cache) with vLLM defaults, H100; 16 agents share one GPU server."
+      },
+      {
+        "name": "mini-swe-agent | moe-a3b | c32",
+        "description": "mini-swe-agent 2.4.6 (bash-only, actions parsed from text; large prompts; runs inside the task sandbox); serving config 'moe-a3b': second model Qwen/Qwen3.6-35B-A3B-FP8 (MoE, 3B active, small KV cache) with vLLM defaults, H100; 32 agents share one GPU server."
+      },
+      {
+        "name": "mini-swe-agent | no-prefix-cache | c32",
+        "description": "mini-swe-agent 2.4.6 (bash-only, actions parsed from text; large prompts; runs inside the task sandbox); serving config 'no-prefix-cache': prefix caching off (--no-enable-prefix-caching), H100; 32 agents share one GPU server."
+      },
+      {
+        "name": "mini-swe-agent | no-thinking | c32",
+        "description": "mini-swe-agent 2.4.6 (bash-only, actions parsed from text; large prompts; runs inside the task sandbox); serving config 'no-thinking': reasoning off by default (enable_thinking=false in the chat template), H100; 32 agents share one GPU server."
+      },
+      {
+        "name": "mini-swe-agent | spec-mtp | c16",
+        "description": "mini-swe-agent 2.4.6 (bash-only, actions parsed from text; large prompts; runs inside the task sandbox); serving config 'spec-mtp': speculative decoding with the model's own MTP layer, 2 draft tokens, H100; 16 agents share one GPU server."
+      },
+      {
+        "name": "mini-swe-agent | spec-mtp | c32",
+        "description": "mini-swe-agent 2.4.6 (bash-only, actions parsed from text; large prompts; runs inside the task sandbox); serving config 'spec-mtp': speculative decoding with the model's own MTP layer, 2 draft tokens, H100; 32 agents share one GPU server."
+      },
+      {
+        "name": "mini-swe-agent | weights-fp8 | c32",
+        "description": "mini-swe-agent 2.4.6 (bash-only, actions parsed from text; large prompts; runs inside the task sandbox); serving config 'weights-fp8': Qwen's official FP8 checkpoint Qwen/Qwen3.8-27B-FP8 instead of BF16, H100; 32 agents share one GPU server."
+      },
+      {
+        "name": "opencode | defaults | c16",
+        "description": "opencode 1.18.35 (native tool calls; runs inside the task sandbox); serving config 'defaults': vLLM 0.31.0 defaults (prefix caching and chunked prefill on), BF16 weights, H100; 16 agents share one GPU server."
+      },
+      {
+        "name": "opencode | defaults | c32",
+        "description": "opencode 1.18.35 (native tool calls; runs inside the task sandbox); serving config 'defaults': vLLM 0.31.0 defaults (prefix caching and chunked prefill on), BF16 weights, H100; 32 agents share one GPU server."
+      },
+      {
+        "name": "pi | defaults | c16",
+        "description": "pi 1.1.0 (minimal tool-calling agent; runs inside the task sandbox); serving config 'defaults': vLLM 0.31.0 defaults (prefix caching and chunked prefill on), BF16 weights, H100; 16 agents share one GPU server."
+      },
+      {
+        "name": "pi | defaults | c32",
+        "description": "pi 1.1.0 (minimal tool-calling agent; runs inside the task sandbox); serving config 'defaults': vLLM 0.31.0 defaults (prefix caching and chunked prefill on), BF16 weights, H100; 32 agents share one GPU server."
+      },
+      {
+        "name": "terminus-2 | b200 | c32",
+        "description": "terminus-2 (Harbor 0.24.0's own agent, drives a tmux session; lean prompts); serving config 'b200': vLLM defaults on a B200 instead of an H100; 32 agents share one GPU server."
+      },
+      {
+        "name": "terminus-2 | defaults | c16",
+        "description": "terminus-2 (Harbor 0.24.0's own agent, drives a tmux session; lean prompts); serving config 'defaults': vLLM 0.31.0 defaults (prefix caching and chunked prefill on), BF16 weights, H100; 16 agents share one GPU server."
+      },
+      {
+        "name": "terminus-2 | defaults | c32",
+        "description": "terminus-2 (Harbor 0.24.0's own agent, drives a tmux session; lean prompts); serving config 'defaults': vLLM 0.31.0 defaults (prefix caching and chunked prefill on), BF16 weights, H100; 32 agents share one GPU server."
+      },
+      {
+        "name": "terminus-2 | defaults | c48",
+        "description": "terminus-2 (Harbor 0.24.0's own agent, drives a tmux session; lean prompts); serving config 'defaults': vLLM 0.31.0 defaults (prefix caching and chunked prefill on), BF16 weights, H100; 48 agents share one GPU server."
+      },
+      {
+        "name": "terminus-2 | defaults | c64",
+        "description": "terminus-2 (Harbor 0.24.0's own agent, drives a tmux session; lean prompts); serving config 'defaults': vLLM 0.31.0 defaults (prefix caching and chunked prefill on), BF16 weights, H100; 64 agents share one GPU server."
+      },
+      {
+        "name": "terminus-2 | defaults | c8",
+        "description": "terminus-2 (Harbor 0.24.0's own agent, drives a tmux session; lean prompts); serving config 'defaults': vLLM 0.31.0 defaults (prefix caching and chunked prefill on), BF16 weights, H100; 8 agents share one GPU server."
+      },
+      {
+        "name": "terminus-2 | defaults-2x-time | c32",
+        "description": "terminus-2 (Harbor 0.24.0's own agent, drives a tmux session; lean prompts); serving config 'defaults-2x-time': defaults server on H100; agents get 2x each task's time limit; 32 agents share one GPU server."
+      },
+      {
+        "name": "terminus-2 | defaults-4x-time | c16",
+        "description": "terminus-2 (Harbor 0.24.0's own agent, drives a tmux session; lean prompts); serving config 'defaults-4x-time': defaults server on H100; agents get 4x each task's time limit; 16 agents share one GPU server."
+      },
+      {
+        "name": "terminus-2 | defaults-4x-time | c32",
+        "description": "terminus-2 (Harbor 0.24.0's own agent, drives a tmux session; lean prompts); serving config 'defaults-4x-time': defaults server on H100; agents get 4x each task's time limit; 32 agents share one GPU server."
+      },
+      {
+        "name": "terminus-2 | h200 | c32",
+        "description": "terminus-2 (Harbor 0.24.0's own agent, drives a tmux session; lean prompts); serving config 'h200': vLLM defaults on an H200 instead of an H100; 32 agents share one GPU server."
+      },
+      {
+        "name": "terminus-2 | h200-spec-mtp | c32",
+        "description": "terminus-2 (Harbor 0.24.0's own agent, drives a tmux session; lean prompts); serving config 'h200-spec-mtp': spec-mtp on an H200 (speculative decoding with KV headroom); 32 agents share one GPU server."
+      },
+      {
+        "name": "terminus-2 | kv-fp8 | c32",
+        "description": "terminus-2 (Harbor 0.24.0's own agent, drives a tmux session; lean prompts); serving config 'kv-fp8': KV cache stored in FP8 (--kv-cache-dtype fp8), H100; 32 agents share one GPU server."
+      },
+      {
+        "name": "terminus-2 | moe-a3b | c16",
+        "description": "terminus-2 (Harbor 0.24.0's own agent, drives a tmux session; lean prompts); serving config 'moe-a3b': second model Qwen/Qwen3.6-35B-A3B-FP8 (MoE, 3B active, small KV cache) with vLLM defaults, H100; 16 agents share one GPU server."
+      },
+      {
+        "name": "terminus-2 | moe-a3b | c32",
+        "description": "terminus-2 (Harbor 0.24.0's own agent, drives a tmux session; lean prompts); serving config 'moe-a3b': second model Qwen/Qwen3.6-35B-A3B-FP8 (MoE, 3B active, small KV cache) with vLLM defaults, H100; 32 agents share one GPU server."
+      },
+      {
+        "name": "terminus-2 | no-prefix-cache | c32",
+        "description": "terminus-2 (Harbor 0.24.0's own agent, drives a tmux session; lean prompts); serving config 'no-prefix-cache': prefix caching off (--no-enable-prefix-caching), H100; 32 agents share one GPU server."
+      },
+      {
+        "name": "terminus-2 | no-thinking | c32",
+        "description": "terminus-2 (Harbor 0.24.0's own agent, drives a tmux session; lean prompts); serving config 'no-thinking': reasoning off by default (enable_thinking=false in the chat template), H100; 32 agents share one GPU server."
+      },
+      {
+        "name": "terminus-2 | spec-mtp | c16",
+        "description": "terminus-2 (Harbor 0.24.0's own agent, drives a tmux session; lean prompts); serving config 'spec-mtp': speculative decoding with the model's own MTP layer, 2 draft tokens, H100; 16 agents share one GPU server."
+      },
+      {
+        "name": "terminus-2 | spec-mtp | c32",
+        "description": "terminus-2 (Harbor 0.24.0's own agent, drives a tmux session; lean prompts); serving config 'spec-mtp': speculative decoding with the model's own MTP layer, 2 draft tokens, H100; 32 agents share one GPU server."
+      },
+      {
+        "name": "terminus-2 | weights-fp8 | c32",
+        "description": "terminus-2 (Harbor 0.24.0's own agent, drives a tmux session; lean prompts); serving config 'weights-fp8': Qwen's official FP8 checkpoint Qwen/Qwen3.8-27B-FP8 instead of BF16, H100; 32 agents share one GPU server."
+      }
+    ],
+    "conditions_note": "A condition is harness x serving config x number of concurrent agents on one GPU server. Configs held constant: 64K context, Qwen reasoning and tool parsers, --language-model-only, --enable-prompt-tokens-details, --max-num-seqs 128 (serve_vllm.py COMMON). Every run starts a fresh server (no warm prefix cache).",
+    "prompt_rewriting": null,
+    "prompt_rewriting_note": "Not applicable: each harness's own prompts were used unchanged.",
+    "tools": "Each harness's own tools inside a Modal sandbox per task (shell/tmux; opencode and pi native tool calls). Sandboxes have internet access.",
+    "user_simulator": null,
+    "user_simulator_note": "Not applicable: single-task autonomous agents.",
+    "limits": {
+      "agent_time_limit_per_task": "Terminal-Bench: the task's own limit (600-1200 s; 900 s for 32 of 36 tasks), x2 or x4 for defaults-2x-time / defaults-4x-time. GAIA: 600 s.",
+      "context_window_tokens": 65536,
+      "max_output_tokens_per_call": 16384,
+      "max_concurrent_sequences_server": 128,
+      "sandbox_lifetime_cap_s": 7200,
+      "attempts_per_task": "1 per run (task set `full`, `gaia`) or 2 per run (`full-k2`); results pool all runs of a condition."
+    }
+  },
+  "grading": {
+    "judges": [
+      {
+        "name": "Terminal-Bench task tests",
+        "type": "deterministic tests run by Harbor's verifier",
+        "rule": "solved if verifier reward >= 1.0"
+      },
+      {
+        "name": "GAIA answer check",
+        "type": "exact-match verifier run by Harbor",
+        "rule": "solved if verifier reward >= 1.0"
+      }
+    ],
+    "tie_break": null,
+    "tie_break_note": "Not applicable: deterministic graders.",
+    "human_agreement": null,
+    "human_agreement_note": "Not applicable: no model or human judge.",
+    "self_grading_check": "No model grades itself. Trials whose tool calls reference the benchmark (repo/site lookups; regex BENCHMARK_LOOKUP in experiment.py) are never counted solved, even when the verifier passed.",
+    "metrics": [
+      {
+        "name": "accuracy (solve rate)",
+        "definition": "solved trials / attempted trials, pooled over all runs (repeats and attempts) of a condition."
+      },
+      {
+        "name": "cost_per_correct_cents",
+        "definition": "100 x sum over the condition's runs of (gpu_cost_usd + sandbox_cost_est_usd) / solved trials, where gpu_cost_usd = run seconds / 3600 x $/GPU-hour (all GPU time while agents ran, incl. tool waits and failed tasks; server startup excluded) and sandbox_cost_est_usd = sum over trials of sandbox wall seconds / 3600 x (requested CPUs x $0.1419 + requested GiB x $0.024)."
+      },
+      {
+        "name": "gpu_only_cost_per_correct_cents",
+        "definition": "100 x sum of gpu_cost_usd / solved trials (no sandboxes)."
+      },
+      {
+        "name": "mean_tokens_per_case",
+        "definition": "(input + output tokens reported by the harness, summed over the condition's runs) / attempted trials. Input includes cached prompt tokens."
+      },
+      {
+        "name": "mean_calls_per_case",
+        "definition": "mean agent steps (model calls) per trial from Harbor's ATIF trajectory, over trials with a trajectory (calls_counted_trials)."
+      },
+      {
+        "name": "ci95",
+        "definition": "95% bootstrap interval of the solve rate, resampling the 36 (or 60) tasks with all their trials (2000 resamples, seed 0)."
+      }
+    ]
+  },
+  "noise": {
+    "method": "Repeated identical runs (rep 0/1) and two attempts per task (`full-k2`) for the main cells; plus pass/fail agreement of reruns from trajectories (divergence.md).",
+    "size": {
+      "max_spread_identical_conditions_pts": 16.67,
+      "max_spread_example": "terminus-2 | moe-a3b | c16: 21/36 (0.5833) on a 1-attempt run vs 30/72 (0.4167) on a 2-attempt run",
+      "rerun_pass_fail_disagreement": "17-20% of same-task rerun pairs (terminus-2 20%, n=1500 pairs; mini-swe-agent 17%, n=1174 pairs; divergence.md)",
+      "per_condition_ci95": "see results[*].ci95 (e.g. terminus-2 | defaults | c32: 0.412, CI 0.2778-0.5463, n=216)"
+    },
+    "ci_method": "Task-clustered bootstrap for single cells; paired bootstrap over tasks for differences (analysis.py paired_ci / interaction_ci); Holm correction for the pre-registered C1-C3.",
+    "resamples": 2000,
+    "tie_threshold": "A difference whose paired 95% CI includes 0 is treated as no difference. report.md's quality gate marks a config more than 5 points below the same harness's defaults as failing."
+  },
+  "results": {
+    "mini-swe-agent | b200 | c32": [
+      {
+        "model": "Qwen/Qwen3.8-27B",
+        "benchmark": "terminal-bench-2.0",
+        "gpu": "B200",
+        "runs": 2,
+        "attempts_per_task": [
+          1,
+          2
+        ],
+        "n": 108,
+        "correct": 53,
+        "accuracy": 0.4907,
+        "ci95": [
+          0.3426,
+          0.6389
+        ],
+        "per_run_solved": [
+          "20/36",
+          "33/72"
+        ],
+        "cost_per_correct_cents": 18.0968,
+        "gpu_only_cost_per_correct_cents": 10.8792,
+        "gpu_cost_usd": 5.766,
+        "sandbox_cost_est_usd": 3.8253,
+        "mean_tokens_per_case": 463976.5,
+        "mean_input_tokens_per_case": 445162.0,
+        "mean_cached_input_tokens_per_case": 407266.2,
+        "mean_output_tokens_per_case": 18814.5,
+        "mean_calls_per_case": 21.66,
+        "calls_counted_trials": 95,
+        "failures": {
+          "finished wrong": 9,
+          "looked up answer": 1,
+          "never started": 6,
+          "other error": 9,
+          "out of time, working": 30
+        },
+        "peeked_trials": 1
+      }
+    ],
+    "mini-swe-agent | defaults | c16": [
+      {
+        "model": "Qwen/Qwen3.8-27B",
+        "benchmark": "gaia",
+        "gpu": "H100",
+        "runs": 1,
+        "attempts_per_task": [
+          1
+        ],
+        "n": 60,
+        "correct": 18,
+        "accuracy": 0.3,
+        "ci95": [
+          0.1833,
+          0.4167
+        ],
+        "per_run_solved": [
+          "18/60"
+        ],
+        "cost_per_correct_cents": 23.6283,
+        "gpu_only_cost_per_correct_cents": 14.2783,
+        "gpu_cost_usd": 2.5701,
+        "sandbox_cost_est_usd": 1.683,
+        "mean_tokens_per_case": 243170.8,
+        "mean_input_tokens_per_case": 233849.8,
+        "mean_cached_input_tokens_per_case": 124499.2,
+        "mean_output_tokens_per_case": 9321.0,
+        "mean_calls_per_case": 17.39,
+        "calls_counted_trials": 56,
+        "failures": {
+          "finished wrong": 6,
+          "looked up answer": 4,
+          "out of time, working": 32
+        },
+        "peeked_trials": 4
+      },
+      {
+        "model": "Qwen/Qwen3.8-27B",
+        "benchmark": "terminal-bench-2.0",
+        "gpu": "H100",
+        "runs": 2,
+        "attempts_per_task": [
+          1,
+          2
+        ],
+        "n": 108,
+        "correct": 47,
+        "accuracy": 0.4352,
+        "ci95": [
+          0.287,
+          0.5833
+        ],
+        "per_run_solved": [
+          "15/36",
+          "32/72"
+        ],
+        "cost_per_correct_cents": 24.6023,
+        "gpu_only_cost_per_correct_cents": 14.9494,
+        "gpu_cost_usd": 7.0262,
+        "sandbox_cost_est_usd": 4.5369,
+        "mean_tokens_per_case": 232785.6,
+        "mean_input_tokens_per_case": 221462.3,
+        "mean_cached_input_tokens_per_case": 97680.6,
+        "mean_output_tokens_per_case": 11323.4,
+        "mean_calls_per_case": 15.84,
+        "calls_counted_trials": 94,
+        "failures": {
+          "finished wrong": 3,
+          "never started": 6,
+          "other error": 1,
+          "out of time, working": 51
+        },
+        "peeked_trials": 0
+      }
+    ],
+    "mini-swe-agent | defaults | c32": [
+      {
+        "model": "Qwen/Qwen3.8-27B",
+        "benchmark": "gaia",
+        "gpu": "H100",
+        "runs": 1,
+        "attempts_per_task": [
+          1
+        ],
+        "n": 60,
+        "correct": 13,
+        "accuracy": 0.2167,
+        "ci95": [
+          0.1167,
+          0.3167
+        ],
+        "per_run_solved": [
+          "13/60"
+        ],
+        "cost_per_correct_cents": 25.13,
+        "gpu_only_cost_per_correct_cents": 11.2585,
+        "gpu_cost_usd": 1.4636,
+        "sandbox_cost_est_usd": 1.8033,
+        "mean_tokens_per_case": 129346.8,
+        "mean_input_tokens_per_case": 123046.5,
+        "mean_cached_input_tokens_per_case": 32470.7,
+        "mean_output_tokens_per_case": 6300.3,
+        "mean_calls_per_case": 13.6,
+        "calls_counted_trials": 55,
+        "failures": {
+          "finished wrong": 4,
+          "looked up answer": 4,
+          "out of time, working": 39
+        },
+        "peeked_trials": 4
+      },
+      {
+        "model": "Qwen/Qwen3.8-27B",
+        "benchmark": "terminal-bench-2.0",
+        "gpu": "H100",
+        "runs": 3,
+        "attempts_per_task": [
+          1,
+          2
+        ],
+        "n": 144,
+        "correct": 43,
+        "accuracy": 0.2986,
+        "ci95": [
+          0.1806,
+          0.4306
+        ],
+        "per_run_solved": [
+          "8/36",
+          "10/36",
+          "25/72"
+        ],
+        "cost_per_correct_cents": 30.2602,
+        "gpu_only_cost_per_correct_cents": 14.246,
+        "gpu_cost_usd": 6.1258,
+        "sandbox_cost_est_usd": 6.8861,
+        "mean_tokens_per_case": 132602.2,
+        "mean_input_tokens_per_case": 125805.7,
+        "mean_cached_input_tokens_per_case": 36662.9,
+        "mean_output_tokens_per_case": 6796.5,
+        "mean_calls_per_case": 11.85,
+        "calls_counted_trials": 124,
+        "failures": {
+          "finished wrong": 1,
+          "never started": 8,
+          "out of time, working": 92
+        },
+        "peeked_trials": 0
+      }
+    ],
+    "mini-swe-agent | defaults | c48": [
+      {
+        "model": "Qwen/Qwen3.8-27B",
+        "benchmark": "terminal-bench-2.0",
+        "gpu": "H100",
+        "runs": 1,
+        "attempts_per_task": [
+          2
+        ],
+        "n": 72,
+        "correct": 25,
+        "accuracy": 0.3472,
+        "ci95": [
+          0.2083,
+          0.4861
+        ],
+        "per_run_solved": [
+          "25/72"
+        ],
+        "cost_per_correct_cents": 24.2428,
+        "gpu_only_cost_per_correct_cents": 10.0876,
+        "gpu_cost_usd": 2.5219,
+        "sandbox_cost_est_usd": 3.5388,
+        "mean_tokens_per_case": 91450.3,
+        "mean_input_tokens_per_case": 85244.9,
+        "mean_cached_input_tokens_per_case": 4475.3,
+        "mean_output_tokens_per_case": 6205.3,
+        "mean_calls_per_case": 10.21,
+        "calls_counted_trials": 62,
+        "failures": {
+          "never started": 4,
+          "out of time, working": 43
+        },
+        "peeked_trials": 0
+      }
+    ],
+    "mini-swe-agent | defaults | c64": [
+      {
+        "model": "Qwen/Qwen3.8-27B",
+        "benchmark": "terminal-bench-2.0",
+        "gpu": "H100",
+        "runs": 1,
+        "attempts_per_task": [
+          2
+        ],
+        "n": 72,
+        "correct": 19,
+        "accuracy": 0.2639,
+        "ci95": [
+          0.1528,
+          0.3889
+        ],
+        "per_run_solved": [
+          "19/72"
+        ],
+        "cost_per_correct_cents": 29.9184,
+        "gpu_only_cost_per_correct_cents": 10.9674,
+        "gpu_cost_usd": 2.0838,
+        "sandbox_cost_est_usd": 3.6007,
+        "mean_tokens_per_case": 101382.1,
+        "mean_input_tokens_per_case": 96278.6,
+        "mean_cached_input_tokens_per_case": 51373.8,
+        "mean_output_tokens_per_case": 5103.5,
+        "mean_calls_per_case": 9.24,
+        "calls_counted_trials": 63,
+        "failures": {
+          "finished wrong": 1,
+          "never started": 4,
+          "out of time, working": 48
+        },
+        "peeked_trials": 0
+      }
+    ],
+    "mini-swe-agent | defaults | c8": [
+      {
+        "model": "Qwen/Qwen3.8-27B",
+        "benchmark": "terminal-bench-2.0",
+        "gpu": "H100",
+        "runs": 1,
+        "attempts_per_task": [
+          1
+        ],
+        "n": 36,
+        "correct": 18,
+        "accuracy": 0.5,
+        "ci95": [
+          0.3333,
+          0.6667
+        ],
+        "per_run_solved": [
+          "18/36"
+        ],
+        "cost_per_correct_cents": 30.515,
+        "gpu_only_cost_per_correct_cents": 22.7572,
+        "gpu_cost_usd": 4.0963,
+        "sandbox_cost_est_usd": 1.3964,
+        "mean_tokens_per_case": 444040.2,
+        "mean_input_tokens_per_case": 427439.2,
+        "mean_cached_input_tokens_per_case": 363645.3,
+        "mean_output_tokens_per_case": 16601.0,
+        "mean_calls_per_case": 22.03,
+        "calls_counted_trials": 32,
+        "failures": {
+          "finished wrong": 3,
+          "never started": 2,
+          "out of time, working": 13
+        },
+        "peeked_trials": 0
+      }
+    ],
+    "mini-swe-agent | defaults-2x-time | c32": [
+      {
+        "model": "Qwen/Qwen3.8-27B",
+        "benchmark": "terminal-bench-2.0",
+        "gpu": "H100",
+        "runs": 2,
+        "attempts_per_task": [
+          1,
+          2
+        ],
+        "n": 108,
+        "correct": 42,
+        "accuracy": 0.3889,
+        "ci95": [
+          0.25,
+          0.537
+        ],
+        "per_run_solved": [
+          "16/36",
+          "26/72"
+        ],
+        "cost_per_correct_cents": 39.8455,
+        "gpu_only_cost_per_correct_cents": 19.1129,
+        "gpu_cost_usd": 8.0274,
+        "sandbox_cost_est_usd": 8.7077,
+        "mean_tokens_per_case": 251521.3,
+        "mean_input_tokens_per_case": 240886.4,
+        "mean_cached_input_tokens_per_case": 45878.5,
+        "mean_output_tokens_per_case": 10634.9,
+        "mean_calls_per_case": 15.83,
+        "calls_counted_trials": 93,
+        "failures": {
+          "finished wrong": 3,
+          "looked up answer": 1,
+          "never started": 6,
+          "other error": 4,
+          "out of time, working": 52
+        },
+        "peeked_trials": 1
+      }
+    ],
+    "mini-swe-agent | defaults-4x-time | c16": [
+      {
+        "model": "Qwen/Qwen3.8-27B",
+        "benchmark": "terminal-bench-2.0",
+        "gpu": "H100",
+        "runs": 1,
+        "attempts_per_task": [
+          1
+        ],
+        "n": 36,
+        "correct": 17,
+        "accuracy": 0.4722,
+        "ci95": [
+          0.3056,
+          0.6389
+        ],
+        "per_run_solved": [
+          "17/36"
+        ],
+        "cost_per_correct_cents": 57.2012,
+        "gpu_only_cost_per_correct_cents": 37.8435,
+        "gpu_cost_usd": 6.4334,
+        "sandbox_cost_est_usd": 3.2908,
+        "mean_tokens_per_case": 406738.8,
+        "mean_input_tokens_per_case": 391185.9,
+        "mean_cached_input_tokens_per_case": 185350.7,
+        "mean_output_tokens_per_case": 15552.9,
+        "mean_calls_per_case": 19.41,
+        "calls_counted_trials": 32,
+        "failures": {
+          "finished wrong": 4,
+          "never started": 2,
+          "other error": 3,
+          "out of time, working": 10
+        },
+        "peeked_trials": 0
+      }
+    ],
+    "mini-swe-agent | defaults-4x-time | c32": [
+      {
+        "model": "Qwen/Qwen3.8-27B",
+        "benchmark": "terminal-bench-2.0",
+        "gpu": "H100",
+        "runs": 1,
+        "attempts_per_task": [
+          1
+        ],
+        "n": 36,
+        "correct": 14,
+        "accuracy": 0.3889,
+        "ci95": [
+          0.2222,
+          0.5556
+        ],
+        "per_run_solved": [
+          "14/36"
+        ],
+        "cost_per_correct_cents": 65.3879,
+        "gpu_only_cost_per_correct_cents": 32.8079,
+        "gpu_cost_usd": 4.5931,
+        "sandbox_cost_est_usd": 4.5612,
+        "mean_tokens_per_case": 337686.7,
+        "mean_input_tokens_per_case": 325726.8,
+        "mean_cached_input_tokens_per_case": 77202.2,
+        "mean_output_tokens_per_case": 11959.8,
+        "mean_calls_per_case": 17.0,
+        "calls_counted_trials": 32,
+        "failures": {
+          "finished wrong": 4,
+          "never started": 2,
+          "other error": 1,
+          "out of time, working": 15
+        },
+        "peeked_trials": 0
+      }
+    ],
+    "mini-swe-agent | h200 | c32": [
+      {
+        "model": "Qwen/Qwen3.8-27B",
+        "benchmark": "gaia",
+        "gpu": "H200",
+        "runs": 1,
+        "attempts_per_task": [
+          1
+        ],
+        "n": 60,
+        "correct": 21,
+        "accuracy": 0.35,
+        "ci95": [
+          0.2333,
+          0.4667
+        ],
+        "per_run_solved": [
+          "21/60"
+        ],
+        "cost_per_correct_cents": 15.9795,
+        "gpu_only_cost_per_correct_cents": 8.0067,
+        "gpu_cost_usd": 1.6814,
+        "sandbox_cost_est_usd": 1.6743,
+        "mean_tokens_per_case": 358898.2,
+        "mean_input_tokens_per_case": 347378.8,
+        "mean_cached_input_tokens_per_case": 312776.8,
+        "mean_output_tokens_per_case": 11519.4,
+        "mean_calls_per_case": 20.37,
+        "calls_counted_trials": 57,
+        "failures": {
+          "finished wrong": 6,
+          "looked up answer": 7,
+          "out of time, working": 26
+        },
+        "peeked_trials": 7
+      },
+      {
+        "model": "Qwen/Qwen3.8-27B",
+        "benchmark": "terminal-bench-2.0",
+        "gpu": "H200",
+        "runs": 2,
+        "attempts_per_task": [
+          1,
+          2
+        ],
+        "n": 108,
+        "correct": 49,
+        "accuracy": 0.4537,
+        "ci95": [
+          0.3056,
+          0.6019
+        ],
+        "per_run_solved": [
+          "17/36",
+          "32/72"
+        ],
+        "cost_per_correct_cents": 18.0218,
+        "gpu_only_cost_per_correct_cents": 9.1196,
+        "gpu_cost_usd": 4.4686,
+        "sandbox_cost_est_usd": 4.3621,
+        "mean_tokens_per_case": 331825.4,
+        "mean_input_tokens_per_case": 317959.7,
+        "mean_cached_input_tokens_per_case": 283735.4,
+        "mean_output_tokens_per_case": 13865.7,
+        "mean_calls_per_case": 18.32,
+        "calls_counted_trials": 94,
+        "failures": {
+          "finished wrong": 5,
+          "never started": 6,
+          "other error": 4,
+          "out of time, working": 44
+        },
+        "peeked_trials": 0
+      }
+    ],
+    "mini-swe-agent | h200-spec-mtp | c32": [
+      {
+        "model": "Qwen/Qwen3.8-27B",
+        "benchmark": "terminal-bench-2.0",
+        "gpu": "H200",
+        "runs": 1,
+        "attempts_per_task": [
+          1
+        ],
+        "n": 36,
+        "correct": 18,
+        "accuracy": 0.5,
+        "ci95": [
+          0.3333,
+          0.6667
+        ],
+        "per_run_solved": [
+          "18/36"
+        ],
+        "cost_per_correct_cents": 16.1167,
+        "gpu_only_cost_per_correct_cents": 9.0822,
+        "gpu_cost_usd": 1.6348,
+        "sandbox_cost_est_usd": 1.2662,
+        "mean_tokens_per_case": 531666.3,
+        "mean_input_tokens_per_case": 512399.4,
+        "mean_cached_input_tokens_per_case": 440133.3,
+        "mean_output_tokens_per_case": 19266.9,
+        "mean_calls_per_case": 23.0,
+        "calls_counted_trials": 32,
+        "failures": {
+          "finished wrong": 4,
+          "never started": 2,
+          "other error": 3,
+          "out of time, working": 9
+        },
+        "peeked_trials": 0
+      }
+    ],
+    "mini-swe-agent | kv-fp8 | c32": [
+      {
+        "model": "Qwen/Qwen3.8-27B",
+        "benchmark": "terminal-bench-2.0",
+        "gpu": "H100",
+        "runs": 2,
+        "attempts_per_task": [
+          1
+        ],
+        "n": 72,
+        "correct": 27,
+        "accuracy": 0.375,
+        "ci95": [
+          0.2222,
+          0.5278
+        ],
+        "per_run_solved": [
+          "14/36",
+          "13/36"
+        ],
+        "cost_per_correct_cents": 22.6419,
+        "gpu_only_cost_per_correct_cents": 11.0585,
+        "gpu_cost_usd": 2.9858,
+        "sandbox_cost_est_usd": 3.1275,
+        "mean_tokens_per_case": 203245.8,
+        "mean_input_tokens_per_case": 194451.9,
+        "mean_cached_input_tokens_per_case": 107538.7,
+        "mean_output_tokens_per_case": 8793.9,
+        "mean_calls_per_case": 15.19,
+        "calls_counted_trials": 62,
+        "failures": {
+          "finished wrong": 3,
+          "looked up answer": 1,
+          "never started": 4,
+          "other error": 1,
+          "out of time, working": 36
+        },
+        "peeked_trials": 1
+      }
+    ],
+    "mini-swe-agent | moe-a3b | c16": [
+      {
+        "model": "Qwen/Qwen3.6-35B-A3B-FP8",
+        "benchmark": "terminal-bench-2.0",
+        "gpu": "H100",
+        "runs": 2,
+        "attempts_per_task": [
+          1,
+          2
+        ],
+        "n": 108,
+        "correct": 53,
+        "accuracy": 0.4907,
+        "ci95": [
+          0.3519,
+          0.6296
+        ],
+        "per_run_solved": [
+          "17/36",
+          "36/72"
+        ],
+        "cost_per_correct_cents": 12.7432,
+        "gpu_only_cost_per_correct_cents": 8.5881,
+        "gpu_cost_usd": 4.5517,
+        "sandbox_cost_est_usd": 2.2022,
+        "mean_tokens_per_case": 903114.1,
+        "mean_input_tokens_per_case": 888325.8,
+        "mean_cached_input_tokens_per_case": 831150.2,
+        "mean_output_tokens_per_case": 14788.3,
+        "mean_calls_per_case": 41.9,
+        "calls_counted_trials": 99,
+        "failures": {
+          "finished wrong": 25,
+          "never started": 6,
+          "other error": 14,
+          "out of time, working": 10
+        },
+        "peeked_trials": 0
+      }
+    ],
+    "mini-swe-agent | moe-a3b | c32": [
+      {
+        "model": "Qwen/Qwen3.6-35B-A3B-FP8",
+        "benchmark": "terminal-bench-2.0",
+        "gpu": "H100",
+        "runs": 2,
+        "attempts_per_task": [
+          1,
+          2
+        ],
+        "n": 108,
+        "correct": 53,
+        "accuracy": 0.4907,
+        "ci95": [
+          0.3426,
+          0.6389
+        ],
+        "per_run_solved": [
+          "19/36",
+          "34/72"
+        ],
+        "cost_per_correct_cents": 12.7813,
+        "gpu_only_cost_per_correct_cents": 7.2274,
+        "gpu_cost_usd": 3.8305,
+        "sandbox_cost_est_usd": 2.9436,
+        "mean_tokens_per_case": 885639.3,
+        "mean_input_tokens_per_case": 871948.9,
+        "mean_cached_input_tokens_per_case": 817999.1,
+        "mean_output_tokens_per_case": 13690.3,
+        "mean_calls_per_case": 41.71,
+        "calls_counted_trials": 100,
+        "failures": {
+          "finished wrong": 22,
+          "never started": 6,
+          "other error": 11,
+          "out of time, working": 16
+        },
+        "peeked_trials": 0
+      }
+    ],
+    "mini-swe-agent | no-prefix-cache | c32": [
+      {
+        "model": "Qwen/Qwen3.8-27B",
+        "benchmark": "terminal-bench-2.0",
+        "gpu": "H100",
+        "runs": 2,
+        "attempts_per_task": [
+          1
+        ],
+        "n": 72,
+        "correct": 25,
+        "accuracy": 0.3472,
+        "ci95": [
+          0.2083,
+          0.5
+        ],
+        "per_run_solved": [
+          "13/36",
+          "12/36"
+        ],
+        "cost_per_correct_cents": 25.6844,
+        "gpu_only_cost_per_correct_cents": 12.6804,
+        "gpu_cost_usd": 3.1701,
+        "sandbox_cost_est_usd": 3.251,
+        "mean_tokens_per_case": 131005.6,
+        "mean_input_tokens_per_case": 123572.5,
+        "mean_cached_input_tokens_per_case": 0.0,
+        "mean_output_tokens_per_case": 7433.1,
+        "mean_calls_per_case": 11.89,
+        "calls_counted_trials": 63,
+        "failures": {
+          "finished wrong": 1,
+          "never started": 4,
+          "out of time, working": 42
+        },
+        "peeked_trials": 0
+      }
+    ],
+    "mini-swe-agent | no-thinking | c32": [
+      {
+        "model": "Qwen/Qwen3.8-27B",
+        "benchmark": "terminal-bench-2.0",
+        "gpu": "H100",
+        "runs": 2,
+        "attempts_per_task": [
+          1,
+          2
+        ],
+        "n": 108,
+        "correct": 43,
+        "accuracy": 0.3981,
+        "ci95": [
+          0.25,
+          0.537
+        ],
+        "per_run_solved": [
+          "15/36",
+          "28/72"
+        ],
+        "cost_per_correct_cents": 18.5191,
+        "gpu_only_cost_per_correct_cents": 9.0509,
+        "gpu_cost_usd": 3.8919,
+        "sandbox_cost_est_usd": 4.0713,
+        "mean_tokens_per_case": 248498.9,
+        "mean_input_tokens_per_case": 244029.5,
+        "mean_cached_input_tokens_per_case": 60709.2,
+        "mean_output_tokens_per_case": 4469.4,
+        "mean_calls_per_case": 22.76,
+        "calls_counted_trials": 101,
+        "failures": {
+          "finished wrong": 12,
+          "never started": 6,
+          "other error": 1,
+          "out of time, looping": 1,
+          "out of time, working": 45
+        },
+        "peeked_trials": 0
+      }
+    ],
+    "mini-swe-agent | spec-mtp | c16": [
+      {
+        "model": "Qwen/Qwen3.8-27B",
+        "benchmark": "terminal-bench-2.0",
+        "gpu": "H100",
+        "runs": 1,
+        "attempts_per_task": [
+          1
+        ],
+        "n": 36,
+        "correct": 17,
+        "accuracy": 0.4722,
+        "ci95": [
+          0.3056,
+          0.6389
+        ],
+        "per_run_solved": [
+          "17/36"
+        ],
+        "cost_per_correct_cents": 23.9759,
+        "gpu_only_cost_per_correct_cents": 14.9235,
+        "gpu_cost_usd": 2.537,
+        "sandbox_cost_est_usd": 1.5389,
+        "mean_tokens_per_case": 277904.6,
+        "mean_input_tokens_per_case": 263760.1,
+        "mean_cached_input_tokens_per_case": 63200.0,
+        "mean_output_tokens_per_case": 14144.6,
+        "mean_calls_per_case": 17.19,
+        "calls_counted_trials": 32,
+        "failures": {
+          "looked up answer": 1,
+          "never started": 2,
+          "out of time, working": 16
+        },
+        "peeked_trials": 1
+      }
+    ],
+    "mini-swe-agent | spec-mtp | c32": [
+      {
+        "model": "Qwen/Qwen3.8-27B",
+        "benchmark": "terminal-bench-2.0",
+        "gpu": "H100",
+        "runs": 3,
+        "attempts_per_task": [
+          1,
+          2
+        ],
+        "n": 144,
+        "correct": 52,
+        "accuracy": 0.3611,
+        "ci95": [
+          0.2361,
+          0.4931
+        ],
+        "per_run_solved": [
+          "11/36",
+          "17/36",
+          "24/72"
+        ],
+        "cost_per_correct_cents": 25.261,
+        "gpu_only_cost_per_correct_cents": 12.0296,
+        "gpu_cost_usd": 6.2554,
+        "sandbox_cost_est_usd": 6.8803,
+        "mean_tokens_per_case": 164402.4,
+        "mean_input_tokens_per_case": 154728.1,
+        "mean_cached_input_tokens_per_case": 56866.7,
+        "mean_output_tokens_per_case": 9674.3,
+        "mean_calls_per_case": 12.65,
+        "calls_counted_trials": 127,
+        "failures": {
+          "finished wrong": 2,
+          "looked up answer": 1,
+          "never started": 8,
+          "other error": 2,
+          "out of time, working": 79
+        },
+        "peeked_trials": 1
+      }
+    ],
+    "mini-swe-agent | weights-fp8 | c32": [
+      {
+        "model": "Qwen/Qwen3.8-27B-FP8",
+        "benchmark": "terminal-bench-2.0",
+        "gpu": "H100",
+        "runs": 2,
+        "attempts_per_task": [
+          1
+        ],
+        "n": 72,
+        "correct": 29,
+        "accuracy": 0.4028,
+        "ci95": [
+          0.2639,
+          0.5556
+        ],
+        "per_run_solved": [
+          "14/36",
+          "15/36"
+        ],
+        "cost_per_correct_cents": 19.7169,
+        "gpu_only_cost_per_correct_cents": 9.87,
+        "gpu_cost_usd": 2.8623,
+        "sandbox_cost_est_usd": 2.8556,
+        "mean_tokens_per_case": 281654.9,
+        "mean_input_tokens_per_case": 269353.5,
+        "mean_cached_input_tokens_per_case": 188388.7,
+        "mean_output_tokens_per_case": 12301.4,
+        "mean_calls_per_case": 16.81,
+        "calls_counted_trials": 62,
+        "failures": {
+          "finished wrong": 2,
+          "never started": 4,
+          "other error": 1,
+          "out of time, working": 36
+        },
+        "peeked_trials": 0
+      }
+    ],
+    "opencode | defaults | c16": [
+      {
+        "model": "Qwen/Qwen3.8-27B",
+        "benchmark": "terminal-bench-2.0",
+        "gpu": "H100",
+        "runs": 1,
+        "attempts_per_task": [
+          1
+        ],
+        "n": 36,
+        "correct": 18,
+        "accuracy": 0.5,
+        "ci95": [
+          0.3333,
+          0.6667
+        ],
+        "per_run_solved": [
+          "18/36"
+        ],
+        "cost_per_correct_cents": 21.1683,
+        "gpu_only_cost_per_correct_cents": 13.5617,
+        "gpu_cost_usd": 2.4411,
+        "sandbox_cost_est_usd": 1.3692,
+        "mean_tokens_per_case": 307623.4,
+        "mean_input_tokens_per_case": 304624.5,
+        "mean_cached_input_tokens_per_case": 220216.9,
+        "mean_output_tokens_per_case": 2998.9,
+        "mean_calls_per_case": 15.97,
+        "calls_counted_trials": 34,
+        "failures": {
+          "finished wrong": 5,
+          "never started": 2,
+          "out of time, working": 11
+        },
+        "peeked_trials": 0
+      }
+    ],
+    "opencode | defaults | c32": [
+      {
+        "model": "Qwen/Qwen3.8-27B",
+        "benchmark": "terminal-bench-2.0",
+        "gpu": "H100",
+        "runs": 1,
+        "attempts_per_task": [
+          1
+        ],
+        "n": 36,
+        "correct": 16,
+        "accuracy": 0.4444,
+        "ci95": [
+          0.3056,
+          0.6111
+        ],
+        "per_run_solved": [
+          "16/36"
+        ],
+        "cost_per_correct_cents": 18.2456,
+        "gpu_only_cost_per_correct_cents": 8.94,
+        "gpu_cost_usd": 1.4304,
+        "sandbox_cost_est_usd": 1.4889,
+        "mean_tokens_per_case": 187851.6,
+        "mean_input_tokens_per_case": 185698.8,
+        "mean_cached_input_tokens_per_case": 105360.9,
+        "mean_output_tokens_per_case": 2152.9,
+        "mean_calls_per_case": 12.53,
+        "calls_counted_trials": 34,
+        "failures": {
+          "finished wrong": 3,
+          "never started": 2,
+          "out of time, working": 15
+        },
+        "peeked_trials": 0
+      }
+    ],
+    "pi | defaults | c16": [
+      {
+        "model": "Qwen/Qwen3.8-27B",
+        "benchmark": "terminal-bench-2.0",
+        "gpu": "H100",
+        "runs": 1,
+        "attempts_per_task": [
+          1
+        ],
+        "n": 36,
+        "correct": 15,
+        "accuracy": 0.4167,
+        "ci95": [
+          0.25,
+          0.5833
+        ],
+        "per_run_solved": [
+          "15/36"
+        ],
+        "cost_per_correct_cents": 24.2087,
+        "gpu_only_cost_per_correct_cents": 15.9867,
+        "gpu_cost_usd": 2.398,
+        "sandbox_cost_est_usd": 1.2333,
+        "mean_tokens_per_case": 246549.4,
+        "mean_input_tokens_per_case": 232233.6,
+        "mean_cached_input_tokens_per_case": 151856.4,
+        "mean_output_tokens_per_case": 14315.8,
+        "mean_calls_per_case": 16.91,
+        "calls_counted_trials": 32,
+        "failures": {
+          "finished wrong": 4,
+          "looked up answer": 1,
+          "never started": 2,
+          "other error": 1,
+          "out of time, working": 13
+        },
+        "peeked_trials": 1
+      }
+    ],
+    "pi | defaults | c32": [
+      {
+        "model": "Qwen/Qwen3.8-27B",
+        "benchmark": "terminal-bench-2.0",
+        "gpu": "H100",
+        "runs": 1,
+        "attempts_per_task": [
+          1
+        ],
+        "n": 36,
+        "correct": 14,
+        "accuracy": 0.3889,
+        "ci95": [
+          0.25,
+          0.5556
+        ],
+        "per_run_solved": [
+          "14/36"
+        ],
+        "cost_per_correct_cents": 19.4464,
+        "gpu_only_cost_per_correct_cents": 10.0179,
+        "gpu_cost_usd": 1.4025,
+        "sandbox_cost_est_usd": 1.32,
+        "mean_tokens_per_case": 138366.1,
+        "mean_input_tokens_per_case": 128081.6,
+        "mean_cached_input_tokens_per_case": 32775.6,
+        "mean_output_tokens_per_case": 10284.5,
+        "mean_calls_per_case": 12.39,
+        "calls_counted_trials": 33,
+        "failures": {
+          "finished wrong": 6,
+          "never started": 2,
+          "other error": 1,
+          "out of time, working": 13
+        },
+        "peeked_trials": 0
+      }
+    ],
+    "terminus-2 | b200 | c32": [
+      {
+        "model": "Qwen/Qwen3.8-27B",
+        "benchmark": "terminal-bench-2.0",
+        "gpu": "B200",
+        "runs": 2,
+        "attempts_per_task": [
+          1,
+          2
+        ],
+        "n": 108,
+        "correct": 60,
+        "accuracy": 0.5556,
+        "ci95": [
+          0.4167,
+          0.6944
+        ],
+        "per_run_solved": [
+          "20/36",
+          "40/72"
+        ],
+        "cost_per_correct_cents": 15.9148,
+        "gpu_only_cost_per_correct_cents": 9.7015,
+        "gpu_cost_usd": 5.8209,
+        "sandbox_cost_est_usd": 3.728,
+        "mean_tokens_per_case": 121005.7,
+        "mean_input_tokens_per_case": 101237.3,
+        "mean_cached_input_tokens_per_case": 84940.6,
+        "mean_output_tokens_per_case": 19768.5,
+        "mean_calls_per_case": 10.75,
+        "calls_counted_trials": 108,
+        "failures": {
+          "finished wrong": 10,
+          "out of time, working": 38
+        },
+        "peeked_trials": 0
+      }
+    ],
+    "terminus-2 | defaults | c16": [
+      {
+        "model": "Qwen/Qwen3.8-27B",
+        "benchmark": "gaia",
+        "gpu": "H100",
+        "runs": 1,
+        "attempts_per_task": [
+          1
+        ],
+        "n": 60,
+        "correct": 14,
+        "accuracy": 0.2333,
+        "ci95": [
+          0.1333,
+          0.3333
+        ],
+        "per_run_solved": [
+          "14/60"
+        ],
+        "cost_per_correct_cents": 27.9943,
+        "gpu_only_cost_per_correct_cents": 17.0129,
+        "gpu_cost_usd": 2.3818,
+        "sandbox_cost_est_usd": 1.5374,
+        "mean_tokens_per_case": 105962.0,
+        "mean_input_tokens_per_case": 95819.0,
+        "mean_cached_input_tokens_per_case": 70599.2,
+        "mean_output_tokens_per_case": 10143.0,
+        "mean_calls_per_case": 12.2,
+        "calls_counted_trials": 60,
+        "failures": {
+          "finished wrong": 11,
+          "out of time, working": 35
+        },
+        "peeked_trials": 0
+      },
+      {
+        "model": "Qwen/Qwen3.8-27B",
+        "benchmark": "terminal-bench-2.0",
+        "gpu": "H100",
+        "runs": 2,
+        "attempts_per_task": [
+          1,
+          2
+        ],
+        "n": 108,
+        "correct": 48,
+        "accuracy": 0.4444,
+        "ci95": [
+          0.2963,
+          0.5926
+        ],
+        "per_run_solved": [
+          "18/36",
+          "30/72"
+        ],
+        "cost_per_correct_cents": 23.7862,
+        "gpu_only_cost_per_correct_cents": 14.3902,
+        "gpu_cost_usd": 6.9073,
+        "sandbox_cost_est_usd": 4.5101,
+        "mean_tokens_per_case": 95272.4,
+        "mean_input_tokens_per_case": 81026.4,
+        "mean_cached_input_tokens_per_case": 54807.4,
+        "mean_output_tokens_per_case": 14245.9,
+        "mean_calls_per_case": 9.81,
+        "calls_counted_trials": 108,
+        "failures": {
+          "finished wrong": 5,
+          "out of time, looping": 1,
+          "out of time, working": 54
+        },
+        "peeked_trials": 0
+      }
+    ],
+    "terminus-2 | defaults | c32": [
+      {
+        "model": "Qwen/Qwen3.8-27B",
+        "benchmark": "gaia",
+        "gpu": "H100",
+        "runs": 1,
+        "attempts_per_task": [
+          1
+        ],
+        "n": 60,
+        "correct": 12,
+        "accuracy": 0.2,
+        "ci95": [
+          0.1,
+          0.3
+        ],
+        "per_run_solved": [
+          "12/60"
+        ],
+        "cost_per_correct_cents": 24.4775,
+        "gpu_only_cost_per_correct_cents": 11.4392,
+        "gpu_cost_usd": 1.3727,
+        "sandbox_cost_est_usd": 1.5646,
+        "mean_tokens_per_case": 77305.7,
+        "mean_input_tokens_per_case": 69545.9,
+        "mean_cached_input_tokens_per_case": 30066.4,
+        "mean_output_tokens_per_case": 7759.8,
+        "mean_calls_per_case": 11.22,
+        "calls_counted_trials": 60,
+        "failures": {
+          "finished wrong": 10,
+          "out of time, working": 38
+        },
+        "peeked_trials": 0
+      },
+      {
+        "model": "Qwen/Qwen3.8-27B",
+        "benchmark": "terminal-bench-2.0",
+        "gpu": "H100",
+        "runs": 4,
+        "attempts_per_task": [
+          1,
+          2
+        ],
+        "n": 216,
+        "correct": 89,
+        "accuracy": 0.412,
+        "ci95": [
+          0.2778,
+          0.5463
+        ],
+        "per_run_solved": [
+          "16/36",
+          "15/36",
+          "30/72",
+          "28/72"
+        ],
+        "cost_per_correct_cents": 20.0146,
+        "gpu_only_cost_per_correct_cents": 9.5231,
+        "gpu_cost_usd": 8.4756,
+        "sandbox_cost_est_usd": 9.3374,
+        "mean_tokens_per_case": 72309.2,
+        "mean_input_tokens_per_case": 62335.3,
+        "mean_cached_input_tokens_per_case": 11262.7,
+        "mean_output_tokens_per_case": 9973.9,
+        "mean_calls_per_case": 8.43,
+        "calls_counted_trials": 215,
+        "failures": {
+          "finished wrong": 9,
+          "never started": 1,
+          "out of time, looping": 1,
+          "out of time, working": 116
+        },
+        "peeked_trials": 0
+      }
+    ],
+    "terminus-2 | defaults | c48": [
+      {
+        "model": "Qwen/Qwen3.8-27B",
+        "benchmark": "terminal-bench-2.0",
+        "gpu": "H100",
+        "runs": 1,
+        "attempts_per_task": [
+          2
+        ],
+        "n": 72,
+        "correct": 24,
+        "accuracy": 0.3333,
+        "ci95": [
+          0.2083,
+          0.4722
+        ],
+        "per_run_solved": [
+          "24/72"
+        ],
+        "cost_per_correct_cents": 23.3004,
+        "gpu_only_cost_per_correct_cents": 9.0037,
+        "gpu_cost_usd": 2.1609,
+        "sandbox_cost_est_usd": 3.4312,
+        "mean_tokens_per_case": 59318.7,
+        "mean_input_tokens_per_case": 50225.4,
+        "mean_cached_input_tokens_per_case": 10017.8,
+        "mean_output_tokens_per_case": 9093.3,
+        "mean_calls_per_case": 7.17,
+        "calls_counted_trials": 72,
+        "failures": {
+          "finished wrong": 1,
+          "out of time, looping": 1,
+          "out of time, working": 46
+        },
+        "peeked_trials": 0
+      }
+    ],
+    "terminus-2 | defaults | c64": [
+      {
+        "model": "Qwen/Qwen3.8-27B",
+        "benchmark": "terminal-bench-2.0",
+        "gpu": "H100",
+        "runs": 1,
+        "attempts_per_task": [
+          2
+        ],
+        "n": 72,
+        "correct": 16,
+        "accuracy": 0.2222,
+        "ci95": [
+          0.1111,
+          0.3472
+        ],
+        "per_run_solved": [
+          "16/72"
+        ],
+        "cost_per_correct_cents": 36.2194,
+        "gpu_only_cost_per_correct_cents": 13.5806,
+        "gpu_cost_usd": 2.1729,
+        "sandbox_cost_est_usd": 3.6222,
+        "mean_tokens_per_case": 38981.0,
+        "mean_input_tokens_per_case": 32090.6,
+        "mean_cached_input_tokens_per_case": 7426.2,
+        "mean_output_tokens_per_case": 6890.4,
+        "mean_calls_per_case": 5.9,
+        "calls_counted_trials": 72,
+        "failures": {
+          "finished wrong": 1,
+          "out of time, looping": 1,
+          "out of time, working": 54
+        },
+        "peeked_trials": 0
+      }
+    ],
+    "terminus-2 | defaults | c8": [
+      {
+        "model": "Qwen/Qwen3.8-27B",
+        "benchmark": "terminal-bench-2.0",
+        "gpu": "H100",
+        "runs": 1,
+        "attempts_per_task": [
+          1
+        ],
+        "n": 36,
+        "correct": 19,
+        "accuracy": 0.5278,
+        "ci95": [
+          0.3611,
+          0.6944
+        ],
+        "per_run_solved": [
+          "19/36"
+        ],
+        "cost_per_correct_cents": 28.4563,
+        "gpu_only_cost_per_correct_cents": 20.8595,
+        "gpu_cost_usd": 3.9633,
+        "sandbox_cost_est_usd": 1.4434,
+        "mean_tokens_per_case": 103950.1,
+        "mean_input_tokens_per_case": 87404.2,
+        "mean_cached_input_tokens_per_case": 71932.0,
+        "mean_output_tokens_per_case": 16545.9,
+        "mean_calls_per_case": 9.78,
+        "calls_counted_trials": 36,
+        "failures": {
+          "finished wrong": 3,
+          "out of time, working": 14
+        },
+        "peeked_trials": 0
+      }
+    ],
+    "terminus-2 | defaults-2x-time | c32": [
+      {
+        "model": "Qwen/Qwen3.8-27B",
+        "benchmark": "terminal-bench-2.0",
+        "gpu": "H100",
+        "runs": 2,
+        "attempts_per_task": [
+          1,
+          2
+        ],
+        "n": 108,
+        "correct": 50,
+        "accuracy": 0.463,
+        "ci95": [
+          0.3241,
+          0.6019
+        ],
+        "per_run_solved": [
+          "16/36",
+          "34/72"
+        ],
+        "cost_per_correct_cents": 30.6324,
+        "gpu_only_cost_per_correct_cents": 14.2792,
+        "gpu_cost_usd": 7.1396,
+        "sandbox_cost_est_usd": 8.1766,
+        "mean_tokens_per_case": 111609.0,
+        "mean_input_tokens_per_case": 97163.4,
+        "mean_cached_input_tokens_per_case": 10141.2,
+        "mean_output_tokens_per_case": 14445.6,
+        "mean_calls_per_case": 10.3,
+        "calls_counted_trials": 108,
+        "failures": {
+          "finished wrong": 9,
+          "out of time, looping": 1,
+          "out of time, working": 48
+        },
+        "peeked_trials": 0
+      }
+    ],
+    "terminus-2 | defaults-4x-time | c16": [
+      {
+        "model": "Qwen/Qwen3.8-27B",
+        "benchmark": "terminal-bench-2.0",
+        "gpu": "H100",
+        "runs": 1,
+        "attempts_per_task": [
+          1
+        ],
+        "n": 36,
+        "correct": 22,
+        "accuracy": 0.6111,
+        "ci95": [
+          0.4722,
+          0.7778
+        ],
+        "per_run_solved": [
+          "22/36"
+        ],
+        "cost_per_correct_cents": 39.4927,
+        "gpu_only_cost_per_correct_cents": 23.8973,
+        "gpu_cost_usd": 5.2574,
+        "sandbox_cost_est_usd": 3.431,
+        "mean_tokens_per_case": 281559.7,
+        "mean_input_tokens_per_case": 254236.1,
+        "mean_cached_input_tokens_per_case": 103727.6,
+        "mean_output_tokens_per_case": 27323.6,
+        "mean_calls_per_case": 16.08,
+        "calls_counted_trials": 36,
+        "failures": {
+          "finished wrong": 7,
+          "out of time, looping": 1,
+          "out of time, working": 6
+        },
+        "peeked_trials": 0
+      }
+    ],
+    "terminus-2 | defaults-4x-time | c32": [
+      {
+        "model": "Qwen/Qwen3.8-27B",
+        "benchmark": "terminal-bench-2.0",
+        "gpu": "H100",
+        "runs": 1,
+        "attempts_per_task": [
+          1
+        ],
+        "n": 36,
+        "correct": 17,
+        "accuracy": 0.4722,
+        "ci95": [
+          0.3056,
+          0.6389
+        ],
+        "per_run_solved": [
+          "17/36"
+        ],
+        "cost_per_correct_cents": 51.3829,
+        "gpu_only_cost_per_correct_cents": 25.4535,
+        "gpu_cost_usd": 4.3271,
+        "sandbox_cost_est_usd": 4.408,
+        "mean_tokens_per_case": 202538.1,
+        "mean_input_tokens_per_case": 178573.6,
+        "mean_cached_input_tokens_per_case": 11520.4,
+        "mean_output_tokens_per_case": 23964.4,
+        "mean_calls_per_case": 14.0,
+        "calls_counted_trials": 36,
+        "failures": {
+          "finished wrong": 7,
+          "out of time, working": 12
+        },
+        "peeked_trials": 0
+      }
+    ],
+    "terminus-2 | h200 | c32": [
+      {
+        "model": "Qwen/Qwen3.8-27B",
+        "benchmark": "gaia",
+        "gpu": "H200",
+        "runs": 1,
+        "attempts_per_task": [
+          1
+        ],
+        "n": 60,
+        "correct": 20,
+        "accuracy": 0.3333,
+        "ci95": [
+          0.2167,
+          0.45
+        ],
+        "per_run_solved": [
+          "20/60"
+        ],
+        "cost_per_correct_cents": 15.102,
+        "gpu_only_cost_per_correct_cents": 7.8755,
+        "gpu_cost_usd": 1.5751,
+        "sandbox_cost_est_usd": 1.4453,
+        "mean_tokens_per_case": 118755.9,
+        "mean_input_tokens_per_case": 108001.4,
+        "mean_cached_input_tokens_per_case": 90904.8,
+        "mean_output_tokens_per_case": 10754.4,
+        "mean_calls_per_case": 13.1,
+        "calls_counted_trials": 60,
+        "failures": {
+          "finished wrong": 9,
+          "out of time, looping": 1,
+          "out of time, working": 30
+        },
+        "peeked_trials": 0
+      },
+      {
+        "model": "Qwen/Qwen3.8-27B",
+        "benchmark": "terminal-bench-2.0",
+        "gpu": "H200",
+        "runs": 2,
+        "attempts_per_task": [
+          1,
+          2
+        ],
+        "n": 108,
+        "correct": 48,
+        "accuracy": 0.4444,
+        "ci95": [
+          0.2963,
+          0.5926
+        ],
+        "per_run_solved": [
+          "18/36",
+          "30/72"
+        ],
+        "cost_per_correct_cents": 17.3175,
+        "gpu_only_cost_per_correct_cents": 8.3629,
+        "gpu_cost_usd": 4.0142,
+        "sandbox_cost_est_usd": 4.2982,
+        "mean_tokens_per_case": 100995.6,
+        "mean_input_tokens_per_case": 85227.1,
+        "mean_cached_input_tokens_per_case": 70073.6,
+        "mean_output_tokens_per_case": 15768.5,
+        "mean_calls_per_case": 9.98,
+        "calls_counted_trials": 108,
+        "failures": {
+          "finished wrong": 7,
+          "out of time, looping": 1,
+          "out of time, working": 52
+        },
+        "peeked_trials": 0
+      }
+    ],
+    "terminus-2 | h200-spec-mtp | c32": [
+      {
+        "model": "Qwen/Qwen3.8-27B",
+        "benchmark": "terminal-bench-2.0",
+        "gpu": "H200",
+        "runs": 1,
+        "attempts_per_task": [
+          1
+        ],
+        "n": 36,
+        "correct": 21,
+        "accuracy": 0.5833,
+        "ci95": [
+          0.4167,
+          0.75
+        ],
+        "per_run_solved": [
+          "21/36"
+        ],
+        "cost_per_correct_cents": 12.1952,
+        "gpu_only_cost_per_correct_cents": 6.2571,
+        "gpu_cost_usd": 1.314,
+        "sandbox_cost_est_usd": 1.247,
+        "mean_tokens_per_case": 168344.9,
+        "mean_input_tokens_per_case": 145132.6,
+        "mean_cached_input_tokens_per_case": 114688.9,
+        "mean_output_tokens_per_case": 23212.3,
+        "mean_calls_per_case": 12.86,
+        "calls_counted_trials": 36,
+        "failures": {
+          "finished wrong": 2,
+          "out of time, working": 13
+        },
+        "peeked_trials": 0
+      }
+    ],
+    "terminus-2 | kv-fp8 | c32": [
+      {
+        "model": "Qwen/Qwen3.8-27B",
+        "benchmark": "terminal-bench-2.0",
+        "gpu": "H100",
+        "runs": 2,
+        "attempts_per_task": [
+          1
+        ],
+        "n": 72,
+        "correct": 36,
+        "accuracy": 0.5,
+        "ci95": [
+          0.3611,
+          0.6389
+        ],
+        "per_run_solved": [
+          "18/36",
+          "18/36"
+        ],
+        "cost_per_correct_cents": 16.6817,
+        "gpu_only_cost_per_correct_cents": 8.4183,
+        "gpu_cost_usd": 3.0306,
+        "sandbox_cost_est_usd": 2.9748,
+        "mean_tokens_per_case": 81094.6,
+        "mean_input_tokens_per_case": 69266.8,
+        "mean_cached_input_tokens_per_case": 40267.1,
+        "mean_output_tokens_per_case": 11827.7,
+        "mean_calls_per_case": 8.81,
+        "calls_counted_trials": 72,
+        "failures": {
+          "finished wrong": 3,
+          "out of time, working": 33
+        },
+        "peeked_trials": 0
+      }
+    ],
+    "terminus-2 | moe-a3b | c16": [
+      {
+        "model": "Qwen/Qwen3.6-35B-A3B-FP8",
+        "benchmark": "terminal-bench-2.0",
+        "gpu": "H100",
+        "runs": 2,
+        "attempts_per_task": [
+          1,
+          2
+        ],
+        "n": 108,
+        "correct": 51,
+        "accuracy": 0.4722,
+        "ci95": [
+          0.3333,
+          0.6111
+        ],
+        "per_run_solved": [
+          "21/36",
+          "30/72"
+        ],
+        "cost_per_correct_cents": 17.5618,
+        "gpu_only_cost_per_correct_cents": 11.8137,
+        "gpu_cost_usd": 6.025,
+        "sandbox_cost_est_usd": 2.9315,
+        "mean_tokens_per_case": 359926.9,
+        "mean_input_tokens_per_case": 342976.1,
+        "mean_cached_input_tokens_per_case": 311480.9,
+        "mean_output_tokens_per_case": 16950.7,
+        "mean_calls_per_case": 21.14,
+        "calls_counted_trials": 108,
+        "failures": {
+          "finished wrong": 29,
+          "other error": 1,
+          "out of time, looping": 4,
+          "out of time, working": 23
+        },
+        "peeked_trials": 0
+      }
+    ],
+    "terminus-2 | moe-a3b | c32": [
+      {
+        "model": "Qwen/Qwen3.6-35B-A3B-FP8",
+        "benchmark": "terminal-bench-2.0",
+        "gpu": "H100",
+        "runs": 2,
+        "attempts_per_task": [
+          1,
+          2
+        ],
+        "n": 108,
+        "correct": 46,
+        "accuracy": 0.4259,
+        "ci95": [
+          0.2963,
+          0.5648
+        ],
+        "per_run_solved": [
+          "18/36",
+          "28/72"
+        ],
+        "cost_per_correct_cents": 15.39,
+        "gpu_only_cost_per_correct_cents": 8.4254,
+        "gpu_cost_usd": 3.8757,
+        "sandbox_cost_est_usd": 3.2037,
+        "mean_tokens_per_case": 337613.2,
+        "mean_input_tokens_per_case": 321168.7,
+        "mean_cached_input_tokens_per_case": 291436.4,
+        "mean_output_tokens_per_case": 16444.5,
+        "mean_calls_per_case": 20.42,
+        "calls_counted_trials": 108,
+        "failures": {
+          "finished wrong": 22,
+          "looked up answer": 1,
+          "other error": 3,
+          "out of time, looping": 8,
+          "out of time, working": 28
+        },
+        "peeked_trials": 1
+      }
+    ],
+    "terminus-2 | no-prefix-cache | c32": [
+      {
+        "model": "Qwen/Qwen3.8-27B",
+        "benchmark": "terminal-bench-2.0",
+        "gpu": "H100",
+        "runs": 2,
+        "attempts_per_task": [
+          1
+        ],
+        "n": 72,
+        "correct": 31,
+        "accuracy": 0.4306,
+        "ci95": [
+          0.2917,
+          0.5833
+        ],
+        "per_run_solved": [
+          "15/36",
+          "16/36"
+        ],
+        "cost_per_correct_cents": 19.591,
+        "gpu_only_cost_per_correct_cents": 9.5223,
+        "gpu_cost_usd": 2.9519,
+        "sandbox_cost_est_usd": 3.1213,
+        "mean_tokens_per_case": 65432.7,
+        "mean_input_tokens_per_case": 55193.2,
+        "mean_cached_input_tokens_per_case": 0.0,
+        "mean_output_tokens_per_case": 10239.5,
+        "mean_calls_per_case": 7.47,
+        "calls_counted_trials": 72,
+        "failures": {
+          "finished wrong": 1,
+          "out of time, working": 40
+        },
+        "peeked_trials": 0
+      }
+    ],
+    "terminus-2 | no-thinking | c32": [
+      {
+        "model": "Qwen/Qwen3.8-27B",
+        "benchmark": "terminal-bench-2.0",
+        "gpu": "H100",
+        "runs": 2,
+        "attempts_per_task": [
+          1,
+          2
+        ],
+        "n": 108,
+        "correct": 49,
+        "accuracy": 0.4537,
+        "ci95": [
+          0.2963,
+          0.6111
+        ],
+        "per_run_solved": [
+          "14/36",
+          "35/72"
+        ],
+        "cost_per_correct_cents": 17.1624,
+        "gpu_only_cost_per_correct_cents": 8.1967,
+        "gpu_cost_usd": 4.0164,
+        "sandbox_cost_est_usd": 4.3932,
+        "mean_tokens_per_case": 174922.3,
+        "mean_input_tokens_per_case": 168228.0,
+        "mean_cached_input_tokens_per_case": 22445.6,
+        "mean_output_tokens_per_case": 6694.3,
+        "mean_calls_per_case": 16.07,
+        "calls_counted_trials": 108,
+        "failures": {
+          "finished wrong": 10,
+          "out of time, looping": 6,
+          "out of time, working": 43
+        },
+        "peeked_trials": 0
+      }
+    ],
+    "terminus-2 | spec-mtp | c16": [
+      {
+        "model": "Qwen/Qwen3.8-27B",
+        "benchmark": "terminal-bench-2.0",
+        "gpu": "H100",
+        "runs": 1,
+        "attempts_per_task": [
+          1
+        ],
+        "n": 36,
+        "correct": 19,
+        "accuracy": 0.5278,
+        "ci95": [
+          0.3611,
+          0.6944
+        ],
+        "per_run_solved": [
+          "19/36"
+        ],
+        "cost_per_correct_cents": 18.1426,
+        "gpu_only_cost_per_correct_cents": 11.4274,
+        "gpu_cost_usd": 2.1712,
+        "sandbox_cost_est_usd": 1.2759,
+        "mean_tokens_per_case": 127800.3,
+        "mean_input_tokens_per_case": 107209.5,
+        "mean_cached_input_tokens_per_case": 29000.0,
+        "mean_output_tokens_per_case": 20590.8,
+        "mean_calls_per_case": 11.81,
+        "calls_counted_trials": 36,
+        "failures": {
+          "finished wrong": 6,
+          "out of time, working": 11
+        },
+        "peeked_trials": 0
+      }
+    ],
+    "terminus-2 | spec-mtp | c32": [
+      {
+        "model": "Qwen/Qwen3.8-27B",
+        "benchmark": "terminal-bench-2.0",
+        "gpu": "H100",
+        "runs": 3,
+        "attempts_per_task": [
+          1,
+          2
+        ],
+        "n": 144,
+        "correct": 63,
+        "accuracy": 0.4375,
+        "ci95": [
+          0.3194,
+          0.5625
+        ],
+        "per_run_solved": [
+          "17/36",
+          "18/36",
+          "28/72"
+        ],
+        "cost_per_correct_cents": 19.0471,
+        "gpu_only_cost_per_correct_cents": 8.587,
+        "gpu_cost_usd": 5.4098,
+        "sandbox_cost_est_usd": 6.5899,
+        "mean_tokens_per_case": 74143.5,
+        "mean_input_tokens_per_case": 61379.4,
+        "mean_cached_input_tokens_per_case": 8083.3,
+        "mean_output_tokens_per_case": 12764.2,
+        "mean_calls_per_case": 8.27,
+        "calls_counted_trials": 144,
+        "failures": {
+          "finished wrong": 6,
+          "out of time, looping": 1,
+          "out of time, working": 74
+        },
+        "peeked_trials": 0
+      }
+    ],
+    "terminus-2 | weights-fp8 | c32": [
+      {
+        "model": "Qwen/Qwen3.8-27B-FP8",
+        "benchmark": "terminal-bench-2.0",
+        "gpu": "H100",
+        "runs": 2,
+        "attempts_per_task": [
+          1
+        ],
+        "n": 72,
+        "correct": 30,
+        "accuracy": 0.4167,
+        "ci95": [
+          0.2778,
+          0.5556
+        ],
+        "per_run_solved": [
+          "15/36",
+          "15/36"
+        ],
+        "cost_per_correct_cents": 19.7813,
+        "gpu_only_cost_per_correct_cents": 9.9253,
+        "gpu_cost_usd": 2.9776,
+        "sandbox_cost_est_usd": 2.9568,
+        "mean_tokens_per_case": 110451.9,
+        "mean_input_tokens_per_case": 94898.2,
+        "mean_cached_input_tokens_per_case": 71899.3,
+        "mean_output_tokens_per_case": 15553.7,
+        "mean_calls_per_case": 10.32,
+        "calls_counted_trials": 72,
+        "failures": {
+          "finished wrong": 4,
+          "out of time, working": 38
+        },
+        "peeked_trials": 0
+      }
+    ]
+  },
+  "results_note": "Keys are 'harness | config | cN' (N = concurrent agents on one GPU). One entry per benchmark that condition ran. Every attempted trial is in n: trials that crashed, timed out, never started (harness install failure) or looked up the benchmark count as unsolved. Five runs that produced no trials at all (server deploy failures, killed processes, a GAIA run with a bad task-id format) are excluded and listed in excluded_runs. The 8-task quickcheck runs (task set `quick`, Oct 9) and the ML-training-ops runs in the same attempts.jsonl are not included. `per_run_solved` lists each run's solved/attempted. Failure categories come from trajectories.py's classifier applied to every trial's Harbor result and trajectory.",
+  "excluded_runs": [
+    {
+      "condition": "mini-swe-agent | defaults | c16",
+      "task_set": "full",
+      "ts": "2026-10-09T03:59:29",
+      "attempted": 0,
+      "reason": "SystemExit: 143"
+    },
+    {
+      "condition": "terminus-2 | no-thinking | c32",
+      "task_set": "full",
+      "ts": "2026-10-09T05:12:05",
+      "attempted": 0,
+      "reason": "SystemExit: 143"
+    },
+    {
+      "condition": "terminus-2 | h200 | c32",
+      "task_set": "full",
+      "ts": "2026-10-09T05:38:53",
+      "attempted": 0,
+      "reason": "RuntimeError: modal deploy failed:"
+    },
+    {
+      "condition": "mini-swe-agent | h200 | c32",
+      "task_set": "full",
+      "ts": "2026-10-09T06:41:15",
+      "attempted": 0,
+      "reason": "RuntimeError: modal deploy failed:"
+    },
+    {
+      "condition": "terminus-2 | defaults | c16",
+      "task_set": "gaia",
+      "ts": "2026-10-09T07:20:12",
+      "attempted": 0,
+      "reason": "harbor exit 1, parsed 0/60 trials"
+    }
+  ],
+  "per_type": {
+    "mini-swe-agent | b200 | c32": {
+      "Qwen/Qwen3.8-27B": {
+        "terminal-bench-2.0/easy": {
+          "n": 12,
+          "correct": 6,
+          "accuracy": 0.5
+        },
+        "terminal-bench-2.0/hard": {
+          "n": 24,
+          "correct": 9,
+          "accuracy": 0.375
+        },
+        "terminal-bench-2.0/medium": {
+          "n": 72,
+          "correct": 38,
+          "accuracy": 0.5278
+        },
+        "terminal-bench-2.0": {
+          "n": 108,
+          "correct": 53,
+          "accuracy": 0.4907
+        }
+      }
+    },
+    "mini-swe-agent | defaults | c16": {
+      "Qwen/Qwen3.8-27B": {
+        "gaia": {
+          "n": 60,
+          "correct": 18,
+          "accuracy": 0.3
+        },
+        "terminal-bench-2.0/easy": {
+          "n": 12,
+          "correct": 6,
+          "accuracy": 0.5
+        },
+        "terminal-bench-2.0/hard": {
+          "n": 24,
+          "correct": 7,
+          "accuracy": 0.2917
+        },
+        "terminal-bench-2.0/medium": {
+          "n": 72,
+          "correct": 34,
+          "accuracy": 0.4722
+        },
+        "terminal-bench-2.0": {
+          "n": 108,
+          "correct": 47,
+          "accuracy": 0.4352
+        }
+      }
+    },
+    "mini-swe-agent | defaults | c32": {
+      "Qwen/Qwen3.8-27B": {
+        "gaia": {
+          "n": 60,
+          "correct": 13,
+          "accuracy": 0.2167
+        },
+        "terminal-bench-2.0/easy": {
+          "n": 16,
+          "correct": 8,
+          "accuracy": 0.5
+        },
+        "terminal-bench-2.0/hard": {
+          "n": 32,
+          "correct": 4,
+          "accuracy": 0.125
+        },
+        "terminal-bench-2.0/medium": {
+          "n": 96,
+          "correct": 31,
+          "accuracy": 0.3229
+        },
+        "terminal-bench-2.0": {
+          "n": 144,
+          "correct": 43,
+          "accuracy": 0.2986
+        }
+      }
+    },
+    "mini-swe-agent | defaults | c48": {
+      "Qwen/Qwen3.8-27B": {
+        "terminal-bench-2.0/easy": {
+          "n": 8,
+          "correct": 4,
+          "accuracy": 0.5
+        },
+        "terminal-bench-2.0/hard": {
+          "n": 16,
+          "correct": 1,
+          "accuracy": 0.0625
+        },
+        "terminal-bench-2.0/medium": {
+          "n": 48,
+          "correct": 20,
+          "accuracy": 0.4167
+        },
+        "terminal-bench-2.0": {
+          "n": 72,
+          "correct": 25,
+          "accuracy": 0.3472
+        }
+      }
+    },
+    "mini-swe-agent | defaults | c64": {
+      "Qwen/Qwen3.8-27B": {
+        "terminal-bench-2.0/easy": {
+          "n": 8,
+          "correct": 3,
+          "accuracy": 0.375
+        },
+        "terminal-bench-2.0/hard": {
+          "n": 16,
+          "correct": 2,
+          "accuracy": 0.125
+        },
+        "terminal-bench-2.0/medium": {
+          "n": 48,
+          "correct": 14,
+          "accuracy": 0.2917
+        },
+        "terminal-bench-2.0": {
+          "n": 72,
+          "correct": 19,
+          "accuracy": 0.2639
+        }
+      }
+    },
+    "mini-swe-agent | defaults | c8": {
+      "Qwen/Qwen3.8-27B": {
+        "terminal-bench-2.0/easy": {
+          "n": 4,
+          "correct": 2,
+          "accuracy": 0.5
+        },
+        "terminal-bench-2.0/hard": {
+          "n": 8,
+          "correct": 3,
+          "accuracy": 0.375
+        },
+        "terminal-bench-2.0/medium": {
+          "n": 24,
+          "correct": 13,
+          "accuracy": 0.5417
+        },
+        "terminal-bench-2.0": {
+          "n": 36,
+          "correct": 18,
+          "accuracy": 0.5
+        }
+      }
+    },
+    "mini-swe-agent | defaults-2x-time | c32": {
+      "Qwen/Qwen3.8-27B": {
+        "terminal-bench-2.0/easy": {
+          "n": 12,
+          "correct": 7,
+          "accuracy": 0.5833
+        },
+        "terminal-bench-2.0/hard": {
+          "n": 24,
+          "correct": 3,
+          "accuracy": 0.125
+        },
+        "terminal-bench-2.0/medium": {
+          "n": 72,
+          "correct": 32,
+          "accuracy": 0.4444
+        },
+        "terminal-bench-2.0": {
+          "n": 108,
+          "correct": 42,
+          "accuracy": 0.3889
+        }
+      }
+    },
+    "mini-swe-agent | defaults-4x-time | c16": {
+      "Qwen/Qwen3.8-27B": {
+        "terminal-bench-2.0/easy": {
+          "n": 4,
+          "correct": 3,
+          "accuracy": 0.75
+        },
+        "terminal-bench-2.0/hard": {
+          "n": 8,
+          "correct": 3,
+          "accuracy": 0.375
+        },
+        "terminal-bench-2.0/medium": {
+          "n": 24,
+          "correct": 11,
+          "accuracy": 0.4583
+        },
+        "terminal-bench-2.0": {
+          "n": 36,
+          "correct": 17,
+          "accuracy": 0.4722
+        }
+      }
+    },
+    "mini-swe-agent | defaults-4x-time | c32": {
+      "Qwen/Qwen3.8-27B": {
+        "terminal-bench-2.0/easy": {
+          "n": 4,
+          "correct": 2,
+          "accuracy": 0.5
+        },
+        "terminal-bench-2.0/hard": {
+          "n": 8,
+          "correct": 2,
+          "accuracy": 0.25
+        },
+        "terminal-bench-2.0/medium": {
+          "n": 24,
+          "correct": 10,
+          "accuracy": 0.4167
+        },
+        "terminal-bench-2.0": {
+          "n": 36,
+          "correct": 14,
+          "accuracy": 0.3889
+        }
+      }
+    },
+    "mini-swe-agent | h200 | c32": {
+      "Qwen/Qwen3.8-27B": {
+        "gaia": {
+          "n": 60,
+          "correct": 21,
+          "accuracy": 0.35
+        },
+        "terminal-bench-2.0/easy": {
+          "n": 12,
+          "correct": 6,
+          "accuracy": 0.5
+        },
+        "terminal-bench-2.0/hard": {
+          "n": 24,
+          "correct": 8,
+          "accuracy": 0.3333
+        },
+        "terminal-bench-2.0/medium": {
+          "n": 72,
+          "correct": 35,
+          "accuracy": 0.4861
+        },
+        "terminal-bench-2.0": {
+          "n": 108,
+          "correct": 49,
+          "accuracy": 0.4537
+        }
+      }
+    },
+    "mini-swe-agent | h200-spec-mtp | c32": {
+      "Qwen/Qwen3.8-27B": {
+        "terminal-bench-2.0/easy": {
+          "n": 4,
+          "correct": 2,
+          "accuracy": 0.5
+        },
+        "terminal-bench-2.0/hard": {
+          "n": 8,
+          "correct": 2,
+          "accuracy": 0.25
+        },
+        "terminal-bench-2.0/medium": {
+          "n": 24,
+          "correct": 14,
+          "accuracy": 0.5833
+        },
+        "terminal-bench-2.0": {
+          "n": 36,
+          "correct": 18,
+          "accuracy": 0.5
+        }
+      }
+    },
+    "mini-swe-agent | kv-fp8 | c32": {
+      "Qwen/Qwen3.8-27B": {
+        "terminal-bench-2.0/easy": {
+          "n": 8,
+          "correct": 4,
+          "accuracy": 0.5
+        },
+        "terminal-bench-2.0/hard": {
+          "n": 16,
+          "correct": 2,
+          "accuracy": 0.125
+        },
+        "terminal-bench-2.0/medium": {
+          "n": 48,
+          "correct": 21,
+          "accuracy": 0.4375
+        },
+        "terminal-bench-2.0": {
+          "n": 72,
+          "correct": 27,
+          "accuracy": 0.375
+        }
+      }
+    },
+    "mini-swe-agent | moe-a3b | c16": {
+      "Qwen/Qwen3.6-35B-A3B-FP8": {
+        "terminal-bench-2.0/easy": {
+          "n": 12,
+          "correct": 11,
+          "accuracy": 0.9167
+        },
+        "terminal-bench-2.0/hard": {
+          "n": 24,
+          "correct": 6,
+          "accuracy": 0.25
+        },
+        "terminal-bench-2.0/medium": {
+          "n": 72,
+          "correct": 36,
+          "accuracy": 0.5
+        },
+        "terminal-bench-2.0": {
+          "n": 108,
+          "correct": 53,
+          "accuracy": 0.4907
+        }
+      }
+    },
+    "mini-swe-agent | moe-a3b | c32": {
+      "Qwen/Qwen3.6-35B-A3B-FP8": {
+        "terminal-bench-2.0/easy": {
+          "n": 12,
+          "correct": 12,
+          "accuracy": 1.0
+        },
+        "terminal-bench-2.0/hard": {
+          "n": 24,
+          "correct": 6,
+          "accuracy": 0.25
+        },
+        "terminal-bench-2.0/medium": {
+          "n": 72,
+          "correct": 35,
+          "accuracy": 0.4861
+        },
+        "terminal-bench-2.0": {
+          "n": 108,
+          "correct": 53,
+          "accuracy": 0.4907
+        }
+      }
+    },
+    "mini-swe-agent | no-prefix-cache | c32": {
+      "Qwen/Qwen3.8-27B": {
+        "terminal-bench-2.0/easy": {
+          "n": 8,
+          "correct": 4,
+          "accuracy": 0.5
+        },
+        "terminal-bench-2.0/hard": {
+          "n": 16,
+          "correct": 3,
+          "accuracy": 0.1875
+        },
+        "terminal-bench-2.0/medium": {
+          "n": 48,
+          "correct": 18,
+          "accuracy": 0.375
+        },
+        "terminal-bench-2.0": {
+          "n": 72,
+          "correct": 25,
+          "accuracy": 0.3472
+        }
+      }
+    },
+    "mini-swe-agent | no-thinking | c32": {
+      "Qwen/Qwen3.8-27B": {
+        "terminal-bench-2.0/easy": {
+          "n": 12,
+          "correct": 5,
+          "accuracy": 0.4167
+        },
+        "terminal-bench-2.0/hard": {
+          "n": 24,
+          "correct": 4,
+          "accuracy": 0.1667
+        },
+        "terminal-bench-2.0/medium": {
+          "n": 72,
+          "correct": 34,
+          "accuracy": 0.4722
+        },
+        "terminal-bench-2.0": {
+          "n": 108,
+          "correct": 43,
+          "accuracy": 0.3981
+        }
+      }
+    },
+    "mini-swe-agent | spec-mtp | c16": {
+      "Qwen/Qwen3.8-27B": {
+        "terminal-bench-2.0/easy": {
+          "n": 4,
+          "correct": 2,
+          "accuracy": 0.5
+        },
+        "terminal-bench-2.0/hard": {
+          "n": 8,
+          "correct": 3,
+          "accuracy": 0.375
+        },
+        "terminal-bench-2.0/medium": {
+          "n": 24,
+          "correct": 12,
+          "accuracy": 0.5
+        },
+        "terminal-bench-2.0": {
+          "n": 36,
+          "correct": 17,
+          "accuracy": 0.4722
+        }
+      }
+    },
+    "mini-swe-agent | spec-mtp | c32": {
+      "Qwen/Qwen3.8-27B": {
+        "terminal-bench-2.0/easy": {
+          "n": 16,
+          "correct": 8,
+          "accuracy": 0.5
+        },
+        "terminal-bench-2.0/hard": {
+          "n": 32,
+          "correct": 3,
+          "accuracy": 0.0938
+        },
+        "terminal-bench-2.0/medium": {
+          "n": 96,
+          "correct": 41,
+          "accuracy": 0.4271
+        },
+        "terminal-bench-2.0": {
+          "n": 144,
+          "correct": 52,
+          "accuracy": 0.3611
+        }
+      }
+    },
+    "mini-swe-agent | weights-fp8 | c32": {
+      "Qwen/Qwen3.8-27B-FP8": {
+        "terminal-bench-2.0/easy": {
+          "n": 8,
+          "correct": 4,
+          "accuracy": 0.5
+        },
+        "terminal-bench-2.0/hard": {
+          "n": 16,
+          "correct": 3,
+          "accuracy": 0.1875
+        },
+        "terminal-bench-2.0/medium": {
+          "n": 48,
+          "correct": 22,
+          "accuracy": 0.4583
+        },
+        "terminal-bench-2.0": {
+          "n": 72,
+          "correct": 29,
+          "accuracy": 0.4028
+        }
+      }
+    },
+    "opencode | defaults | c16": {
+      "Qwen/Qwen3.8-27B": {
+        "terminal-bench-2.0/easy": {
+          "n": 4,
+          "correct": 2,
+          "accuracy": 0.5
+        },
+        "terminal-bench-2.0/hard": {
+          "n": 8,
+          "correct": 3,
+          "accuracy": 0.375
+        },
+        "terminal-bench-2.0/medium": {
+          "n": 24,
+          "correct": 13,
+          "accuracy": 0.5417
+        },
+        "terminal-bench-2.0": {
+          "n": 36,
+          "correct": 18,
+          "accuracy": 0.5
+        }
+      }
+    },
+    "opencode | defaults | c32": {
+      "Qwen/Qwen3.8-27B": {
+        "terminal-bench-2.0/easy": {
+          "n": 4,
+          "correct": 2,
+          "accuracy": 0.5
+        },
+        "terminal-bench-2.0/hard": {
+          "n": 8,
+          "correct": 2,
+          "accuracy": 0.25
+        },
+        "terminal-bench-2.0/medium": {
+          "n": 24,
+          "correct": 12,
+          "accuracy": 0.5
+        },
+        "terminal-bench-2.0": {
+          "n": 36,
+          "correct": 16,
+          "accuracy": 0.4444
+        }
+      }
+    },
+    "pi | defaults | c16": {
+      "Qwen/Qwen3.8-27B": {
+        "terminal-bench-2.0/easy": {
+          "n": 4,
+          "correct": 2,
+          "accuracy": 0.5
+        },
+        "terminal-bench-2.0/hard": {
+          "n": 8,
+          "correct": 3,
+          "accuracy": 0.375
+        },
+        "terminal-bench-2.0/medium": {
+          "n": 24,
+          "correct": 10,
+          "accuracy": 0.4167
+        },
+        "terminal-bench-2.0": {
+          "n": 36,
+          "correct": 15,
+          "accuracy": 0.4167
+        }
+      }
+    },
+    "pi | defaults | c32": {
+      "Qwen/Qwen3.8-27B": {
+        "terminal-bench-2.0/easy": {
+          "n": 4,
+          "correct": 2,
+          "accuracy": 0.5
+        },
+        "terminal-bench-2.0/hard": {
+          "n": 8,
+          "correct": 3,
+          "accuracy": 0.375
+        },
+        "terminal-bench-2.0/medium": {
+          "n": 24,
+          "correct": 9,
+          "accuracy": 0.375
+        },
+        "terminal-bench-2.0": {
+          "n": 36,
+          "correct": 14,
+          "accuracy": 0.3889
+        }
+      }
+    },
+    "terminus-2 | b200 | c32": {
+      "Qwen/Qwen3.8-27B": {
+        "terminal-bench-2.0/easy": {
+          "n": 12,
+          "correct": 9,
+          "accuracy": 0.75
+        },
+        "terminal-bench-2.0/hard": {
+          "n": 24,
+          "correct": 9,
+          "accuracy": 0.375
+        },
+        "terminal-bench-2.0/medium": {
+          "n": 72,
+          "correct": 42,
+          "accuracy": 0.5833
+        },
+        "terminal-bench-2.0": {
+          "n": 108,
+          "correct": 60,
+          "accuracy": 0.5556
+        }
+      }
+    },
+    "terminus-2 | defaults | c16": {
+      "Qwen/Qwen3.8-27B": {
+        "gaia": {
+          "n": 60,
+          "correct": 14,
+          "accuracy": 0.2333
+        },
+        "terminal-bench-2.0/easy": {
+          "n": 12,
+          "correct": 5,
+          "accuracy": 0.4167
+        },
+        "terminal-bench-2.0/hard": {
+          "n": 24,
+          "correct": 5,
+          "accuracy": 0.2083
+        },
+        "terminal-bench-2.0/medium": {
+          "n": 72,
+          "correct": 38,
+          "accuracy": 0.5278
+        },
+        "terminal-bench-2.0": {
+          "n": 108,
+          "correct": 48,
+          "accuracy": 0.4444
+        }
+      }
+    },
+    "terminus-2 | defaults | c32": {
+      "Qwen/Qwen3.8-27B": {
+        "gaia": {
+          "n": 60,
+          "correct": 12,
+          "accuracy": 0.2
+        },
+        "terminal-bench-2.0/easy": {
+          "n": 24,
+          "correct": 11,
+          "accuracy": 0.4583
+        },
+        "terminal-bench-2.0/hard": {
+          "n": 48,
+          "correct": 8,
+          "accuracy": 0.1667
+        },
+        "terminal-bench-2.0/medium": {
+          "n": 144,
+          "correct": 70,
+          "accuracy": 0.4861
+        },
+        "terminal-bench-2.0": {
+          "n": 216,
+          "correct": 89,
+          "accuracy": 0.412
+        }
+      }
+    },
+    "terminus-2 | defaults | c48": {
+      "Qwen/Qwen3.8-27B": {
+        "terminal-bench-2.0/easy": {
+          "n": 8,
+          "correct": 3,
+          "accuracy": 0.375
+        },
+        "terminal-bench-2.0/hard": {
+          "n": 16,
+          "correct": 2,
+          "accuracy": 0.125
+        },
+        "terminal-bench-2.0/medium": {
+          "n": 48,
+          "correct": 19,
+          "accuracy": 0.3958
+        },
+        "terminal-bench-2.0": {
+          "n": 72,
+          "correct": 24,
+          "accuracy": 0.3333
+        }
+      }
+    },
+    "terminus-2 | defaults | c64": {
+      "Qwen/Qwen3.8-27B": {
+        "terminal-bench-2.0/easy": {
+          "n": 8,
+          "correct": 3,
+          "accuracy": 0.375
+        },
+        "terminal-bench-2.0/hard": {
+          "n": 16,
+          "correct": 2,
+          "accuracy": 0.125
+        },
+        "terminal-bench-2.0/medium": {
+          "n": 48,
+          "correct": 11,
+          "accuracy": 0.2292
+        },
+        "terminal-bench-2.0": {
+          "n": 72,
+          "correct": 16,
+          "accuracy": 0.2222
+        }
+      }
+    },
+    "terminus-2 | defaults | c8": {
+      "Qwen/Qwen3.8-27B": {
+        "terminal-bench-2.0/easy": {
+          "n": 4,
+          "correct": 2,
+          "accuracy": 0.5
+        },
+        "terminal-bench-2.0/hard": {
+          "n": 8,
+          "correct": 3,
+          "accuracy": 0.375
+        },
+        "terminal-bench-2.0/medium": {
+          "n": 24,
+          "correct": 14,
+          "accuracy": 0.5833
+        },
+        "terminal-bench-2.0": {
+          "n": 36,
+          "correct": 19,
+          "accuracy": 0.5278
+        }
+      }
+    },
+    "terminus-2 | defaults-2x-time | c32": {
+      "Qwen/Qwen3.8-27B": {
+        "terminal-bench-2.0/easy": {
+          "n": 12,
+          "correct": 7,
+          "accuracy": 0.5833
+        },
+        "terminal-bench-2.0/hard": {
+          "n": 24,
+          "correct": 5,
+          "accuracy": 0.2083
+        },
+        "terminal-bench-2.0/medium": {
+          "n": 72,
+          "correct": 38,
+          "accuracy": 0.5278
+        },
+        "terminal-bench-2.0": {
+          "n": 108,
+          "correct": 50,
+          "accuracy": 0.463
+        }
+      }
+    },
+    "terminus-2 | defaults-4x-time | c16": {
+      "Qwen/Qwen3.8-27B": {
+        "terminal-bench-2.0/easy": {
+          "n": 4,
+          "correct": 3,
+          "accuracy": 0.75
+        },
+        "terminal-bench-2.0/hard": {
+          "n": 8,
+          "correct": 3,
+          "accuracy": 0.375
+        },
+        "terminal-bench-2.0/medium": {
+          "n": 24,
+          "correct": 16,
+          "accuracy": 0.6667
+        },
+        "terminal-bench-2.0": {
+          "n": 36,
+          "correct": 22,
+          "accuracy": 0.6111
+        }
+      }
+    },
+    "terminus-2 | defaults-4x-time | c32": {
+      "Qwen/Qwen3.8-27B": {
+        "terminal-bench-2.0/easy": {
+          "n": 4,
+          "correct": 2,
+          "accuracy": 0.5
+        },
+        "terminal-bench-2.0/hard": {
+          "n": 8,
+          "correct": 1,
+          "accuracy": 0.125
+        },
+        "terminal-bench-2.0/medium": {
+          "n": 24,
+          "correct": 14,
+          "accuracy": 0.5833
+        },
+        "terminal-bench-2.0": {
+          "n": 36,
+          "correct": 17,
+          "accuracy": 0.4722
+        }
+      }
+    },
+    "terminus-2 | h200 | c32": {
+      "Qwen/Qwen3.8-27B": {
+        "gaia": {
+          "n": 60,
+          "correct": 20,
+          "accuracy": 0.3333
+        },
+        "terminal-bench-2.0/easy": {
+          "n": 12,
+          "correct": 6,
+          "accuracy": 0.5
+        },
+        "terminal-bench-2.0/hard": {
+          "n": 24,
+          "correct": 5,
+          "accuracy": 0.2083
+        },
+        "terminal-bench-2.0/medium": {
+          "n": 72,
+          "correct": 37,
+          "accuracy": 0.5139
+        },
+        "terminal-bench-2.0": {
+          "n": 108,
+          "correct": 48,
+          "accuracy": 0.4444
+        }
+      }
+    },
+    "terminus-2 | h200-spec-mtp | c32": {
+      "Qwen/Qwen3.8-27B": {
+        "terminal-bench-2.0/easy": {
+          "n": 4,
+          "correct": 2,
+          "accuracy": 0.5
+        },
+        "terminal-bench-2.0/hard": {
+          "n": 8,
+          "correct": 3,
+          "accuracy": 0.375
+        },
+        "terminal-bench-2.0/medium": {
+          "n": 24,
+          "correct": 16,
+          "accuracy": 0.6667
+        },
+        "terminal-bench-2.0": {
+          "n": 36,
+          "correct": 21,
+          "accuracy": 0.5833
+        }
+      }
+    },
+    "terminus-2 | kv-fp8 | c32": {
+      "Qwen/Qwen3.8-27B": {
+        "terminal-bench-2.0/easy": {
+          "n": 8,
+          "correct": 4,
+          "accuracy": 0.5
+        },
+        "terminal-bench-2.0/hard": {
+          "n": 16,
+          "correct": 5,
+          "accuracy": 0.3125
+        },
+        "terminal-bench-2.0/medium": {
+          "n": 48,
+          "correct": 27,
+          "accuracy": 0.5625
+        },
+        "terminal-bench-2.0": {
+          "n": 72,
+          "correct": 36,
+          "accuracy": 0.5
+        }
+      }
+    },
+    "terminus-2 | moe-a3b | c16": {
+      "Qwen/Qwen3.6-35B-A3B-FP8": {
+        "terminal-bench-2.0/easy": {
+          "n": 12,
+          "correct": 9,
+          "accuracy": 0.75
+        },
+        "terminal-bench-2.0/hard": {
+          "n": 24,
+          "correct": 8,
+          "accuracy": 0.3333
+        },
+        "terminal-bench-2.0/medium": {
+          "n": 72,
+          "correct": 34,
+          "accuracy": 0.4722
+        },
+        "terminal-bench-2.0": {
+          "n": 108,
+          "correct": 51,
+          "accuracy": 0.4722
+        }
+      }
+    },
+    "terminus-2 | moe-a3b | c32": {
+      "Qwen/Qwen3.6-35B-A3B-FP8": {
+        "terminal-bench-2.0/easy": {
+          "n": 12,
+          "correct": 9,
+          "accuracy": 0.75
+        },
+        "terminal-bench-2.0/hard": {
+          "n": 24,
+          "correct": 8,
+          "accuracy": 0.3333
+        },
+        "terminal-bench-2.0/medium": {
+          "n": 72,
+          "correct": 29,
+          "accuracy": 0.4028
+        },
+        "terminal-bench-2.0": {
+          "n": 108,
+          "correct": 46,
+          "accuracy": 0.4259
+        }
+      }
+    },
+    "terminus-2 | no-prefix-cache | c32": {
+      "Qwen/Qwen3.8-27B": {
+        "terminal-bench-2.0/easy": {
+          "n": 8,
+          "correct": 4,
+          "accuracy": 0.5
+        },
+        "terminal-bench-2.0/hard": {
+          "n": 16,
+          "correct": 4,
+          "accuracy": 0.25
+        },
+        "terminal-bench-2.0/medium": {
+          "n": 48,
+          "correct": 23,
+          "accuracy": 0.4792
+        },
+        "terminal-bench-2.0": {
+          "n": 72,
+          "correct": 31,
+          "accuracy": 0.4306
+        }
+      }
+    },
+    "terminus-2 | no-thinking | c32": {
+      "Qwen/Qwen3.8-27B": {
+        "terminal-bench-2.0/easy": {
+          "n": 12,
+          "correct": 8,
+          "accuracy": 0.6667
+        },
+        "terminal-bench-2.0/hard": {
+          "n": 24,
+          "correct": 3,
+          "accuracy": 0.125
+        },
+        "terminal-bench-2.0/medium": {
+          "n": 72,
+          "correct": 38,
+          "accuracy": 0.5278
+        },
+        "terminal-bench-2.0": {
+          "n": 108,
+          "correct": 49,
+          "accuracy": 0.4537
+        }
+      }
+    },
+    "terminus-2 | spec-mtp | c16": {
+      "Qwen/Qwen3.8-27B": {
+        "terminal-bench-2.0/easy": {
+          "n": 4,
+          "correct": 4,
+          "accuracy": 1.0
+        },
+        "terminal-bench-2.0/hard": {
+          "n": 8,
+          "correct": 3,
+          "accuracy": 0.375
+        },
+        "terminal-bench-2.0/medium": {
+          "n": 24,
+          "correct": 12,
+          "accuracy": 0.5
+        },
+        "terminal-bench-2.0": {
+          "n": 36,
+          "correct": 19,
+          "accuracy": 0.5278
+        }
+      }
+    },
+    "terminus-2 | spec-mtp | c32": {
+      "Qwen/Qwen3.8-27B": {
+        "terminal-bench-2.0/easy": {
+          "n": 16,
+          "correct": 8,
+          "accuracy": 0.5
+        },
+        "terminal-bench-2.0/hard": {
+          "n": 32,
+          "correct": 11,
+          "accuracy": 0.3438
+        },
+        "terminal-bench-2.0/medium": {
+          "n": 96,
+          "correct": 44,
+          "accuracy": 0.4583
+        },
+        "terminal-bench-2.0": {
+          "n": 144,
+          "correct": 63,
+          "accuracy": 0.4375
+        }
+      }
+    },
+    "terminus-2 | weights-fp8 | c32": {
+      "Qwen/Qwen3.8-27B-FP8": {
+        "terminal-bench-2.0/easy": {
+          "n": 8,
+          "correct": 3,
+          "accuracy": 0.375
+        },
+        "terminal-bench-2.0/hard": {
+          "n": 16,
+          "correct": 4,
+          "accuracy": 0.25
+        },
+        "terminal-bench-2.0/medium": {
+          "n": 48,
+          "correct": 23,
+          "accuracy": 0.4792
+        },
+        "terminal-bench-2.0": {
+          "n": 72,
+          "correct": 30,
+          "accuracy": 0.4167
+        }
+      }
+    }
+  },
+  "per_type_note": "Types: 'terminal-bench-2.0' (all 36 tasks) split by Harbor difficulty (easy/medium/hard), and 'gaia' (60 tasks, not split by level).",
+  "paired_comparisons": {
+    "note": "Differences in solve rate in percentage points, paired by task, computed with analysis.py (paired_ci / interaction_ci / cost_ratio; 2000 resamples, seed 0) from attempts.jsonl. Baseline: H100 defaults at 32 agents for the same harness. Exploratory except where marked pre-registered.",
+    "vs_h100_defaults_c32": [
+      {
+        "change": "b200 c32 B200",
+        "baseline": "defaults c32 H100",
+        "mini-swe-agent": {
+          "diff_pts": 19.21,
+          "ci95_pts": [
+            8.56,
+            30.56
+          ],
+          "tasks": 36
+        },
+        "terminus-2": {
+          "diff_pts": 14.35,
+          "ci95_pts": [
+            7.41,
+            22.69
+          ],
+          "tasks": 36
+        },
+        "interaction_mini_minus_terminus": {
+          "diff_pts": 4.86,
+          "ci95_pts": [
+            -8.33,
+            17.13
+          ],
+          "tasks": 36
+        }
+      },
+      {
+        "change": "h200 c32 H200",
+        "baseline": "defaults c32 H100",
+        "mini-swe-agent": {
+          "diff_pts": 15.51,
+          "ci95_pts": [
+            5.79,
+            25.69
+          ],
+          "tasks": 36
+        },
+        "terminus-2": {
+          "diff_pts": 3.24,
+          "ci95_pts": [
+            -4.63,
+            10.65
+          ],
+          "tasks": 36
+        },
+        "interaction_mini_minus_terminus": {
+          "diff_pts": 12.27,
+          "ci95_pts": [
+            0.46,
+            23.84
+          ],
+          "tasks": 36
+        }
+      },
+      {
+        "change": "defaults c16 H100",
+        "baseline": "defaults c32 H100",
+        "mini-swe-agent": {
+          "diff_pts": 13.66,
+          "ci95_pts": [
+            5.79,
+            22.22
+          ],
+          "tasks": 36
+        },
+        "terminus-2": {
+          "diff_pts": 3.24,
+          "ci95_pts": [
+            -2.31,
+            9.26
+          ],
+          "tasks": 36
+        },
+        "interaction_mini_minus_terminus": {
+          "diff_pts": 10.42,
+          "ci95_pts": [
+            2.31,
+            19.44
+          ],
+          "tasks": 36
+        }
+      },
+      {
+        "change": "kv-fp8 c32 H100",
+        "baseline": "defaults c32 H100",
+        "mini-swe-agent": {
+          "diff_pts": 7.64,
+          "ci95_pts": [
+            0.69,
+            14.58
+          ],
+          "tasks": 36
+        },
+        "terminus-2": {
+          "diff_pts": 8.8,
+          "ci95_pts": [
+            0.93,
+            16.67
+          ],
+          "tasks": 36
+        },
+        "interaction_mini_minus_terminus": {
+          "diff_pts": -1.16,
+          "ci95_pts": [
+            -12.73,
+            10.65
+          ],
+          "tasks": 36
+        }
+      },
+      {
+        "change": "weights-fp8 c32 H100",
+        "baseline": "defaults c32 H100",
+        "mini-swe-agent": {
+          "diff_pts": 10.42,
+          "ci95_pts": [
+            2.78,
+            18.75
+          ],
+          "tasks": 36
+        },
+        "terminus-2": {
+          "diff_pts": 0.46,
+          "ci95_pts": [
+            -6.94,
+            8.33
+          ],
+          "tasks": 36
+        },
+        "interaction_mini_minus_terminus": {
+          "diff_pts": 9.95,
+          "ci95_pts": [
+            -1.16,
+            21.06
+          ],
+          "tasks": 36
+        }
+      },
+      {
+        "change": "moe-a3b c32 H100",
+        "baseline": "defaults c32 H100",
+        "mini-swe-agent": {
+          "diff_pts": 19.21,
+          "ci95_pts": [
+            4.17,
+            35.42
+          ],
+          "tasks": 36
+        },
+        "terminus-2": {
+          "diff_pts": 1.39,
+          "ci95_pts": [
+            -11.11,
+            14.81
+          ],
+          "tasks": 36
+        },
+        "interaction_mini_minus_terminus": {
+          "diff_pts": 17.82,
+          "ci95_pts": [
+            4.86,
+            31.94
+          ],
+          "tasks": 36
+        }
+      },
+      {
+        "change": "spec-mtp c32 H100",
+        "baseline": "defaults c32 H100",
+        "mini-swe-agent": {
+          "diff_pts": 6.25,
+          "ci95_pts": [
+            0.0,
+            13.19
+          ],
+          "tasks": 36
+        },
+        "terminus-2": {
+          "diff_pts": 2.55,
+          "ci95_pts": [
+            -4.17,
+            9.95
+          ],
+          "tasks": 36
+        },
+        "interaction_mini_minus_terminus": {
+          "diff_pts": 3.7,
+          "ci95_pts": [
+            -6.02,
+            13.43
+          ],
+          "tasks": 36
+        }
+      },
+      {
+        "change": "no-prefix-cache c32 H100",
+        "baseline": "defaults c32 H100",
+        "mini-swe-agent": {
+          "diff_pts": 4.86,
+          "ci95_pts": [
+            -2.08,
+            12.5
+          ],
+          "tasks": 36
+        },
+        "terminus-2": {
+          "diff_pts": 1.85,
+          "ci95_pts": [
+            -6.48,
+            10.19
+          ],
+          "tasks": 36
+        },
+        "interaction_mini_minus_terminus": {
+          "diff_pts": 3.01,
+          "ci95_pts": [
+            -9.03,
+            16.44
+          ],
+          "tasks": 36
+        }
+      },
+      {
+        "change": "no-thinking c32 H100",
+        "baseline": "defaults c32 H100",
+        "mini-swe-agent": {
+          "diff_pts": 9.95,
+          "ci95_pts": [
+            0.46,
+            20.14
+          ],
+          "tasks": 36
+        },
+        "terminus-2": {
+          "diff_pts": 4.17,
+          "ci95_pts": [
+            -5.09,
+            13.89
+          ],
+          "tasks": 36
+        },
+        "interaction_mini_minus_terminus": {
+          "diff_pts": 5.79,
+          "ci95_pts": [
+            -6.25,
+            17.36
+          ],
+          "tasks": 36
+        }
+      },
+      {
+        "change": "h200-spec-mtp c32 H200",
+        "baseline": "defaults c32 H100",
+        "mini-swe-agent": {
+          "diff_pts": 20.14,
+          "ci95_pts": [
+            6.25,
+            35.42
+          ],
+          "tasks": 36
+        },
+        "terminus-2": {
+          "diff_pts": 17.13,
+          "ci95_pts": [
+            8.8,
+            25.93
+          ],
+          "tasks": 36
+        },
+        "interaction_mini_minus_terminus": {
+          "diff_pts": 3.01,
+          "ci95_pts": [
+            -13.43,
+            19.68
+          ],
+          "tasks": 36
+        }
+      },
+      {
+        "change": "defaults-2x-time c32 H100",
+        "baseline": "defaults c32 H100",
+        "mini-swe-agent": {
+          "diff_pts": 9.03,
+          "ci95_pts": [
+            2.31,
+            16.44
+          ],
+          "tasks": 36
+        },
+        "terminus-2": {
+          "diff_pts": 5.09,
+          "ci95_pts": [
+            -1.85,
+            13.43
+          ],
+          "tasks": 36
+        },
+        "interaction_mini_minus_terminus": {
+          "diff_pts": 3.94,
+          "ci95_pts": [
+            -6.71,
+            14.58
+          ],
+          "tasks": 36
+        }
+      },
+      {
+        "change": "defaults-4x-time c32 H100",
+        "baseline": "defaults c32 H100",
+        "mini-swe-agent": {
+          "diff_pts": 9.03,
+          "ci95_pts": [
+            -2.08,
+            21.53
+          ],
+          "tasks": 36
+        },
+        "terminus-2": {
+          "diff_pts": 6.02,
+          "ci95_pts": [
+            -6.94,
+            18.98
+          ],
+          "tasks": 36
+        },
+        "interaction_mini_minus_terminus": {
+          "diff_pts": 3.01,
+          "ci95_pts": [
+            -14.35,
+            20.6
+          ],
+          "tasks": 36
+        }
+      },
+      {
+        "change": "defaults c8 H100",
+        "baseline": "defaults c32 H100",
+        "mini-swe-agent": {
+          "diff_pts": 20.14,
+          "ci95_pts": [
+            8.33,
+            33.33
+          ],
+          "tasks": 36
+        },
+        "terminus-2": {
+          "diff_pts": 11.57,
+          "ci95_pts": [
+            3.7,
+            20.37
+          ],
+          "tasks": 36
+        },
+        "interaction_mini_minus_terminus": {
+          "diff_pts": 8.56,
+          "ci95_pts": [
+            -3.7,
+            21.99
+          ],
+          "tasks": 36
+        }
+      },
+      {
+        "change": "defaults c48 H100",
+        "baseline": "defaults c32 H100",
+        "mini-swe-agent": {
+          "diff_pts": 4.86,
+          "ci95_pts": [
+            -1.39,
+            11.81
+          ],
+          "tasks": 36
+        },
+        "terminus-2": {
+          "diff_pts": -7.87,
+          "ci95_pts": [
+            -14.35,
+            -1.39
+          ],
+          "tasks": 36
+        },
+        "interaction_mini_minus_terminus": {
+          "diff_pts": 12.73,
+          "ci95_pts": [
+            2.08,
+            23.61
+          ],
+          "tasks": 36
+        }
+      },
+      {
+        "change": "defaults c64 H100",
+        "baseline": "defaults c32 H100",
+        "mini-swe-agent": {
+          "diff_pts": -3.47,
+          "ci95_pts": [
+            -12.5,
+            4.86
+          ],
+          "tasks": 36
+        },
+        "terminus-2": {
+          "diff_pts": -18.98,
+          "ci95_pts": [
+            -29.17,
+            -9.26
+          ],
+          "tasks": 36
+        },
+        "interaction_mini_minus_terminus": {
+          "diff_pts": 15.51,
+          "ci95_pts": [
+            3.24,
+            27.55
+          ],
+          "tasks": 36
+        }
+      }
+    ],
+    "interactions_mini_minus_terminus": [],
+    "cost_ratio_vs_h100_c32": [
+      {
+        "harness": "mini-swe-agent",
+        "gpu": "B200",
+        "ratio": 0.598,
+        "ci95": [
+          0.4235,
+          0.788
+        ],
+        "benchmark": "terminal-bench-2.0"
+      },
+      {
+        "harness": "mini-swe-agent",
+        "gpu": "H200",
+        "ratio": 0.5956,
+        "ci95": [
+          0.4294,
+          0.7737
+        ],
+        "benchmark": "terminal-bench-2.0"
+      },
+      {
+        "harness": "terminus-2",
+        "gpu": "B200",
+        "ratio": 0.7952,
+        "ci95": [
+          0.6414,
+          0.9242
+        ],
+        "benchmark": "terminal-bench-2.0"
+      },
+      {
+        "harness": "terminus-2",
+        "gpu": "H200",
+        "ratio": 0.8652,
+        "ci95": [
+          0.7251,
+          1.0438
+        ],
+        "benchmark": "terminal-bench-2.0"
+      },
+      {
+        "harness": "mini-swe-agent",
+        "gpu": "H200",
+        "ratio": 0.6359,
+        "ci95": [
+          0.3573,
+          1.0272
+        ],
+        "benchmark": "gaia"
+      },
+      {
+        "harness": "terminus-2",
+        "gpu": "H200",
+        "ratio": 0.617,
+        "ci95": [
+          0.3428,
+          0.9201
+        ],
+        "benchmark": "gaia"
+      }
+    ],
+    "gaia": [
+      {
+        "change": "h200 c32 H200",
+        "baseline": "defaults c32 H100",
+        "mini-swe-agent": {
+          "diff_pts": 13.33,
+          "ci95_pts": [
+            0.0,
+            26.67
+          ],
+          "tasks": 60
+        },
+        "terminus-2": {
+          "diff_pts": 13.33,
+          "ci95_pts": [
+            3.33,
+            25.0
+          ],
+          "tasks": 60
+        },
+        "interaction_mini_minus_terminus": {
+          "diff_pts": 0.0,
+          "ci95_pts": [
+            -18.33,
+            18.33
+          ],
+          "tasks": 60
+        }
+      },
+      {
+        "change": "defaults c16 H100",
+        "baseline": "defaults c32 H100",
+        "mini-swe-agent": {
+          "diff_pts": 8.33,
+          "ci95_pts": [
+            -3.33,
+            20.0
+          ],
+          "tasks": 60
+        },
+        "terminus-2": {
+          "diff_pts": 3.33,
+          "ci95_pts": [
+            -5.0,
+            13.33
+          ],
+          "tasks": 60
+        },
+        "interaction_mini_minus_terminus": {
+          "diff_pts": 5.0,
+          "ci95_pts": [
+            -10.0,
+            21.67
+          ],
+          "tasks": 60
+        }
+      }
+    ]
+  },
+  "failures": [
+    {
+      "category": "out of time, working",
+      "definition": "Hit the task's agent time limit while its last 8 actions were still mostly new (fewer than 50% repeat an earlier action).",
+      "counts": {
+        "Qwen/Qwen3.8-27B": 1531,
+        "Qwen/Qwen3.6-35B-A3B-FP8": 77,
+        "Qwen/Qwen3.8-27B-FP8": 74
+      },
+      "example": "A terminal agent was still issuing new build commands when the time limit hit."
+    },
+    {
+      "category": "out of time, looping",
+      "definition": "Hit the time limit while at least 50% of its last 8 actions repeated earlier actions of the same trial.",
+      "counts": {
+        "Qwen/Qwen3.8-27B": 16,
+        "Qwen/Qwen3.6-35B-A3B-FP8": 12
+      },
+      "example": "An agent kept re-running the same test command until the time limit."
+    },
+    {
+      "category": "finished wrong",
+      "definition": "The agent stopped on its own and the task's tests (or GAIA's exact-match check) failed.",
+      "counts": {
+        "Qwen/Qwen3.8-27B": 206,
+        "Qwen/Qwen3.6-35B-A3B-FP8": 98,
+        "Qwen/Qwen3.8-27B-FP8": 6
+      },
+      "example": "The agent declared the task done but the verifier tests failed."
+    },
+    {
+      "category": "never started",
+      "definition": "The harness never ran (e.g. its in-sandbox install failed); counted unsolved.",
+      "counts": {
+        "Qwen/Qwen3.8-27B": 81,
+        "Qwen/Qwen3.6-35B-A3B-FP8": 12,
+        "Qwen/Qwen3.8-27B-FP8": 4
+      },
+      "example": "An in-sandbox harness failed to install on one task because a Linux package mirror returned 404."
+    },
+    {
+      "category": "looked up answer",
+      "definition": "A tool call referenced the benchmark itself (its repo or site), e.g. to copy an expected answer; never counted solved even if the verifier passed.",
+      "counts": {
+        "Qwen/Qwen3.8-27B": 21,
+        "Qwen/Qwen3.6-35B-A3B-FP8": 1
+      },
+      "example": "The agent cloned the benchmark's public repository to read the expected answer."
+    },
+    {
+      "category": "other error",
+      "definition": "Any other exception (crashes, API errors, context overflow).",
+      "counts": {
+        "Qwen/Qwen3.8-27B": 31,
+        "Qwen/Qwen3.6-35B-A3B-FP8": 29,
+        "Qwen/Qwen3.8-27B-FP8": 1
+      },
+      "example": "The agent's run ended with a harness exception before verification."
+    }
+  ],
+  "failures_note": "Counts summed over every condition (Terminal-Bench and GAIA) per model; per-condition counts are in results[*].failures.",
+  "replays_and_step_checks": [],
+  "replays_and_step_checks_note": "No Kitaru replays or step checks were run. A separate offline analysis (divergence.py) asked whether coding-agent reruns could be replayed from recorded tool answers: a plain rerun takes a different first action in 80-92% of pairs, and only 12-16% of a rerun's commands appear in the recorded run (3,082 trajectories).",
+  "preregistered_tests": {
+    "source": "PREREGISTRATION.md (committed 2026-10-09T07:12:08 UTC; only runs recorded after it count) and confirmatory.md (48 runs recorded after it)",
+    "tests": [
+      {
+        "claim": "C1: H200 vs H100 at 32 agents helps mini-swe-agent more than terminus-2",
+        "effect_pts": 9,
+        "ci95_pts": [
+          -7,
+          24
+        ],
+        "holm_p": 0.291,
+        "verdict": "not confirmed"
+      },
+      {
+        "claim": "C2: 32 vs 16 agents on H100 hurts mini-swe-agent more",
+        "effect_pts": -9,
+        "ci95_pts": [
+          -24,
+          5
+        ],
+        "holm_p": 0.291,
+        "verdict": "not confirmed"
+      },
+      {
+        "claim": "C3: thinking off interacts with the harness",
+        "effect_pts": -3,
+        "ci95_pts": [
+          -17,
+          10
+        ],
+        "holm_p": 0.691,
+        "verdict": "not confirmed"
+      },
+      {
+        "claim": "C4: time-out share rises with median seconds per agent step",
+        "spearman_rho": 0.67,
+        "cells": 38,
+        "p": "< 0.001 (reported as 0.000)",
+        "verdict": "confirmed"
+      }
+    ],
+    "note": "Values copied from confirmatory.md (generated by confirmatory.py from attempts.jsonl); rounded there to whole points. confirmatory.py was re-run after every new run (repeated looks)."
+  },
+  "headline_findings": [
+    {
+      "finding": "On one H100 at 32 agents, a B200 raised solved Terminal-Bench tasks by 19 points for mini-swe-agent and 14 points for terminus-2, both with paired CIs above zero.",
+      "numbers": [
+        "paired_comparisons.vs_h100_defaults_c32[change=b200 c32 B200].mini-swe-agent.diff_pts",
+        "paired_comparisons.vs_h100_defaults_c32[change=b200 c32 B200].terminus-2.diff_pts",
+        "results[\"mini-swe-agent | b200 | c32\"][benchmark=terminal-bench-2.0].accuracy",
+        "results[\"mini-swe-agent | defaults | c32\"][benchmark=terminal-bench-2.0].accuracy"
+      ]
+    },
+    {
+      "finding": "Counting GPU and sandbox cost, the pricier GPUs were cheaper per solved task: mini-swe-agent's cost per solve on an H200 was 0.5956x and on a B200 0.598x the H100's at 32 agents.",
+      "numbers": [
+        "paired_comparisons.cost_ratio_vs_h100_c32[harness=mini-swe-agent,gpu=H200,benchmark=terminal-bench-2.0].ratio",
+        "paired_comparisons.cost_ratio_vs_h100_c32[harness=mini-swe-agent,gpu=B200,benchmark=terminal-bench-2.0].ratio",
+        "results[\"mini-swe-agent | h200 | c32\"][benchmark=terminal-bench-2.0].cost_per_correct_cents",
+        "results[\"mini-swe-agent | defaults | c32\"][benchmark=terminal-bench-2.0].cost_per_correct_cents"
+      ]
+    },
+    {
+      "finding": "Packing more agents on one H100 lowered solve rates: terminus-2 went from 0.5278 at 8 agents to 0.2222 at 64, and real cost per solve was lowest at 32 agents.",
+      "numbers": [
+        "results[\"terminus-2 | defaults | c8\"][benchmark=terminal-bench-2.0].accuracy",
+        "results[\"terminus-2 | defaults | c64\"][benchmark=terminal-bench-2.0].accuracy",
+        "results[\"terminus-2 | defaults | c32\"][benchmark=terminal-bench-2.0].cost_per_correct_cents"
+      ]
+    },
+    {
+      "finding": "Most failures were the clock: at 32 agents on an H100, 92 of mini-swe-agent's 101 unsolved trials hit the time limit while still issuing new actions.",
+      "numbers": [
+        "results[\"mini-swe-agent | defaults | c32\"][benchmark=terminal-bench-2.0].failures.out of time, working",
+        "results[\"mini-swe-agent | defaults | c32\"][benchmark=terminal-bench-2.0].n",
+        "results[\"mini-swe-agent | defaults | c32\"][benchmark=terminal-bench-2.0].correct"
+      ]
+    },
+    {
+      "finding": "The MoE model removed mini-swe-agent's load penalty on the H100 (0.4907 at both 16 and 32 agents) at 12.7813 cents per solve vs 30.2602 for the dense model at 32 agents.",
+      "numbers": [
+        "results[\"mini-swe-agent | moe-a3b | c16\"][benchmark=terminal-bench-2.0].accuracy",
+        "results[\"mini-swe-agent | moe-a3b | c32\"][benchmark=terminal-bench-2.0].accuracy",
+        "results[\"mini-swe-agent | moe-a3b | c32\"][benchmark=terminal-bench-2.0].cost_per_correct_cents",
+        "results[\"mini-swe-agent | defaults | c32\"][benchmark=terminal-bench-2.0].cost_per_correct_cents"
+      ]
+    },
+    {
+      "finding": "On GAIA the H200 effect held for both harnesses (+13.33 points each), so the infrastructure effect is not specific to coding.",
+      "numbers": [
+        "paired_comparisons.gaia[change=h200 c32 H200].mini-swe-agent.diff_pts",
+        "paired_comparisons.gaia[change=h200 c32 H200].terminus-2.diff_pts",
+        "results[\"terminus-2 | h200 | c32\"][benchmark=gaia].accuracy",
+        "results[\"terminus-2 | defaults | c32\"][benchmark=gaia].accuracy"
+      ]
+    }
+  ],
+  "limitations": [
+    "Two open models (Qwen3.8-27B dense, Qwen3.6-35B-A3B MoE) and one serving engine (vLLM 0.31.0); Modal GPUs and prices as of October 2026.",
+    "The 36 Terminal-Bench tasks all have agent limits of 20 minutes or less (63% of the benchmark does), so effects that work through the time limit are larger than on the full benchmark.",
+    "Several cells rest on one run of 36 tasks; identical conditions differed by up to 16.67 points between runs. Claims rest on paired intervals and on cells with 108+ trials.",
+    "Harness x infrastructure interactions are exploratory; the three pre-registered interaction claims (C1-C3) were not confirmed on fresh data. Only C4 (time-out share follows server speed) was confirmed.",
+    "Many paired comparisons were made; some intervals excluding zero are expected by chance.",
+    "Benchmark-lookup detection is a regex over tool calls and misses lookups that never name the benchmark. Sandboxes had internet access.",
+    "In-sandbox harnesses (mini-swe-agent, opencode, pi) never start on one task (qemu-startup, a Debian mirror 404), counted unsolved in every config; this lowers their absolute scores but not within-harness comparisons.",
+    "Sandbox cost is an estimate from requested CPU/memory and sandbox lifetime; it under-counts the bill (in-flight, aborted and orphaned sandboxes). The real bill was about 1.7x the GPU cost at 32 agents.",
+    "Run-to-run time varies about 20% for identical configs (stragglers), so per-cell cost per solve is noisy; GPU price is the October 2026 list rate.",
+    "GAIA: 60 tasks, three cells per harness, one run each; no uncapped (extra-time) run.",
+    "terminus-2 drove its agents from the session container through an egress proxy; the other harnesses called the server from Modal sandboxes (ADVERSARIAL_CHECKS.md estimates <1% added latency).",
+    "The quickcheck (8 tasks) and the opencode/pi cells (36 trials each) are too small for firm claims."
+  ],
+  "inconsistencies": [
+    "FINDINGS.md 'Pre-registered tests' reports C4 as rho +0.65 over 37 cells; confirmatory.md (the generated file) reports rho +0.67 over 38 cells.",
+    "ADVERSARIAL_CHECKS.md gives older cost-per-solve ratios (mini-swe-agent B200/H100 0.53 (0.35-0.72); terminus-2 H200 0.88, B200 0.96, 'no clear difference') and C1 Holm p = 0.25; the data now give 0.598 (0.4235-0.788), 0.8652, 0.7952 (B200 CI 0.6414-0.9242, i.e. cheaper) and Holm p 0.291, matching FINDINGS.md/analysis.md.",
+    "FINDINGS.md section 3 gives terminus-2's real cost per solve at 8 agents as $0.29; attempts.jsonl gives 28.4563 cents ($0.28).",
+    "FINDINGS.md says agent limits are 15-20 minutes; the 36 tasks' task.toml limits are 600-1200 s (10-20 minutes; 32 tasks at 15 minutes).",
+    "README.md's harness table lists qwen-coder and openhands; the runs used terminus-2, mini-swe-agent, opencode and pi (opencode and pi are in experiment.py HARNESSES but not in the README table).",
+    "README.md describes the model as served on one H100; the study also ran H200 and B200 configs (documented in the README's config table).",
+    "Total spend is given only as an approximate $390 real bill in FINDINGS.md and CLAUDE.md; no exact bill figure is recorded."
+  ],
+  "public_safety": [
+    {
+      "item": "Modal workspace and environment names (now configured by MODAL_ENVIRONMENT; not in the public rows)",
+      "why": "Internal account identifiers; attempts.jsonl error strings also contain unauthenticated deployment URLs of the form https://<workspace>-<env>--<app>-server... (removed from the public rows)",
+      "where_in_file": "not in this file; present in the source attempts.jsonl `error` fields and CLAUDE.md"
+    },
+    {
+      "item": "Modal volume and app names (now configured by MODAL_*_VOLUME / MODAL_APP_PREFIX env vars)",
+      "why": "Internal infrastructure paths",
+      "where_in_file": "not in this file; replaced by env vars in the public harness"
+    },
+    {
+      "item": "Local filesystem paths of the runner (removed from the public rows)",
+      "why": "Personal path in attempts.jsonl `error` strings",
+      "where_in_file": "excluded_runs[*].reason was truncated before the path; the public results/runs/attempts.jsonl keeps only the first line of each error with paths and URLs removed"
+    },
+    {
+      "item": "Budget figures and user instructions about spend (CLAUDE.md)",
+      "why": "Internal planning notes, not results",
+      "where_in_file": "meta.total_spend_usd_note quotes only the rounded bill figures already in FINDINGS.md"
+    },
+    {
+      "item": "Raw trajectories (jobs/, private Modal volume)",
+      "why": "Contain agent-cloned benchmark answers for the lookup trials; publishing them leaks Terminal-Bench/GAIA answers",
+      "where_in_file": "not in this file"
+    }
+  ]
+}

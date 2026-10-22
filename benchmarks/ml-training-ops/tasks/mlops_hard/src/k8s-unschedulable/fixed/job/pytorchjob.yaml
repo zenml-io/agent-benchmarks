@@ -1,0 +1,116 @@
+# Kubeflow training-operator PyTorchJob for the 32-GPU continued-pretraining run.
+# Based on the team template (templates/pytorchjob-8xh100.yaml), last edited for run cpt-1010.
+apiVersion: kubeflow.org/v1
+kind: PyTorchJob
+metadata:
+  name: cpt-1010
+  namespace: training
+  labels:
+    team: llm
+    run: cpt-1010
+spec:
+  nprocPerNode: "8"
+  runPolicy:
+    cleanPodPolicy: None
+    backoffLimit: 3
+    schedulingPolicy:
+      minAvailable: 4
+  pytorchReplicaSpecs:
+    Master:
+      replicas: 1
+      restartPolicy: OnFailure
+      template:
+        metadata:
+          labels:
+            run: cpt-1010
+        spec:
+          priorityClassName: training-default
+          nodeSelector:
+            topology.kubernetes.io/zone: us-east-1b
+            nvidia.com/gpu.product: NVIDIA-H100-80GB-HBM3
+            pool: training
+          tolerations:
+            - key: nvidia.com/gpu
+              operator: Exists
+              effect: NoSchedule
+          containers:
+            - name: pytorch
+              image: 123456789012.dkr.ecr.us-east-1.amazonaws.com/llm/train:2026.10.2
+              command: ["python", "-m", "llm.train", "--config", "configs/cpt-1010.yaml"]
+              env:
+                - name: NCCL_DEBUG
+                  value: WARN
+                - name: FI_PROVIDER
+                  value: efa
+              resources:
+                requests:
+                  cpu: "168"
+                  memory: 1800Gi
+                  nvidia.com/gpu: 8
+                  vpc.amazonaws.com/efa: 32
+                limits:
+                  memory: 1800Gi
+                  nvidia.com/gpu: 8
+                  vpc.amazonaws.com/efa: 32
+              volumeMounts:
+                - name: dshm
+                  mountPath: /dev/shm
+                - name: fsx
+                  mountPath: /fsx
+          volumes:
+            - name: dshm
+              emptyDir:
+                medium: Memory
+                sizeLimit: 256Gi
+            - name: fsx
+              persistentVolumeClaim:
+                claimName: fsx-training
+    Worker:
+      replicas: 3
+      restartPolicy: OnFailure
+      template:
+        metadata:
+          labels:
+            run: cpt-1010
+        spec:
+          priorityClassName: training-default
+          nodeSelector:
+            topology.kubernetes.io/zone: us-east-1b
+            nvidia.com/gpu.product: NVIDIA-H100-80GB-HBM3
+            pool: training
+          tolerations:
+            - key: nvidia.com/gpu
+              operator: Exists
+              effect: NoSchedule
+          containers:
+            - name: pytorch
+              image: 123456789012.dkr.ecr.us-east-1.amazonaws.com/llm/train:2026.10.2
+              command: ["python", "-m", "llm.train", "--config", "configs/cpt-1010.yaml"]
+              env:
+                - name: NCCL_DEBUG
+                  value: WARN
+                - name: FI_PROVIDER
+                  value: efa
+              resources:
+                requests:
+                  cpu: "168"
+                  memory: 1800Gi
+                  nvidia.com/gpu: 8
+                  vpc.amazonaws.com/efa: 32
+                limits:
+                  memory: 1800Gi
+                  nvidia.com/gpu: 8
+                  vpc.amazonaws.com/efa: 32
+              volumeMounts:
+                - name: dshm
+                  mountPath: /dev/shm
+                - name: fsx
+                  mountPath: /fsx
+          volumes:
+            - name: dshm
+              emptyDir:
+                medium: Memory
+                sizeLimit: 256Gi
+            - name: fsx
+              persistentVolumeClaim:
+                claimName: fsx-training

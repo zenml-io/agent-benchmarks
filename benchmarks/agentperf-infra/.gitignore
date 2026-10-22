@@ -1,0 +1,9 @@
+.venv/
+__pycache__/
+# new runs land in the benchmark dir; published rows live in results/runs/
+/jobs/
+/attempts.jsonl
+/report.md
+/PAUSE
+*.log
+results/analysis/*.regenerated.md

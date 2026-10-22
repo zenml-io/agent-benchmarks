@@ -1,0 +1,25 @@
+2026-10-07T03:12:44Z job train-spot-17 preempted (node reclaimed)
+2026-10-07T03:13:20Z job train-spot-17 restarted on node ip-10-4-17-201
+resumed from /app/ckpt/ckpt-000059.pt at step 59
+step 79 loss 0.36281 saved
+step 99 loss 0.27310 saved
+2026-10-07T03:14:02Z job train-spot-17 preempted (node reclaimed)
+2026-10-07T03:14:40Z job train-spot-17 restarted on node ip-10-4-9-88
+Traceback (most recent call last):
+  File "/app/train.py", line 48, in <module>
+    main()
+  File "/app/train.py", line 28, in main
+    state = ckpt.load(path)
+  File "/app/trainer/ckpt.py", line 30, in load
+    return torch.load(path, weights_only=False)
+  File "/usr/local/lib/python3.11/site-packages/torch/serialization.py", line 1319, in load
+    with _open_zipfile_reader(opened_file) as opened_zipfile:
+  File "/usr/local/lib/python3.11/site-packages/torch/serialization.py", line 659, in __init__
+    super().__init__(torch._C.PyTorchFileReader(name_or_buffer))
+RuntimeError: PytorchStreamReader failed reading zip archive: failed finding central directory
+2026-10-07T03:14:43Z job train-spot-17 exited 1, restarting (backoff 30s)
+2026-10-07T03:15:13Z job train-spot-17 exited 1, restarting (backoff 60s)
+2026-10-07T03:16:13Z job train-spot-17 exited 1, restarting (backoff 120s)
+2026-10-07T03:18:30Z manual: deleted /app/ckpt/ckpt-000119.pt (12 MB, should be 57 MB), job resumed from ckpt-000099.pt
+2026-10-08T11:02:10Z eval-service: failed to load /app/ckpt/ckpt-000139.pt: PytorchStreamReader failed reading zip archive
+2026-10-08T19:40:55Z run-1008 final.pt max |w - w_reference_run| = 2.1e-03 (reference run was not preempted)

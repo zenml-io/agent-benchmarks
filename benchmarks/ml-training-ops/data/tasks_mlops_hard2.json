@@ -1,0 +1,1 @@
+{"path": "tasks/mlops_hard/tasks", "tasks": ["exact-resume", "k8s-quota-zone", "two-stragglers", "atomic-checkpoint"]}

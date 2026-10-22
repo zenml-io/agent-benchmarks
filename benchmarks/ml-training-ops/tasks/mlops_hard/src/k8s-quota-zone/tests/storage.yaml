@@ -1,0 +1,53 @@
+# kubectl get pvc,pv -n training -o yaml (trimmed)
+apiVersion: v1
+kind: List
+items:
+  - apiVersion: v1
+    kind: PersistentVolumeClaim
+    metadata: {name: fsx-training, namespace: training}
+    spec: {volumeName: pv-fsx-training-1a, accessModes: [ReadWriteMany], resources: {requests: {storage: 48Ti}}}
+    status: {phase: Bound}
+  - apiVersion: v1
+    kind: PersistentVolumeClaim
+    metadata:
+      name: fsx-training-b
+      namespace: training
+      annotations:
+        storage.platform/description: "FSx for Lustre in us-east-1b; same datasets and checkpoint tree as fsx-training (DataSync every 15 min, both directions)"
+    spec: {volumeName: pv-fsx-training-1b, accessModes: [ReadWriteMany], resources: {requests: {storage: 48Ti}}}
+    status: {phase: Bound}
+  - apiVersion: v1
+    kind: PersistentVolumeClaim
+    metadata: {name: fsx-scratch-c, namespace: training}
+    spec: {volumeName: pv-fsx-scratch-1c, accessModes: [ReadWriteMany], resources: {requests: {storage: 8Ti}}}
+    status: {phase: Bound}
+  - apiVersion: v1
+    kind: PersistentVolume
+    metadata: {name: pv-fsx-training-1a}
+    spec:
+      capacity: {storage: 48Ti}
+      csi: {driver: fsx.csi.aws.com, volumeHandle: fs-0a11c0ffee1a}
+      nodeAffinity:
+        required:
+          nodeSelectorTerms:
+            - matchExpressions: [{key: topology.kubernetes.io/zone, operator: In, values: [us-east-1a]}]
+  - apiVersion: v1
+    kind: PersistentVolume
+    metadata: {name: pv-fsx-training-1b}
+    spec:
+      capacity: {storage: 48Ti}
+      csi: {driver: fsx.csi.aws.com, volumeHandle: fs-0b22c0ffee1b}
+      nodeAffinity:
+        required:
+          nodeSelectorTerms:
+            - matchExpressions: [{key: topology.kubernetes.io/zone, operator: In, values: [us-east-1b]}]
+  - apiVersion: v1
+    kind: PersistentVolume
+    metadata: {name: pv-fsx-scratch-1c}
+    spec:
+      capacity: {storage: 8Ti}
+      csi: {driver: fsx.csi.aws.com, volumeHandle: fs-0c33c0ffee1c}
+      nodeAffinity:
+        required:
+          nodeSelectorTerms:
+            - matchExpressions: [{key: topology.kubernetes.io/zone, operator: In, values: [us-east-1c]}]

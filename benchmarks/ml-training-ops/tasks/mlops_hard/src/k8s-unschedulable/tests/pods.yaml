@@ -1,0 +1,858 @@
+apiVersion: v1
+kind: List
+items:
+- apiVersion: v1
+  kind: Pod
+  metadata:
+    name: llm-sft-0911-master-0
+    namespace: training
+  spec:
+    nodeName: gpu-a-1
+    containers:
+    - name: main
+      resources:
+        requests:
+          cpu: '160'
+          memory: 1400Gi
+          nvidia.com/gpu: '8'
+        limits:
+          memory: 1400Gi
+          nvidia.com/gpu: '8'
+  status:
+    phase: Running
+- apiVersion: v1
+  kind: Pod
+  metadata:
+    name: llm-sft-0911-worker-0
+    namespace: training
+  spec:
+    nodeName: gpu-a-2
+    containers:
+    - name: main
+      resources:
+        requests:
+          cpu: '160'
+          memory: 1400Gi
+          nvidia.com/gpu: '8'
+        limits:
+          memory: 1400Gi
+          nvidia.com/gpu: '8'
+  status:
+    phase: Running
+- apiVersion: v1
+  kind: Pod
+  metadata:
+    name: embed-eval-7f9c-0
+    namespace: eval
+  spec:
+    nodeName: gpu-a-3
+    containers:
+    - name: main
+      resources:
+        requests:
+          cpu: '64'
+          memory: 600Gi
+          nvidia.com/gpu: '4'
+        limits:
+          memory: 600Gi
+          nvidia.com/gpu: '4'
+  status:
+    phase: Running
+- apiVersion: v1
+  kind: Pod
+  metadata:
+    name: vllm-serve-qwen-5d8b
+    namespace: inference
+  spec:
+    nodeName: gpu-b-5
+    containers:
+    - name: main
+      resources:
+        requests:
+          cpu: '96'
+          memory: 900Gi
+          nvidia.com/gpu: '8'
+        limits:
+          memory: 900Gi
+          nvidia.com/gpu: '8'
+  status:
+    phase: Running
+- apiVersion: v1
+  kind: Pod
+  metadata:
+    name: notebook-dev-0
+    namespace: research
+  spec:
+    nodeName: gpu-b-4
+    containers:
+    - name: main
+      resources:
+        requests:
+          cpu: '16'
+          memory: 64Gi
+          nvidia.com/gpu: '0'
+        limits:
+          memory: 64Gi
+          nvidia.com/gpu: '0'
+  status:
+    phase: Running
+- apiVersion: v1
+  kind: Pod
+  metadata:
+    name: research-sweep-12
+    namespace: research
+  spec:
+    nodeName: gpu-c-1
+    containers:
+    - name: main
+      resources:
+        requests:
+          cpu: '128'
+          memory: 1200Gi
+          nvidia.com/gpu: '8'
+        limits:
+          memory: 1200Gi
+          nvidia.com/gpu: '8'
+  status:
+    phase: Running
+- apiVersion: v1
+  kind: Pod
+  metadata:
+    name: nvidia-device-plugin-00
+    namespace: kube-system
+  spec:
+    nodeName: gpu-a-1
+    containers:
+    - name: main
+      resources:
+        requests:
+          cpu: 100m
+          memory: 512Mi
+          nvidia.com/gpu: '0'
+        limits:
+          memory: 512Mi
+          nvidia.com/gpu: '0'
+  status:
+    phase: Running
+- apiVersion: v1
+  kind: Pod
+  metadata:
+    name: aws-efa-k8s-device-plugin-00
+    namespace: kube-system
+  spec:
+    nodeName: gpu-a-1
+    containers:
+    - name: main
+      resources:
+        requests:
+          cpu: 100m
+          memory: 256Mi
+          nvidia.com/gpu: '0'
+        limits:
+          memory: 256Mi
+          nvidia.com/gpu: '0'
+  status:
+    phase: Running
+- apiVersion: v1
+  kind: Pod
+  metadata:
+    name: node-exporter-00
+    namespace: monitoring
+  spec:
+    nodeName: gpu-a-1
+    containers:
+    - name: main
+      resources:
+        requests:
+          cpu: 100m
+          memory: 180Mi
+          nvidia.com/gpu: '0'
+        limits:
+          memory: 180Mi
+          nvidia.com/gpu: '0'
+  status:
+    phase: Running
+- apiVersion: v1
+  kind: Pod
+  metadata:
+    name: nvidia-device-plugin-01
+    namespace: kube-system
+  spec:
+    nodeName: gpu-a-2
+    containers:
+    - name: main
+      resources:
+        requests:
+          cpu: 100m
+          memory: 512Mi
+          nvidia.com/gpu: '0'
+        limits:
+          memory: 512Mi
+          nvidia.com/gpu: '0'
+  status:
+    phase: Running
+- apiVersion: v1
+  kind: Pod
+  metadata:
+    name: aws-efa-k8s-device-plugin-01
+    namespace: kube-system
+  spec:
+    nodeName: gpu-a-2
+    containers:
+    - name: main
+      resources:
+        requests:
+          cpu: 100m
+          memory: 256Mi
+          nvidia.com/gpu: '0'
+        limits:
+          memory: 256Mi
+          nvidia.com/gpu: '0'
+  status:
+    phase: Running
+- apiVersion: v1
+  kind: Pod
+  metadata:
+    name: node-exporter-01
+    namespace: monitoring
+  spec:
+    nodeName: gpu-a-2
+    containers:
+    - name: main
+      resources:
+        requests:
+          cpu: 100m
+          memory: 180Mi
+          nvidia.com/gpu: '0'
+        limits:
+          memory: 180Mi
+          nvidia.com/gpu: '0'
+  status:
+    phase: Running
+- apiVersion: v1
+  kind: Pod
+  metadata:
+    name: nvidia-device-plugin-02
+    namespace: kube-system
+  spec:
+    nodeName: gpu-a-3
+    containers:
+    - name: main
+      resources:
+        requests:
+          cpu: 100m
+          memory: 512Mi
+          nvidia.com/gpu: '0'
+        limits:
+          memory: 512Mi
+          nvidia.com/gpu: '0'
+  status:
+    phase: Running
+- apiVersion: v1
+  kind: Pod
+  metadata:
+    name: aws-efa-k8s-device-plugin-02
+    namespace: kube-system
+  spec:
+    nodeName: gpu-a-3
+    containers:
+    - name: main
+      resources:
+        requests:
+          cpu: 100m
+          memory: 256Mi
+          nvidia.com/gpu: '0'
+        limits:
+          memory: 256Mi
+          nvidia.com/gpu: '0'
+  status:
+    phase: Running
+- apiVersion: v1
+  kind: Pod
+  metadata:
+    name: node-exporter-02
+    namespace: monitoring
+  spec:
+    nodeName: gpu-a-3
+    containers:
+    - name: main
+      resources:
+        requests:
+          cpu: 100m
+          memory: 180Mi
+          nvidia.com/gpu: '0'
+        limits:
+          memory: 180Mi
+          nvidia.com/gpu: '0'
+  status:
+    phase: Running
+- apiVersion: v1
+  kind: Pod
+  metadata:
+    name: nvidia-device-plugin-03
+    namespace: kube-system
+  spec:
+    nodeName: gpu-a-4
+    containers:
+    - name: main
+      resources:
+        requests:
+          cpu: 100m
+          memory: 512Mi
+          nvidia.com/gpu: '0'
+        limits:
+          memory: 512Mi
+          nvidia.com/gpu: '0'
+  status:
+    phase: Running
+- apiVersion: v1
+  kind: Pod
+  metadata:
+    name: aws-efa-k8s-device-plugin-03
+    namespace: kube-system
+  spec:
+    nodeName: gpu-a-4
+    containers:
+    - name: main
+      resources:
+        requests:
+          cpu: 100m
+          memory: 256Mi
+          nvidia.com/gpu: '0'
+        limits:
+          memory: 256Mi
+          nvidia.com/gpu: '0'
+  status:
+    phase: Running
+- apiVersion: v1
+  kind: Pod
+  metadata:
+    name: node-exporter-03
+    namespace: monitoring
+  spec:
+    nodeName: gpu-a-4
+    containers:
+    - name: main
+      resources:
+        requests:
+          cpu: 100m
+          memory: 180Mi
+          nvidia.com/gpu: '0'
+        limits:
+          memory: 180Mi
+          nvidia.com/gpu: '0'
+  status:
+    phase: Running
+- apiVersion: v1
+  kind: Pod
+  metadata:
+    name: nvidia-device-plugin-04
+    namespace: kube-system
+  spec:
+    nodeName: gpu-b-1
+    containers:
+    - name: main
+      resources:
+        requests:
+          cpu: 100m
+          memory: 512Mi
+          nvidia.com/gpu: '0'
+        limits:
+          memory: 512Mi
+          nvidia.com/gpu: '0'
+  status:
+    phase: Running
+- apiVersion: v1
+  kind: Pod
+  metadata:
+    name: aws-efa-k8s-device-plugin-04
+    namespace: kube-system
+  spec:
+    nodeName: gpu-b-1
+    containers:
+    - name: main
+      resources:
+        requests:
+          cpu: 100m
+          memory: 256Mi
+          nvidia.com/gpu: '0'
+        limits:
+          memory: 256Mi
+          nvidia.com/gpu: '0'
+  status:
+    phase: Running
+- apiVersion: v1
+  kind: Pod
+  metadata:
+    name: node-exporter-04
+    namespace: monitoring
+  spec:
+    nodeName: gpu-b-1
+    containers:
+    - name: main
+      resources:
+        requests:
+          cpu: 100m
+          memory: 180Mi
+          nvidia.com/gpu: '0'
+        limits:
+          memory: 180Mi
+          nvidia.com/gpu: '0'
+  status:
+    phase: Running
+- apiVersion: v1
+  kind: Pod
+  metadata:
+    name: nvidia-device-plugin-05
+    namespace: kube-system
+  spec:
+    nodeName: gpu-b-2
+    containers:
+    - name: main
+      resources:
+        requests:
+          cpu: 100m
+          memory: 512Mi
+          nvidia.com/gpu: '0'
+        limits:
+          memory: 512Mi
+          nvidia.com/gpu: '0'
+  status:
+    phase: Running
+- apiVersion: v1
+  kind: Pod
+  metadata:
+    name: aws-efa-k8s-device-plugin-05
+    namespace: kube-system
+  spec:
+    nodeName: gpu-b-2
+    containers:
+    - name: main
+      resources:
+        requests:
+          cpu: 100m
+          memory: 256Mi
+          nvidia.com/gpu: '0'
+        limits:
+          memory: 256Mi
+          nvidia.com/gpu: '0'
+  status:
+    phase: Running
+- apiVersion: v1
+  kind: Pod
+  metadata:
+    name: node-exporter-05
+    namespace: monitoring
+  spec:
+    nodeName: gpu-b-2
+    containers:
+    - name: main
+      resources:
+        requests:
+          cpu: 100m
+          memory: 180Mi
+          nvidia.com/gpu: '0'
+        limits:
+          memory: 180Mi
+          nvidia.com/gpu: '0'
+  status:
+    phase: Running
+- apiVersion: v1
+  kind: Pod
+  metadata:
+    name: nvidia-device-plugin-06
+    namespace: kube-system
+  spec:
+    nodeName: gpu-b-3
+    containers:
+    - name: main
+      resources:
+        requests:
+          cpu: 100m
+          memory: 512Mi
+          nvidia.com/gpu: '0'
+        limits:
+          memory: 512Mi
+          nvidia.com/gpu: '0'
+  status:
+    phase: Running
+- apiVersion: v1
+  kind: Pod
+  metadata:
+    name: aws-efa-k8s-device-plugin-06
+    namespace: kube-system
+  spec:
+    nodeName: gpu-b-3
+    containers:
+    - name: main
+      resources:
+        requests:
+          cpu: 100m
+          memory: 256Mi
+          nvidia.com/gpu: '0'
+        limits:
+          memory: 256Mi
+          nvidia.com/gpu: '0'
+  status:
+    phase: Running
+- apiVersion: v1
+  kind: Pod
+  metadata:
+    name: node-exporter-06
+    namespace: monitoring
+  spec:
+    nodeName: gpu-b-3
+    containers:
+    - name: main
+      resources:
+        requests:
+          cpu: 100m
+          memory: 180Mi
+          nvidia.com/gpu: '0'
+        limits:
+          memory: 180Mi
+          nvidia.com/gpu: '0'
+  status:
+    phase: Running
+- apiVersion: v1
+  kind: Pod
+  metadata:
+    name: nvidia-device-plugin-07
+    namespace: kube-system
+  spec:
+    nodeName: gpu-b-4
+    containers:
+    - name: main
+      resources:
+        requests:
+          cpu: 100m
+          memory: 512Mi
+          nvidia.com/gpu: '0'
+        limits:
+          memory: 512Mi
+          nvidia.com/gpu: '0'
+  status:
+    phase: Running
+- apiVersion: v1
+  kind: Pod
+  metadata:
+    name: aws-efa-k8s-device-plugin-07
+    namespace: kube-system
+  spec:
+    nodeName: gpu-b-4
+    containers:
+    - name: main
+      resources:
+        requests:
+          cpu: 100m
+          memory: 256Mi
+          nvidia.com/gpu: '0'
+        limits:
+          memory: 256Mi
+          nvidia.com/gpu: '0'
+  status:
+    phase: Running
+- apiVersion: v1
+  kind: Pod
+  metadata:
+    name: node-exporter-07
+    namespace: monitoring
+  spec:
+    nodeName: gpu-b-4
+    containers:
+    - name: main
+      resources:
+        requests:
+          cpu: 100m
+          memory: 180Mi
+          nvidia.com/gpu: '0'
+        limits:
+          memory: 180Mi
+          nvidia.com/gpu: '0'
+  status:
+    phase: Running
+- apiVersion: v1
+  kind: Pod
+  metadata:
+    name: nvidia-device-plugin-08
+    namespace: kube-system
+  spec:
+    nodeName: gpu-b-5
+    containers:
+    - name: main
+      resources:
+        requests:
+          cpu: 100m
+          memory: 512Mi
+          nvidia.com/gpu: '0'
+        limits:
+          memory: 512Mi
+          nvidia.com/gpu: '0'
+  status:
+    phase: Running
+- apiVersion: v1
+  kind: Pod
+  metadata:
+    name: aws-efa-k8s-device-plugin-08
+    namespace: kube-system
+  spec:
+    nodeName: gpu-b-5
+    containers:
+    - name: main
+      resources:
+        requests:
+          cpu: 100m
+          memory: 256Mi
+          nvidia.com/gpu: '0'
+        limits:
+          memory: 256Mi
+          nvidia.com/gpu: '0'
+  status:
+    phase: Running
+- apiVersion: v1
+  kind: Pod
+  metadata:
+    name: node-exporter-08
+    namespace: monitoring
+  spec:
+    nodeName: gpu-b-5
+    containers:
+    - name: main
+      resources:
+        requests:
+          cpu: 100m
+          memory: 180Mi
+          nvidia.com/gpu: '0'
+        limits:
+          memory: 180Mi
+          nvidia.com/gpu: '0'
+  status:
+    phase: Running
+- apiVersion: v1
+  kind: Pod
+  metadata:
+    name: nvidia-device-plugin-09
+    namespace: kube-system
+  spec:
+    nodeName: gpu-b-6
+    containers:
+    - name: main
+      resources:
+        requests:
+          cpu: 100m
+          memory: 512Mi
+          nvidia.com/gpu: '0'
+        limits:
+          memory: 512Mi
+          nvidia.com/gpu: '0'
+  status:
+    phase: Running
+- apiVersion: v1
+  kind: Pod
+  metadata:
+    name: aws-efa-k8s-device-plugin-09
+    namespace: kube-system
+  spec:
+    nodeName: gpu-b-6
+    containers:
+    - name: main
+      resources:
+        requests:
+          cpu: 100m
+          memory: 256Mi
+          nvidia.com/gpu: '0'
+        limits:
+          memory: 256Mi
+          nvidia.com/gpu: '0'
+  status:
+    phase: Running
+- apiVersion: v1
+  kind: Pod
+  metadata:
+    name: node-exporter-09
+    namespace: monitoring
+  spec:
+    nodeName: gpu-b-6
+    containers:
+    - name: main
+      resources:
+        requests:
+          cpu: 100m
+          memory: 180Mi
+          nvidia.com/gpu: '0'
+        limits:
+          memory: 180Mi
+          nvidia.com/gpu: '0'
+  status:
+    phase: Running
+- apiVersion: v1
+  kind: Pod
+  metadata:
+    name: nvidia-device-plugin-10
+    namespace: kube-system
+  spec:
+    nodeName: gpu-c-1
+    containers:
+    - name: main
+      resources:
+        requests:
+          cpu: 100m
+          memory: 512Mi
+          nvidia.com/gpu: '0'
+        limits:
+          memory: 512Mi
+          nvidia.com/gpu: '0'
+  status:
+    phase: Running
+- apiVersion: v1
+  kind: Pod
+  metadata:
+    name: aws-efa-k8s-device-plugin-10
+    namespace: kube-system
+  spec:
+    nodeName: gpu-c-1
+    containers:
+    - name: main
+      resources:
+        requests:
+          cpu: 100m
+          memory: 256Mi
+          nvidia.com/gpu: '0'
+        limits:
+          memory: 256Mi
+          nvidia.com/gpu: '0'
+  status:
+    phase: Running
+- apiVersion: v1
+  kind: Pod
+  metadata:
+    name: node-exporter-10
+    namespace: monitoring
+  spec:
+    nodeName: gpu-c-1
+    containers:
+    - name: main
+      resources:
+        requests:
+          cpu: 100m
+          memory: 180Mi
+          nvidia.com/gpu: '0'
+        limits:
+          memory: 180Mi
+          nvidia.com/gpu: '0'
+  status:
+    phase: Running
+- apiVersion: v1
+  kind: Pod
+  metadata:
+    name: nvidia-device-plugin-11
+    namespace: kube-system
+  spec:
+    nodeName: gpu-c-2
+    containers:
+    - name: main
+      resources:
+        requests:
+          cpu: 100m
+          memory: 512Mi
+          nvidia.com/gpu: '0'
+        limits:
+          memory: 512Mi
+          nvidia.com/gpu: '0'
+  status:
+    phase: Running
+- apiVersion: v1
+  kind: Pod
+  metadata:
+    name: aws-efa-k8s-device-plugin-11
+    namespace: kube-system
+  spec:
+    nodeName: gpu-c-2
+    containers:
+    - name: main
+      resources:
+        requests:
+          cpu: 100m
+          memory: 256Mi
+          nvidia.com/gpu: '0'
+        limits:
+          memory: 256Mi
+          nvidia.com/gpu: '0'
+  status:
+    phase: Running
+- apiVersion: v1
+  kind: Pod
+  metadata:
+    name: node-exporter-11
+    namespace: monitoring
+  spec:
+    nodeName: gpu-c-2
+    containers:
+    - name: main
+      resources:
+        requests:
+          cpu: 100m
+          memory: 180Mi
+          nvidia.com/gpu: '0'
+        limits:
+          memory: 180Mi
+          nvidia.com/gpu: '0'
+  status:
+    phase: Running
+- apiVersion: v1
+  kind: Pod
+  metadata:
+    name: nvidia-device-plugin-12
+    namespace: kube-system
+  spec:
+    nodeName: gpu-c-3
+    containers:
+    - name: main
+      resources:
+        requests:
+          cpu: 100m
+          memory: 512Mi
+          nvidia.com/gpu: '0'
+        limits:
+          memory: 512Mi
+          nvidia.com/gpu: '0'
+  status:
+    phase: Running
+- apiVersion: v1
+  kind: Pod
+  metadata:
+    name: aws-efa-k8s-device-plugin-12
+    namespace: kube-system
+  spec:
+    nodeName: gpu-c-3
+    containers:
+    - name: main
+      resources:
+        requests:
+          cpu: 100m
+          memory: 256Mi
+          nvidia.com/gpu: '0'
+        limits:
+          memory: 256Mi
+          nvidia.com/gpu: '0'
+  status:
+    phase: Running
+- apiVersion: v1
+  kind: Pod
+  metadata:
+    name: node-exporter-12
+    namespace: monitoring
+  spec:
+    nodeName: gpu-c-3
+    containers:
+    - name: main
+      resources:
+        requests:
+          cpu: 100m
+          memory: 180Mi
+          nvidia.com/gpu: '0'
+        limits:
+          memory: 180Mi
+          nvidia.com/gpu: '0'
+  status:
+    phase: Running
