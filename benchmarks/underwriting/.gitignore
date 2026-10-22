@@ -1,0 +1,18 @@
+.venv/
+__pycache__/
+.env
+# fetched / rebuilt by scripts/fetch_data.sh
+data_raw/
+env/census/
+env/extracted.json
+env/tasks.json
+env/insurance.db
+env/guidelines.txt
+# outputs of a rerun that are not part of the published results
+results/transcripts/
+results/tuned/transcripts/
+results/tuned/runs/*__smoke.jsonl
+replay/out/
+replay/logs/
+replay/jev_sound.json
+logs/

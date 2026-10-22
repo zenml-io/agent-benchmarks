@@ -1,0 +1,179 @@
+<title>The Cost of a Correct Underwriting Decision</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Newsreader:opsz,wght@6..72,500;6..72,600&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+/* Layout: one reading column for the argument, widening for the per-use-case evidence (chart beside picks, table below). */
+:root {
+  --bg: #f6f7f8; --surface: #ffffff; --ink: #1b2430; --muted: #5b6573; --rule: #dde1e6;
+  --accent: #2f5d8a; --hold: #1f7a6d; --lose: #b4532a; --warnbg: #fbf1e6; --holdbg: #e5f2ef; --losebg: #f8e9e2;
+  --display: "Newsreader", Georgia, serif; --body: "IBM Plex Sans", system-ui, sans-serif; --mono: "IBM Plex Mono", ui-monospace, monospace;
+}
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) {
+  --bg: #12161c; --surface: #1a2029; --ink: #e6e9ed; --muted: #9aa4b2; --rule: #2c3440;
+  --accent: #7fb0e0; --hold: #5cc2b1; --lose: #e38a5f; --warnbg: #2e2519; --holdbg: #16302c; --losebg: #35211a; color-scheme: dark } }
+:root[data-theme="dark"] {
+  --bg: #12161c; --surface: #1a2029; --ink: #e6e9ed; --muted: #9aa4b2; --rule: #2c3440;
+  --accent: #7fb0e0; --hold: #5cc2b1; --lose: #e38a5f; --warnbg: #2e2519; --holdbg: #16302c; --losebg: #35211a; color-scheme: dark }
+body { background: var(--bg); color: var(--ink); font: 15px/1.6 var(--body);
+  padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); padding-block: 40px 64px; }
+main { max-width: 1060px; margin: 0 auto; display: grid; gap: 40px; }
+.col { max-width: 68ch; }
+h1, h2, h3 { font-family: var(--display); font-weight: 600; text-wrap: balance; line-height: 1.2; margin: 0; }
+h1 { font-size: 2.3rem; }
+h2 { font-size: 1.55rem; margin-bottom: 12px; }
+h3 { font-size: 1.25rem; }
+h4 { font: 600 0.78rem var(--body); letter-spacing: 0.06em; text-transform: uppercase; color: var(--muted); margin: 0 0 8px; }
+p { margin: 0 0 12px; }
+.eyebrow { font: 500 0.78rem var(--mono); letter-spacing: 0.04em; color: var(--accent); text-transform: uppercase; }
+.lede { font-size: 1.12rem; color: var(--ink); }
+.small, .meta, figcaption { font-size: 0.86rem; color: var(--muted); }
+.findings { display: grid; gap: 18px; padding: 0; margin: 0; list-style: none; counter-reset: f; }
+.findings li { display: grid; grid-template-columns: 2.2rem 1fr; gap: 4px; }
+.findings li::before { counter-increment: f; content: counter(f); font: 600 1.4rem var(--display); color: var(--accent); }
+.findings b { display: block; }
+.num { font-family: var(--mono); font-variant-numeric: tabular-nums; }
+.pill { display: inline-block; font: 500 0.75rem var(--body); padding: 1px 8px; border-radius: 999px; }
+.pill.hold { background: var(--holdbg); color: var(--hold); }
+.pill.lose { background: var(--losebg); color: var(--lose); }
+.tag { font: 500 0.7rem var(--body); color: var(--muted); border: 1px solid var(--rule); border-radius: 4px; padding: 0 5px; margin-left: 4px; white-space: nowrap; }
+.tag.warn { background: var(--warnbg); border-color: transparent; }
+.uc { display: grid; gap: 14px; padding-top: 28px; border-top: 1px solid var(--rule); }
+.ucgrid { display: grid; grid-template-columns: minmax(0, 360px) minmax(0, 1fr); gap: 28px; align-items: start; }
+@media (max-width: 760px) { .ucgrid { grid-template-columns: 1fr; } }
+figure { margin: 0; }
+svg { width: 100%; max-width: 100%; height: auto; display: block; }
+svg .grid { stroke: var(--rule); stroke-width: 1; }
+svg .bar { stroke: var(--muted); stroke-width: 1; stroke-dasharray: 4 4; }
+svg .tick, svg .axis, svg .lbl { fill: var(--muted); font: 11px var(--body); }
+svg .lbl { fill: var(--ink); }
+svg .hold { fill: var(--hold); stroke: var(--surface); stroke-width: 2; }
+svg .lose { fill: var(--lose); stroke: var(--surface); stroke-width: 2; rx: 2; }
+.pickbox { background: var(--surface); border: 1px solid var(--rule); border-radius: 8px; padding: 16px 18px; min-width: 0; }
+.picks { list-style: none; padding: 0; margin: 0 0 10px; display: grid; gap: 6px; }
+.picks .res { white-space: nowrap; font-family: var(--mono); font-size: 0.85rem; }
+.scroll { overflow-x: auto; }
+table { border-collapse: collapse; width: 100%; font-size: 0.86rem; }
+th, td { text-align: left; padding: 6px 10px; border-bottom: 1px solid var(--rule); white-space: nowrap; }
+th { font-weight: 600; color: var(--muted); font-size: 0.78rem; }
+td.n, th.n { text-align: right; font-family: var(--mono); font-variant-numeric: tabular-nums; }
+.ci { color: var(--muted); font-size: 0.8rem; }
+.legend { display: flex; gap: 18px; flex-wrap: wrap; font-size: 0.86rem; color: var(--muted); }
+.legend span::before { content: ""; display: inline-block; width: 9px; height: 9px; margin-right: 6px; vertical-align: 0; }
+.legend .h::before { background: var(--hold); border-radius: 50%; }
+.legend .l::before { background: var(--lose); border-radius: 2px; }
+.changes { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 14px; }
+.change { background: var(--surface); border: 1px solid var(--rule); border-radius: 8px; padding: 14px 16px; }
+.change b { display: block; margin-bottom: 4px; }
+code { font-family: var(--mono); font-size: 0.88em; background: var(--surface); border: 1px solid var(--rule); border-radius: 4px; padding: 0 4px; }
+a { color: var(--accent); }
+
+svg .closed { fill: var(--accent); stroke: var(--surface); stroke-width: 2; }
+svg .open { fill: var(--lose); stroke: var(--surface); stroke-width: 2; }
+svg .bar.closed, svg .bar.open { fill: none; stroke-width: 1.5; stroke-dasharray: none; opacity: 0.45; }
+svg .bar.closed { stroke: var(--accent); } svg .bar.open { stroke: var(--lose); }
+.legend .c::before { background: var(--accent); border-radius: 50%; }
+.legend .o::before { background: var(--lose); border-radius: 2px; }
+td.low { background: var(--losebg); color: var(--lose); }
+.stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 14px; }
+.stat { background: var(--surface); border: 1px solid var(--rule); border-radius: 8px; padding: 14px 16px; }
+.stat .big { font: 600 1.7rem var(--display); display: block; }
+main { grid-template-columns: minmax(0, 1fr); }
+</style>
+<main>
+<header class="col">
+<div class="eyebrow">agent benchmark · commercial insurance underwriting · October 2026</div>
+<h1>The Cost of a Correct Underwriting Decision</h1>
+<p class="lede">We gave twelve models the same underwriting copilot job: talk to an underwriter, look up the insurer's classification codes, size rules and appetite guide, and decide. Across 252 real-shaped cases, the best model was not the most expensive, the most expensive was not the best, and the cost of a correct decision varied about forty-fold.</p>
+<p class="meta">Update: a second run tuned each model's prompt on separate learning cases, and on held-out cases the gaps mostly closed, with one shared prompt doing as well as per-model tuning; see "Then we tuned the prompt" and "One prompt for everyone". 252 tasks × 12 models, one run each. Reference for comparisons: Claude Opus 5.5. Costs at list prices, including every model call the copilot made.</p>
+</header>
+
+<section class="stats">
+<div class="stat"><span class="big num">97.6%</span>DeepSeek V4 Pro (open weights): tied with Opus 5.5 (97.2%) at about a third less per correct decision</div>
+<div class="stat"><span class="big num">0.19¢–8.25¢</span>cost per correct decision across models: a ~40× spread</div>
+<div class="stat"><span class="big num">−8.3 pts</span>Sonnet 5.5 vs Opus 5.5 [−12.7, −4.0]: a mid-price model that is clearly worse, not "almost as good"</div>
+<div class="stat"><span class="big num">92.5% · 0.97¢</span>GLM 5.3 Flash: the value pick, five points behind for a fifth of Opus's cost per correct decision</div>
+</section>
+
+<section class="col">
+<h2>Findings</h2>
+<ol class="findings">
+<li><div><b>The top is a tie, and an open model is in it.</b> DeepSeek V4 Pro and Claude Opus 5.5 are statistically indistinguishable (+0.4 points, 95% CI −2.0 to +2.8). DeepSeek costs 3.55¢ per correct decision, Opus 5.26¢. A team that can host or buy open-weight inference does not give up accuracy here.</div></li>
+<li><div><b>Price is not quality.</b> GLM 5.3 is the most expensive model per correct decision (8.25¢) because it spends many tokens, yet it is 2.4 points behind Opus. Sonnet 5.5 costs less than Opus per task but is 8.3 points worse. Opus works in fewer steps than any other model (6.5 calls and about 25k tokens per case), which is why it is cheaper per correct decision than its list price suggests.</div></li>
+<li><div><b>Cheap models fail on specific question types, not uniformly.</b> Policy limits need the written guidelines applied to the company's numbers; GLM 5.3, GLM 5.3 Flash and MiniMax-M3 get 65% of them right and DeepSeek V4.1 Flash 53%, while DeepSeek V4 Pro and Sonnet 5.5 get 94% (only 17 such cases, so treat the size of the gap loosely). Product recommendations (which other lines are in appetite) are where Sonnet 5.5 (78%), MiniMax-M3 (75%) and Qwen3.8 27B (67%) lose most of their points. Averages hide this; a per-type table does not.</div></li>
+<li><div><b>Some failures are about the agent loop, not knowledge.</b> GPT-6.1 Sol often ends the case with a final answer that is actually a question to the underwriter, so its appetite checks are only 71% correct. gpt-oss-120b emits malformed tool calls (28 times). Qwen3.8 27B runs out of steps on 17 cases. Each would look different with a different harness; that is part of the result, because the harness is part of the system you deploy.</div></li>
+<li><div><b>No sign the models memorized the public answers.</b> Without the insurer's data, no model named the right set of other in-appetite products (@@probe_products@@ answers). On appetite checks, models were right @@probe_app@@ times, consistent with reasoning about fire risk for a few business types rather than recall.</div></li>
+</ol>
+</section>
+
+<section class="col">
+<h2>Then we tuned the prompt</h2>
+<p>The first run gave every model the same system prompt. We then split the cases into 84 for learning and 168 held out, let Claude Opus 5.5 rewrite each model's prompt from its failures on the learning cases only (general instructions, no case facts), and scored the best prompt once on the held-out cases.</p>
+<div class="scroll"><table><thead><tr><th>Model</th><th class="n">Original</th><th class="n">Tuned prompt</th><th class="n">Change, pts [95% CI]</th><th class="n">Cost per correct decision</th></tr></thead><tbody>
+<tr><td>Claude Sonnet 5.5</td><td class="n">89.3%</td><td class="n">99.4%</td><td class="n">+10.1 [+5.4, +15.5]</td><td class="n">4.11¢ → 2.73¢</td></tr>
+<tr><td>DeepSeek V4 Pro <span class="tag">open</span></td><td class="n">97.0%</td><td class="n">98.2%</td><td class="n">+1.2 [−1.8, +4.2]</td><td class="n">3.56¢ → 3.12¢</td></tr>
+<tr><td>Claude Opus 5.5</td><td class="n">97.0%</td><td class="n">98.2%</td><td class="n">+1.2 [−1.2, +3.6]</td><td class="n">5.26¢ → 4.31¢</td></tr>
+<tr><td>GPT-6.1 Sol</td><td class="n">82.1%</td><td class="n">97.6%</td><td class="n">+15.5 [+9.5, +21.4]</td><td class="n">2.01¢ → 1.11¢</td></tr>
+<tr><td>Claude Haiku 5.5</td><td class="n">85.7%</td><td class="n">97.6%</td><td class="n">+12.0 [+6.6, +18.0]</td><td class="n">0.52¢ → 0.38¢</td></tr>
+<tr><td>GLM 5.3 Flash <span class="tag">open</span></td><td class="n">91.7%</td><td class="n">97.6%</td><td class="n">+6.0 [+1.8, +10.8]</td><td class="n">0.98¢ → 0.72¢</td></tr>
+<tr><td>gpt-oss-120b <span class="tag">open</span></td><td class="n">56.0%</td><td class="n">76.2%</td><td class="n">+20.2 [+10.1, +29.8]</td><td class="n">0.98¢ → 1.48¢</td></tr>
+</tbody></table></div>
+<p class="small">Held-out cases only, paired against each model's original run on the same cases. Sonnet 5.5 rerun with the original prompt moved +2.4 points [−3.6, +8.3], which is the noise floor. GPT-6 Luna was not tuned: no rewrite beat its 78 of 84 learning cases.</p>
+<p><b>Tuned, six models land within about two points of each other, inside the noise.</b> The first ranking was largely a ranking of how well each model coped with an under-specified prompt. At that tier the cheapest model is Claude Haiku 5.5 at 0.38¢ per correct decision, about eleven times cheaper than tuned Opus 5.5. For the model in use today, Sonnet 5.5, the rewrite gained ten points and cut cost per correct decision by a third: more than any model swap in the first run. Effort settings moved less: high reasoning effort helped GPT-6.1 Sol (+9.5), and lower effort hurt Sonnet 5.5 (−16.7 at low).</p>
+<p>The rewrites changed conversation and answer discipline, not facts: ask which line of business the application is for, classify the business from the database and treat it as settled, commit to one answer, never end on a question, answer only what was asked. Judges agreed more often on tuned answers, so the answers got clearer rather than easier to grade.</p>
+</section>
+
+<section class="col">
+<h2>One prompt for everyone</h2>
+<p>Does each model need its own prompt? We ran Sonnet 5.5's tuned prompt, unchanged, on the other eleven models' held-out cases.</p>
+<div class="scroll"><table><thead><tr><th>Model</th><th class="n">Original</th><th class="n">Shared prompt</th><th class="n">Change, pts [95% CI]</th><th class="n">Cost per correct decision</th></tr></thead><tbody>
+<tr><td>GLM 5.3 Flash <span class="tag">open</span></td><td class="n">91.7%</td><td class="n">99.4%</td><td class="n">+7.7 [+3.6, +12.5]</td><td class="n">0.92¢</td></tr>
+<tr><td>Claude Sonnet 5.5</td><td class="n">89.3%</td><td class="n">99.4%</td><td class="n">+10.1 [+5.4, +14.9]</td><td class="n">2.73¢</td></tr>
+<tr><td>Claude Haiku 5.5</td><td class="n">85.7%</td><td class="n">98.8%</td><td class="n">+13.1 [+8.3, +18.5]</td><td class="n">0.38¢</td></tr>
+<tr><td>DeepSeek V4 Pro <span class="tag">open</span></td><td class="n">97.0%</td><td class="n">98.8%</td><td class="n">+1.8 [−0.6, +4.8]</td><td class="n">3.27¢</td></tr>
+<tr><td>GPT-6.1 Sol</td><td class="n">82.1%</td><td class="n">98.2%</td><td class="n">+16.1 [+10.1, +22.0]</td><td class="n">1.78¢</td></tr>
+<tr><td>DeepSeek V4.1 Flash <span class="tag">open</span></td><td class="n">91.7%</td><td class="n">98.2%</td><td class="n">+6.5 [+2.4, +11.3]</td><td class="n">1.81¢</td></tr>
+<tr><td>GLM 5.3 <span class="tag">open</span></td><td class="n">94.6%</td><td class="n">98.2%</td><td class="n">+3.6 [+0.6, +6.5]</td><td class="n">7.37¢</td></tr>
+<tr><td>Claude Opus 5.5</td><td class="n">97.0%</td><td class="n">97.6%</td><td class="n">+0.6 [−3.0, +4.2]</td><td class="n">5.12¢</td></tr>
+<tr><td>MiniMax-M3 <span class="tag">open</span></td><td class="n">84.5%</td><td class="n">96.4%</td><td class="n">+11.9 [+6.5, +17.3]</td><td class="n">1.82¢</td></tr>
+<tr><td>GPT-6 Luna</td><td class="n">83.9%</td><td class="n">90.5%</td><td class="n">+6.5 [+0.6, +12.5]</td><td class="n">0.19¢</td></tr>
+<tr><td>gpt-oss-120b <span class="tag">open</span></td><td class="n">56.0%</td><td class="n">86.9%</td><td class="n">+31.0 [+22.0, +39.9]</td><td class="n">1.15¢</td></tr>
+<tr><td>Qwen3.8 27B <span class="tag">open</span></td><td class="n">83.3%</td><td class="n">82.7%</td><td class="n">−0.6 [−7.7, +6.5]</td><td class="n">5.33¢</td></tr>
+</tbody></table></div>
+<p><b>One good prompt lifts nearly everyone.</b> Ten of eleven models gained, and nine land between 97.6% and 99.4%, within noise of each other; giving each model its own tuned prompt added nothing measurable. With accuracy a near tie, the choice is cost: Claude Haiku 5.5 (98.8% at 0.38¢ per correct decision) and GLM 5.3 Flash (99.4% at 0.92¢) lead, and Opus 5.5 costs about thirteen times as much as Haiku per correct decision for no measurable gain. GPT-6 Luna and Qwen3.8 27B do not catch up.</p>
+</section>
+
+<section>
+<h2 class="col">Accuracy against cost</h2>
+<figure>
+@@scatter@@
+<figcaption><div class="legend"><span class="c">Closed model (API)</span><span class="o">Open-weight model</span><span>Vertical line: 95% interval</span></div>Up and to the left is better. Cost includes every copilot call on the task; simulator and grading calls are excluded.</figcaption>
+</figure>
+</section>
+
+<section>
+<h2 class="col">All twelve models</h2>
+@@table@@
+<p class="small">"Wrong per 10,000" counts every case not answered correctly, including runs that hit a step or turn limit. Cost per 10,000 decisions is the average cost per case × 10,000.</p>
+</section>
+
+<section>
+<h2 class="col">Where each model gets it wrong</h2>
+@@types@@
+</section>
+
+<section class="col">
+<h2>Method</h2>
+<p><b>Tasks.</b> Snorkel AI's public multi-turn insurance underwriting datasets (Apache-2.0): an underwriter asks a copilot about a small business (appetite for a line of business, other products to offer, small-business eligibility, policy limits, deductibles, NAICS classification). We rebuilt the insurer's environment the agent queries: NAICS 2022 codes and Census concordances, the SBA size-standard table, the appetite guide and the underwriting guidelines, recovered from the published traces. A rule-based oracle re-derives each reference answer from that environment; we kept the 252 of 380 tasks where it agrees, so every scored task is answerable from the data the agent can see.</p>
+<p><b>Agent.</b> Every model gets the same system prompt and six tools over a SQLite database, and talks to a simulated underwriter (Claude Haiku 5.5) that knows the company profile but not the answer. The case ends when the copilot writes "FINAL ANSWER:", or after 30 model calls or 12 underwriter turns.</p>
+<p><b>Grading.</b> Two LLM judges (GPT-6 Luna and Claude Haiku 5.5) compare the final answer to the reference; GPT-6.1 Sol breaks ties. On Snorkel's own labeled traces the judges agree with the human labels 87–90% of the time.</p>
+<p><b>Statistics.</b> Wilson 95% intervals for accuracy; paired bootstrap (4,000 resamples) for differences against Opus 5.5, on the same 252 tasks for every model.</p>
+<h3>Caveats</h3>
+<ul>
+<li>One run per task per model; differences under about 3 points are inside the noise.</li>
+<li>The environment is a reconstruction; a third of the original tasks were dropped where it disagreed with the reference.</li>
+<li>The underwriter is simulated and the grading is by LLM judges, both validated but not perfect.</li>
+<li>List prices; open-weight models were served by a commercial inference provider, and prices and speed vary across providers. Latency is end-to-end and includes the simulator.</li>
+<li>The datasets are public, so contamination is possible; the probe above found no sign of it.</li>
+</ul>
+</section>
+</main>

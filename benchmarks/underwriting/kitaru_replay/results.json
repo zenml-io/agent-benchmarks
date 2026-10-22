@@ -1,0 +1,110 @@
+{
+ "glm-5.3@provider-a": {
+  "experiment_run": "01a15fb4-eb30-76a0-9f8e-c87252f05a82",
+  "n": 48,
+  "baseline_correct": 43,
+  "replay_correct": 45,
+  "vs_baseline": {
+   "n": 48,
+   "delta": 0.041666666666666664,
+   "lo": -0.0625,
+   "hi": 0.14583333333333334
+  },
+  "baseline_cost": 1.8100168999999997,
+  "replay_cost": 3.8074552,
+  "replay_cost_per_correct": 0.08461011555555556,
+  "baseline_cost_per_correct": 0.04209341627906976,
+  "benchmark": {
+   "n": 48,
+   "correct": 45,
+   "sonnet_correct": 40,
+   "vs_sonnet": {
+    "n": 48,
+    "delta": 0.10416666666666667,
+    "lo": -0.020833333333333332,
+    "hi": 0.22916666666666666
+   }
+  }
+ },
+ "haiku-5.5": {
+  "experiment_run": "01a15fb4-e39f-7220-b397-3deb83aeab13",
+  "n": 47,
+  "baseline_correct": 42,
+  "replay_correct": 39,
+  "vs_baseline": {
+   "n": 47,
+   "delta": -0.06382978723404255,
+   "lo": -0.19148936170212766,
+   "hi": 0.06382978723404255
+  },
+  "baseline_cost": 1.7730759999999997,
+  "replay_cost": 0.1849979400000001,
+  "replay_cost_per_correct": 0.004743536923076926,
+  "baseline_cost_per_correct": 0.04221609523809523,
+  "benchmark": {
+   "n": 48,
+   "correct": 43,
+   "sonnet_correct": 40,
+   "vs_sonnet": {
+    "n": 48,
+    "delta": 0.0625,
+    "lo": -0.0625,
+    "hi": 0.1875
+   }
+  }
+ },
+ "gpt-6-luna": {
+  "experiment_run": "01a15fb4-c3a8-7263-b289-74398fddb9c0",
+  "n": 48,
+  "baseline_correct": 43,
+  "replay_correct": 41,
+  "vs_baseline": {
+   "n": 48,
+   "delta": -0.041666666666666664,
+   "lo": -0.16666666666666666,
+   "hi": 0.08333333333333333
+  },
+  "baseline_cost": 1.8100168999999997,
+  "replay_cost": 0.07991142999999999,
+  "replay_cost_per_correct": 0.0019490592682926827,
+  "baseline_cost_per_correct": 0.04209341627906976,
+  "benchmark": {
+   "n": 48,
+   "correct": 41,
+   "sonnet_correct": 40,
+   "vs_sonnet": {
+    "n": 48,
+    "delta": 0.020833333333333332,
+    "lo": -0.125,
+    "hi": 0.16666666666666666
+   }
+  }
+ },
+ "deepseek-v4-pro@provider-a": {
+  "experiment_run": "01a15fb4-a68b-70c3-9f0e-836d3c6bb1b2",
+  "n": 48,
+  "baseline_correct": 43,
+  "replay_correct": 47,
+  "vs_baseline": {
+   "n": 48,
+   "delta": 0.08333333333333333,
+   "lo": 0.020833333333333332,
+   "hi": 0.16666666666666666
+  },
+  "baseline_cost": 1.8100168999999997,
+  "replay_cost": 1.7249880999999998,
+  "replay_cost_per_correct": 0.0367018744680851,
+  "baseline_cost_per_correct": 0.04209341627906976,
+  "benchmark": {
+   "n": 48,
+   "correct": 46,
+   "sonnet_correct": 40,
+   "vs_sonnet": {
+    "n": 48,
+    "delta": 0.125,
+    "lo": 0.020833333333333332,
+    "hi": 0.25
+   }
+  }
+ }
+}

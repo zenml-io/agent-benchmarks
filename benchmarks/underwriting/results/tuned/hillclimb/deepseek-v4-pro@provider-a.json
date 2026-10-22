@@ -1,0 +1,29 @@
+{
+ "model": "deepseek-v4-pro@provider-a",
+ "rounds": [
+  {
+   "round": 0,
+   "learn_correct": 83,
+   "learn_n": 84,
+   "kept": true
+  },
+  {
+   "round": 1,
+   "learn_correct": 83,
+   "learn_n": 84,
+   "kept": false,
+   "why": "The copilot excluded a line by misapplying a guideline rule. It treated a payroll figure as a disqualifier and overrode the database's \"Yes\" appetite, without confirming that the rule's conditions and outcome actually called for a decline. The new prompt requires reading each rule's full scope, conditions, and outcome. It says to apply a rule only when every condition is met, and to override database appetite only for a clearly applicable decline. The final answer also never listed the recommended lines and was duplicated and truncated. The prompt now says to enumerate every in-appetite line other than the one already being considered, to lead with the direct answer, and to send one complete \"FINAL ANSWER:\" message. The original tool list, the ask-the-underwriter guidance, and the FINAL ANSWER convention are kept."
+  },
+  {
+   "round": 2,
+   "learn_correct": 84,
+   "learn_n": 84,
+   "kept": true,
+   "why": "The failure came from misapplying a guideline rule. The copilot excluded an in-appetite LOB, apparently by treating a rule as a decline without checking its exact condition and consequence. Its final message was also garbled and never clearly listed the recommended LOBs. I added general instructions to read the data dictionary and the full guidelines, and to apply each rule's exact condition and consequence, keeping decline separate from referral. The copilot must now exclude an LOB only when a rule clearly applies, and must re-verify every exclusion before answering. For product recommendations, it must give the complete list of other in-appetite LOBs, leaving out the one already named. The final answer must lead with the direct answer, stay clean and non-duplicated, and keep the exact \"FINAL ANSWER:\" convention."
+  }
+ ],
+ "optimizer_cost": 0.07422,
+ "best_round": 2,
+ "held_correct": 165,
+ "held_n": 168
+}

@@ -1,0 +1,4795 @@
+{
+ "meta": {
+  "name": "Underwriting agent: cost of a correct decision",
+  "slug": "underwriting",
+  "question": "What does a correct decision cost when 12 models run the same insurance underwriting agent, and how much of the gap between models is the prompt?",
+  "domain": "Commercial insurance underwriting (small-business applications)",
+  "status": "complete",
+  "run_dates": {
+   "first_run": "2026-10-21",
+   "tuned_and_effort_runs": "2026-10-21",
+   "shared_prompt_run": "2026-10-22"
+  },
+  "who_ran": "Hamza Tahir (ZenML), with Claude Code agents",
+  "kitaru_version": "kitaru 0.27.2+dev (branch feature/model-swap-analyzer), kitaru-model-swap plugin 0.1.0; used for the step-level replay and the full replay only, not for the main runs",
+  "harness_git_commit": "84411cff33aa4085450ffcf28c2276f3f34efc84",
+  "code_location": "zenml-io/agent-benchmarks: benchmarks/underwriting (harness/, env/, src/, replay/, kitaru_replay/)",
+  "code_location_note": "Ported from a private research repository; harness_git_commit is the last commit there that touched the benchmark.",
+  "total_spend_usd": 259.15,
+  "total_spend_note": "From the run's spend log (RERUN.md, section 7): every model call (agent, simulated underwriter, judges, optimizer) at list prices, plus smoke tests and pilots. Main 12-model run $79.49; tuned prompts and effort $85.63; shared prompt $47.38; step-level replays $15.85 + $15.62; Kitaru full replay $9.11 (of which about $1.50 estimated)."
+ },
+ "dataset": {
+  "source": "Snorkel AI, Multi-Turn Insurance Underwriting and Multi-Turn Insurance Underwriting Code-Gen",
+  "url": [
+   "https://huggingface.co/datasets/snorkelai/Multi-Turn-Insurance-Underwriting",
+   "https://huggingface.co/datasets/snorkelai/Multi-Turn-Insurance-Underwriting-Code-Gen"
+  ],
+  "license": "Apache-2.0",
+  "other_sources": [
+   "US Census Bureau 2022 NAICS codes and concordances (public domain)",
+   "SBA size standards as recovered from the published traces"
+  ],
+  "total_cases": 380,
+  "kept_cases": 252,
+  "dropped_reason": "The insurer's environment (database, appetite guide, guidelines) is not published; we rebuilt it from the traces. A rule-based oracle (env/oracle.py) re-derives each reference answer from the rebuilt environment; the 128 cases where it disagrees with the published reference are dropped, so every scored case is answerable from data the agent can see.",
+  "split": {
+   "method": "stratified by question type, by hash of the case id (env/split.json)",
+   "learning": 84,
+   "held_out": 168,
+   "learning_by_type": {
+    "Appetite Check": 28,
+    "Product Recommendations": 24,
+    "Policy Limits": 6,
+    "Deductibles": 4,
+    "Business Classification": 6,
+    "Small business eligibility": 16
+   },
+   "held_out_by_type": {
+    "Appetite Check": 57,
+    "Business Classification": 11,
+    "Product Recommendations": 48,
+    "Policy Limits": 11,
+    "Deductibles": 9,
+    "Small business eligibility": 32
+   },
+   "note": "The first run used all 252 cases. Prompt tuning saw only the learning cases; every tuned, shared-prompt, effort and repeat result is on the 168 held-out cases."
+  },
+  "types": [
+   {
+    "type": "Appetite Check",
+    "count": 85
+   },
+   {
+    "type": "Product Recommendations",
+    "count": 72
+   },
+   {
+    "type": "Small business eligibility",
+    "count": 48
+   },
+   {
+    "type": "Business Classification",
+    "count": 17
+   },
+   {
+    "type": "Policy Limits",
+    "count": 17
+   },
+   {
+    "type": "Deductibles",
+    "count": 13
+   }
+  ]
+ },
+ "models": [
+  {
+   "id": "claude-opus-5-5",
+   "harness_key": "opus-5.5",
+   "display_name": "Claude Opus 5.5",
+   "vendor": "Anthropic",
+   "weights": "closed",
+   "inference_provider_type": "vendor API",
+   "price_per_mtok_input_usd": 4.0,
+   "price_per_mtok_cached_input_usd": 0.2,
+   "price_per_mtok_output_usd": 20.0,
+   "price_date": "2026-10-19",
+   "price_note": null
+  },
+  {
+   "id": "claude-sonnet-5-5",
+   "harness_key": "sonnet-5.5",
+   "display_name": "Claude Sonnet 5.5",
+   "vendor": "Anthropic",
+   "weights": "closed",
+   "inference_provider_type": "vendor API",
+   "price_per_mtok_input_usd": 2.0,
+   "price_per_mtok_cached_input_usd": 0.1,
+   "price_per_mtok_output_usd": 10.0,
+   "price_date": "2026-10-19",
+   "price_note": null
+  },
+  {
+   "id": "claude-haiku-5-5",
+   "harness_key": "haiku-5.5",
+   "display_name": "Claude Haiku 5.5",
+   "vendor": "Anthropic",
+   "weights": "closed",
+   "inference_provider_type": "vendor API",
+   "price_per_mtok_input_usd": 0.1,
+   "price_per_mtok_cached_input_usd": 0.01,
+   "price_per_mtok_output_usd": 0.5,
+   "price_date": "2026-10-19",
+   "price_note": null
+  },
+  {
+   "id": "gpt-6.1-sol",
+   "harness_key": "gpt-6.1-sol",
+   "display_name": "GPT-6.1 Sol",
+   "vendor": "OpenAI",
+   "weights": "closed",
+   "inference_provider_type": "vendor API",
+   "price_per_mtok_input_usd": 2.0,
+   "price_per_mtok_cached_input_usd": 0.1,
+   "price_per_mtok_output_usd": 10.0,
+   "price_date": "2026-10-19",
+   "price_note": null
+  },
+  {
+   "id": "gpt-6-luna",
+   "harness_key": "gpt-6-luna",
+   "display_name": "GPT-6 Luna",
+   "vendor": "OpenAI",
+   "weights": "closed",
+   "inference_provider_type": "vendor API",
+   "price_per_mtok_input_usd": 0.1,
+   "price_per_mtok_cached_input_usd": 0.01,
+   "price_per_mtok_output_usd": 0.5,
+   "price_date": "2026-10-19",
+   "price_note": null
+  },
+  {
+   "id": "deepseek-ai/DeepSeek-V4-Pro-0813",
+   "harness_key": "deepseek-v4-pro",
+   "display_name": "DeepSeek V4 Pro",
+   "vendor": "DeepSeek",
+   "weights": "open",
+   "inference_provider_type": "commercial provider",
+   "provider_label": "provider-a",
+   "price_per_mtok_input_usd": 1.75,
+   "price_per_mtok_cached_input_usd": 0.15,
+   "price_per_mtok_output_usd": 3.5,
+   "price_date": "2026-10-19",
+   "price_note": "Provider price page needs a login; taken from an earlier pinned table and third-party listings, unverified. Cached input billed at the full input price."
+  },
+  {
+   "id": "deepseek-ai/DeepSeek-V4.1-Flash",
+   "harness_key": "deepseek-v4.1-flash",
+   "display_name": "DeepSeek V4.1 Flash",
+   "vendor": "DeepSeek",
+   "weights": "open",
+   "inference_provider_type": "commercial provider",
+   "provider_label": "provider-a",
+   "price_per_mtok_input_usd": 0.3,
+   "price_per_mtok_cached_input_usd": 0.3,
+   "price_per_mtok_output_usd": 1.2,
+   "price_date": "2026-10-19",
+   "price_note": "Provider price page needs a login; taken from an earlier pinned table and third-party listings, unverified. Cached input billed at the full input price."
+  },
+  {
+   "id": "zai-org/GLM-5.3",
+   "harness_key": "glm-5.3",
+   "display_name": "GLM 5.3",
+   "vendor": "Z.ai",
+   "weights": "open",
+   "inference_provider_type": "commercial provider",
+   "provider_label": "provider-a",
+   "price_per_mtok_input_usd": 1.4,
+   "price_per_mtok_cached_input_usd": 1.4,
+   "price_per_mtok_output_usd": 4.4,
+   "price_date": "2026-10-19",
+   "price_note": "Provider price page needs a login; taken from an earlier pinned table and third-party listings, unverified. Cached input billed at the full input price."
+  },
+  {
+   "id": "zai-org/GLM-5.3-Flash",
+   "harness_key": "glm-5.3-flash",
+   "display_name": "GLM 5.3 Flash",
+   "vendor": "Z.ai",
+   "weights": "open",
+   "inference_provider_type": "commercial provider",
+   "provider_label": "provider-a",
+   "price_per_mtok_input_usd": 0.15,
+   "price_per_mtok_cached_input_usd": 0.15,
+   "price_per_mtok_output_usd": 0.5,
+   "price_date": "2026-10-19",
+   "price_note": "Provider price page needs a login; taken from an earlier pinned table and third-party listings, unverified. Cached input billed at the full input price."
+  },
+  {
+   "id": "openai/gpt-oss-120b",
+   "harness_key": "gpt-oss-120b",
+   "display_name": "gpt-oss-120b",
+   "vendor": "OpenAI",
+   "weights": "open",
+   "inference_provider_type": "commercial provider",
+   "provider_label": "provider-a",
+   "price_per_mtok_input_usd": 0.15,
+   "price_per_mtok_cached_input_usd": 0.15,
+   "price_per_mtok_output_usd": 0.6,
+   "price_date": "2026-10-19",
+   "price_note": "Provider price page needs a login; taken from an earlier pinned table and third-party listings, unverified. Cached input billed at the full input price."
+  },
+  {
+   "id": "Qwen/Qwen3.8-27B",
+   "harness_key": "qwen3.8-27b",
+   "display_name": "Qwen3.8 27B",
+   "vendor": "Alibaba (Qwen)",
+   "weights": "open",
+   "inference_provider_type": "commercial provider",
+   "provider_label": "provider-a",
+   "price_per_mtok_input_usd": 0.45,
+   "price_per_mtok_cached_input_usd": 0.45,
+   "price_per_mtok_output_usd": 3.0,
+   "price_date": "2026-10-19",
+   "price_note": "Provider price page needs a login; taken from an earlier pinned table and third-party listings, unverified. Cached input billed at the full input price."
+  },
+  {
+   "id": "MiniMaxAI/MiniMax-M3",
+   "harness_key": "minimax-m3",
+   "display_name": "MiniMax-M3",
+   "vendor": "MiniMax",
+   "weights": "open",
+   "inference_provider_type": "commercial provider",
+   "provider_label": "provider-a",
+   "price_per_mtok_input_usd": 0.3,
+   "price_per_mtok_cached_input_usd": 0.3,
+   "price_per_mtok_output_usd": 1.2,
+   "price_date": "2026-10-19",
+   "price_note": "Provider price page needs a login; taken from an earlier pinned table and third-party listings, unverified. Cached input billed at the full input price."
+  }
+ ],
+ "setup": {
+  "conditions": [
+   {
+    "name": "first_prompt_all_cases",
+    "description": "One system prompt written once, the same for every model; default settings; all 252 cases."
+   },
+   {
+    "name": "first_prompt_held_out",
+    "description": "The same runs restricted to the 168 held-out cases (the baseline for every tuned comparison)."
+   },
+   {
+    "name": "per_model_rewritten_prompt_held_out",
+    "description": "Each model's own rewritten prompt from up to two rounds of tuning on the 84 learning cases. Run for the 7 models where a rewrite improved the learning score."
+   },
+   {
+    "name": "shared_rewritten_prompt_held_out",
+    "description": "Sonnet 5.5's rewritten prompt, unchanged, on all 12 models. Sonnet's row is its own tuned run."
+   },
+   {
+    "name": "effort_high_held_out / effort_medium_held_out / effort_low_held_out",
+    "description": "First prompt with a different reasoning-effort setting (Anthropic output_config.effort, OpenAI reasoning.effort); run for Opus, Sonnet, Haiku, GPT-6.1 Sol and GPT-6 Luna."
+   },
+   {
+    "name": "repeat_unchanged_held_out",
+    "description": "Sonnet 5.5 run again with nothing changed: the noise floor."
+   }
+  ],
+  "prompt_rewriting": {
+   "method": "Claude Opus 5.5 read up to 12 failed learning cases (conversation tail, final answer, reference, grader reason) and rewrote the whole system prompt with general instructions. A rewrite was kept only if it scored higher on the 84 learning cases; at most 2 rounds.",
+   "leakage_check": "A rewrite was rejected and retried if it contained any number of 3+ digits not in the original prompt, or any company name from the learning cases. The held-out cases were never shown to the optimizer.",
+   "optimizer_cost_usd_total": 0.8883,
+   "per_model_tuning_log": {
+    "opus-5.5": {
+     "rounds": [
+      {
+       "round": 0,
+       "learn_correct": 82,
+       "learn_n": 84,
+       "kept": true
+      },
+      {
+       "round": 1,
+       "learn_correct": 83,
+       "learn_n": 84,
+       "kept": true
+      },
+      {
+       "round": 2,
+       "learn_correct": 84,
+       "learn_n": 84,
+       "kept": true
+      }
+     ],
+     "best_round": 2,
+     "optimizer_cost_usd": 0.0845
+    },
+    "sonnet-5.5": {
+     "rounds": [
+      {
+       "round": 0,
+       "learn_correct": 74,
+       "learn_n": 84,
+       "kept": true
+      },
+      {
+       "round": 1,
+       "learn_correct": 84,
+       "learn_n": 84,
+       "kept": true
+      }
+     ],
+     "best_round": 1,
+     "optimizer_cost_usd": 0.0779
+    },
+    "haiku-5.5": {
+     "rounds": [
+      {
+       "round": 0,
+       "learn_correct": 76,
+       "learn_n": 84,
+       "kept": true
+      },
+      {
+       "round": 1,
+       "learn_correct": 82,
+       "learn_n": 84,
+       "kept": true
+      },
+      {
+       "round": 2,
+       "learn_correct": 82,
+       "learn_n": 84,
+       "kept": false
+      }
+     ],
+     "best_round": 1,
+     "optimizer_cost_usd": 0.1394
+    },
+    "gpt-6.1-sol": {
+     "rounds": [
+      {
+       "round": 0,
+       "learn_correct": 73,
+       "learn_n": 84,
+       "kept": true
+      },
+      {
+       "round": 1,
+       "learn_correct": 79,
+       "learn_n": 84,
+       "kept": true
+      },
+      {
+       "round": 2,
+       "learn_correct": 84,
+       "learn_n": 84,
+       "kept": true
+      }
+     ],
+     "best_round": 2,
+     "optimizer_cost_usd": 0.1516
+    },
+    "gpt-6-luna": {
+     "rounds": [
+      {
+       "round": 0,
+       "learn_correct": 78,
+       "learn_n": 84,
+       "kept": true
+      },
+      {
+       "round": 1,
+       "learn_correct": 78,
+       "learn_n": 84,
+       "kept": false
+      }
+     ],
+     "best_round": 0,
+     "optimizer_cost_usd": 0.0625
+    },
+    "deepseek-v4-pro": {
+     "rounds": [
+      {
+       "round": 0,
+       "learn_correct": 83,
+       "learn_n": 84,
+       "kept": true
+      },
+      {
+       "round": 1,
+       "learn_correct": 83,
+       "learn_n": 84,
+       "kept": false
+      },
+      {
+       "round": 2,
+       "learn_correct": 84,
+       "learn_n": 84,
+       "kept": true
+      }
+     ],
+     "best_round": 2,
+     "optimizer_cost_usd": 0.0742
+    },
+    "glm-5.3-flash": {
+     "rounds": [
+      {
+       "round": 0,
+       "learn_correct": 79,
+       "learn_n": 84,
+       "kept": true
+      },
+      {
+       "round": 1,
+       "learn_correct": 83,
+       "learn_n": 84,
+       "kept": true
+      },
+      {
+       "round": 2,
+       "learn_correct": 80,
+       "learn_n": 84,
+       "kept": false
+      }
+     ],
+     "best_round": 1,
+     "optimizer_cost_usd": 0.1056
+    },
+    "gpt-oss-120b": {
+     "rounds": [
+      {
+       "round": 0,
+       "learn_correct": 56,
+       "learn_n": 84,
+       "kept": true
+      },
+      {
+       "round": 1,
+       "learn_correct": 56,
+       "learn_n": 84,
+       "kept": false
+      },
+      {
+       "round": 2,
+       "learn_correct": 64,
+       "learn_n": 84,
+       "kept": true
+      }
+     ],
+     "best_round": 2,
+     "optimizer_cost_usd": 0.1926
+    }
+   },
+   "what_changed": "Conversation discipline, not underwriting knowledge: ask which line of business the application is for before recommending others; classify the business from the database when no code is given and treat it as settled; commit to one answer; never end the case on a question; answer only what was asked."
+  },
+  "tools": [
+   "list_tables",
+   "get_table_descriptions",
+   "get_table_schema",
+   "get_table_data_dictionary",
+   "read_query (read-only SQL over the rebuilt insurer database)",
+   "get_underwriting_guidelines"
+  ],
+  "user_simulator": "Claude Haiku 5.5 plays the underwriter: it holds the company's application details from the dataset, opens with the case's request, and answers the agent's questions from that data only. It does not know the answer. Its cost is reported apart from the agent's.",
+  "limits": "30 agent model calls and 12 underwriter turns per case; the case ends at a message containing 'FINAL ANSWER:'; an empty agent turn gets 'Please continue.' at most twice; tool results capped at 200 rows."
+ },
+ "grading": {
+  "judges": [
+   "gpt-6-luna",
+   "claude-haiku-5-5"
+  ],
+  "tie_break": "If the two judges disagree (or one fails to return a verdict), GPT-6.1 Sol decides.",
+  "human_agreement": [
+   {
+    "judge": "gpt-6.1-sol",
+    "rate": 0.875,
+    "n": 160,
+    "cohens_kappa": 0.75,
+    "false_pass": 9,
+    "false_fail": 11
+   },
+   {
+    "judge": "haiku-5.5",
+    "rate": 0.9,
+    "n": 150,
+    "cohens_kappa": 0.8,
+    "false_pass": 9,
+    "false_fail": 6
+   },
+   {
+    "judge": "gpt-6-luna",
+    "rate": 0.8917,
+    "n": 157,
+    "cohens_kappa": 0.7834,
+    "false_pass": 9,
+    "false_fail": 8
+   }
+  ],
+  "human_agreement_note": "Each judge alone against Snorkel's own correctness labels on its published traces (results/judge_validation.json). The two-judge-plus-tiebreak panel was not validated as a unit.",
+  "self_grading_check": {
+   "description": "Three judges are also candidates. Their first-prompt answers were re-graded by the two judges among Luna, Haiku and Sol that are not the model, with Opus 5.5 breaking ties (results/regrade_self.json).",
+   "results": [
+    {
+     "model": "gpt-6-luna",
+     "n": 252,
+     "correct_original_grading": 219,
+     "correct_regraded": 223,
+     "cases_changed": 16,
+     "delta_points": 1.6
+    },
+    {
+     "model": "haiku-5.5",
+     "n": 252,
+     "correct_original_grading": 220,
+     "correct_regraded": 218,
+     "cases_changed": 16,
+     "delta_points": -0.8
+    },
+    {
+     "model": "gpt-6.1-sol",
+     "n": 252,
+     "correct_original_grading": 211,
+     "correct_regraded": 209,
+     "cases_changed": 8,
+     "delta_points": -0.8
+    }
+   ],
+   "note": "Original-grading counts here include the API-error rows exactly as stored at re-grade time; GPT-6 Luna's stored count was 219 then and is 218 in the final table after a re-run."
+  },
+  "judge_pair_agreement": {
+   "description": "How often the two primary judges gave the same verdict (cases where both returned one), all models pooled, on the held-out cases.",
+   "first_prompt_held_out": {
+    "n": 1738,
+    "agreed": 1661,
+    "rate": 0.9557
+   },
+   "shared_rewritten_prompt_held_out": {
+    "n": 1898,
+    "agreed": 1858,
+    "rate": 0.9789
+   }
+  },
+  "metrics": [
+   {
+    "name": "accuracy",
+    "definition": "correct / n, where n counts every scored case including step-limit, turn-limit, empty-reply and API-error cases (scored wrong). Harness errors (network resets in our code) are dropped from n."
+   },
+   {
+    "name": "cost_per_correct_cents",
+    "definition": "100 x sum over the n cases of the agent's model-call cost in USD / correct. Agent cost per call = (uncached input tokens x input price + cached input tokens x cached price + (output + reasoning) tokens x output price) / 1e6. Excludes the simulated underwriter and the judges."
+   },
+   {
+    "name": "cost_per_case_cents",
+    "definition": "100 x agent cost in USD / n."
+   },
+   {
+    "name": "mean_tokens_per_case",
+    "definition": "mean of (input tokens including cached + output tokens) over the agent's calls in a case."
+   },
+   {
+    "name": "mean_calls_per_case",
+    "definition": "mean number of agent model calls per case."
+   },
+   {
+    "name": "ci95_wilson",
+    "definition": "Wilson score 95% interval on accuracy."
+   },
+   {
+    "name": "paired_vs.delta_points",
+    "definition": "accuracy difference in points on the same cases; 95% interval from a paired bootstrap."
+   }
+  ]
+ },
+ "noise": {
+  "method": "Sonnet 5.5 run a second time on the 168 held-out cases with the first prompt and the same settings, paired against its first run.",
+  "size_points": 2.4,
+  "size_ci95_points": [
+   -3.6,
+   8.3
+  ],
+  "n": 168,
+  "ci_method": "Paired bootstrap over cases (resample case-level differences with replacement), percentile interval; Wilson score intervals for single accuracies.",
+  "resamples": 4000,
+  "tie_threshold": "A difference is called a tie when its 95% interval includes 0. In prose we also treat differences under 3 points as noise, given the 2.4-point repeat difference."
+ },
+ "results_note": "Rows are de-duplicated by case (a re-run replaces the earlier row). Step-limit, turn-limit, empty-reply and API-error cases stay in n and count as wrong. Harness errors (5 rows, all in held-out arms: Sol effort-low 1, Luna effort-high 2, Haiku tuned 1, GLM 5.3 Flash tuned 1) are dropped from n. wrong_by_category splits the wrong cases; cases_with_harness_flag counts cases with each harness flag and overlaps it.",
+ "results": {
+  "first_prompt_all_cases": [
+   {
+    "model": "deepseek-v4-pro",
+    "n": 252,
+    "correct": 246,
+    "accuracy": 0.9762,
+    "ci95_wilson": [
+     0.949,
+     0.989
+    ],
+    "cost_per_case_cents": 3.4694,
+    "cost_per_correct_cents": 3.5541,
+    "mean_tokens_per_case": 52187.5,
+    "mean_input_tokens_per_case": 49238.6,
+    "mean_cached_input_tokens_per_case": 38621.5,
+    "mean_output_tokens_per_case": 2948.9,
+    "mean_calls_per_case": 9.12,
+    "mean_tool_calls_per_case": 16.04,
+    "statuses": {
+     "finished": 252
+    },
+    "cases_with_harness_flag": {},
+    "wrong_by_category": {
+     "wrong_decision": 6
+    },
+    "paired_vs": {
+     "reference": "opus-5.5",
+     "n": 252,
+     "delta_points": 0.4,
+     "ci95_points": [
+      -2.0,
+      2.8
+     ]
+    }
+   },
+   {
+    "model": "opus-5.5",
+    "n": 252,
+    "correct": 245,
+    "accuracy": 0.9722,
+    "ci95_wilson": [
+     0.9438,
+     0.9865
+    ],
+    "cost_per_case_cents": 5.1131,
+    "cost_per_correct_cents": 5.2592,
+    "mean_tokens_per_case": 25140.3,
+    "mean_input_tokens_per_case": 23743.9,
+    "mean_cached_input_tokens_per_case": 18887.2,
+    "mean_output_tokens_per_case": 1396.4,
+    "mean_calls_per_case": 6.53,
+    "mean_tool_calls_per_case": 9.06,
+    "statuses": {
+     "finished": 252
+    },
+    "cases_with_harness_flag": {},
+    "wrong_by_category": {
+     "wrong_decision": 6,
+     "final_answer_asks_for_information": 1
+    }
+   },
+   {
+    "model": "glm-5.3",
+    "n": 252,
+    "correct": 239,
+    "accuracy": 0.9484,
+    "ci95_wilson": [
+     0.9138,
+     0.9696
+    ],
+    "cost_per_case_cents": 7.8257,
+    "cost_per_correct_cents": 8.2513,
+    "mean_tokens_per_case": 46086.7,
+    "mean_input_tokens_per_case": 41508.3,
+    "mean_cached_input_tokens_per_case": 34040.6,
+    "mean_output_tokens_per_case": 4578.4,
+    "mean_calls_per_case": 10.67,
+    "mean_tool_calls_per_case": 14.52,
+    "statuses": {
+     "finished": 252
+    },
+    "cases_with_harness_flag": {},
+    "wrong_by_category": {
+     "wrong_decision": 12,
+     "final_answer_asks_for_information": 1
+    },
+    "paired_vs": {
+     "reference": "opus-5.5",
+     "n": 252,
+     "delta_points": -2.4,
+     "ci95_points": [
+      -5.6,
+      0.4
+     ]
+    }
+   },
+   {
+    "model": "glm-5.3-flash",
+    "n": 252,
+    "correct": 233,
+    "accuracy": 0.9246,
+    "ci95_wilson": [
+     0.8853,
+     0.9512
+    ],
+    "cost_per_case_cents": 0.9015,
+    "cost_per_correct_cents": 0.975,
+    "mean_tokens_per_case": 50282.5,
+    "mean_input_tokens_per_case": 46076.0,
+    "mean_cached_input_tokens_per_case": 32559.7,
+    "mean_output_tokens_per_case": 4206.5,
+    "mean_calls_per_case": 10.98,
+    "mean_tool_calls_per_case": 15.59,
+    "statuses": {
+     "finished": 251,
+     "step_limit": 1
+    },
+    "cases_with_harness_flag": {
+     "step_limit": 1
+    },
+    "wrong_by_category": {
+     "wrong_decision": 16,
+     "final_answer_asks_for_information": 2,
+     "step_limit": 1
+    },
+    "paired_vs": {
+     "reference": "opus-5.5",
+     "n": 252,
+     "delta_points": -4.8,
+     "ci95_points": [
+      -9.1,
+      -1.2
+     ]
+    }
+   },
+   {
+    "model": "deepseek-v4.1-flash",
+    "n": 252,
+    "correct": 230,
+    "accuracy": 0.9127,
+    "ci95_wilson": [
+     0.8714,
+     0.9416
+    ],
+    "cost_per_case_cents": 1.9176,
+    "cost_per_correct_cents": 2.1011,
+    "mean_tokens_per_case": 50604.2,
+    "mean_input_tokens_per_case": 46165.3,
+    "mean_cached_input_tokens_per_case": 36498.3,
+    "mean_output_tokens_per_case": 4438.9,
+    "mean_calls_per_case": 9.18,
+    "mean_tool_calls_per_case": 19.69,
+    "statuses": {
+     "finished": 252
+    },
+    "cases_with_harness_flag": {},
+    "wrong_by_category": {
+     "wrong_decision": 21,
+     "final_answer_asks_for_information": 1
+    },
+    "paired_vs": {
+     "reference": "opus-5.5",
+     "n": 252,
+     "delta_points": -6.0,
+     "ci95_points": [
+      -9.5,
+      -2.4
+     ]
+    }
+   },
+   {
+    "model": "sonnet-5.5",
+    "n": 252,
+    "correct": 224,
+    "accuracy": 0.8889,
+    "ci95_wilson": [
+     0.8441,
+     0.922
+    ],
+    "cost_per_case_cents": 3.608,
+    "cost_per_correct_cents": 4.059,
+    "mean_tokens_per_case": 40976.2,
+    "mean_input_tokens_per_case": 38841.5,
+    "mean_cached_input_tokens_per_case": 33131.8,
+    "mean_output_tokens_per_case": 2134.8,
+    "mean_calls_per_case": 8.34,
+    "mean_tool_calls_per_case": 13.0,
+    "statuses": {
+     "finished": 252
+    },
+    "cases_with_harness_flag": {},
+    "wrong_by_category": {
+     "wrong_decision": 23,
+     "final_answer_asks_for_information": 5
+    },
+    "paired_vs": {
+     "reference": "opus-5.5",
+     "n": 252,
+     "delta_points": -8.3,
+     "ci95_points": [
+      -12.7,
+      -4.0
+     ]
+    }
+   },
+   {
+    "model": "haiku-5.5",
+    "n": 252,
+    "correct": 220,
+    "accuracy": 0.873,
+    "ci95_wilson": [
+     0.8262,
+     0.9086
+    ],
+    "cost_per_case_cents": 0.4362,
+    "cost_per_correct_cents": 0.4997,
+    "mean_tokens_per_case": 77227.6,
+    "mean_input_tokens_per_case": 72937.7,
+    "mean_cached_input_tokens_per_case": 56403.5,
+    "mean_output_tokens_per_case": 4290.0,
+    "mean_calls_per_case": 8.85,
+    "mean_tool_calls_per_case": 12.68,
+    "statuses": {
+     "finished": 247,
+     "turn_limit": 5
+    },
+    "cases_with_harness_flag": {
+     "turn_limit": 5
+    },
+    "wrong_by_category": {
+     "turn_limit": 5,
+     "wrong_decision": 25,
+     "final_answer_asks_for_information": 2
+    },
+    "paired_vs": {
+     "reference": "opus-5.5",
+     "n": 252,
+     "delta_points": -9.9,
+     "ci95_points": [
+      -14.3,
+      -5.6
+     ]
+    }
+   },
+   {
+    "model": "gpt-6-luna",
+    "n": 252,
+    "correct": 219,
+    "accuracy": 0.869,
+    "ci95_wilson": [
+     0.8218,
+     0.9052
+    ],
+    "cost_per_case_cents": 0.1654,
+    "cost_per_correct_cents": 0.1903,
+    "mean_tokens_per_case": 24500.7,
+    "mean_input_tokens_per_case": 22782.9,
+    "mean_cached_input_tokens_per_case": 16484.1,
+    "mean_output_tokens_per_case": 1717.8,
+    "mean_calls_per_case": 7.87,
+    "mean_tool_calls_per_case": 15.71,
+    "statuses": {
+     "finished": 252
+    },
+    "cases_with_harness_flag": {},
+    "wrong_by_category": {
+     "wrong_decision": 32,
+     "final_answer_asks_for_information": 1
+    },
+    "paired_vs": {
+     "reference": "opus-5.5",
+     "n": 252,
+     "delta_points": -10.7,
+     "ci95_points": [
+      -15.1,
+      -6.7
+     ]
+    }
+   },
+   {
+    "model": "minimax-m3",
+    "n": 252,
+    "correct": 218,
+    "accuracy": 0.8651,
+    "ci95_wilson": [
+     0.8174,
+     0.9018
+    ],
+    "cost_per_case_cents": 1.5149,
+    "cost_per_correct_cents": 1.7512,
+    "mean_tokens_per_case": 44685.8,
+    "mean_input_tokens_per_case": 42748.8,
+    "mean_cached_input_tokens_per_case": 34039.4,
+    "mean_output_tokens_per_case": 1937.0,
+    "mean_calls_per_case": 9.95,
+    "mean_tool_calls_per_case": 14.43,
+    "statuses": {
+     "finished": 251,
+     "turn_limit": 1
+    },
+    "cases_with_harness_flag": {
+     "turn_limit": 1
+    },
+    "wrong_by_category": {
+     "wrong_decision": 32,
+     "turn_limit": 1,
+     "final_answer_asks_for_information": 1
+    },
+    "paired_vs": {
+     "reference": "opus-5.5",
+     "n": 252,
+     "delta_points": -10.7,
+     "ci95_points": [
+      -15.5,
+      -6.0
+     ]
+    }
+   },
+   {
+    "model": "qwen3.8-27b",
+    "n": 252,
+    "correct": 212,
+    "accuracy": 0.8413,
+    "ci95_wilson": [
+     0.7911,
+     0.8812
+    ],
+    "cost_per_case_cents": 3.1183,
+    "cost_per_correct_cents": 3.7067,
+    "mean_tokens_per_case": 61926.2,
+    "mean_input_tokens_per_case": 60625.5,
+    "mean_cached_input_tokens_per_case": 52868.3,
+    "mean_output_tokens_per_case": 1300.7,
+    "mean_calls_per_case": 10.39,
+    "mean_tool_calls_per_case": 13.41,
+    "statuses": {
+     "finished": 235,
+     "step_limit": 17
+    },
+    "cases_with_harness_flag": {
+     "step_limit": 17
+    },
+    "wrong_by_category": {
+     "wrong_decision": 23,
+     "step_limit": 17
+    },
+    "paired_vs": {
+     "reference": "opus-5.5",
+     "n": 252,
+     "delta_points": -13.1,
+     "ci95_points": [
+      -18.3,
+      -8.3
+     ]
+    }
+   },
+   {
+    "model": "gpt-6.1-sol",
+    "n": 252,
+    "correct": 211,
+    "accuracy": 0.8373,
+    "ci95_wilson": [
+     0.7867,
+     0.8777
+    ],
+    "cost_per_case_cents": 1.6849,
+    "cost_per_correct_cents": 2.0123,
+    "mean_tokens_per_case": 15399.8,
+    "mean_input_tokens_per_case": 14608.0,
+    "mean_cached_input_tokens_per_case": 10676.1,
+    "mean_output_tokens_per_case": 791.8,
+    "mean_calls_per_case": 7.09,
+    "mean_tool_calls_per_case": 10.96,
+    "statuses": {
+     "finished": 251,
+     "empty_reply": 1
+    },
+    "cases_with_harness_flag": {
+     "empty_reply": 1
+    },
+    "wrong_by_category": {
+     "final_answer_asks_for_information": 15,
+     "wrong_decision": 20,
+     "empty_final_answer": 5,
+     "empty_reply": 1
+    },
+    "paired_vs": {
+     "reference": "opus-5.5",
+     "n": 252,
+     "delta_points": -13.5,
+     "ci95_points": [
+      -18.7,
+      -8.7
+     ]
+    }
+   },
+   {
+    "model": "gpt-oss-120b",
+    "n": 252,
+    "correct": 150,
+    "accuracy": 0.5952,
+    "ci95_wilson": [
+     0.5336,
+     0.654
+    ],
+    "cost_per_case_cents": 0.5893,
+    "cost_per_correct_cents": 0.99,
+    "mean_tokens_per_case": 33492.5,
+    "mean_input_tokens_per_case": 31561.5,
+    "mean_cached_input_tokens_per_case": 26723.7,
+    "mean_output_tokens_per_case": 1931.0,
+    "mean_calls_per_case": 8.56,
+    "mean_tool_calls_per_case": 6.31,
+    "statuses": {
+     "finished": 250,
+     "turn_limit": 2
+    },
+    "cases_with_harness_flag": {
+     "tool_parse_error": 28,
+     "turn_limit": 2
+    },
+    "wrong_by_category": {
+     "wrong_decision": 83,
+     "final_answer_asks_for_information": 17,
+     "turn_limit": 2
+    },
+    "paired_vs": {
+     "reference": "opus-5.5",
+     "n": 252,
+     "delta_points": -37.7,
+     "ci95_points": [
+      -44.0,
+      -31.3
+     ]
+    }
+   }
+  ],
+  "first_prompt_held_out": [
+   {
+    "model": "opus-5.5",
+    "n": 168,
+    "correct": 163,
+    "accuracy": 0.9702,
+    "ci95_wilson": [
+     0.9322,
+     0.9872
+    ],
+    "cost_per_case_cents": 5.1062,
+    "cost_per_correct_cents": 5.2628,
+    "mean_tokens_per_case": 25152.1,
+    "mean_input_tokens_per_case": 23748.7,
+    "mean_cached_input_tokens_per_case": 18947.6,
+    "mean_output_tokens_per_case": 1403.4,
+    "mean_calls_per_case": 6.54,
+    "mean_tool_calls_per_case": 9.07,
+    "statuses": {
+     "finished": 168
+    },
+    "cases_with_harness_flag": {},
+    "wrong_by_category": {
+     "wrong_decision": 5
+    }
+   },
+   {
+    "model": "deepseek-v4-pro",
+    "n": 168,
+    "correct": 163,
+    "accuracy": 0.9702,
+    "ci95_wilson": [
+     0.9322,
+     0.9872
+    ],
+    "cost_per_case_cents": 3.4497,
+    "cost_per_correct_cents": 3.5556,
+    "mean_tokens_per_case": 52077.2,
+    "mean_input_tokens_per_case": 49111.4,
+    "mean_cached_input_tokens_per_case": 38642.3,
+    "mean_output_tokens_per_case": 2965.7,
+    "mean_calls_per_case": 9.11,
+    "mean_tool_calls_per_case": 15.95,
+    "statuses": {
+     "finished": 168
+    },
+    "cases_with_harness_flag": {},
+    "wrong_by_category": {
+     "wrong_decision": 5
+    }
+   },
+   {
+    "model": "glm-5.3",
+    "n": 168,
+    "correct": 159,
+    "accuracy": 0.9464,
+    "ci95_wilson": [
+     0.9013,
+     0.9716
+    ],
+    "cost_per_case_cents": 7.6599,
+    "cost_per_correct_cents": 8.0935,
+    "mean_tokens_per_case": 44753.6,
+    "mean_input_tokens_per_case": 40105.6,
+    "mean_cached_input_tokens_per_case": 32897.9,
+    "mean_output_tokens_per_case": 4647.9,
+    "mean_calls_per_case": 10.73,
+    "mean_tool_calls_per_case": 14.48,
+    "statuses": {
+     "finished": 168
+    },
+    "cases_with_harness_flag": {},
+    "wrong_by_category": {
+     "final_answer_asks_for_information": 1,
+     "wrong_decision": 8
+    }
+   },
+   {
+    "model": "deepseek-v4.1-flash",
+    "n": 168,
+    "correct": 154,
+    "accuracy": 0.9167,
+    "ci95_wilson": [
+     0.865,
+     0.9497
+    ],
+    "cost_per_case_cents": 1.8899,
+    "cost_per_correct_cents": 2.0617,
+    "mean_tokens_per_case": 50086.9,
+    "mean_input_tokens_per_case": 45783.3,
+    "mean_cached_input_tokens_per_case": 36327.6,
+    "mean_output_tokens_per_case": 4303.6,
+    "mean_calls_per_case": 9.1,
+    "mean_tool_calls_per_case": 19.65,
+    "statuses": {
+     "finished": 168
+    },
+    "cases_with_harness_flag": {},
+    "wrong_by_category": {
+     "wrong_decision": 13,
+     "final_answer_asks_for_information": 1
+    }
+   },
+   {
+    "model": "glm-5.3-flash",
+    "n": 168,
+    "correct": 154,
+    "accuracy": 0.9167,
+    "ci95_wilson": [
+     0.865,
+     0.9497
+    ],
+    "cost_per_case_cents": 0.9011,
+    "cost_per_correct_cents": 0.983,
+    "mean_tokens_per_case": 50117.0,
+    "mean_input_tokens_per_case": 45851.1,
+    "mean_cached_input_tokens_per_case": 32647.6,
+    "mean_output_tokens_per_case": 4265.9,
+    "mean_calls_per_case": 10.97,
+    "mean_tool_calls_per_case": 15.68,
+    "statuses": {
+     "finished": 167,
+     "step_limit": 1
+    },
+    "cases_with_harness_flag": {
+     "step_limit": 1
+    },
+    "wrong_by_category": {
+     "wrong_decision": 12,
+     "final_answer_asks_for_information": 1,
+     "step_limit": 1
+    }
+   },
+   {
+    "model": "sonnet-5.5",
+    "n": 168,
+    "correct": 150,
+    "accuracy": 0.8929,
+    "ci95_wilson": [
+     0.837,
+     0.9311
+    ],
+    "cost_per_case_cents": 3.6668,
+    "cost_per_correct_cents": 4.1068,
+    "mean_tokens_per_case": 41410.6,
+    "mean_input_tokens_per_case": 39243.9,
+    "mean_cached_input_tokens_per_case": 33414.3,
+    "mean_output_tokens_per_case": 2166.7,
+    "mean_calls_per_case": 8.36,
+    "mean_tool_calls_per_case": 13.02,
+    "statuses": {
+     "finished": 168
+    },
+    "cases_with_harness_flag": {},
+    "wrong_by_category": {
+     "wrong_decision": 16,
+     "final_answer_asks_for_information": 2
+    }
+   },
+   {
+    "model": "haiku-5.5",
+    "n": 168,
+    "correct": 144,
+    "accuracy": 0.8571,
+    "ci95_wilson": [
+     0.7962,
+     0.9021
+    ],
+    "cost_per_case_cents": 0.4464,
+    "cost_per_correct_cents": 0.5208,
+    "mean_tokens_per_case": 80239.8,
+    "mean_input_tokens_per_case": 75840.0,
+    "mean_cached_input_tokens_per_case": 59105.1,
+    "mean_output_tokens_per_case": 4399.8,
+    "mean_calls_per_case": 9.13,
+    "mean_tool_calls_per_case": 13.07,
+    "statuses": {
+     "finished": 164,
+     "turn_limit": 4
+    },
+    "cases_with_harness_flag": {
+     "turn_limit": 4
+    },
+    "wrong_by_category": {
+     "turn_limit": 4,
+     "wrong_decision": 18,
+     "final_answer_asks_for_information": 2
+    }
+   },
+   {
+    "model": "minimax-m3",
+    "n": 168,
+    "correct": 142,
+    "accuracy": 0.8452,
+    "ci95_wilson": [
+     0.7829,
+     0.8921
+    ],
+    "cost_per_case_cents": 1.4944,
+    "cost_per_correct_cents": 1.7681,
+    "mean_tokens_per_case": 44068.1,
+    "mean_input_tokens_per_case": 42152.8,
+    "mean_cached_input_tokens_per_case": 33550.5,
+    "mean_output_tokens_per_case": 1915.4,
+    "mean_calls_per_case": 9.95,
+    "mean_tool_calls_per_case": 14.43,
+    "statuses": {
+     "finished": 168
+    },
+    "cases_with_harness_flag": {},
+    "wrong_by_category": {
+     "wrong_decision": 25,
+     "final_answer_asks_for_information": 1
+    }
+   },
+   {
+    "model": "gpt-6-luna",
+    "n": 168,
+    "correct": 141,
+    "accuracy": 0.8393,
+    "ci95_wilson": [
+     0.7763,
+     0.8871
+    ],
+    "cost_per_case_cents": 0.1688,
+    "cost_per_correct_cents": 0.2011,
+    "mean_tokens_per_case": 25191.5,
+    "mean_input_tokens_per_case": 23452.3,
+    "mean_cached_input_tokens_per_case": 16964.5,
+    "mean_output_tokens_per_case": 1739.2,
+    "mean_calls_per_case": 7.95,
+    "mean_tool_calls_per_case": 15.93,
+    "statuses": {
+     "finished": 168
+    },
+    "cases_with_harness_flag": {},
+    "wrong_by_category": {
+     "wrong_decision": 26,
+     "final_answer_asks_for_information": 1
+    }
+   },
+   {
+    "model": "qwen3.8-27b",
+    "n": 168,
+    "correct": 140,
+    "accuracy": 0.8333,
+    "ci95_wilson": [
+     0.7697,
+     0.8821
+    ],
+    "cost_per_case_cents": 3.2817,
+    "cost_per_correct_cents": 3.938,
+    "mean_tokens_per_case": 65309.6,
+    "mean_input_tokens_per_case": 63965.6,
+    "mean_cached_input_tokens_per_case": 56091.4,
+    "mean_output_tokens_per_case": 1344.0,
+    "mean_calls_per_case": 10.61,
+    "mean_tool_calls_per_case": 13.73,
+    "statuses": {
+     "finished": 155,
+     "step_limit": 13
+    },
+    "cases_with_harness_flag": {
+     "step_limit": 13
+    },
+    "wrong_by_category": {
+     "wrong_decision": 15,
+     "step_limit": 13
+    }
+   },
+   {
+    "model": "gpt-6.1-sol",
+    "n": 168,
+    "correct": 138,
+    "accuracy": 0.8214,
+    "ci95_wilson": [
+     0.7565,
+     0.872
+    ],
+    "cost_per_case_cents": 1.6539,
+    "cost_per_correct_cents": 2.0134,
+    "mean_tokens_per_case": 15236.2,
+    "mean_input_tokens_per_case": 14444.9,
+    "mean_cached_input_tokens_per_case": 10665.0,
+    "mean_output_tokens_per_case": 791.3,
+    "mean_calls_per_case": 7.15,
+    "mean_tool_calls_per_case": 10.93,
+    "statuses": {
+     "finished": 167,
+     "empty_reply": 1
+    },
+    "cases_with_harness_flag": {
+     "empty_reply": 1
+    },
+    "wrong_by_category": {
+     "final_answer_asks_for_information": 10,
+     "wrong_decision": 16,
+     "empty_final_answer": 3,
+     "empty_reply": 1
+    }
+   },
+   {
+    "model": "gpt-oss-120b",
+    "n": 168,
+    "correct": 94,
+    "accuracy": 0.5595,
+    "ci95_wilson": [
+     0.484,
+     0.6324
+    ],
+    "cost_per_case_cents": 0.5496,
+    "cost_per_correct_cents": 0.9823,
+    "mean_tokens_per_case": 31076.2,
+    "mean_input_tokens_per_case": 29221.6,
+    "mean_cached_input_tokens_per_case": 24652.7,
+    "mean_output_tokens_per_case": 1854.6,
+    "mean_calls_per_case": 7.89,
+    "mean_tool_calls_per_case": 5.62,
+    "statuses": {
+     "finished": 166,
+     "turn_limit": 2
+    },
+    "cases_with_harness_flag": {
+     "tool_parse_error": 14,
+     "turn_limit": 2
+    },
+    "wrong_by_category": {
+     "wrong_decision": 59,
+     "final_answer_asks_for_information": 13,
+     "turn_limit": 2
+    }
+   }
+  ],
+  "shared_rewritten_prompt_held_out": [
+   {
+    "model": "glm-5.3-flash",
+    "n": 168,
+    "correct": 167,
+    "accuracy": 0.994,
+    "ci95_wilson": [
+     0.9671,
+     0.9989
+    ],
+    "cost_per_case_cents": 0.9131,
+    "cost_per_correct_cents": 0.9185,
+    "mean_tokens_per_case": 52904.5,
+    "mean_input_tokens_per_case": 49490.1,
+    "mean_cached_input_tokens_per_case": 30540.2,
+    "mean_output_tokens_per_case": 3414.4,
+    "mean_calls_per_case": 9.48,
+    "mean_tool_calls_per_case": 13.84,
+    "statuses": {
+     "finished": 168
+    },
+    "cases_with_harness_flag": {},
+    "wrong_by_category": {
+     "wrong_decision": 1
+    },
+    "paired_vs": {
+     "reference": "same model, first prompt, held-out cases",
+     "n": 168,
+     "delta_points": 7.7,
+     "ci95_points": [
+      3.6,
+      12.5
+     ]
+    }
+   },
+   {
+    "model": "sonnet-5.5",
+    "n": 168,
+    "correct": 167,
+    "accuracy": 0.994,
+    "ci95_wilson": [
+     0.9671,
+     0.9989
+    ],
+    "cost_per_case_cents": 2.7112,
+    "cost_per_correct_cents": 2.7274,
+    "mean_tokens_per_case": 40991.8,
+    "mean_input_tokens_per_case": 39631.8,
+    "mean_cached_input_tokens_per_case": 34606.6,
+    "mean_output_tokens_per_case": 1360.1,
+    "mean_calls_per_case": 7.87,
+    "mean_tool_calls_per_case": 12.8,
+    "statuses": {
+     "finished": 168
+    },
+    "cases_with_harness_flag": {},
+    "wrong_by_category": {
+     "wrong_decision": 1
+    },
+    "paired_vs": {
+     "reference": "same model, first prompt, held-out cases",
+     "n": 168,
+     "delta_points": 10.1,
+     "ci95_points": [
+      5.4,
+      14.9
+     ]
+    }
+   },
+   {
+    "model": "haiku-5.5",
+    "n": 168,
+    "correct": 166,
+    "accuracy": 0.9881,
+    "ci95_wilson": [
+     0.9576,
+     0.9967
+    ],
+    "cost_per_case_cents": 0.3747,
+    "cost_per_correct_cents": 0.3792,
+    "mean_tokens_per_case": 78183.7,
+    "mean_input_tokens_per_case": 75281.6,
+    "mean_cached_input_tokens_per_case": 58133.7,
+    "mean_output_tokens_per_case": 2902.1,
+    "mean_calls_per_case": 7.93,
+    "mean_tool_calls_per_case": 12.42,
+    "statuses": {
+     "finished": 168
+    },
+    "cases_with_harness_flag": {},
+    "wrong_by_category": {
+     "wrong_decision": 2
+    },
+    "paired_vs": {
+     "reference": "same model, first prompt, held-out cases",
+     "n": 168,
+     "delta_points": 13.1,
+     "ci95_points": [
+      8.3,
+      18.5
+     ]
+    }
+   },
+   {
+    "model": "deepseek-v4-pro",
+    "n": 168,
+    "correct": 166,
+    "accuracy": 0.9881,
+    "ci95_wilson": [
+     0.9576,
+     0.9967
+    ],
+    "cost_per_case_cents": 3.2271,
+    "cost_per_correct_cents": 3.266,
+    "mean_tokens_per_case": 47691.7,
+    "mean_input_tokens_per_case": 45570.6,
+    "mean_cached_input_tokens_per_case": 34313.1,
+    "mean_output_tokens_per_case": 2121.1,
+    "mean_calls_per_case": 7.92,
+    "mean_tool_calls_per_case": 13.61,
+    "statuses": {
+     "finished": 168
+    },
+    "cases_with_harness_flag": {},
+    "wrong_by_category": {
+     "wrong_decision": 2
+    },
+    "paired_vs": {
+     "reference": "same model, first prompt, held-out cases",
+     "n": 168,
+     "delta_points": 1.8,
+     "ci95_points": [
+      -0.6,
+      4.8
+     ]
+    }
+   },
+   {
+    "model": "gpt-6.1-sol",
+    "n": 168,
+    "correct": 165,
+    "accuracy": 0.9821,
+    "ci95_wilson": [
+     0.9488,
+     0.9939
+    ],
+    "cost_per_case_cents": 1.7504,
+    "cost_per_correct_cents": 1.7822,
+    "mean_tokens_per_case": 21809.9,
+    "mean_input_tokens_per_case": 21198.5,
+    "mean_cached_input_tokens_per_case": 16320.0,
+    "mean_output_tokens_per_case": 611.5,
+    "mean_calls_per_case": 7.38,
+    "mean_tool_calls_per_case": 11.23,
+    "statuses": {
+     "finished": 166,
+     "empty_reply": 2
+    },
+    "cases_with_harness_flag": {
+     "empty_reply": 2
+    },
+    "wrong_by_category": {
+     "empty_reply": 2,
+     "wrong_decision": 1
+    },
+    "paired_vs": {
+     "reference": "same model, first prompt, held-out cases",
+     "n": 168,
+     "delta_points": 16.1,
+     "ci95_points": [
+      10.1,
+      22.0
+     ]
+    }
+   },
+   {
+    "model": "deepseek-v4.1-flash",
+    "n": 168,
+    "correct": 165,
+    "accuracy": 0.9821,
+    "ci95_wilson": [
+     0.9488,
+     0.9939
+    ],
+    "cost_per_case_cents": 1.7765,
+    "cost_per_correct_cents": 1.8088,
+    "mean_tokens_per_case": 51130.9,
+    "mean_input_tokens_per_case": 48435.2,
+    "mean_cached_input_tokens_per_case": 37109.3,
+    "mean_output_tokens_per_case": 2695.6,
+    "mean_calls_per_case": 8.21,
+    "mean_tool_calls_per_case": 16.38,
+    "statuses": {
+     "finished": 168
+    },
+    "cases_with_harness_flag": {},
+    "wrong_by_category": {
+     "wrong_decision": 3
+    },
+    "paired_vs": {
+     "reference": "same model, first prompt, held-out cases",
+     "n": 168,
+     "delta_points": 6.5,
+     "ci95_points": [
+      2.4,
+      11.3
+     ]
+    }
+   },
+   {
+    "model": "glm-5.3",
+    "n": 168,
+    "correct": 165,
+    "accuracy": 0.9821,
+    "ci95_wilson": [
+     0.9488,
+     0.9939
+    ],
+    "cost_per_case_cents": 7.2368,
+    "cost_per_correct_cents": 7.3684,
+    "mean_tokens_per_case": 44980.4,
+    "mean_input_tokens_per_case": 41848.5,
+    "mean_cached_input_tokens_per_case": 32964.2,
+    "mean_output_tokens_per_case": 3131.8,
+    "mean_calls_per_case": 9.38,
+    "mean_tool_calls_per_case": 13.1,
+    "statuses": {
+     "finished": 167,
+     "empty_reply": 1
+    },
+    "cases_with_harness_flag": {
+     "empty_reply": 1
+    },
+    "wrong_by_category": {
+     "empty_reply": 1,
+     "wrong_decision": 2
+    },
+    "paired_vs": {
+     "reference": "same model, first prompt, held-out cases",
+     "n": 168,
+     "delta_points": 3.6,
+     "ci95_points": [
+      0.6,
+      6.5
+     ]
+    }
+   },
+   {
+    "model": "opus-5.5",
+    "n": 168,
+    "correct": 164,
+    "accuracy": 0.9762,
+    "ci95_wilson": [
+     0.9404,
+     0.9907
+    ],
+    "cost_per_case_cents": 4.9979,
+    "cost_per_correct_cents": 5.1198,
+    "mean_tokens_per_case": 31434.2,
+    "mean_input_tokens_per_case": 30259.7,
+    "mean_cached_input_tokens_per_case": 24881.7,
+    "mean_output_tokens_per_case": 1174.5,
+    "mean_calls_per_case": 6.97,
+    "mean_tool_calls_per_case": 8.21,
+    "statuses": {
+     "finished": 168
+    },
+    "cases_with_harness_flag": {},
+    "wrong_by_category": {
+     "wrong_decision": 4
+    },
+    "paired_vs": {
+     "reference": "same model, first prompt, held-out cases",
+     "n": 168,
+     "delta_points": 0.6,
+     "ci95_points": [
+      -3.0,
+      4.2
+     ]
+    }
+   },
+   {
+    "model": "minimax-m3",
+    "n": 168,
+    "correct": 162,
+    "accuracy": 0.9643,
+    "ci95_wilson": [
+     0.9243,
+     0.9835
+    ],
+    "cost_per_case_cents": 1.7592,
+    "cost_per_correct_cents": 1.8243,
+    "mean_tokens_per_case": 54163.1,
+    "mean_input_tokens_per_case": 52671.2,
+    "mean_cached_input_tokens_per_case": 41491.0,
+    "mean_output_tokens_per_case": 1491.9,
+    "mean_calls_per_case": 9.45,
+    "mean_tool_calls_per_case": 14.72,
+    "statuses": {
+     "finished": 168
+    },
+    "cases_with_harness_flag": {},
+    "wrong_by_category": {
+     "wrong_decision": 6
+    },
+    "paired_vs": {
+     "reference": "same model, first prompt, held-out cases",
+     "n": 168,
+     "delta_points": 11.9,
+     "ci95_points": [
+      6.5,
+      17.3
+     ]
+    }
+   },
+   {
+    "model": "gpt-6-luna",
+    "n": 168,
+    "correct": 152,
+    "accuracy": 0.9048,
+    "ci95_wilson": [
+     0.8509,
+     0.9405
+    ],
+    "cost_per_case_cents": 0.1693,
+    "cost_per_correct_cents": 0.1872,
+    "mean_tokens_per_case": 31918.1,
+    "mean_input_tokens_per_case": 30533.2,
+    "mean_cached_input_tokens_per_case": 22804.3,
+    "mean_output_tokens_per_case": 1384.9,
+    "mean_calls_per_case": 8.24,
+    "mean_tool_calls_per_case": 16.28,
+    "statuses": {
+     "finished": 168
+    },
+    "cases_with_harness_flag": {},
+    "wrong_by_category": {
+     "wrong_decision": 16
+    },
+    "paired_vs": {
+     "reference": "same model, first prompt, held-out cases",
+     "n": 168,
+     "delta_points": 6.5,
+     "ci95_points": [
+      0.6,
+      12.5
+     ]
+    }
+   },
+   {
+    "model": "gpt-oss-120b",
+    "n": 168,
+    "correct": 146,
+    "accuracy": 0.869,
+    "ci95_wilson": [
+     0.8097,
+     0.9119
+    ],
+    "cost_per_case_cents": 0.9994,
+    "cost_per_correct_cents": 1.15,
+    "mean_tokens_per_case": 59657.2,
+    "mean_input_tokens_per_case": 57333.9,
+    "mean_cached_input_tokens_per_case": 50877.7,
+    "mean_output_tokens_per_case": 2323.3,
+    "mean_calls_per_case": 14.86,
+    "mean_tool_calls_per_case": 12.14,
+    "statuses": {
+     "finished": 162,
+     "step_limit": 6
+    },
+    "cases_with_harness_flag": {
+     "tool_parse_error": 47,
+     "step_limit": 6
+    },
+    "wrong_by_category": {
+     "step_limit": 6,
+     "wrong_decision": 15,
+     "empty_final_answer": 1
+    },
+    "paired_vs": {
+     "reference": "same model, first prompt, held-out cases",
+     "n": 168,
+     "delta_points": 31.0,
+     "ci95_points": [
+      22.0,
+      39.9
+     ]
+    }
+   },
+   {
+    "model": "qwen3.8-27b",
+    "n": 168,
+    "correct": 139,
+    "accuracy": 0.8274,
+    "ci95_wilson": [
+     0.7631,
+     0.877
+    ],
+    "cost_per_case_cents": 4.4103,
+    "cost_per_correct_cents": 5.3304,
+    "mean_tokens_per_case": 92212.2,
+    "mean_input_tokens_per_case": 91189.8,
+    "mean_cached_input_tokens_per_case": 81330.3,
+    "mean_output_tokens_per_case": 1022.4,
+    "mean_calls_per_case": 10.86,
+    "mean_tool_calls_per_case": 12.8,
+    "statuses": {
+     "finished": 148,
+     "step_limit": 20
+    },
+    "cases_with_harness_flag": {
+     "step_limit": 20
+    },
+    "wrong_by_category": {
+     "wrong_decision": 9,
+     "step_limit": 20
+    },
+    "paired_vs": {
+     "reference": "same model, first prompt, held-out cases",
+     "n": 168,
+     "delta_points": -0.6,
+     "ci95_points": [
+      -7.7,
+      6.5
+     ]
+    }
+   }
+  ],
+  "per_model_rewritten_prompt_held_out": [
+   {
+    "model": "sonnet-5.5",
+    "n": 168,
+    "correct": 167,
+    "accuracy": 0.994,
+    "ci95_wilson": [
+     0.9671,
+     0.9989
+    ],
+    "cost_per_case_cents": 2.7112,
+    "cost_per_correct_cents": 2.7274,
+    "mean_tokens_per_case": 40991.8,
+    "mean_input_tokens_per_case": 39631.8,
+    "mean_cached_input_tokens_per_case": 34606.6,
+    "mean_output_tokens_per_case": 1360.1,
+    "mean_calls_per_case": 7.87,
+    "mean_tool_calls_per_case": 12.8,
+    "statuses": {
+     "finished": 168
+    },
+    "cases_with_harness_flag": {},
+    "wrong_by_category": {
+     "wrong_decision": 1
+    },
+    "paired_vs": {
+     "reference": "same model, first prompt, held-out cases",
+     "n": 168,
+     "delta_points": 10.1,
+     "ci95_points": [
+      5.4,
+      14.9
+     ]
+    }
+   },
+   {
+    "model": "opus-5.5",
+    "n": 168,
+    "correct": 165,
+    "accuracy": 0.9821,
+    "ci95_wilson": [
+     0.9488,
+     0.9939
+    ],
+    "cost_per_case_cents": 4.2348,
+    "cost_per_correct_cents": 4.3118,
+    "mean_tokens_per_case": 30025.5,
+    "mean_input_tokens_per_case": 28822.9,
+    "mean_cached_input_tokens_per_case": 25525.0,
+    "mean_output_tokens_per_case": 1202.6,
+    "mean_calls_per_case": 6.45,
+    "mean_tool_calls_per_case": 8.6,
+    "statuses": {
+     "finished": 168
+    },
+    "cases_with_harness_flag": {},
+    "wrong_by_category": {
+     "wrong_decision": 3
+    },
+    "paired_vs": {
+     "reference": "same model, first prompt, held-out cases",
+     "n": 168,
+     "delta_points": 1.2,
+     "ci95_points": [
+      -1.2,
+      3.6
+     ]
+    }
+   },
+   {
+    "model": "deepseek-v4-pro",
+    "n": 168,
+    "correct": 165,
+    "accuracy": 0.9821,
+    "ci95_wilson": [
+     0.9488,
+     0.9939
+    ],
+    "cost_per_case_cents": 3.0674,
+    "cost_per_correct_cents": 3.1232,
+    "mean_tokens_per_case": 46562.1,
+    "mean_input_tokens_per_case": 43993.0,
+    "mean_cached_input_tokens_per_case": 34566.1,
+    "mean_output_tokens_per_case": 2569.1,
+    "mean_calls_per_case": 8.65,
+    "mean_tool_calls_per_case": 18.2,
+    "statuses": {
+     "finished": 168
+    },
+    "cases_with_harness_flag": {},
+    "wrong_by_category": {
+     "wrong_decision": 3
+    },
+    "paired_vs": {
+     "reference": "same model, first prompt, held-out cases",
+     "n": 168,
+     "delta_points": 1.2,
+     "ci95_points": [
+      -1.8,
+      4.2
+     ]
+    }
+   },
+   {
+    "model": "gpt-6.1-sol",
+    "n": 168,
+    "correct": 164,
+    "accuracy": 0.9762,
+    "ci95_wilson": [
+     0.9404,
+     0.9907
+    ],
+    "cost_per_case_cents": 1.0863,
+    "cost_per_correct_cents": 1.1128,
+    "mean_tokens_per_case": 21946.6,
+    "mean_input_tokens_per_case": 21413.8,
+    "mean_cached_input_tokens_per_case": 19627.8,
+    "mean_output_tokens_per_case": 532.8,
+    "mean_calls_per_case": 7.03,
+    "mean_tool_calls_per_case": 10.54,
+    "statuses": {
+     "finished": 168
+    },
+    "cases_with_harness_flag": {},
+    "wrong_by_category": {
+     "wrong_decision": 4
+    },
+    "paired_vs": {
+     "reference": "same model, first prompt, held-out cases",
+     "n": 168,
+     "delta_points": 15.5,
+     "ci95_points": [
+      9.5,
+      21.4
+     ]
+    }
+   },
+   {
+    "model": "haiku-5.5",
+    "n": 167,
+    "correct": 163,
+    "accuracy": 0.976,
+    "ci95_wilson": [
+     0.94,
+     0.9906
+    ],
+    "cost_per_case_cents": 0.372,
+    "cost_per_correct_cents": 0.3812,
+    "mean_tokens_per_case": 73687.1,
+    "mean_input_tokens_per_case": 70734.1,
+    "mean_cached_input_tokens_per_case": 53660.6,
+    "mean_output_tokens_per_case": 2953.0,
+    "mean_calls_per_case": 7.23,
+    "mean_tool_calls_per_case": 11.5,
+    "statuses": {
+     "finished": 167
+    },
+    "cases_with_harness_flag": {},
+    "wrong_by_category": {
+     "wrong_decision": 4
+    },
+    "paired_vs": {
+     "reference": "same model, first prompt, held-out cases",
+     "n": 167,
+     "delta_points": 12.0,
+     "ci95_points": [
+      6.6,
+      17.4
+     ]
+    }
+   },
+   {
+    "model": "glm-5.3-flash",
+    "n": 167,
+    "correct": 163,
+    "accuracy": 0.976,
+    "ci95_wilson": [
+     0.94,
+     0.9906
+    ],
+    "cost_per_case_cents": 0.7058,
+    "cost_per_correct_cents": 0.7231,
+    "mean_tokens_per_case": 38112.3,
+    "mean_input_tokens_per_case": 34280.2,
+    "mean_cached_input_tokens_per_case": 24635.8,
+    "mean_output_tokens_per_case": 3832.2,
+    "mean_calls_per_case": 8.6,
+    "mean_tool_calls_per_case": 13.02,
+    "statuses": {
+     "finished": 167
+    },
+    "cases_with_harness_flag": {},
+    "wrong_by_category": {
+     "wrong_decision": 4
+    },
+    "paired_vs": {
+     "reference": "same model, first prompt, held-out cases",
+     "n": 167,
+     "delta_points": 6.0,
+     "ci95_points": [
+      1.8,
+      10.8
+     ]
+    }
+   },
+   {
+    "model": "gpt-oss-120b",
+    "n": 168,
+    "correct": 128,
+    "accuracy": 0.7619,
+    "ci95_wilson": [
+     0.6921,
+     0.82
+    ],
+    "cost_per_case_cents": 1.1281,
+    "cost_per_correct_cents": 1.4806,
+    "mean_tokens_per_case": 65985.0,
+    "mean_input_tokens_per_case": 62911.0,
+    "mean_cached_input_tokens_per_case": 57500.5,
+    "mean_output_tokens_per_case": 3073.9,
+    "mean_calls_per_case": 17.37,
+    "mean_tool_calls_per_case": 14.85,
+    "statuses": {
+     "finished": 142,
+     "step_limit": 22,
+     "turn_limit": 4
+    },
+    "cases_with_harness_flag": {
+     "tool_parse_error": 35,
+     "step_limit": 22,
+     "turn_limit": 4
+    },
+    "wrong_by_category": {
+     "wrong_decision": 13,
+     "step_limit": 22,
+     "turn_limit": 4,
+     "final_answer_asks_for_information": 1
+    },
+    "paired_vs": {
+     "reference": "same model, first prompt, held-out cases",
+     "n": 168,
+     "delta_points": 20.2,
+     "ci95_points": [
+      10.7,
+      29.8
+     ]
+    }
+   }
+  ],
+  "effort_high_held_out": [
+   {
+    "model": "opus-5.5",
+    "n": 168,
+    "correct": 164,
+    "accuracy": 0.9762,
+    "ci95_wilson": [
+     0.9404,
+     0.9907
+    ],
+    "cost_per_case_cents": 5.6854,
+    "cost_per_correct_cents": 5.8241,
+    "mean_tokens_per_case": 29291.9,
+    "mean_input_tokens_per_case": 27690.0,
+    "mean_cached_input_tokens_per_case": 22616.8,
+    "mean_output_tokens_per_case": 1601.9,
+    "mean_calls_per_case": 6.98,
+    "mean_tool_calls_per_case": 10.24,
+    "statuses": {
+     "finished": 168
+    },
+    "cases_with_harness_flag": {},
+    "wrong_by_category": {
+     "wrong_decision": 4
+    },
+    "paired_vs": {
+     "reference": "same model, first prompt, held-out cases",
+     "n": 168,
+     "delta_points": 0.6,
+     "ci95_points": [
+      -2.4,
+      3.6
+     ]
+    }
+   },
+   {
+    "model": "gpt-6.1-sol",
+    "n": 168,
+    "correct": 154,
+    "accuracy": 0.9167,
+    "ci95_wilson": [
+     0.865,
+     0.9497
+    ],
+    "cost_per_case_cents": 2.1089,
+    "cost_per_correct_cents": 2.3006,
+    "mean_tokens_per_case": 17935.2,
+    "mean_input_tokens_per_case": 16707.2,
+    "mean_cached_input_tokens_per_case": 12950.2,
+    "mean_output_tokens_per_case": 1228.0,
+    "mean_calls_per_case": 7.43,
+    "mean_tool_calls_per_case": 12.62,
+    "statuses": {
+     "finished": 168
+    },
+    "cases_with_harness_flag": {},
+    "wrong_by_category": {
+     "wrong_decision": 12,
+     "final_answer_asks_for_information": 1,
+     "empty_final_answer": 1
+    },
+    "paired_vs": {
+     "reference": "same model, first prompt, held-out cases",
+     "n": 168,
+     "delta_points": 9.5,
+     "ci95_points": [
+      4.2,
+      14.9
+     ]
+    }
+   },
+   {
+    "model": "gpt-6-luna",
+    "n": 166,
+    "correct": 141,
+    "accuracy": 0.8494,
+    "ci95_wilson": [
+     0.7871,
+     0.8959
+    ],
+    "cost_per_case_cents": 0.2101,
+    "cost_per_correct_cents": 0.2474,
+    "mean_tokens_per_case": 27646.1,
+    "mean_input_tokens_per_case": 25195.6,
+    "mean_cached_input_tokens_per_case": 18259.8,
+    "mean_output_tokens_per_case": 2450.5,
+    "mean_calls_per_case": 7.72,
+    "mean_tool_calls_per_case": 17.0,
+    "statuses": {
+     "finished": 166
+    },
+    "cases_with_harness_flag": {},
+    "wrong_by_category": {
+     "wrong_decision": 24,
+     "final_answer_asks_for_information": 1
+    },
+    "paired_vs": {
+     "reference": "same model, first prompt, held-out cases",
+     "n": 166,
+     "delta_points": 1.2,
+     "ci95_points": [
+      -5.4,
+      7.8
+     ]
+    }
+   },
+   {
+    "model": "haiku-5.5",
+    "n": 168,
+    "correct": 142,
+    "accuracy": 0.8452,
+    "ci95_wilson": [
+     0.7829,
+     0.8921
+    ],
+    "cost_per_case_cents": 0.5561,
+    "cost_per_correct_cents": 0.6579,
+    "mean_tokens_per_case": 90359.6,
+    "mean_input_tokens_per_case": 84011.8,
+    "mean_cached_input_tokens_per_case": 66824.4,
+    "mean_output_tokens_per_case": 6347.8,
+    "mean_calls_per_case": 9.83,
+    "mean_tool_calls_per_case": 14.54,
+    "statuses": {
+     "finished": 165,
+     "turn_limit": 3
+    },
+    "cases_with_harness_flag": {
+     "turn_limit": 3
+    },
+    "wrong_by_category": {
+     "wrong_decision": 22,
+     "turn_limit": 3,
+     "final_answer_asks_for_information": 1
+    },
+    "paired_vs": {
+     "reference": "same model, first prompt, held-out cases",
+     "n": 168,
+     "delta_points": -1.2,
+     "ci95_points": [
+      -8.3,
+      6.0
+     ]
+    }
+   }
+  ],
+  "effort_medium_held_out": [
+   {
+    "model": "sonnet-5.5",
+    "n": 168,
+    "correct": 137,
+    "accuracy": 0.8155,
+    "ci95_wilson": [
+     0.75,
+     0.8669
+    ],
+    "cost_per_case_cents": 2.7145,
+    "cost_per_correct_cents": 3.3287,
+    "mean_tokens_per_case": 27185.6,
+    "mean_input_tokens_per_case": 25728.4,
+    "mean_cached_input_tokens_per_case": 20465.4,
+    "mean_output_tokens_per_case": 1457.2,
+    "mean_calls_per_case": 6.21,
+    "mean_tool_calls_per_case": 9.74,
+    "statuses": {
+     "finished": 168
+    },
+    "cases_with_harness_flag": {},
+    "wrong_by_category": {
+     "wrong_decision": 21,
+     "final_answer_asks_for_information": 10
+    },
+    "paired_vs": {
+     "reference": "same model, first prompt, held-out cases",
+     "n": 168,
+     "delta_points": -7.7,
+     "ci95_points": [
+      -14.9,
+      -0.6
+     ]
+    }
+   }
+  ],
+  "effort_low_held_out": [
+   {
+    "model": "opus-5.5",
+    "n": 168,
+    "correct": 157,
+    "accuracy": 0.9345,
+    "ci95_wilson": [
+     0.8866,
+     0.963
+    ],
+    "cost_per_case_cents": 3.9748,
+    "cost_per_correct_cents": 4.2533,
+    "mean_tokens_per_case": 17988.4,
+    "mean_input_tokens_per_case": 16985.1,
+    "mean_cached_input_tokens_per_case": 12699.7,
+    "mean_output_tokens_per_case": 1003.3,
+    "mean_calls_per_case": 5.66,
+    "mean_tool_calls_per_case": 6.14,
+    "statuses": {
+     "finished": 168
+    },
+    "cases_with_harness_flag": {},
+    "wrong_by_category": {
+     "wrong_decision": 9,
+     "final_answer_asks_for_information": 2
+    },
+    "paired_vs": {
+     "reference": "same model, first prompt, held-out cases",
+     "n": 168,
+     "delta_points": -3.6,
+     "ci95_points": [
+      -7.1,
+      0.0
+     ]
+    }
+   },
+   {
+    "model": "gpt-6.1-sol",
+    "n": 167,
+    "correct": 142,
+    "accuracy": 0.8503,
+    "ci95_wilson": [
+     0.7883,
+     0.8965
+    ],
+    "cost_per_case_cents": 1.7355,
+    "cost_per_correct_cents": 2.041,
+    "mean_tokens_per_case": 16911.7,
+    "mean_input_tokens_per_case": 16186.4,
+    "mean_cached_input_tokens_per_case": 11721.8,
+    "mean_output_tokens_per_case": 725.3,
+    "mean_calls_per_case": 7.6,
+    "mean_tool_calls_per_case": 10.42,
+    "statuses": {
+     "finished": 163,
+     "empty_reply": 4
+    },
+    "cases_with_harness_flag": {
+     "empty_reply": 4
+    },
+    "wrong_by_category": {
+     "wrong_decision": 11,
+     "empty_final_answer": 6,
+     "final_answer_asks_for_information": 4,
+     "empty_reply": 4
+    },
+    "paired_vs": {
+     "reference": "same model, first prompt, held-out cases",
+     "n": 167,
+     "delta_points": 3.0,
+     "ci95_points": [
+      -3.0,
+      9.6
+     ]
+    }
+   },
+   {
+    "model": "sonnet-5.5",
+    "n": 168,
+    "correct": 122,
+    "accuracy": 0.7262,
+    "ci95_wilson": [
+     0.6543,
+     0.788
+    ],
+    "cost_per_case_cents": 2.5168,
+    "cost_per_correct_cents": 3.4657,
+    "mean_tokens_per_case": 25477.3,
+    "mean_input_tokens_per_case": 24108.3,
+    "mean_cached_input_tokens_per_case": 19336.2,
+    "mean_output_tokens_per_case": 1369.0,
+    "mean_calls_per_case": 6.14,
+    "mean_tool_calls_per_case": 8.81,
+    "statuses": {
+     "finished": 168
+    },
+    "cases_with_harness_flag": {},
+    "wrong_by_category": {
+     "final_answer_asks_for_information": 28,
+     "wrong_decision": 18
+    },
+    "paired_vs": {
+     "reference": "same model, first prompt, held-out cases",
+     "n": 168,
+     "delta_points": -16.7,
+     "ci95_points": [
+      -24.4,
+      -8.9
+     ]
+    }
+   }
+  ],
+  "repeat_unchanged_held_out": [
+   {
+    "model": "sonnet-5.5",
+    "n": 168,
+    "correct": 154,
+    "accuracy": 0.9167,
+    "ci95_wilson": [
+     0.865,
+     0.9497
+    ],
+    "cost_per_case_cents": 3.5814,
+    "cost_per_correct_cents": 3.907,
+    "mean_tokens_per_case": 38964.3,
+    "mean_input_tokens_per_case": 36883.0,
+    "mean_cached_input_tokens_per_case": 30929.0,
+    "mean_output_tokens_per_case": 2081.3,
+    "mean_calls_per_case": 8.1,
+    "mean_tool_calls_per_case": 13.39,
+    "statuses": {
+     "finished": 168
+    },
+    "cases_with_harness_flag": {},
+    "wrong_by_category": {
+     "final_answer_asks_for_information": 5,
+     "wrong_decision": 9
+    },
+    "paired_vs": {
+     "reference": "same model, first prompt, held-out cases",
+     "n": 168,
+     "delta_points": 2.4,
+     "ci95_points": [
+      -3.6,
+      8.3
+     ]
+    }
+   }
+  ]
+ },
+ "per_type": {
+  "first_prompt_all_cases": {
+   "deepseek-v4-pro": {
+    "Appetite Check": {
+     "n": 85,
+     "correct": 85,
+     "accuracy": 1.0
+    },
+    "Business Classification": {
+     "n": 17,
+     "correct": 17,
+     "accuracy": 1.0
+    },
+    "Deductibles": {
+     "n": 13,
+     "correct": 13,
+     "accuracy": 1.0
+    },
+    "Policy Limits": {
+     "n": 17,
+     "correct": 16,
+     "accuracy": 0.9412
+    },
+    "Product Recommendations": {
+     "n": 72,
+     "correct": 68,
+     "accuracy": 0.9444
+    },
+    "Small business eligibility": {
+     "n": 48,
+     "correct": 47,
+     "accuracy": 0.9792
+    }
+   },
+   "opus-5.5": {
+    "Appetite Check": {
+     "n": 85,
+     "correct": 85,
+     "accuracy": 1.0
+    },
+    "Business Classification": {
+     "n": 17,
+     "correct": 17,
+     "accuracy": 1.0
+    },
+    "Deductibles": {
+     "n": 13,
+     "correct": 12,
+     "accuracy": 0.9231
+    },
+    "Policy Limits": {
+     "n": 17,
+     "correct": 15,
+     "accuracy": 0.8824
+    },
+    "Product Recommendations": {
+     "n": 72,
+     "correct": 69,
+     "accuracy": 0.9583
+    },
+    "Small business eligibility": {
+     "n": 48,
+     "correct": 47,
+     "accuracy": 0.9792
+    }
+   },
+   "glm-5.3": {
+    "Appetite Check": {
+     "n": 85,
+     "correct": 85,
+     "accuracy": 1.0
+    },
+    "Business Classification": {
+     "n": 17,
+     "correct": 17,
+     "accuracy": 1.0
+    },
+    "Deductibles": {
+     "n": 13,
+     "correct": 13,
+     "accuracy": 1.0
+    },
+    "Policy Limits": {
+     "n": 17,
+     "correct": 11,
+     "accuracy": 0.6471
+    },
+    "Product Recommendations": {
+     "n": 72,
+     "correct": 68,
+     "accuracy": 0.9444
+    },
+    "Small business eligibility": {
+     "n": 48,
+     "correct": 45,
+     "accuracy": 0.9375
+    }
+   },
+   "glm-5.3-flash": {
+    "Appetite Check": {
+     "n": 85,
+     "correct": 82,
+     "accuracy": 0.9647
+    },
+    "Business Classification": {
+     "n": 17,
+     "correct": 17,
+     "accuracy": 1.0
+    },
+    "Deductibles": {
+     "n": 13,
+     "correct": 12,
+     "accuracy": 0.9231
+    },
+    "Policy Limits": {
+     "n": 17,
+     "correct": 11,
+     "accuracy": 0.6471
+    },
+    "Product Recommendations": {
+     "n": 72,
+     "correct": 65,
+     "accuracy": 0.9028
+    },
+    "Small business eligibility": {
+     "n": 48,
+     "correct": 46,
+     "accuracy": 0.9583
+    }
+   },
+   "deepseek-v4.1-flash": {
+    "Appetite Check": {
+     "n": 85,
+     "correct": 83,
+     "accuracy": 0.9765
+    },
+    "Business Classification": {
+     "n": 17,
+     "correct": 17,
+     "accuracy": 1.0
+    },
+    "Deductibles": {
+     "n": 13,
+     "correct": 10,
+     "accuracy": 0.7692
+    },
+    "Policy Limits": {
+     "n": 17,
+     "correct": 9,
+     "accuracy": 0.5294
+    },
+    "Product Recommendations": {
+     "n": 72,
+     "correct": 69,
+     "accuracy": 0.9583
+    },
+    "Small business eligibility": {
+     "n": 48,
+     "correct": 42,
+     "accuracy": 0.875
+    }
+   },
+   "sonnet-5.5": {
+    "Appetite Check": {
+     "n": 85,
+     "correct": 81,
+     "accuracy": 0.9529
+    },
+    "Business Classification": {
+     "n": 17,
+     "correct": 14,
+     "accuracy": 0.8235
+    },
+    "Deductibles": {
+     "n": 13,
+     "correct": 13,
+     "accuracy": 1.0
+    },
+    "Policy Limits": {
+     "n": 17,
+     "correct": 16,
+     "accuracy": 0.9412
+    },
+    "Product Recommendations": {
+     "n": 72,
+     "correct": 56,
+     "accuracy": 0.7778
+    },
+    "Small business eligibility": {
+     "n": 48,
+     "correct": 44,
+     "accuracy": 0.9167
+    }
+   },
+   "haiku-5.5": {
+    "Appetite Check": {
+     "n": 85,
+     "correct": 76,
+     "accuracy": 0.8941
+    },
+    "Business Classification": {
+     "n": 17,
+     "correct": 15,
+     "accuracy": 0.8824
+    },
+    "Deductibles": {
+     "n": 13,
+     "correct": 9,
+     "accuracy": 0.6923
+    },
+    "Policy Limits": {
+     "n": 17,
+     "correct": 13,
+     "accuracy": 0.7647
+    },
+    "Product Recommendations": {
+     "n": 72,
+     "correct": 68,
+     "accuracy": 0.9444
+    },
+    "Small business eligibility": {
+     "n": 48,
+     "correct": 39,
+     "accuracy": 0.8125
+    }
+   },
+   "gpt-6-luna": {
+    "Appetite Check": {
+     "n": 85,
+     "correct": 79,
+     "accuracy": 0.9294
+    },
+    "Business Classification": {
+     "n": 17,
+     "correct": 12,
+     "accuracy": 0.7059
+    },
+    "Deductibles": {
+     "n": 13,
+     "correct": 13,
+     "accuracy": 1.0
+    },
+    "Policy Limits": {
+     "n": 17,
+     "correct": 12,
+     "accuracy": 0.7059
+    },
+    "Product Recommendations": {
+     "n": 72,
+     "correct": 59,
+     "accuracy": 0.8194
+    },
+    "Small business eligibility": {
+     "n": 48,
+     "correct": 44,
+     "accuracy": 0.9167
+    }
+   },
+   "minimax-m3": {
+    "Appetite Check": {
+     "n": 85,
+     "correct": 79,
+     "accuracy": 0.9294
+    },
+    "Business Classification": {
+     "n": 17,
+     "correct": 17,
+     "accuracy": 1.0
+    },
+    "Deductibles": {
+     "n": 13,
+     "correct": 12,
+     "accuracy": 0.9231
+    },
+    "Policy Limits": {
+     "n": 17,
+     "correct": 11,
+     "accuracy": 0.6471
+    },
+    "Product Recommendations": {
+     "n": 72,
+     "correct": 54,
+     "accuracy": 0.75
+    },
+    "Small business eligibility": {
+     "n": 48,
+     "correct": 45,
+     "accuracy": 0.9375
+    }
+   },
+   "qwen3.8-27b": {
+    "Appetite Check": {
+     "n": 85,
+     "correct": 78,
+     "accuracy": 0.9176
+    },
+    "Business Classification": {
+     "n": 17,
+     "correct": 17,
+     "accuracy": 1.0
+    },
+    "Deductibles": {
+     "n": 13,
+     "correct": 13,
+     "accuracy": 1.0
+    },
+    "Policy Limits": {
+     "n": 17,
+     "correct": 14,
+     "accuracy": 0.8235
+    },
+    "Product Recommendations": {
+     "n": 72,
+     "correct": 48,
+     "accuracy": 0.6667
+    },
+    "Small business eligibility": {
+     "n": 48,
+     "correct": 42,
+     "accuracy": 0.875
+    }
+   },
+   "gpt-6.1-sol": {
+    "Appetite Check": {
+     "n": 85,
+     "correct": 60,
+     "accuracy": 0.7059
+    },
+    "Business Classification": {
+     "n": 17,
+     "correct": 14,
+     "accuracy": 0.8235
+    },
+    "Deductibles": {
+     "n": 13,
+     "correct": 13,
+     "accuracy": 1.0
+    },
+    "Policy Limits": {
+     "n": 17,
+     "correct": 15,
+     "accuracy": 0.8824
+    },
+    "Product Recommendations": {
+     "n": 72,
+     "correct": 65,
+     "accuracy": 0.9028
+    },
+    "Small business eligibility": {
+     "n": 48,
+     "correct": 44,
+     "accuracy": 0.9167
+    }
+   },
+   "gpt-oss-120b": {
+    "Appetite Check": {
+     "n": 85,
+     "correct": 73,
+     "accuracy": 0.8588
+    },
+    "Business Classification": {
+     "n": 17,
+     "correct": 14,
+     "accuracy": 0.8235
+    },
+    "Deductibles": {
+     "n": 13,
+     "correct": 12,
+     "accuracy": 0.9231
+    },
+    "Policy Limits": {
+     "n": 17,
+     "correct": 6,
+     "accuracy": 0.3529
+    },
+    "Product Recommendations": {
+     "n": 72,
+     "correct": 22,
+     "accuracy": 0.3056
+    },
+    "Small business eligibility": {
+     "n": 48,
+     "correct": 23,
+     "accuracy": 0.4792
+    }
+   }
+  },
+  "first_prompt_held_out": {
+   "opus-5.5": {
+    "Appetite Check": {
+     "n": 57,
+     "correct": 57,
+     "accuracy": 1.0
+    },
+    "Business Classification": {
+     "n": 11,
+     "correct": 11,
+     "accuracy": 1.0
+    },
+    "Deductibles": {
+     "n": 9,
+     "correct": 8,
+     "accuracy": 0.8889
+    },
+    "Policy Limits": {
+     "n": 11,
+     "correct": 9,
+     "accuracy": 0.8182
+    },
+    "Product Recommendations": {
+     "n": 48,
+     "correct": 47,
+     "accuracy": 0.9792
+    },
+    "Small business eligibility": {
+     "n": 32,
+     "correct": 31,
+     "accuracy": 0.9688
+    }
+   },
+   "sonnet-5.5": {
+    "Appetite Check": {
+     "n": 57,
+     "correct": 56,
+     "accuracy": 0.9825
+    },
+    "Business Classification": {
+     "n": 11,
+     "correct": 8,
+     "accuracy": 0.7273
+    },
+    "Deductibles": {
+     "n": 9,
+     "correct": 9,
+     "accuracy": 1.0
+    },
+    "Policy Limits": {
+     "n": 11,
+     "correct": 11,
+     "accuracy": 1.0
+    },
+    "Product Recommendations": {
+     "n": 48,
+     "correct": 37,
+     "accuracy": 0.7708
+    },
+    "Small business eligibility": {
+     "n": 32,
+     "correct": 29,
+     "accuracy": 0.9062
+    }
+   },
+   "haiku-5.5": {
+    "Appetite Check": {
+     "n": 57,
+     "correct": 51,
+     "accuracy": 0.8947
+    },
+    "Business Classification": {
+     "n": 11,
+     "correct": 10,
+     "accuracy": 0.9091
+    },
+    "Deductibles": {
+     "n": 9,
+     "correct": 6,
+     "accuracy": 0.6667
+    },
+    "Policy Limits": {
+     "n": 11,
+     "correct": 9,
+     "accuracy": 0.8182
+    },
+    "Product Recommendations": {
+     "n": 48,
+     "correct": 44,
+     "accuracy": 0.9167
+    },
+    "Small business eligibility": {
+     "n": 32,
+     "correct": 24,
+     "accuracy": 0.75
+    }
+   },
+   "gpt-6.1-sol": {
+    "Appetite Check": {
+     "n": 57,
+     "correct": 39,
+     "accuracy": 0.6842
+    },
+    "Business Classification": {
+     "n": 11,
+     "correct": 9,
+     "accuracy": 0.8182
+    },
+    "Deductibles": {
+     "n": 9,
+     "correct": 9,
+     "accuracy": 1.0
+    },
+    "Policy Limits": {
+     "n": 11,
+     "correct": 9,
+     "accuracy": 0.8182
+    },
+    "Product Recommendations": {
+     "n": 48,
+     "correct": 43,
+     "accuracy": 0.8958
+    },
+    "Small business eligibility": {
+     "n": 32,
+     "correct": 29,
+     "accuracy": 0.9062
+    }
+   },
+   "gpt-6-luna": {
+    "Appetite Check": {
+     "n": 57,
+     "correct": 52,
+     "accuracy": 0.9123
+    },
+    "Business Classification": {
+     "n": 11,
+     "correct": 8,
+     "accuracy": 0.7273
+    },
+    "Deductibles": {
+     "n": 9,
+     "correct": 9,
+     "accuracy": 1.0
+    },
+    "Policy Limits": {
+     "n": 11,
+     "correct": 6,
+     "accuracy": 0.5455
+    },
+    "Product Recommendations": {
+     "n": 48,
+     "correct": 38,
+     "accuracy": 0.7917
+    },
+    "Small business eligibility": {
+     "n": 32,
+     "correct": 28,
+     "accuracy": 0.875
+    }
+   },
+   "deepseek-v4-pro": {
+    "Appetite Check": {
+     "n": 57,
+     "correct": 57,
+     "accuracy": 1.0
+    },
+    "Business Classification": {
+     "n": 11,
+     "correct": 11,
+     "accuracy": 1.0
+    },
+    "Deductibles": {
+     "n": 9,
+     "correct": 9,
+     "accuracy": 1.0
+    },
+    "Policy Limits": {
+     "n": 11,
+     "correct": 10,
+     "accuracy": 0.9091
+    },
+    "Product Recommendations": {
+     "n": 48,
+     "correct": 45,
+     "accuracy": 0.9375
+    },
+    "Small business eligibility": {
+     "n": 32,
+     "correct": 31,
+     "accuracy": 0.9688
+    }
+   },
+   "deepseek-v4.1-flash": {
+    "Appetite Check": {
+     "n": 57,
+     "correct": 55,
+     "accuracy": 0.9649
+    },
+    "Business Classification": {
+     "n": 11,
+     "correct": 11,
+     "accuracy": 1.0
+    },
+    "Deductibles": {
+     "n": 9,
+     "correct": 7,
+     "accuracy": 0.7778
+    },
+    "Policy Limits": {
+     "n": 11,
+     "correct": 6,
+     "accuracy": 0.5455
+    },
+    "Product Recommendations": {
+     "n": 48,
+     "correct": 47,
+     "accuracy": 0.9792
+    },
+    "Small business eligibility": {
+     "n": 32,
+     "correct": 28,
+     "accuracy": 0.875
+    }
+   },
+   "glm-5.3": {
+    "Appetite Check": {
+     "n": 57,
+     "correct": 57,
+     "accuracy": 1.0
+    },
+    "Business Classification": {
+     "n": 11,
+     "correct": 11,
+     "accuracy": 1.0
+    },
+    "Deductibles": {
+     "n": 9,
+     "correct": 9,
+     "accuracy": 1.0
+    },
+    "Policy Limits": {
+     "n": 11,
+     "correct": 7,
+     "accuracy": 0.6364
+    },
+    "Product Recommendations": {
+     "n": 48,
+     "correct": 45,
+     "accuracy": 0.9375
+    },
+    "Small business eligibility": {
+     "n": 32,
+     "correct": 30,
+     "accuracy": 0.9375
+    }
+   },
+   "glm-5.3-flash": {
+    "Appetite Check": {
+     "n": 57,
+     "correct": 54,
+     "accuracy": 0.9474
+    },
+    "Business Classification": {
+     "n": 11,
+     "correct": 11,
+     "accuracy": 1.0
+    },
+    "Deductibles": {
+     "n": 9,
+     "correct": 9,
+     "accuracy": 1.0
+    },
+    "Policy Limits": {
+     "n": 11,
+     "correct": 6,
+     "accuracy": 0.5455
+    },
+    "Product Recommendations": {
+     "n": 48,
+     "correct": 44,
+     "accuracy": 0.9167
+    },
+    "Small business eligibility": {
+     "n": 32,
+     "correct": 30,
+     "accuracy": 0.9375
+    }
+   },
+   "gpt-oss-120b": {
+    "Appetite Check": {
+     "n": 57,
+     "correct": 52,
+     "accuracy": 0.9123
+    },
+    "Business Classification": {
+     "n": 11,
+     "correct": 8,
+     "accuracy": 0.7273
+    },
+    "Deductibles": {
+     "n": 9,
+     "correct": 9,
+     "accuracy": 1.0
+    },
+    "Policy Limits": {
+     "n": 11,
+     "correct": 2,
+     "accuracy": 0.1818
+    },
+    "Product Recommendations": {
+     "n": 48,
+     "correct": 10,
+     "accuracy": 0.2083
+    },
+    "Small business eligibility": {
+     "n": 32,
+     "correct": 13,
+     "accuracy": 0.4062
+    }
+   },
+   "qwen3.8-27b": {
+    "Appetite Check": {
+     "n": 57,
+     "correct": 52,
+     "accuracy": 0.9123
+    },
+    "Business Classification": {
+     "n": 11,
+     "correct": 11,
+     "accuracy": 1.0
+    },
+    "Deductibles": {
+     "n": 9,
+     "correct": 9,
+     "accuracy": 1.0
+    },
+    "Policy Limits": {
+     "n": 11,
+     "correct": 9,
+     "accuracy": 0.8182
+    },
+    "Product Recommendations": {
+     "n": 48,
+     "correct": 30,
+     "accuracy": 0.625
+    },
+    "Small business eligibility": {
+     "n": 32,
+     "correct": 29,
+     "accuracy": 0.9062
+    }
+   },
+   "minimax-m3": {
+    "Appetite Check": {
+     "n": 57,
+     "correct": 52,
+     "accuracy": 0.9123
+    },
+    "Business Classification": {
+     "n": 11,
+     "correct": 11,
+     "accuracy": 1.0
+    },
+    "Deductibles": {
+     "n": 9,
+     "correct": 9,
+     "accuracy": 1.0
+    },
+    "Policy Limits": {
+     "n": 11,
+     "correct": 7,
+     "accuracy": 0.6364
+    },
+    "Product Recommendations": {
+     "n": 48,
+     "correct": 34,
+     "accuracy": 0.7083
+    },
+    "Small business eligibility": {
+     "n": 32,
+     "correct": 29,
+     "accuracy": 0.9062
+    }
+   }
+  },
+  "shared_rewritten_prompt_held_out": {
+   "opus-5.5": {
+    "Appetite Check": {
+     "n": 57,
+     "correct": 56,
+     "accuracy": 0.9825
+    },
+    "Business Classification": {
+     "n": 11,
+     "correct": 11,
+     "accuracy": 1.0
+    },
+    "Deductibles": {
+     "n": 9,
+     "correct": 9,
+     "accuracy": 1.0
+    },
+    "Policy Limits": {
+     "n": 11,
+     "correct": 11,
+     "accuracy": 1.0
+    },
+    "Product Recommendations": {
+     "n": 48,
+     "correct": 45,
+     "accuracy": 0.9375
+    },
+    "Small business eligibility": {
+     "n": 32,
+     "correct": 32,
+     "accuracy": 1.0
+    }
+   },
+   "haiku-5.5": {
+    "Appetite Check": {
+     "n": 57,
+     "correct": 57,
+     "accuracy": 1.0
+    },
+    "Business Classification": {
+     "n": 11,
+     "correct": 11,
+     "accuracy": 1.0
+    },
+    "Deductibles": {
+     "n": 9,
+     "correct": 9,
+     "accuracy": 1.0
+    },
+    "Policy Limits": {
+     "n": 11,
+     "correct": 11,
+     "accuracy": 1.0
+    },
+    "Product Recommendations": {
+     "n": 48,
+     "correct": 47,
+     "accuracy": 0.9792
+    },
+    "Small business eligibility": {
+     "n": 32,
+     "correct": 31,
+     "accuracy": 0.9688
+    }
+   },
+   "gpt-6.1-sol": {
+    "Appetite Check": {
+     "n": 57,
+     "correct": 56,
+     "accuracy": 0.9825
+    },
+    "Business Classification": {
+     "n": 11,
+     "correct": 11,
+     "accuracy": 1.0
+    },
+    "Deductibles": {
+     "n": 9,
+     "correct": 9,
+     "accuracy": 1.0
+    },
+    "Policy Limits": {
+     "n": 11,
+     "correct": 11,
+     "accuracy": 1.0
+    },
+    "Product Recommendations": {
+     "n": 48,
+     "correct": 46,
+     "accuracy": 0.9583
+    },
+    "Small business eligibility": {
+     "n": 32,
+     "correct": 32,
+     "accuracy": 1.0
+    }
+   },
+   "gpt-6-luna": {
+    "Appetite Check": {
+     "n": 57,
+     "correct": 56,
+     "accuracy": 0.9825
+    },
+    "Business Classification": {
+     "n": 11,
+     "correct": 11,
+     "accuracy": 1.0
+    },
+    "Deductibles": {
+     "n": 9,
+     "correct": 9,
+     "accuracy": 1.0
+    },
+    "Policy Limits": {
+     "n": 11,
+     "correct": 11,
+     "accuracy": 1.0
+    },
+    "Product Recommendations": {
+     "n": 48,
+     "correct": 33,
+     "accuracy": 0.6875
+    },
+    "Small business eligibility": {
+     "n": 32,
+     "correct": 32,
+     "accuracy": 1.0
+    }
+   },
+   "deepseek-v4-pro": {
+    "Appetite Check": {
+     "n": 57,
+     "correct": 57,
+     "accuracy": 1.0
+    },
+    "Business Classification": {
+     "n": 11,
+     "correct": 11,
+     "accuracy": 1.0
+    },
+    "Deductibles": {
+     "n": 9,
+     "correct": 9,
+     "accuracy": 1.0
+    },
+    "Policy Limits": {
+     "n": 11,
+     "correct": 10,
+     "accuracy": 0.9091
+    },
+    "Product Recommendations": {
+     "n": 48,
+     "correct": 47,
+     "accuracy": 0.9792
+    },
+    "Small business eligibility": {
+     "n": 32,
+     "correct": 32,
+     "accuracy": 1.0
+    }
+   },
+   "deepseek-v4.1-flash": {
+    "Appetite Check": {
+     "n": 57,
+     "correct": 56,
+     "accuracy": 0.9825
+    },
+    "Business Classification": {
+     "n": 11,
+     "correct": 11,
+     "accuracy": 1.0
+    },
+    "Deductibles": {
+     "n": 9,
+     "correct": 9,
+     "accuracy": 1.0
+    },
+    "Policy Limits": {
+     "n": 11,
+     "correct": 10,
+     "accuracy": 0.9091
+    },
+    "Product Recommendations": {
+     "n": 48,
+     "correct": 47,
+     "accuracy": 0.9792
+    },
+    "Small business eligibility": {
+     "n": 32,
+     "correct": 32,
+     "accuracy": 1.0
+    }
+   },
+   "glm-5.3": {
+    "Appetite Check": {
+     "n": 57,
+     "correct": 57,
+     "accuracy": 1.0
+    },
+    "Business Classification": {
+     "n": 11,
+     "correct": 11,
+     "accuracy": 1.0
+    },
+    "Deductibles": {
+     "n": 9,
+     "correct": 9,
+     "accuracy": 1.0
+    },
+    "Policy Limits": {
+     "n": 11,
+     "correct": 10,
+     "accuracy": 0.9091
+    },
+    "Product Recommendations": {
+     "n": 48,
+     "correct": 47,
+     "accuracy": 0.9792
+    },
+    "Small business eligibility": {
+     "n": 32,
+     "correct": 31,
+     "accuracy": 0.9688
+    }
+   },
+   "glm-5.3-flash": {
+    "Appetite Check": {
+     "n": 57,
+     "correct": 57,
+     "accuracy": 1.0
+    },
+    "Business Classification": {
+     "n": 11,
+     "correct": 11,
+     "accuracy": 1.0
+    },
+    "Deductibles": {
+     "n": 9,
+     "correct": 9,
+     "accuracy": 1.0
+    },
+    "Policy Limits": {
+     "n": 11,
+     "correct": 10,
+     "accuracy": 0.9091
+    },
+    "Product Recommendations": {
+     "n": 48,
+     "correct": 48,
+     "accuracy": 1.0
+    },
+    "Small business eligibility": {
+     "n": 32,
+     "correct": 32,
+     "accuracy": 1.0
+    }
+   },
+   "gpt-oss-120b": {
+    "Appetite Check": {
+     "n": 57,
+     "correct": 47,
+     "accuracy": 0.8246
+    },
+    "Business Classification": {
+     "n": 11,
+     "correct": 10,
+     "accuracy": 0.9091
+    },
+    "Deductibles": {
+     "n": 9,
+     "correct": 9,
+     "accuracy": 1.0
+    },
+    "Policy Limits": {
+     "n": 11,
+     "correct": 8,
+     "accuracy": 0.7273
+    },
+    "Product Recommendations": {
+     "n": 48,
+     "correct": 44,
+     "accuracy": 0.9167
+    },
+    "Small business eligibility": {
+     "n": 32,
+     "correct": 28,
+     "accuracy": 0.875
+    }
+   },
+   "qwen3.8-27b": {
+    "Appetite Check": {
+     "n": 57,
+     "correct": 48,
+     "accuracy": 0.8421
+    },
+    "Business Classification": {
+     "n": 11,
+     "correct": 10,
+     "accuracy": 0.9091
+    },
+    "Deductibles": {
+     "n": 9,
+     "correct": 8,
+     "accuracy": 0.8889
+    },
+    "Policy Limits": {
+     "n": 11,
+     "correct": 8,
+     "accuracy": 0.7273
+    },
+    "Product Recommendations": {
+     "n": 48,
+     "correct": 34,
+     "accuracy": 0.7083
+    },
+    "Small business eligibility": {
+     "n": 32,
+     "correct": 31,
+     "accuracy": 0.9688
+    }
+   },
+   "minimax-m3": {
+    "Appetite Check": {
+     "n": 57,
+     "correct": 57,
+     "accuracy": 1.0
+    },
+    "Business Classification": {
+     "n": 11,
+     "correct": 11,
+     "accuracy": 1.0
+    },
+    "Deductibles": {
+     "n": 9,
+     "correct": 9,
+     "accuracy": 1.0
+    },
+    "Policy Limits": {
+     "n": 11,
+     "correct": 11,
+     "accuracy": 1.0
+    },
+    "Product Recommendations": {
+     "n": 48,
+     "correct": 42,
+     "accuracy": 0.875
+    },
+    "Small business eligibility": {
+     "n": 32,
+     "correct": 32,
+     "accuracy": 1.0
+    }
+   },
+   "sonnet-5.5": {
+    "Appetite Check": {
+     "n": 57,
+     "correct": 57,
+     "accuracy": 1.0
+    },
+    "Business Classification": {
+     "n": 11,
+     "correct": 11,
+     "accuracy": 1.0
+    },
+    "Deductibles": {
+     "n": 9,
+     "correct": 9,
+     "accuracy": 1.0
+    },
+    "Policy Limits": {
+     "n": 11,
+     "correct": 11,
+     "accuracy": 1.0
+    },
+    "Product Recommendations": {
+     "n": 48,
+     "correct": 47,
+     "accuracy": 0.9792
+    },
+    "Small business eligibility": {
+     "n": 32,
+     "correct": 32,
+     "accuracy": 1.0
+    }
+   }
+  },
+  "per_model_rewritten_prompt_held_out": {
+   "opus-5.5": {
+    "Appetite Check": {
+     "n": 57,
+     "correct": 56,
+     "accuracy": 0.9825
+    },
+    "Business Classification": {
+     "n": 11,
+     "correct": 11,
+     "accuracy": 1.0
+    },
+    "Deductibles": {
+     "n": 9,
+     "correct": 9,
+     "accuracy": 1.0
+    },
+    "Policy Limits": {
+     "n": 11,
+     "correct": 9,
+     "accuracy": 0.8182
+    },
+    "Product Recommendations": {
+     "n": 48,
+     "correct": 48,
+     "accuracy": 1.0
+    },
+    "Small business eligibility": {
+     "n": 32,
+     "correct": 32,
+     "accuracy": 1.0
+    }
+   },
+   "sonnet-5.5": {
+    "Appetite Check": {
+     "n": 57,
+     "correct": 57,
+     "accuracy": 1.0
+    },
+    "Business Classification": {
+     "n": 11,
+     "correct": 11,
+     "accuracy": 1.0
+    },
+    "Deductibles": {
+     "n": 9,
+     "correct": 9,
+     "accuracy": 1.0
+    },
+    "Policy Limits": {
+     "n": 11,
+     "correct": 11,
+     "accuracy": 1.0
+    },
+    "Product Recommendations": {
+     "n": 48,
+     "correct": 47,
+     "accuracy": 0.9792
+    },
+    "Small business eligibility": {
+     "n": 32,
+     "correct": 32,
+     "accuracy": 1.0
+    }
+   },
+   "haiku-5.5": {
+    "Appetite Check": {
+     "n": 57,
+     "correct": 57,
+     "accuracy": 1.0
+    },
+    "Business Classification": {
+     "n": 11,
+     "correct": 11,
+     "accuracy": 1.0
+    },
+    "Deductibles": {
+     "n": 9,
+     "correct": 9,
+     "accuracy": 1.0
+    },
+    "Policy Limits": {
+     "n": 10,
+     "correct": 9,
+     "accuracy": 0.9
+    },
+    "Product Recommendations": {
+     "n": 48,
+     "correct": 46,
+     "accuracy": 0.9583
+    },
+    "Small business eligibility": {
+     "n": 32,
+     "correct": 31,
+     "accuracy": 0.9688
+    }
+   },
+   "gpt-6.1-sol": {
+    "Appetite Check": {
+     "n": 57,
+     "correct": 57,
+     "accuracy": 1.0
+    },
+    "Business Classification": {
+     "n": 11,
+     "correct": 11,
+     "accuracy": 1.0
+    },
+    "Deductibles": {
+     "n": 9,
+     "correct": 9,
+     "accuracy": 1.0
+    },
+    "Policy Limits": {
+     "n": 11,
+     "correct": 9,
+     "accuracy": 0.8182
+    },
+    "Product Recommendations": {
+     "n": 48,
+     "correct": 46,
+     "accuracy": 0.9583
+    },
+    "Small business eligibility": {
+     "n": 32,
+     "correct": 32,
+     "accuracy": 1.0
+    }
+   },
+   "deepseek-v4-pro": {
+    "Appetite Check": {
+     "n": 57,
+     "correct": 57,
+     "accuracy": 1.0
+    },
+    "Business Classification": {
+     "n": 11,
+     "correct": 11,
+     "accuracy": 1.0
+    },
+    "Deductibles": {
+     "n": 9,
+     "correct": 9,
+     "accuracy": 1.0
+    },
+    "Policy Limits": {
+     "n": 11,
+     "correct": 10,
+     "accuracy": 0.9091
+    },
+    "Product Recommendations": {
+     "n": 48,
+     "correct": 48,
+     "accuracy": 1.0
+    },
+    "Small business eligibility": {
+     "n": 32,
+     "correct": 30,
+     "accuracy": 0.9375
+    }
+   },
+   "glm-5.3-flash": {
+    "Appetite Check": {
+     "n": 56,
+     "correct": 55,
+     "accuracy": 0.9821
+    },
+    "Business Classification": {
+     "n": 11,
+     "correct": 11,
+     "accuracy": 1.0
+    },
+    "Deductibles": {
+     "n": 9,
+     "correct": 9,
+     "accuracy": 1.0
+    },
+    "Policy Limits": {
+     "n": 11,
+     "correct": 10,
+     "accuracy": 0.9091
+    },
+    "Product Recommendations": {
+     "n": 48,
+     "correct": 47,
+     "accuracy": 0.9792
+    },
+    "Small business eligibility": {
+     "n": 32,
+     "correct": 31,
+     "accuracy": 0.9688
+    }
+   },
+   "gpt-oss-120b": {
+    "Appetite Check": {
+     "n": 57,
+     "correct": 39,
+     "accuracy": 0.6842
+    },
+    "Business Classification": {
+     "n": 11,
+     "correct": 7,
+     "accuracy": 0.6364
+    },
+    "Deductibles": {
+     "n": 9,
+     "correct": 8,
+     "accuracy": 0.8889
+    },
+    "Policy Limits": {
+     "n": 11,
+     "correct": 10,
+     "accuracy": 0.9091
+    },
+    "Product Recommendations": {
+     "n": 48,
+     "correct": 34,
+     "accuracy": 0.7083
+    },
+    "Small business eligibility": {
+     "n": 32,
+     "correct": 30,
+     "accuracy": 0.9375
+    }
+   }
+  },
+  "effort_high_held_out": {
+   "opus-5.5": {
+    "Appetite Check": {
+     "n": 57,
+     "correct": 57,
+     "accuracy": 1.0
+    },
+    "Business Classification": {
+     "n": 11,
+     "correct": 11,
+     "accuracy": 1.0
+    },
+    "Deductibles": {
+     "n": 9,
+     "correct": 9,
+     "accuracy": 1.0
+    },
+    "Policy Limits": {
+     "n": 11,
+     "correct": 10,
+     "accuracy": 0.9091
+    },
+    "Product Recommendations": {
+     "n": 48,
+     "correct": 45,
+     "accuracy": 0.9375
+    },
+    "Small business eligibility": {
+     "n": 32,
+     "correct": 32,
+     "accuracy": 1.0
+    }
+   },
+   "haiku-5.5": {
+    "Appetite Check": {
+     "n": 57,
+     "correct": 51,
+     "accuracy": 0.8947
+    },
+    "Business Classification": {
+     "n": 11,
+     "correct": 9,
+     "accuracy": 0.8182
+    },
+    "Deductibles": {
+     "n": 9,
+     "correct": 8,
+     "accuracy": 0.8889
+    },
+    "Policy Limits": {
+     "n": 11,
+     "correct": 8,
+     "accuracy": 0.7273
+    },
+    "Product Recommendations": {
+     "n": 48,
+     "correct": 40,
+     "accuracy": 0.8333
+    },
+    "Small business eligibility": {
+     "n": 32,
+     "correct": 26,
+     "accuracy": 0.8125
+    }
+   },
+   "gpt-6.1-sol": {
+    "Appetite Check": {
+     "n": 57,
+     "correct": 49,
+     "accuracy": 0.8596
+    },
+    "Business Classification": {
+     "n": 11,
+     "correct": 8,
+     "accuracy": 0.7273
+    },
+    "Deductibles": {
+     "n": 9,
+     "correct": 9,
+     "accuracy": 1.0
+    },
+    "Policy Limits": {
+     "n": 11,
+     "correct": 11,
+     "accuracy": 1.0
+    },
+    "Product Recommendations": {
+     "n": 48,
+     "correct": 46,
+     "accuracy": 0.9583
+    },
+    "Small business eligibility": {
+     "n": 32,
+     "correct": 31,
+     "accuracy": 0.9688
+    }
+   },
+   "gpt-6-luna": {
+    "Appetite Check": {
+     "n": 57,
+     "correct": 48,
+     "accuracy": 0.8421
+    },
+    "Business Classification": {
+     "n": 11,
+     "correct": 9,
+     "accuracy": 0.8182
+    },
+    "Deductibles": {
+     "n": 9,
+     "correct": 8,
+     "accuracy": 0.8889
+    },
+    "Policy Limits": {
+     "n": 11,
+     "correct": 10,
+     "accuracy": 0.9091
+    },
+    "Product Recommendations": {
+     "n": 47,
+     "correct": 39,
+     "accuracy": 0.8298
+    },
+    "Small business eligibility": {
+     "n": 31,
+     "correct": 27,
+     "accuracy": 0.871
+    }
+   }
+  },
+  "effort_medium_held_out": {
+   "sonnet-5.5": {
+    "Appetite Check": {
+     "n": 57,
+     "correct": 55,
+     "accuracy": 0.9649
+    },
+    "Business Classification": {
+     "n": 11,
+     "correct": 9,
+     "accuracy": 0.8182
+    },
+    "Deductibles": {
+     "n": 9,
+     "correct": 2,
+     "accuracy": 0.2222
+    },
+    "Policy Limits": {
+     "n": 11,
+     "correct": 7,
+     "accuracy": 0.6364
+    },
+    "Product Recommendations": {
+     "n": 48,
+     "correct": 42,
+     "accuracy": 0.875
+    },
+    "Small business eligibility": {
+     "n": 32,
+     "correct": 22,
+     "accuracy": 0.6875
+    }
+   }
+  },
+  "effort_low_held_out": {
+   "opus-5.5": {
+    "Appetite Check": {
+     "n": 57,
+     "correct": 56,
+     "accuracy": 0.9825
+    },
+    "Business Classification": {
+     "n": 11,
+     "correct": 9,
+     "accuracy": 0.8182
+    },
+    "Deductibles": {
+     "n": 9,
+     "correct": 9,
+     "accuracy": 1.0
+    },
+    "Policy Limits": {
+     "n": 11,
+     "correct": 8,
+     "accuracy": 0.7273
+    },
+    "Product Recommendations": {
+     "n": 48,
+     "correct": 46,
+     "accuracy": 0.9583
+    },
+    "Small business eligibility": {
+     "n": 32,
+     "correct": 29,
+     "accuracy": 0.9062
+    }
+   },
+   "sonnet-5.5": {
+    "Appetite Check": {
+     "n": 57,
+     "correct": 54,
+     "accuracy": 0.9474
+    },
+    "Business Classification": {
+     "n": 11,
+     "correct": 8,
+     "accuracy": 0.7273
+    },
+    "Deductibles": {
+     "n": 9,
+     "correct": 5,
+     "accuracy": 0.5556
+    },
+    "Policy Limits": {
+     "n": 11,
+     "correct": 5,
+     "accuracy": 0.4545
+    },
+    "Product Recommendations": {
+     "n": 48,
+     "correct": 41,
+     "accuracy": 0.8542
+    },
+    "Small business eligibility": {
+     "n": 32,
+     "correct": 9,
+     "accuracy": 0.2812
+    }
+   },
+   "gpt-6.1-sol": {
+    "Appetite Check": {
+     "n": 57,
+     "correct": 40,
+     "accuracy": 0.7018
+    },
+    "Business Classification": {
+     "n": 11,
+     "correct": 9,
+     "accuracy": 0.8182
+    },
+    "Deductibles": {
+     "n": 9,
+     "correct": 9,
+     "accuracy": 1.0
+    },
+    "Policy Limits": {
+     "n": 11,
+     "correct": 11,
+     "accuracy": 1.0
+    },
+    "Product Recommendations": {
+     "n": 47,
+     "correct": 43,
+     "accuracy": 0.9149
+    },
+    "Small business eligibility": {
+     "n": 32,
+     "correct": 30,
+     "accuracy": 0.9375
+    }
+   }
+  },
+  "repeat_unchanged_held_out": {
+   "sonnet-5.5": {
+    "Appetite Check": {
+     "n": 57,
+     "correct": 56,
+     "accuracy": 0.9825
+    },
+    "Business Classification": {
+     "n": 11,
+     "correct": 10,
+     "accuracy": 0.9091
+    },
+    "Deductibles": {
+     "n": 9,
+     "correct": 9,
+     "accuracy": 1.0
+    },
+    "Policy Limits": {
+     "n": 11,
+     "correct": 9,
+     "accuracy": 0.8182
+    },
+    "Product Recommendations": {
+     "n": 48,
+     "correct": 40,
+     "accuracy": 0.8333
+    },
+    "Small business eligibility": {
+     "n": 32,
+     "correct": 30,
+     "accuracy": 0.9375
+    }
+   }
+  }
+ },
+ "failures": [
+  {
+   "category": "final_answer_asks_for_information",
+   "definition": "Wrong case whose final answer asks the underwriter for information instead of deciding (the FINAL ANSWER marker was put on a question). Text-pattern classification.",
+   "scope": "first_prompt_all_cases",
+   "counts": {
+    "opus-5.5": 1,
+    "sonnet-5.5": 5,
+    "haiku-5.5": 2,
+    "gpt-6.1-sol": 15,
+    "gpt-6-luna": 1,
+    "deepseek-v4-pro": 0,
+    "deepseek-v4.1-flash": 1,
+    "glm-5.3": 1,
+    "glm-5.3-flash": 2,
+    "gpt-oss-120b": 17,
+    "qwen3.8-27b": 0,
+    "minimax-m3": 1
+   },
+   "example": "FINAL ANSWER: I can help assess appetite, but I need the following application details: business operations and NAICS code, requested line of business, state, annual revenue."
+  },
+  {
+   "category": "empty_final_answer",
+   "definition": "Wrong case whose final answer is empty or a fragment under 15 characters.",
+   "scope": "first_prompt_all_cases",
+   "counts": {
+    "opus-5.5": 0,
+    "sonnet-5.5": 0,
+    "haiku-5.5": 0,
+    "gpt-6.1-sol": 5,
+    "gpt-6-luna": 0,
+    "deepseek-v4-pro": 0,
+    "deepseek-v4.1-flash": 0,
+    "glm-5.3": 0,
+    "glm-5.3-flash": 0,
+    "gpt-oss-120b": 0,
+    "qwen3.8-27b": 0,
+    "minimax-m3": 0
+   },
+   "example": "FINAL ANSWER: (nothing after the marker)"
+  },
+  {
+   "category": "wrong_decision",
+   "definition": "The agent gave a complete answer that the judges ruled does not match the reference.",
+   "scope": "first_prompt_all_cases",
+   "counts": {
+    "opus-5.5": 6,
+    "sonnet-5.5": 23,
+    "haiku-5.5": 25,
+    "gpt-6.1-sol": 20,
+    "gpt-6-luna": 32,
+    "deepseek-v4-pro": 6,
+    "deepseek-v4.1-flash": 21,
+    "glm-5.3": 12,
+    "glm-5.3-flash": 16,
+    "gpt-oss-120b": 83,
+    "qwen3.8-27b": 23,
+    "minimax-m3": 32
+   },
+   "example": "Answered that property appetite was 'pending construction verification' where the guidelines put the business in appetite."
+  },
+  {
+   "category": "step_limit",
+   "definition": "Ran out of the 30-model-call budget; scored wrong.",
+   "scope": "first_prompt_all_cases",
+   "counts": {
+    "opus-5.5": 0,
+    "sonnet-5.5": 0,
+    "haiku-5.5": 0,
+    "gpt-6.1-sol": 0,
+    "gpt-6-luna": 0,
+    "deepseek-v4-pro": 0,
+    "deepseek-v4.1-flash": 0,
+    "glm-5.3": 0,
+    "glm-5.3-flash": 1,
+    "gpt-oss-120b": 0,
+    "qwen3.8-27b": 17,
+    "minimax-m3": 0
+   },
+   "example": "Kept re-querying the NAICS and appetite tables until the 30-call budget ran out."
+  },
+  {
+   "category": "turn_limit",
+   "definition": "Used all 12 underwriter turns without a final answer; scored wrong.",
+   "scope": "first_prompt_all_cases",
+   "counts": {
+    "opus-5.5": 0,
+    "sonnet-5.5": 0,
+    "haiku-5.5": 5,
+    "gpt-6.1-sol": 0,
+    "gpt-6-luna": 0,
+    "deepseek-v4-pro": 0,
+    "deepseek-v4.1-flash": 0,
+    "glm-5.3": 0,
+    "glm-5.3-flash": 0,
+    "gpt-oss-120b": 2,
+    "qwen3.8-27b": 0,
+    "minimax-m3": 1
+   },
+   "example": "Kept asking the underwriter for details already provided until 12 turns were used."
+  },
+  {
+   "category": "empty_reply",
+   "definition": "The model returned empty turns after two 'Please continue.' nudges; scored wrong.",
+   "scope": "first_prompt_all_cases",
+   "counts": {
+    "opus-5.5": 0,
+    "sonnet-5.5": 0,
+    "haiku-5.5": 0,
+    "gpt-6.1-sol": 1,
+    "gpt-6-luna": 0,
+    "deepseek-v4-pro": 0,
+    "deepseek-v4.1-flash": 0,
+    "glm-5.3": 0,
+    "glm-5.3-flash": 0,
+    "gpt-oss-120b": 0,
+    "qwen3.8-27b": 0,
+    "minimax-m3": 0
+   },
+   "example": "Returned an empty message three times in a row."
+  },
+  {
+   "category": "api_error",
+   "definition": "The provider API kept failing (HTTP 520) after retries; scored wrong.",
+   "scope": "first_prompt_all_cases",
+   "counts": {
+    "opus-5.5": 0,
+    "sonnet-5.5": 0,
+    "haiku-5.5": 0,
+    "gpt-6.1-sol": 0,
+    "gpt-6-luna": 0,
+    "deepseek-v4-pro": 0,
+    "deepseek-v4.1-flash": 0,
+    "glm-5.3": 0,
+    "glm-5.3-flash": 0,
+    "gpt-oss-120b": 0,
+    "qwen3.8-27b": 0,
+    "minimax-m3": 0
+   },
+   "example": "Provider returned HTTP 520 on every retry."
+  },
+  {
+   "category": "harness_error",
+   "definition": "A network error in our harness (connection reset); the case is dropped from n, not scored.",
+   "scope": "first_prompt_all_cases",
+   "counts": {
+    "opus-5.5": 0,
+    "sonnet-5.5": 0,
+    "haiku-5.5": 0,
+    "gpt-6.1-sol": 0,
+    "gpt-6-luna": 0,
+    "deepseek-v4-pro": 0,
+    "deepseek-v4.1-flash": 0,
+    "glm-5.3": 0,
+    "glm-5.3-flash": 0,
+    "gpt-oss-120b": 0,
+    "qwen3.8-27b": 0,
+    "minimax-m3": 0
+   },
+   "example": "Connection reset by peer during the run."
+  },
+  {
+   "category": "unreadable_tool_call",
+   "definition": "Cases with at least one tool call whose arguments were not valid JSON (harness flag tool_parse_error). The agent got an error message and could continue, so this overlaps the categories above.",
+   "scope": "first_prompt_all_cases",
+   "counts": {
+    "opus-5.5": 0,
+    "sonnet-5.5": 0,
+    "haiku-5.5": 0,
+    "gpt-6.1-sol": 0,
+    "gpt-6-luna": 0,
+    "deepseek-v4-pro": 0,
+    "deepseek-v4.1-flash": 0,
+    "glm-5.3": 0,
+    "glm-5.3-flash": 0,
+    "gpt-oss-120b": 22,
+    "qwen3.8-27b": 0,
+    "minimax-m3": 0
+   },
+   "example": "A read_query call whose arguments were a truncated JSON string."
+  }
+ ],
+ "replays_and_step_checks": [
+  {
+   "name": "Step-level screen (Kitaru model-swap analyzer)",
+   "reference": "sonnet-5.5, first prompt",
+   "method": "250 recorded Sonnet 5.5 model calls replayed against each candidate with the same inputs; the candidate's next step is compared with Sonnet's. A second Sonnet replay is the noise floor. Full-run columns are each model's first-prompt accuracy on all 252 cases paired against Sonnet.",
+   "noise_floor": {
+    "sonnet_same_tool_as_its_own_recording": 0.5833
+   },
+   "spearman_rank_correlation_with_full_runs": {
+    "tool_choice~success": 0.7335,
+    "tool_choice~cost_per_success": 0.328,
+    "exact~success": 0.6909,
+    "exact~cost_per_success": 0.5909,
+    "judge_adjusted~success": 0.5545,
+    "judge_adjusted~cost_per_success": 0.2636,
+    "query_tool~success": 0.3028,
+    "query_tool~cost_per_success": 0.367,
+    "query_exact~success": 0.2758,
+    "query_exact~cost_per_success": 0.8508,
+    "final_equiv~success": 0.7002,
+    "final_equiv~cost_per_success": 0.5218,
+    "final_correct~success": 0.2968,
+    "final_correct~cost_per_success": 0.4795
+   },
+   "holds_definition": "full-run accuracy at most 5 points below Sonnet 5.5",
+   "models_that_hold": [
+    "opus-5.5",
+    "haiku-5.5",
+    "gpt-6-luna",
+    "deepseek-v4.1-flash",
+    "deepseek-v4-pro",
+    "glm-5.3",
+    "glm-5.3-flash",
+    "qwen3.8-27b",
+    "minimax-m3"
+   ],
+   "cheapest_model_that_holds": "gpt-6-luna",
+   "top3_by_same_tool": [
+    "haiku-5.5",
+    "deepseek-v4-pro",
+    "glm-5.3"
+   ],
+   "top3_that_hold": [
+    "haiku-5.5",
+    "deepseek-v4-pro",
+    "glm-5.3"
+   ],
+   "rank_of_cheapest_holder_by_same_tool": 11,
+   "rows": [
+    {
+     "model": "sonnet-5.5",
+     "is_reference": true,
+     "recorded_calls_replayed": 250,
+     "same_tool_as_reference": 0.5833,
+     "same_tool_and_args": 0.24,
+     "judge_adjusted_agreement": 0.484,
+     "same_tool_on_database_query_steps": 0.5149,
+     "final_answer_steps": 29,
+     "correct_at_final_answer_steps": 0.931,
+     "step_cost_per_call_usd": 0.01166881,
+     "full_run_vs_reference": null
+    },
+    {
+     "model": "opus-5.5",
+     "is_reference": false,
+     "recorded_calls_replayed": 250,
+     "same_tool_as_reference": 0.244,
+     "same_tool_and_args": 0.084,
+     "judge_adjusted_agreement": 0.256,
+     "same_tool_on_database_query_steps": 0.2871,
+     "final_answer_steps": 29,
+     "correct_at_final_answer_steps": 0.931,
+     "step_cost_per_call_usd": 0.02219834,
+     "full_run_vs_reference": {
+      "n": 252,
+      "full_run_accuracy": 0.9722,
+      "delta_points": 8.3,
+      "ci95_points": [
+       4.0,
+       12.7
+      ],
+      "cost_per_correct_cents": 5.2592
+     }
+    },
+    {
+     "model": "haiku-5.5",
+     "is_reference": false,
+     "recorded_calls_replayed": 250,
+     "same_tool_as_reference": 0.2976,
+     "same_tool_and_args": 0.056,
+     "judge_adjusted_agreement": 0.232,
+     "same_tool_on_database_query_steps": 0.4059,
+     "final_answer_steps": 29,
+     "correct_at_final_answer_steps": 0.7241,
+     "step_cost_per_call_usd": 0.0006662,
+     "full_run_vs_reference": {
+      "n": 252,
+      "full_run_accuracy": 0.873,
+      "delta_points": -1.6,
+      "ci95_points": [
+       -7.1,
+       4.0
+      ],
+      "cost_per_correct_cents": 0.4997
+     }
+    },
+    {
+     "model": "gpt-6-luna",
+     "is_reference": false,
+     "recorded_calls_replayed": 250,
+     "same_tool_as_reference": 0.0893,
+     "same_tool_and_args": 0.02,
+     "judge_adjusted_agreement": 0.188,
+     "same_tool_on_database_query_steps": 0.1188,
+     "final_answer_steps": 29,
+     "correct_at_final_answer_steps": 0.5517,
+     "step_cost_per_call_usd": 0.00017445,
+     "full_run_vs_reference": {
+      "n": 252,
+      "full_run_accuracy": 0.869,
+      "delta_points": -2.0,
+      "ci95_points": [
+       -7.5,
+       3.6
+      ],
+      "cost_per_correct_cents": 0.1903
+     }
+    },
+    {
+     "model": "gpt-6.1-sol",
+     "is_reference": false,
+     "recorded_calls_replayed": 247,
+     "same_tool_as_reference": 0.2036,
+     "same_tool_and_args": 0.0688,
+     "judge_adjusted_agreement": 0.27530364372469635,
+     "same_tool_on_database_query_steps": 0.2376,
+     "final_answer_steps": 29,
+     "correct_at_final_answer_steps": 0.4828,
+     "step_cost_per_call_usd": 0.00247269,
+     "full_run_vs_reference": {
+      "n": 252,
+      "full_run_accuracy": 0.8373,
+      "delta_points": -5.2,
+      "ci95_points": [
+       -11.5,
+       1.2
+      ],
+      "cost_per_correct_cents": 2.0123
+     }
+    },
+    {
+     "model": "deepseek-v4.1-flash",
+     "is_reference": false,
+     "recorded_calls_replayed": 250,
+     "same_tool_as_reference": 0.2083,
+     "same_tool_and_args": 0.032,
+     "judge_adjusted_agreement": 0.152,
+     "same_tool_on_database_query_steps": 0.3168,
+     "final_answer_steps": 29,
+     "correct_at_final_answer_steps": 0.5862,
+     "step_cost_per_call_usd": 0.00135984,
+     "full_run_vs_reference": {
+      "n": 252,
+      "full_run_accuracy": 0.9127,
+      "delta_points": 2.4,
+      "ci95_points": [
+       -2.8,
+       7.9
+      ],
+      "cost_per_correct_cents": 2.1011
+     }
+    },
+    {
+     "model": "deepseek-v4-pro",
+     "is_reference": false,
+     "recorded_calls_replayed": 250,
+     "same_tool_as_reference": 0.256,
+     "same_tool_and_args": 0.1,
+     "judge_adjusted_agreement": 0.296,
+     "same_tool_on_database_query_steps": 0.2277,
+     "final_answer_steps": 29,
+     "correct_at_final_answer_steps": 0.7931,
+     "step_cost_per_call_usd": 0.00245984,
+     "full_run_vs_reference": {
+      "n": 252,
+      "full_run_accuracy": 0.9762,
+      "delta_points": 8.7,
+      "ci95_points": [
+       4.4,
+       13.1
+      ],
+      "cost_per_correct_cents": 3.5541
+     }
+    },
+    {
+     "model": "glm-5.3",
+     "is_reference": false,
+     "recorded_calls_replayed": 249,
+     "same_tool_as_reference": 0.2515,
+     "same_tool_and_args": 0.0964,
+     "judge_adjusted_agreement": 0.2289156626506024,
+     "same_tool_on_database_query_steps": 0.27,
+     "final_answer_steps": 29,
+     "correct_at_final_answer_steps": 0.7586,
+     "step_cost_per_call_usd": 0.00609856,
+     "full_run_vs_reference": {
+      "n": 252,
+      "full_run_accuracy": 0.9484,
+      "delta_points": 6.0,
+      "ci95_points": [
+       1.2,
+       10.7
+      ],
+      "cost_per_correct_cents": 8.2513
+     }
+    },
+    {
+     "model": "glm-5.3-flash",
+     "is_reference": false,
+     "recorded_calls_replayed": 250,
+     "same_tool_as_reference": 0.2262,
+     "same_tool_and_args": 0.068,
+     "judge_adjusted_agreement": 0.192,
+     "same_tool_on_database_query_steps": 0.2376,
+     "final_answer_steps": 29,
+     "correct_at_final_answer_steps": 0.6552,
+     "step_cost_per_call_usd": 0.00061912,
+     "full_run_vs_reference": {
+      "n": 252,
+      "full_run_accuracy": 0.9246,
+      "delta_points": 3.6,
+      "ci95_points": [
+       -1.6,
+       8.7
+      ],
+      "cost_per_correct_cents": 0.975
+     }
+    },
+    {
+     "model": "gpt-oss-120b",
+     "is_reference": false,
+     "recorded_calls_replayed": 250,
+     "same_tool_as_reference": 0.119,
+     "same_tool_and_args": 0.016,
+     "judge_adjusted_agreement": 0.108,
+     "same_tool_on_database_query_steps": 0.1782,
+     "final_answer_steps": 29,
+     "correct_at_final_answer_steps": 0.8276,
+     "step_cost_per_call_usd": 0.00058815,
+     "full_run_vs_reference": {
+      "n": 252,
+      "full_run_accuracy": 0.5952,
+      "delta_points": -29.4,
+      "ci95_points": [
+       -36.1,
+       -23.0
+      ],
+      "cost_per_correct_cents": 0.99
+     }
+    },
+    {
+     "model": "qwen3.8-27b",
+     "is_reference": false,
+     "recorded_calls_replayed": 250,
+     "same_tool_as_reference": 0.1667,
+     "same_tool_and_args": 0.048,
+     "judge_adjusted_agreement": 0.156,
+     "same_tool_on_database_query_steps": 0.2475,
+     "final_answer_steps": 29,
+     "correct_at_final_answer_steps": 0.7931,
+     "step_cost_per_call_usd": 0.00200873,
+     "full_run_vs_reference": {
+      "n": 252,
+      "full_run_accuracy": 0.8413,
+      "delta_points": -4.8,
+      "ci95_points": [
+       -11.1,
+       1.6
+      ],
+      "cost_per_correct_cents": 3.7067
+     }
+    },
+    {
+     "model": "minimax-m3",
+     "is_reference": false,
+     "recorded_calls_replayed": 250,
+     "same_tool_as_reference": 0.1667,
+     "same_tool_and_args": 0.036,
+     "judge_adjusted_agreement": 0.14,
+     "same_tool_on_database_query_steps": 0.2376,
+     "final_answer_steps": 29,
+     "correct_at_final_answer_steps": 0.5862,
+     "step_cost_per_call_usd": 0.00120184,
+     "full_run_vs_reference": {
+      "n": 252,
+      "full_run_accuracy": 0.8651,
+      "delta_points": -2.4,
+      "ci95_points": [
+       -7.9,
+       3.2
+      ],
+      "cost_per_correct_cents": 1.7512
+     }
+    }
+   ],
+   "spend_usd": 15.85
+  },
+  {
+   "name": "Full replay in Kitaru (record, then swap the model)",
+   "reference": "sonnet-5.5, first prompt",
+   "method": "48 cases recorded with Sonnet 5.5 through Kitaru; each candidate replayed the same cases end to end through Kitaru experiments with a model override, with the same simulator and judges. Paired bootstrap on the same cases. Haiku has n=47: one baseline case failed to record cleanly.",
+   "rows": [
+    {
+     "candidate": "deepseek-v4-pro",
+     "n": 48,
+     "candidate_correct": 47,
+     "reference_correct_same_cases": 43,
+     "delta_points": 8.3,
+     "ci95_points": [
+      2.1,
+      16.7
+     ],
+     "candidate_cost_per_correct_cents": 3.6702,
+     "reference_cost_per_correct_cents": 4.2093
+    },
+    {
+     "candidate": "glm-5.3",
+     "n": 48,
+     "candidate_correct": 45,
+     "reference_correct_same_cases": 43,
+     "delta_points": 4.2,
+     "ci95_points": [
+      -6.2,
+      14.6
+     ],
+     "candidate_cost_per_correct_cents": 8.461,
+     "reference_cost_per_correct_cents": 4.2093
+    },
+    {
+     "candidate": "gpt-6-luna",
+     "n": 48,
+     "candidate_correct": 41,
+     "reference_correct_same_cases": 43,
+     "delta_points": -4.2,
+     "ci95_points": [
+      -16.7,
+      8.3
+     ],
+     "candidate_cost_per_correct_cents": 0.1949,
+     "reference_cost_per_correct_cents": 4.2093
+    },
+    {
+     "candidate": "haiku-5.5",
+     "n": 47,
+     "candidate_correct": 39,
+     "reference_correct_same_cases": 42,
+     "delta_points": -6.4,
+     "ci95_points": [
+      -19.1,
+      6.4
+     ],
+     "candidate_cost_per_correct_cents": 0.4744,
+     "reference_cost_per_correct_cents": 4.2216
+    }
+   ],
+   "spend_usd": 9.11
+  },
+  {
+   "name": "Kitaru analyzer rerun after the fixes",
+   "method": "The same step-level screen re-run on the updated analyzer (blind judge with order-swapped recheck, held-out best mix), replay/out/underwritingA2 and B2. Same conclusion: a filter, not a picker.",
+   "rows": null,
+   "rows_note": "Raw analyzer reports only (report.json); not summarized into a table.",
+   "spend_usd": 15.62
+  }
+ ],
+ "memorization_probe": {
+  "method": "24 cases whose answers depend on the insurer's synthetic appetite table, asked of every model with no tools and no data (company profile and question only).",
+  "per_model": {
+   "opus-5.5": {
+    "n": 24,
+    "correct": 8
+   },
+   "sonnet-5.5": {
+    "n": 24,
+    "correct": 2
+   },
+   "haiku-5.5": {
+    "n": 24,
+    "correct": 0
+   },
+   "gpt-6.1-sol": {
+    "n": 24,
+    "correct": 1
+   },
+   "gpt-6-luna": {
+    "n": 24,
+    "correct": 11
+   },
+   "deepseek-v4-pro": {
+    "n": 24,
+    "correct": 4
+   },
+   "deepseek-v4.1-flash": {
+    "n": 24,
+    "correct": 1
+   },
+   "glm-5.3": {
+    "n": 24,
+    "correct": 2
+   },
+   "glm-5.3-flash": {
+    "n": 24,
+    "correct": 3
+   },
+   "gpt-oss-120b": {
+    "n": 24,
+    "correct": 0
+   },
+   "qwen3.8-27b": {
+    "n": 24,
+    "correct": 0
+   },
+   "minimax-m3": {
+    "n": 24,
+    "correct": 9
+   }
+  },
+  "summary": "Product recommendations: 0 of 72 correct across models. Appetite checks: 41 of 216, nearly all lodging and lessor businesses that the guidelines decline for fire risk, which a model can reason out. No sign of memorization."
+ },
+ "headline_findings": [
+  {
+   "finding": "With one prompt written once, accuracy ranged from 0.5952 (gpt-oss-120b) to 0.9762 (DeepSeek V4 Pro) on 252 cases, and cost per correct decision from 0.1903¢ to 8.2513¢.",
+   "numbers": [
+    "results.first_prompt_all_cases[model=gpt-oss-120b].accuracy",
+    "results.first_prompt_all_cases[model=deepseek-v4-pro].accuracy",
+    "results.first_prompt_all_cases[model=gpt-6-luna].cost_per_correct_cents",
+    "results.first_prompt_all_cases[model=glm-5.3].cost_per_correct_cents"
+   ]
+  },
+  {
+   "finding": "One rewritten prompt, shared unchanged, lifted 10 of the 11 other models on 168 held-out cases, and 9 of 12 models scored between 0.9762 and 0.9940.",
+   "numbers": [
+    "results.shared_rewritten_prompt_held_out[*].paired_vs.delta_points",
+    "results.shared_rewritten_prompt_held_out[model=opus-5.5].accuracy",
+    "results.shared_rewritten_prompt_held_out[model=sonnet-5.5].accuracy"
+   ]
+  },
+  {
+   "finding": "Under the shared prompt, Claude Haiku 5.5 got 166/168 right at 0.3792¢ per correct decision, against Claude Opus 5.5's 164/168 at 5.1198¢.",
+   "numbers": [
+    "results.shared_rewritten_prompt_held_out[model=haiku-5.5]",
+    "results.shared_rewritten_prompt_held_out[model=opus-5.5]"
+   ]
+  },
+  {
+   "finding": "Running Sonnet 5.5 again with nothing changed moved its held-out accuracy by 2.4 points (95% CI [-3.6, 8.3]), while lowering its reasoning effort to low moved it by -16.7 points.",
+   "numbers": [
+    "noise.size_points",
+    "results.effort_low_held_out[model=sonnet-5.5].paired_vs.delta_points"
+   ]
+  },
+  {
+   "finding": "A cheap step-level screen ranked usefully but could not pick: its top 3 by same-tool agreement all held Sonnet's accuracy, yet it ranked the cheapest model that holds 11th of 12, and Sonnet matched its own recorded tool only 0.5833 of the time.",
+   "numbers": [
+    "replays_and_step_checks[0].top3_that_hold",
+    "replays_and_step_checks[0].rank_of_cheapest_holder_by_same_tool",
+    "replays_and_step_checks[0].noise_floor"
+   ]
+  },
+  {
+   "finding": "In the Kitaru full replay of 48 recorded cases, only DeepSeek V4 Pro's paired difference against Sonnet 5.5 cleared zero.",
+   "numbers": [
+    "replays_and_step_checks[1].rows"
+   ]
+  }
+ ],
+ "limitations": [
+  "One run per case per model and condition; differences under about 3 points are within run-to-run noise.",
+  "The insurer's environment is reconstructed from published traces; 128 of 380 cases were dropped because the rebuilt environment did not reproduce their reference answer.",
+  "The underwriter is simulated (Claude Haiku 5.5), not a person.",
+  "Grading is by LLM judges validated against Snorkel's labels at 87.5-90.0% agreement per judge (n=150-160); the combined panel was not validated as a unit.",
+  "Three judges (GPT-6 Luna, Claude Haiku 5.5, GPT-6.1 Sol) are also candidates; re-grading by other judges moved them by -0.8 to +1.6 points.",
+  "The first-run system prompt was written once and not tuned for any model; first-run rankings largely reflect prompt fit.",
+  "Prompt tuning: one optimizer (Opus 5.5), at most 2 rounds, 84 learning cases, one held-out run per tuned prompt. Five models were not tuned on their own (GPT-6 Luna: no rewrite improved its learning score; GLM 5.3, DeepSeek V4.1 Flash, MiniMax-M3, Qwen3.8 27B: only the shared prompt was run).",
+  "The shared prompt was tuned on a Claude model and may favor Claude models.",
+  "Effort settings were only tested on the five closed models.",
+  "Prices are list prices on 2026-10-19; open-weight prices are from an unverified table, and open-weight models ran on one commercial inference provider (prices and behavior vary by provider).",
+  "The failure categories 'final_answer_asks_for_information', 'empty_final_answer' and 'wrong_decision' are a text-pattern classification of wrong answers, not a judged label.",
+  "The Kitaru full replay covers 48 cases; most of its intervals are wide.",
+  "The step-level screen and full replay both use the first prompt; we did not repeat them under the rewritten prompt."
+ ],
+ "public_safety": [
+  {
+   "item": "Inference provider name for the open-weight models",
+   "why": "Not named publicly until providers have seen their results; replaced by the neutral label provider-a everywhere (model keys, file names, this file).",
+   "where_in_file": "models[*].provider_label"
+  },
+  {
+   "item": "Unverified open-weight prices",
+   "why": "Taken from third-party listings; publish only as 'list prices at the time, unverified' or re-check.",
+   "where_in_file": "models[*].price_note"
+  },
+  {
+   "item": "Internal file paths and repo name",
+   "why": "The original research repository is private; paths in this file are relative to this benchmark's directory and the commit is for traceability only.",
+   "where_in_file": "meta.code_location, meta.harness_git_commit, method strings"
+  },
+  {
+   "item": "Model names for unreleased or renamed models",
+   "why": "None known; check display names against vendor naming at publication time.",
+   "where_in_file": "models[*].display_name"
+  },
+  {
+   "item": "Customer data",
+   "why": "None: Snorkel's companies are fictional; examples are paraphrased.",
+   "where_in_file": "failures[*].example"
+  }
+ ],
+ "inconsistencies": [
+  {
+   "item": "GPT-6 Luna, first prompt, 252 cases",
+   "published": "218/252 (86.5%), api_error 1, -10.7 pts [-15.1, -6.7] vs Opus 5.5 (original write-up, results/tables.md, results/summary.json, results/report.html)",
+   "from_rows": "219/252 (0.8690), no api_error; -10.3 pts [-14.7, -6.3] vs Opus 5.5 when report.py is run in the original file order",
+   "why": "Two of Luna's cases hit provider API errors and were re-run; results/summary.json was written in the same minute as the re-run, after one of the two re-runs had finished and before the other. The rows are complete; the published table is one case stale.",
+   "where_in_file": "results.first_prompt_all_cases[model=gpt-6-luna]: accuracy and counts come from the rows (219), but paired_vs was copied from the stale summary (-10.7 [-15.1, -6.7]); grading.self_grading_check.note has the direction reversed (219 is the final count)."
+  },
+  {
+   "item": "Bootstrap intervals in harness/report.py depend on file order",
+   "published": "Intervals in results/tables.md",
+   "from_rows": "Identical only when the run files are read in the original run's order; in another order the intervals move by up to 0.4 points (point estimates never change)",
+   "why": "report.py draws every model's bootstrap from one random stream in the order glob() lists results/runs/, which depends on the filesystem. scripts/check_tables.py replays the original order.",
+   "where_in_file": "results.first_prompt_all_cases[*].paired_vs.ci95_points"
+  },
+  {
+   "item": "Tuned-section intervals in the original write-up",
+   "published": "Sonnet 5.5 tuned +10.1 [+5.4, +15.5]; Haiku 5.5 tuned +12.0 [+6.6, +18.0]; gpt-oss-120b tuned +20.2 [+10.1, +29.8]; Sonnet 5.5 effort medium -7.7 [-15.5, -0.6]; Opus 5.5 effort low -3.6 [-7.7, 0.0]",
+   "from_rows": "[+5.4, +14.9]; [+6.6, +17.4]; [+10.7, +29.8]; [-14.9, -0.6]; [-7.1, 0.0] (this file and results/tuned/summary.json)",
+   "why": "tuned_report.py shares one random stream across arms; adding the shared-prompt arms the next day shifted the stream. Point estimates and conclusions are unchanged.",
+   "where_in_file": "results.per_model_rewritten_prompt_held_out, results.effort_*_held_out"
+  },
+  {
+   "item": "Why 128 of 380 cases were dropped",
+   "published": "dataset.dropped_reason: 'the 128 cases where [the oracle] disagrees with the published reference'",
+   "from_rows": "Rebuilding the environment (env/oracle.py) drops 128 for four reasons: the rebuilt environment cannot resolve the case 53, the company's NAICS code is not recoverable 44, the reference uses a later environment version ('qualified') 25, the oracle disagrees 6",
+   "why": "The dropped_reason sentence simplified the oracle's report.",
+   "where_in_file": "dataset.dropped_reason"
+  },
+  {
+   "item": "Step-level screen: 'picks'",
+   "published": "replay/comparison.json picks (from the analyzer version used on 2026-10-21)",
+   "from_rows": "Re-running replay/analyze.py --grade on the private analyzer outputs reproduces every row, correlation and finalist exactly, but the analyzer's own 'Best for' picks differ at Kitaru commit 0217140, whose report logic changed after the run",
+   "why": "The picks come from the Kitaru plugin's report code, not from this benchmark.",
+   "where_in_file": "replays_and_step_checks[0] (picks are not exported; rows and finalists are)"
+  }
+ ]
+}

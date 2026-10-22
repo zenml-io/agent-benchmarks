@@ -1,0 +1,1887 @@
+{
+ "sonnet-5.5|14f41abe-4221-5929-be86-b5f3d48f5eff": {
+  "correct": true,
+  "reason": "The assistant concludes the company is out of appetite for property, matching the reference's 'No, not in appetite for that LOB' answer, and does not hedge between conclusions or recommend limits.",
+  "cost": 0.0002781
+ },
+ "opus-5.5|14f41abe-4221-5929-be86-b5f3d48f5eff": {
+  "correct": true,
+  "reason": "The assistant concludes the property line is out of appetite, matching the reference's 'No, not in appetite' answer, and gives a clear single decision rather than hedging.",
+  "cost": 0.00023920000000000001
+ },
+ "haiku-5.5|14f41abe-4221-5929-be86-b5f3d48f5eff": {
+  "correct": true,
+  "reason": "The assistant concludes the business is out of appetite for property, matching the reference answer's 'No, not in appetite for that LOB.'",
+  "cost": 0.00023920000000000001
+ },
+ "gpt-6-luna|14f41abe-4221-5929-be86-b5f3d48f5eff": {
+  "correct": true,
+  "reason": "The assistant concludes the company is out of appetite for property, matching the reference's 'No, not in appetite' answer, though its supporting text hedges somewhat about revisiting the construction",
+  "cost": 0.00032
+ },
+ "gpt-6.1-sol|14f41abe-4221-5929-be86-b5f3d48f5eff": {
+  "correct": false,
+  "reason": "The reference states a definitive 'No, not in appetite,' but the assistant hedges, saying it is 'not confirmed in appetite' and conditionally eligible pending construction verification, rather than gi",
+  "cost": 0.0002381
+ },
+ "deepseek-v4.1-flash@provider-a|14f41abe-4221-5929-be86-b5f3d48f5eff": {
+  "correct": true,
+  "reason": "The assistant concludes the company is out of appetite for the property LOB, which matches the reference's 'No, not in appetite' decision.",
+  "cost": 0.00023009999999999998
+ },
+ "deepseek-v4-pro@provider-a|14f41abe-4221-5929-be86-b5f3d48f5eff": {
+  "correct": true,
+  "reason": "The assistant concludes the company is not in appetite for the property LOB, matching the reference's 'No' decision for that line.",
+  "cost": 0.00018180000000000003
+ },
+ "glm-5.3@provider-a|14f41abe-4221-5929-be86-b5f3d48f5eff": {
+  "correct": true,
+  "reason": "The assistant concludes the company is out of appetite for property, matching the reference's 'No' answer, and clearly declines without recommending limits or deductibles.",
+  "cost": 0.0002249
+ },
+ "sonnet-5.5|df9bd56d-4190-5437-a338-f295213e0669": {
+  "correct": true,
+  "reason": "The assistant clearly concludes that the company is in appetite for the requested line of business, matching the reference.",
+  "cost": 0.0020146
+ },
+ "opus-5.5|df9bd56d-4190-5437-a338-f295213e0669": {
+  "correct": true,
+  "reason": "The assistant's conclusion that the company is in appetite for general liability matches the reference answer's 'Yes, in appetite' decision.",
+  "cost": 0.0003408
+ },
+ "haiku-5.5|df9bd56d-4190-5437-a338-f295213e0669": {
+  "correct": true,
+  "reason": "The assistant clearly concludes that the company is in appetite for the requested line of business, matching the reference.",
+  "cost": 0.0016448
+ },
+ "gpt-6-luna|df9bd56d-4190-5437-a338-f295213e0669": {
+  "correct": true,
+  "reason": "The assistant's conclusion is a clear 'Yes, in appetite' for the line of business, matching the reference answer, with extra supporting explanation that does not contradict it.",
+  "cost": 0.00018910000000000004
+ },
+ "gpt-6.1-sol|df9bd56d-4190-5437-a338-f295213e0669": {
+  "correct": true,
+  "reason": "The assistant concludes Delta HVAC Supply is in appetite for general liability, matching the reference answer of 'Yes, in appetite for that LOB.'",
+  "cost": 0.0001961
+ },
+ "deepseek-v4.1-flash@provider-a|df9bd56d-4190-5437-a338-f295213e0669": {
+  "correct": true,
+  "reason": "The assistant's conclusion that the company is in appetite for General Liability matches the reference answer's 'Yes, in appetite for that LOB'.",
+  "cost": 0.00020180000000000003
+ },
+ "deepseek-v4-pro@provider-a|df9bd56d-4190-5437-a338-f295213e0669": {
+  "correct": true,
+  "reason": "The assistant's final answer 'Yes, in appetite for general liability' matches the reference's yes decision for that LOB, with no hedging between conclusions.",
+  "cost": 0.00017680000000000001
+ },
+ "glm-5.3@provider-a|df9bd56d-4190-5437-a338-f295213e0669": {
+  "correct": true,
+  "reason": "The assistant concludes the company is in appetite for general liability, matching the reference's 'Yes, in appetite' answer, with extra supporting explanation that does not contradict it.",
+  "cost": 0.0002197
+ },
+ "sonnet-5.5|8933c4f9-d7aa-5c57-ab77-4366935ba1de": {
+  "correct": true,
+  "reason": "The assistant concludes the company is out of appetite for property coverage, matching the reference's 'No, not in appetite' answer, though it adds extra explanation which is permitted.",
+  "cost": 0.0003576
+ },
+ "opus-5.5|8933c4f9-d7aa-5c57-ab77-4366935ba1de": {
+  "correct": true,
+  "reason": "The assistant concludes the company is out of appetite for the property LOB, matching the reference's 'No, not in appetite' answer, and does not recommend limits or deductibles.",
+  "cost": 0.0002732
+ },
+ "haiku-5.5|8933c4f9-d7aa-5c57-ab77-4366935ba1de": {
+  "correct": true,
+  "reason": "The assistant concludes the company is out of appetite for Property, matching the reference's 'No, not in appetite for that LOB', and does not recommend limits or deductibles.",
+  "cost": 0.00022590000000000002
+ },
+ "gpt-6-luna|8933c4f9-d7aa-5c57-ab77-4366935ba1de": {
+  "correct": false,
+  "reason": "no final answer at this step",
+  "cost": 0
+ },
+ "gpt-6.1-sol|8933c4f9-d7aa-5c57-ab77-4366935ba1de": {
+  "correct": false,
+  "reason": "no final answer at this step",
+  "cost": 0
+ },
+ "deepseek-v4.1-flash@provider-a|8933c4f9-d7aa-5c57-ab77-4366935ba1de": {
+  "correct": true,
+  "reason": "The assistant's final decision is clearly out of appetite for property, matching the reference's 'No'; its conditional caveat about a different NAICS class does not replace that conclusion.",
+  "cost": 0.0004595
+ },
+ "deepseek-v4-pro@provider-a|8933c4f9-d7aa-5c57-ab77-4366935ba1de": {
+  "correct": true,
+  "reason": "The assistant concludes the company is out of appetite for the property LOB, matching the reference's 'No, not in appetite' answer, and the extra rationale does not change that conclusion.",
+  "cost": 0.0002898
+ },
+ "glm-5.3@provider-a|8933c4f9-d7aa-5c57-ab77-4366935ba1de": {
+  "correct": true,
+  "reason": "The assistant concludes the company is out of appetite for property coverage, matching the reference's 'No, not in appetite' decision, with the extra rationale being permissible explanation.",
+  "cost": 0.00028300000000000005
+ },
+ "sonnet-5.5|23cd4ad7-f448-551e-8fb1-cd0810255857": {
+  "correct": true,
+  "reason": "The assistant concludes the company is in appetite for the requested LOB (Property), matching the reference's 'Yes, in appetite' decision, and gives no conflicting conclusion.",
+  "cost": 0.000263
+ },
+ "opus-5.5|23cd4ad7-f448-551e-8fb1-cd0810255857": {
+  "correct": true,
+  "reason": "The assistant concludes the company is in appetite for Property, matching the reference answer's 'Yes, in appetite for that LOB'.",
+  "cost": 0.0002072
+ },
+ "haiku-5.5|23cd4ad7-f448-551e-8fb1-cd0810255857": {
+  "correct": true,
+  "reason": "The assistant concludes the company is in appetite for property, matching the reference's 'Yes, in appetite' answer, and does not hedge between conclusions (the NAICS confirmation request is a caveat,",
+  "cost": 0.0003265000000000001
+ },
+ "gpt-6-luna|23cd4ad7-f448-551e-8fb1-cd0810255857": {
+  "correct": true,
+  "reason": "The assistant's conclusion 'In appetite' for the Massachusetts property line matches the reference's yes decision, with no hedging between conclusions.",
+  "cost": 0.0001559
+ },
+ "gpt-6.1-sol|23cd4ad7-f448-551e-8fb1-cd0810255857": {
+  "correct": true,
+  "reason": "The assistant concludes the company is in appetite for property insurance, matching the reference's 'Yes, in appetite for that LOB' answer, with supporting reasoning that does not hedge between conclu",
+  "cost": 0.00027749999999999997
+ },
+ "deepseek-v4.1-flash@provider-a|23cd4ad7-f448-551e-8fb1-cd0810255857": {
+  "correct": false,
+  "reason": "no final answer at this step",
+  "cost": 0
+ },
+ "deepseek-v4-pro@provider-a|23cd4ad7-f448-551e-8fb1-cd0810255857": {
+  "correct": true,
+  "reason": "The assistant's final answer is 'Yes' that the company is in appetite for the property LOB, matching the reference answer's conclusion.",
+  "cost": 0.0001898
+ },
+ "glm-5.3@provider-a|23cd4ad7-f448-551e-8fb1-cd0810255857": {
+  "correct": true,
+  "reason": "The assistant concludes the company is in appetite for the property line in Massachusetts, matching the reference's 'Yes, in appetite' answer, though it adds extra limits and deductible recommendation",
+  "cost": 0.0002657
+ },
+ "sonnet-5.5|9c90ef20-ae30-5b2f-8ff5-e75315739bb2": {
+  "correct": true,
+  "reason": "The assistant clearly concludes that the company is out of appetite for property and does not recommend limits or a deductible.",
+  "cost": 0.0022779
+ },
+ "opus-5.5|9c90ef20-ae30-5b2f-8ff5-e75315739bb2": {
+  "correct": true,
+  "reason": "The assistant reaches the same conclusion as the reference (not in appetite for property), stating it clearly as out of appetite rather than hedging, though it adds a caveat about re-running if a form",
+  "cost": 0.0002276
+ },
+ "haiku-5.5|9c90ef20-ae30-5b2f-8ff5-e75315739bb2": {
+  "correct": false,
+  "reason": "no final answer at this step",
+  "cost": 0
+ },
+ "gpt-6-luna|9c90ef20-ae30-5b2f-8ff5-e75315739bb2": {
+  "correct": false,
+  "reason": "The reference says the company is not in appetite for the LOB, but the assistant gives a conditional in-appetite conclusion pending construction-type confirmation, hedging rather than giving a clear n",
+  "cost": 0.00018610000000000002
+ },
+ "gpt-6.1-sol|9c90ef20-ae30-5b2f-8ff5-e75315739bb2": {
+  "correct": false,
+  "reason": "no final answer at this step",
+  "cost": 0
+ },
+ "deepseek-v4.1-flash@provider-a|9c90ef20-ae30-5b2f-8ff5-e75315739bb2": {
+  "correct": false,
+  "reason": "no final answer at this step",
+  "cost": 0
+ },
+ "deepseek-v4-pro@provider-a|9c90ef20-ae30-5b2f-8ff5-e75315739bb2": {
+  "correct": true,
+  "reason": "The assistant's conclusion that the business is out of appetite for property matches the reference's 'No, not in appetite' answer, and the extra rationale does not change that decision.",
+  "cost": 0.00026520000000000005
+ },
+ "glm-5.3@provider-a|9c90ef20-ae30-5b2f-8ff5-e75315739bb2": {
+  "correct": true,
+  "reason": "The assistant concludes the account is out of appetite for the property LOB and declines, which matches the reference's 'No' decision; its extra notes on other LOBs are supplementary and don't contrad",
+  "cost": 0.0004345
+ },
+ "sonnet-5.5|3f6657c2-6ea8-5fd0-b7ce-5fba141a73b2": {
+  "correct": true,
+  "reason": "The assistant's final answer is NAICS 492210, matching the reference answer's code, with no hedging between multiple codes.",
+  "cost": 0.0001543
+ },
+ "opus-5.5|3f6657c2-6ea8-5fd0-b7ce-5fba141a73b2": {
+  "correct": true,
+  "reason": "The assistant's final answer gives NAICS code 492210, matching the reference answer, and does not hedge between conclusions.",
+  "cost": 0.00020219999999999998
+ },
+ "haiku-5.5|3f6657c2-6ea8-5fd0-b7ce-5fba141a73b2": {
+  "correct": false,
+  "reason": "no final answer at this step",
+  "cost": 0
+ },
+ "gpt-6-luna|3f6657c2-6ea8-5fd0-b7ce-5fba141a73b2": {
+  "correct": true,
+  "reason": "The assistant's final answer is NAICS 492210, matching the reference answer's code and conclusion.",
+  "cost": 0.00012330000000000002
+ },
+ "gpt-6.1-sol|3f6657c2-6ea8-5fd0-b7ce-5fba141a73b2": {
+  "correct": true,
+  "reason": "The assistant's final answer is NAICS 492210, matching the reference answer's code, with no hedging between conflicting codes (492110 is mentioned only as a rejected alternative).",
+  "cost": 0.0001616
+ },
+ "deepseek-v4.1-flash@provider-a|3f6657c2-6ea8-5fd0-b7ce-5fba141a73b2": {
+  "correct": false,
+  "reason": "no final answer at this step",
+  "cost": 0
+ },
+ "deepseek-v4-pro@provider-a|3f6657c2-6ea8-5fd0-b7ce-5fba141a73b2": {
+  "correct": true,
+  "reason": "The assistant's final answer is NAICS 492210, matching the reference answer exactly, with extra explanation that does not change the conclusion.",
+  "cost": 0.0001448
+ },
+ "glm-5.3@provider-a|3f6657c2-6ea8-5fd0-b7ce-5fba141a73b2": {
+  "correct": false,
+  "reason": "no final answer at this step",
+  "cost": 0
+ },
+ "sonnet-5.5|ee14865b-60ce-576f-8470-4a27341a8919": {
+  "correct": true,
+  "reason": "The assistant's conclusion of 'In appetite' for Property in Georgia matches the reference answer of yes, in appetite for that LOB.",
+  "cost": 0.00021490000000000002
+ },
+ "opus-5.5|ee14865b-60ce-576f-8470-4a27341a8919": {
+  "correct": true,
+  "reason": "The assistant's conclusion that the company is in appetite for property matches the reference's 'Yes, in appetite for that LOB' decision.",
+  "cost": 0.00021720000000000002
+ },
+ "haiku-5.5|ee14865b-60ce-576f-8470-4a27341a8919": {
+  "correct": true,
+  "reason": "The assistant concludes that the company is in appetite for the requested line of business, matching the reference.",
+  "cost": 0.002531
+ },
+ "gpt-6-luna|ee14865b-60ce-576f-8470-4a27341a8919": {
+  "correct": true,
+  "reason": "The assistant concludes the company is in appetite (yes) for property, matching the reference's 'Yes' for the asked line of business, with only mild 'appears' hedging and no conflicting conclusion.",
+  "cost": 0.000407
+ },
+ "gpt-6.1-sol|ee14865b-60ce-576f-8470-4a27341a8919": {
+  "correct": true,
+  "reason": "The assistant concludes the company is in appetite for property, matching the reference's 'Yes, in appetite for that LOB' with a single clear conclusion and no hedging.",
+  "cost": 0.0002472
+ },
+ "deepseek-v4.1-flash@provider-a|ee14865b-60ce-576f-8470-4a27341a8919": {
+  "correct": true,
+  "reason": "The assistant concludes the company is in appetite, matching the reference's 'Yes, in appetite' decision for the line of business in question.",
+  "cost": 0.0001556
+ },
+ "deepseek-v4-pro@provider-a|ee14865b-60ce-576f-8470-4a27341a8919": {
+  "correct": true,
+  "reason": "The assistant's final answer is a clear 'Yes, in appetite' for the requested line, matching the reference's yes/no decision without hedging.",
+  "cost": 0.0002661
+ },
+ "glm-5.3@provider-a|ee14865b-60ce-576f-8470-4a27341a8919": {
+  "correct": true,
+  "reason": "The assistant concludes the company is in appetite for the property line, matching the reference's 'Yes, in appetite' answer for that LOB.",
+  "cost": 0.0002226
+ },
+ "sonnet-5.5|05986f48-11cc-59cf-b347-0c126f0b17c5": {
+  "correct": true,
+  "reason": "The assistant concludes the business is out of appetite for the property LOB, matching the reference's 'No, not in appetite' answer, and does not hedge between conclusions (the caveat only notes what ",
+  "cost": 0.0002322
+ },
+ "opus-5.5|05986f48-11cc-59cf-b347-0c126f0b17c5": {
+  "correct": true,
+  "reason": "The assistant concludes the company is out of appetite (for property coverage), matching the reference's 'No, not in appetite' conclusion, and does not recommend limits or deductibles.",
+  "cost": 0.0002735
+ },
+ "haiku-5.5|05986f48-11cc-59cf-b347-0c126f0b17c5": {
+  "correct": true,
+  "reason": "The assistant concludes the business is out of appetite for the property LOB, matching the reference's 'No' answer, and does not recommend limits or deductibles.",
+  "cost": 0.00021740000000000003
+ },
+ "gpt-6-luna|05986f48-11cc-59cf-b347-0c126f0b17c5": {
+  "correct": false,
+  "reason": "The assistant hedges the out-of-appetite decision by suggesting eligibility if the building\u2019s construction type is verified.",
+  "cost": 0.0026907
+ },
+ "gpt-6.1-sol|05986f48-11cc-59cf-b347-0c126f0b17c5": {
+  "correct": false,
+  "reason": "no final answer at this step",
+  "cost": 0
+ },
+ "deepseek-v4.1-flash@provider-a|05986f48-11cc-59cf-b347-0c126f0b17c5": {
+  "correct": true,
+  "reason": "The assistant concludes the account is out of appetite and declines, which matches the reference's 'No'; its note about possibly changing the outcome with a construction classification is a caveat, no",
+  "cost": 0.00027570000000000003
+ },
+ "deepseek-v4-pro@provider-a|05986f48-11cc-59cf-b347-0c126f0b17c5": {
+  "correct": true,
+  "reason": "The assistant answers 'out of appetite' for the requested LOB (property), which matches the reference's 'No, not in appetite for that LOB' conclusion, and it does not hedge between conclusions.",
+  "cost": 0.0001889
+ },
+ "glm-5.3@provider-a|05986f48-11cc-59cf-b347-0c126f0b17c5": {
+  "correct": false,
+  "reason": "no final answer at this step",
+  "cost": 0
+ },
+ "sonnet-5.5|534fe068-5936-56f5-afd0-0c7319742fbf": {
+  "correct": true,
+  "reason": "The assistant concludes the property LOB is in appetite, matching the reference answer's 'Yes, in appetite' decision, with no conflicting conclusion or hedging between outcomes.",
+  "cost": 0.0002257
+ },
+ "opus-5.5|534fe068-5936-56f5-afd0-0c7319742fbf": {
+  "correct": true,
+  "reason": "The assistant concludes the applicant is in appetite for Property, matching the reference answer's 'Yes, in appetite for that LOB'; the extra limit and deductible details are supplementary explanation",
+  "cost": 0.0002998
+ },
+ "haiku-5.5|534fe068-5936-56f5-afd0-0c7319742fbf": {
+  "correct": false,
+  "reason": "no final answer at this step",
+  "cost": 0
+ },
+ "gpt-6-luna|534fe068-5936-56f5-afd0-0c7319742fbf": {
+  "correct": false,
+  "reason": "no final answer at this step",
+  "cost": 0
+ },
+ "gpt-6.1-sol|534fe068-5936-56f5-afd0-0c7319742fbf": {
+  "correct": false,
+  "reason": "no final answer at this step",
+  "cost": 0
+ },
+ "deepseek-v4.1-flash@provider-a|534fe068-5936-56f5-afd0-0c7319742fbf": {
+  "correct": true,
+  "reason": "The reference says the company is in appetite for the LOB, and the assistant's final answer also concludes it is in appetite (for property), matching the yes decision.",
+  "cost": 0.00014580000000000002
+ },
+ "deepseek-v4-pro@provider-a|534fe068-5936-56f5-afd0-0c7319742fbf": {
+  "correct": true,
+  "reason": "The assistant's final answer 'Yes, in appetite for property LOB' matches the reference conclusion that the company is in appetite for that LOB.",
+  "cost": 0.0001855
+ },
+ "glm-5.3@provider-a|534fe068-5936-56f5-afd0-0c7319742fbf": {
+  "correct": true,
+  "reason": "The assistant's conclusion that the company is in appetite matches the reference's 'Yes,' and the extra rationale does not contradict it or hedge between conclusions.",
+  "cost": 0.0002294
+ },
+ "sonnet-5.5|81d3d5a0-cc7d-533f-ab00-c9ad05e1dc28": {
+  "correct": true,
+  "reason": "The assistant identifies the same six in-appetite lines, including all five available in addition to property.",
+  "cost": 0.0034235
+ },
+ "opus-5.5|81d3d5a0-cc7d-533f-ab00-c9ad05e1dc28": {
+  "correct": true,
+  "reason": "The assistant recommends exactly the six lines in the reference: property, workers compensation, general liability, auto, bop, and cyber.",
+  "cost": 0.0024249
+ },
+ "haiku-5.5|81d3d5a0-cc7d-533f-ab00-c9ad05e1dc28": {
+  "correct": false,
+  "reason": "unparseable judge reply: ",
+  "cost": 0.0005617
+ },
+ "gpt-6-luna|81d3d5a0-cc7d-533f-ab00-c9ad05e1dc28": {
+  "correct": false,
+  "reason": "no final answer at this step",
+  "cost": 0
+ },
+ "gpt-6.1-sol|81d3d5a0-cc7d-533f-ab00-c9ad05e1dc28": {
+  "correct": true,
+  "reason": "The assistant recommends all six lines of business (workers compensation, property, general liability, auto, cyber, BOP), matching the reference's set of in-appetite LOBs beyond property, and does not",
+  "cost": 0.0004262
+ },
+ "deepseek-v4.1-flash@provider-a|81d3d5a0-cc7d-533f-ab00-c9ad05e1dc28": {
+  "correct": false,
+  "reason": "no final answer at this step",
+  "cost": 0
+ },
+ "deepseek-v4-pro@provider-a|81d3d5a0-cc7d-533f-ab00-c9ad05e1dc28": {
+  "correct": false,
+  "reason": "no final answer at this step",
+  "cost": 0
+ },
+ "glm-5.3@provider-a|81d3d5a0-cc7d-533f-ab00-c9ad05e1dc28": {
+  "correct": true,
+  "reason": "The assistant recommends the same six in-appetite lines as the reference: property, workers compensation, general liability, auto, bop, and cyber.",
+  "cost": 0.0029968
+ },
+ "sonnet-5.5|a0b69c26-93e8-5091-98b9-8afcf1b8ea6b": {
+  "correct": true,
+  "reason": "The assistant concludes the company is in appetite for property in California, matching the reference's 'Yes' decision, and does not hedge between conclusions (the caveat is conditional extra explanat",
+  "cost": 0.0002504
+ },
+ "opus-5.5|a0b69c26-93e8-5091-98b9-8afcf1b8ea6b": {
+  "correct": true,
+  "reason": "The assistant concludes 'Yes, in appetite' for property in California, matching the reference's yes decision for that LOB, and the extra NAICS and size reasoning does not contradict it.",
+  "cost": 0.00023080000000000003
+ },
+ "haiku-5.5|a0b69c26-93e8-5091-98b9-8afcf1b8ea6b": {
+  "correct": true,
+  "reason": "The assistant reaches the same yes/in-appetite conclusion for property coverage as the reference answer, with the reasoning consistent with that conclusion, though it adds caveats and extra explanatio",
+  "cost": 0.0002861
+ },
+ "gpt-6-luna|a0b69c26-93e8-5091-98b9-8afcf1b8ea6b": {
+  "correct": true,
+  "reason": "The assistant concludes the business is in appetite for the property line, matching the reference's 'Yes,' with the caveat being a stated assumption rather than a competing conclusion.",
+  "cost": 0.0002595
+ },
+ "gpt-6.1-sol|a0b69c26-93e8-5091-98b9-8afcf1b8ea6b": {
+  "correct": true,
+  "reason": "The assistant concludes the company is in appetite (Yes) for the requested California property LOB, matching the reference's yes decision, with extra supporting explanation that does not contradict it",
+  "cost": 0.0002062
+ },
+ "deepseek-v4.1-flash@provider-a|a0b69c26-93e8-5091-98b9-8afcf1b8ea6b": {
+  "correct": true,
+  "reason": "The assistant concludes the business is in appetite for the property LOB, matching the reference's 'Yes, in appetite' decision, with consistent supporting reasoning (NAICS 533110, appetite guide retur",
+  "cost": 0.0002337
+ },
+ "deepseek-v4-pro@provider-a|a0b69c26-93e8-5091-98b9-8afcf1b8ea6b": {
+  "correct": true,
+  "reason": "The assistant concludes 'Yes, in appetite' for the property LOB, matching the reference answer's yes decision for that line of business.",
+  "cost": 0.0002205
+ },
+ "glm-5.3@provider-a|a0b69c26-93e8-5091-98b9-8afcf1b8ea6b": {
+  "correct": true,
+  "reason": "The assistant's final answer states the company is in appetite for the property LOB, matching the reference's 'Yes, in appetite' conclusion, with extra explanation that does not change the decision.",
+  "cost": 0.0003078
+ },
+ "sonnet-5.5|a2e6e12a-afea-50fd-94e4-6739bb15b851": {
+  "correct": false,
+  "reason": "no final answer at this step",
+  "cost": 0
+ },
+ "opus-5.5|a2e6e12a-afea-50fd-94e4-6739bb15b851": {
+  "correct": false,
+  "reason": "no final answer at this step",
+  "cost": 0
+ },
+ "haiku-5.5|a2e6e12a-afea-50fd-94e4-6739bb15b851": {
+  "correct": true,
+  "reason": "The assistant concludes the business is not in appetite for the property LOB, matching the reference's 'No' decision, and does not hedge between conclusions.",
+  "cost": 0.0002234
+ },
+ "gpt-6-luna|a2e6e12a-afea-50fd-94e4-6739bb15b851": {
+  "correct": false,
+  "reason": "no final answer at this step",
+  "cost": 0
+ },
+ "gpt-6.1-sol|a2e6e12a-afea-50fd-94e4-6739bb15b851": {
+  "correct": false,
+  "reason": "no final answer at this step",
+  "cost": 0
+ },
+ "deepseek-v4.1-flash@provider-a|a2e6e12a-afea-50fd-94e4-6739bb15b851": {
+  "correct": false,
+  "reason": "no final answer at this step",
+  "cost": 0
+ },
+ "deepseek-v4-pro@provider-a|a2e6e12a-afea-50fd-94e4-6739bb15b851": {
+  "correct": false,
+  "reason": "no final answer at this step",
+  "cost": 0
+ },
+ "glm-5.3@provider-a|a2e6e12a-afea-50fd-94e4-6739bb15b851": {
+  "correct": false,
+  "reason": "no final answer at this step",
+  "cost": 0
+ },
+ "sonnet-5.5|52d9e7f7-ed44-5245-9bac-7f3494e8a6ba": {
+  "correct": true,
+  "reason": "The assistant recommends $1,000,000 per occurrence and $2,000,000 aggregate, matching the reference's per-incident and aggregate limits, with the conclusion unhedged.",
+  "cost": 0.0002492
+ },
+ "opus-5.5|52d9e7f7-ed44-5245-9bac-7f3494e8a6ba": {
+  "correct": true,
+  "reason": "The assistant's final answer recommends a $1,000,000 per-occurrence limit and $2,000,000 aggregate, matching the reference's dollar amounts and conclusion.",
+  "cost": 0.00027780000000000003
+ },
+ "haiku-5.5|52d9e7f7-ed44-5245-9bac-7f3494e8a6ba": {
+  "correct": false,
+  "reason": "The limits match, but the assistant adds a $1,000 deductible not specified in the reference.",
+  "cost": 0.0026893000000000004
+ },
+ "gpt-6-luna|52d9e7f7-ed44-5245-9bac-7f3494e8a6ba": {
+  "correct": true,
+  "reason": "The assistant recommends $1 million per occurrence and $2 million aggregate, matching the reference amounts, though its conditional caveat about affiliates adds some hedging.",
+  "cost": 0.0002602
+ },
+ "gpt-6.1-sol|52d9e7f7-ed44-5245-9bac-7f3494e8a6ba": {
+  "correct": true,
+  "reason": "The assistant recommends $1 million per occurrence and $2 million aggregate, matching the reference's dollar amounts and does not hedge between conclusions.",
+  "cost": 0.00019539999999999998
+ },
+ "deepseek-v4.1-flash@provider-a|52d9e7f7-ed44-5245-9bac-7f3494e8a6ba": {
+  "correct": true,
+  "reason": "The assistant's final answer of $1M per-occurrence and $2M aggregate matches the reference's per-incident $1.0M and aggregate $2.0M limits, with no hedging between conclusions.",
+  "cost": 0.00023410000000000003
+ },
+ "deepseek-v4-pro@provider-a|52d9e7f7-ed44-5245-9bac-7f3494e8a6ba": {
+  "correct": true,
+  "reason": "The assistant's final answer of $1 million per occurrence and $2 million aggregate matches the reference's $1.0 million per-incident and $2.0 million aggregate limits, and it does not hedge between co",
+  "cost": 0.0001997
+ },
+ "glm-5.3@provider-a|52d9e7f7-ed44-5245-9bac-7f3494e8a6ba": {
+  "correct": true,
+  "reason": "The assistant recommends a $1 million per-occurrence limit and $2 million aggregate, matching the reference's $1.0M per-incident and $2.0M aggregate limits, and does not hedge between conclusions.",
+  "cost": 0.000217
+ },
+ "sonnet-5.5|a9b30470-5a53-53f1-b019-73bc3c151494": {
+  "correct": true,
+  "reason": "The assistant concludes the business is out of appetite for property, matching the reference's 'No, not in appetite for that LOB' decision, and does not recommend limits or deductibles.",
+  "cost": 0.0002635
+ },
+ "opus-5.5|a9b30470-5a53-53f1-b019-73bc3c151494": {
+  "correct": true,
+  "reason": "The assistant concludes the business is out of appetite for property insurance, matching the reference answer's 'No, not in appetite' decision.",
+  "cost": 0.0002524
+ },
+ "haiku-5.5|a9b30470-5a53-53f1-b019-73bc3c151494": {
+  "correct": true,
+  "reason": "The assistant gives a clear 'Out of appetite' conclusion for the property LOB, matching the reference's 'No, not in appetite' answer, with only a minor caveat about construction classification that do",
+  "cost": 0.0002012
+ },
+ "gpt-6-luna|a9b30470-5a53-53f1-b019-73bc3c151494": {
+  "correct": true,
+  "reason": "The assistant concludes the business is out of appetite for property, matching the reference's 'No, not in appetite' decision, with extra supporting explanation that does not contradict it.",
+  "cost": 0.0001921
+ },
+ "gpt-6.1-sol|a9b30470-5a53-53f1-b019-73bc3c151494": {
+  "correct": true,
+  "reason": "The assistant concludes the applicant is not in appetite for property, matching the reference's 'No, not in appetite for that LOB' answer, and the extra explanation does not change that conclusion.",
+  "cost": 0.00021540000000000003
+ },
+ "deepseek-v4.1-flash@provider-a|a9b30470-5a53-53f1-b019-73bc3c151494": {
+  "correct": true,
+  "reason": "The assistant clearly concludes that the company is out of appetite and does not recommend limits or a deductible.",
+  "cost": 0.0015906
+ },
+ "deepseek-v4-pro@provider-a|a9b30470-5a53-53f1-b019-73bc3c151494": {
+  "correct": true,
+  "reason": "The assistant concludes the business is out of appetite for the property LOB, which matches the reference's 'No, not in appetite' conclusion, and the extra rationale does not change that decision.",
+  "cost": 0.00022310000000000003
+ },
+ "glm-5.3@provider-a|a9b30470-5a53-53f1-b019-73bc3c151494": {
+  "correct": true,
+  "reason": "The assistant concludes the business is out of appetite for property, matching the reference answer's 'No, not in appetite' decision.",
+  "cost": 0.00022370000000000002
+ },
+ "sonnet-5.5|382d5313-bea6-5642-bdc6-6c790d095398": {
+  "correct": true,
+  "reason": "The assistant concludes the property risk is out of appetite, matching the reference's 'not in appetite' answer, with a clear decision rather than hedging (its mention of re-review only conditions on ",
+  "cost": 0.00022930000000000002
+ },
+ "opus-5.5|382d5313-bea6-5642-bdc6-6c790d095398": {
+  "correct": true,
+  "reason": "The assistant concludes the motel is out of appetite for property, matching the reference answer's 'No, not in appetite' decision, and does not hedge between conclusions.",
+  "cost": 0.00021700000000000002
+ },
+ "haiku-5.5|382d5313-bea6-5642-bdc6-6c790d095398": {
+  "correct": true,
+  "reason": "The assistant concludes the business is out of appetite for the property line, matching the reference answer's 'No' decision, with supporting rationale.",
+  "cost": 0.00019800000000000002
+ },
+ "gpt-6-luna|382d5313-bea6-5642-bdc6-6c790d095398": {
+  "correct": false,
+  "reason": "no final answer at this step",
+  "cost": 0
+ },
+ "gpt-6.1-sol|382d5313-bea6-5642-bdc6-6c790d095398": {
+  "correct": false,
+  "reason": "no final answer at this step",
+  "cost": 0
+ },
+ "deepseek-v4.1-flash@provider-a|382d5313-bea6-5642-bdc6-6c790d095398": {
+  "correct": true,
+  "reason": "The assistant concludes the risk is out of appetite ('Out of appetite' / decline), matching the reference answer's 'No, not in appetite' for the LOB, and does not hedge between conclusions.",
+  "cost": 0.0002162
+ },
+ "deepseek-v4-pro@provider-a|382d5313-bea6-5642-bdc6-6c790d095398": {
+  "correct": true,
+  "reason": "The assistant concludes the company is out of appetite for the property LOB, matching the reference's 'No' decision, and does not hedge or recommend limits.",
+  "cost": 0.0001533
+ },
+ "glm-5.3@provider-a|382d5313-bea6-5642-bdc6-6c790d095398": {
+  "correct": false,
+  "reason": "no final answer at this step",
+  "cost": 0
+ },
+ "sonnet-5.5|7f628563-90b9-5b86-b46c-c519c199135a": {
+  "correct": true,
+  "reason": "The assistant clearly concludes that the company is in appetite for the requested line of business, matching the reference.",
+  "cost": 0.0022925
+ },
+ "opus-5.5|7f628563-90b9-5b86-b46c-c519c199135a": {
+  "correct": true,
+  "reason": "The assistant concludes the company is in appetite for property, matching the reference's 'Yes, in appetite' answer, though it hedges somewhat with a pending construction-class confirmation.",
+  "cost": 0.0002536
+ },
+ "haiku-5.5|7f628563-90b9-5b86-b46c-c519c199135a": {
+  "correct": false,
+  "reason": "no final answer at this step",
+  "cost": 0
+ },
+ "gpt-6-luna|7f628563-90b9-5b86-b46c-c519c199135a": {
+  "correct": false,
+  "reason": "no final answer at this step",
+  "cost": 0
+ },
+ "gpt-6.1-sol|7f628563-90b9-5b86-b46c-c519c199135a": {
+  "correct": false,
+  "reason": "no final answer at this step",
+  "cost": 0
+ },
+ "deepseek-v4.1-flash@provider-a|7f628563-90b9-5b86-b46c-c519c199135a": {
+  "correct": true,
+  "reason": "The assistant concludes the risk is in appetite, which matches the reference's yes answer, and its added caveat about confirming construction type is extra explanation rather than a hedge between conc",
+  "cost": 0.00022830000000000002
+ },
+ "deepseek-v4-pro@provider-a|7f628563-90b9-5b86-b46c-c519c199135a": {
+  "correct": true,
+  "reason": "The assistant concludes the company is in appetite for property, matching the reference answer's 'Yes, in appetite' for that LOB.",
+  "cost": 0.0001981
+ },
+ "glm-5.3@provider-a|7f628563-90b9-5b86-b46c-c519c199135a": {
+  "correct": false,
+  "reason": "no final answer at this step",
+  "cost": 0
+ },
+ "sonnet-5.5|ace0e0a0-a364-5f23-b921-7afe87956c15": {
+  "correct": true,
+  "reason": "The assistant gives a clear 'Out of appetite' conclusion for property, matching the reference's 'no'; its conditional note about possible Type I/II buildings is a caveat rather than a competing conclu",
+  "cost": 0.0004074
+ },
+ "opus-5.5|ace0e0a0-a364-5f23-b921-7afe87956c15": {
+  "correct": true,
+  "reason": "The assistant concludes the company is out of appetite for property, matching the reference's 'No' decision on the LOB, and gives no conflicting recommendation.",
+  "cost": 0.00027840000000000005
+ },
+ "haiku-5.5|ace0e0a0-a364-5f23-b921-7afe87956c15": {
+  "correct": true,
+  "reason": "The assistant concludes the company is out of appetite for property, matching the reference's 'No, not in appetite' answer, and does not hedge with a contrary conclusion.",
+  "cost": 0.0002249
+ },
+ "gpt-6-luna|ace0e0a0-a364-5f23-b921-7afe87956c15": {
+  "correct": true,
+  "reason": "The assistant concludes the company is out of appetite for property coverage, which matches the reference's 'No' decision, and it does not hedge between conclusions.",
+  "cost": 0.00025509999999999997
+ },
+ "gpt-6.1-sol|ace0e0a0-a364-5f23-b921-7afe87956c15": {
+  "correct": true,
+  "reason": "The assistant concludes the company is out of appetite for property coverage, matching the reference's 'No' decision, and does not recommend limits or deductibles.",
+  "cost": 0.0001997
+ },
+ "deepseek-v4.1-flash@provider-a|ace0e0a0-a364-5f23-b921-7afe87956c15": {
+  "correct": true,
+  "reason": "The assistant concludes the property application is out of appetite, matching the reference's 'No, not in appetite' answer, with a clear single decision and supporting rationale.",
+  "cost": 0.0002117
+ },
+ "deepseek-v4-pro@provider-a|ace0e0a0-a364-5f23-b921-7afe87956c15": {
+  "correct": true,
+  "reason": "The assistant concludes the company is out of appetite, matching the reference's 'not in appetite' decision, and does not recommend limits or deductibles.",
+  "cost": 0.0002605
+ },
+ "glm-5.3@provider-a|ace0e0a0-a364-5f23-b921-7afe87956c15": {
+  "correct": true,
+  "reason": "The assistant concludes the company is out of appetite for property, matching the reference's 'No, not in appetite for that LOB' decision, and does not recommend limits or deductibles.",
+  "cost": 0.00019460000000000001
+ },
+ "sonnet-5.5|08cb019b-db08-582b-909d-3009cf7d067a": {
+  "correct": true,
+  "reason": "The assistant's final answer is that the property line is out of appetite, which matches the reference's 'not in appetite' conclusion; the conditional offer to reconsider does not hedge the decision.",
+  "cost": 0.0003346
+ },
+ "opus-5.5|08cb019b-db08-582b-909d-3009cf7d067a": {
+  "correct": true,
+  "reason": "The assistant reached the same conclusion as the reference (not in appetite for the LOB, Property) and clearly stated it is out of appetite, with explanation that does not contradict it.",
+  "cost": 0.0002077
+ },
+ "haiku-5.5|08cb019b-db08-582b-909d-3009cf7d067a": {
+  "correct": true,
+  "reason": "The assistant gives a clear 'out of appetite' conclusion matching the reference's 'not in appetite' answer, without hedging between multiple conclusions.",
+  "cost": 0.0002432
+ },
+ "gpt-6-luna|08cb019b-db08-582b-909d-3009cf7d067a": {
+  "correct": false,
+  "reason": "no final answer at this step",
+  "cost": 0
+ },
+ "gpt-6.1-sol|08cb019b-db08-582b-909d-3009cf7d067a": {
+  "correct": false,
+  "reason": "no final answer at this step",
+  "cost": 0
+ },
+ "deepseek-v4.1-flash@provider-a|08cb019b-db08-582b-909d-3009cf7d067a": {
+  "correct": false,
+  "reason": "no final answer at this step",
+  "cost": 0
+ },
+ "deepseek-v4-pro@provider-a|08cb019b-db08-582b-909d-3009cf7d067a": {
+  "correct": true,
+  "reason": "The assistant concludes the risk is out of appetite, matching the reference's 'No, not in appetite' decision without hedging.",
+  "cost": 0.00015069999999999998
+ },
+ "glm-5.3@provider-a|08cb019b-db08-582b-909d-3009cf7d067a": {
+  "correct": true,
+  "reason": "The assistant concludes the company is out of appetite for the property LOB, matching the reference's 'No, not in appetite' answer, and does not hedge or recommend limits.",
+  "cost": 0.00024029999999999999
+ },
+ "sonnet-5.5|8dd3f8c0-7639-5e07-9581-b49ef53643cd": {
+  "correct": true,
+  "reason": "The assistant concludes the applicant is in appetite for Auto, matching the reference's 'Yes, in appetite' answer, though it adds extra details like limits and deductibles that the rules permit as ext",
+  "cost": 0.0002944
+ },
+ "opus-5.5|8dd3f8c0-7639-5e07-9581-b49ef53643cd": {
+  "correct": true,
+  "reason": "The assistant concludes the applicant is in appetite for auto in Kansas, matching the reference's 'Yes, in appetite for that LOB'; the extra deductible and limits commentary does not contradict the co",
+  "cost": 0.00028470000000000004
+ },
+ "haiku-5.5|8dd3f8c0-7639-5e07-9581-b49ef53643cd": {
+  "correct": true,
+  "reason": "The assistant concludes the application is in appetite for auto in Kansas, matching the reference's 'Yes' answer, with a clear decision and no hedging between conclusions (the caveat is conditional ex",
+  "cost": 0.000248
+ },
+ "gpt-6-luna|8dd3f8c0-7639-5e07-9581-b49ef53643cd": {
+  "correct": false,
+  "reason": "no final answer at this step",
+  "cost": 0
+ },
+ "gpt-6.1-sol|8dd3f8c0-7639-5e07-9581-b49ef53643cd": {
+  "correct": true,
+  "reason": "The assistant gives a clear 'Yes' that the company is in appetite for auto, matching the reference answer's conclusion without hedging between alternatives.",
+  "cost": 0.0002642
+ },
+ "deepseek-v4.1-flash@provider-a|8dd3f8c0-7639-5e07-9581-b49ef53643cd": {
+  "correct": true,
+  "reason": "The assistant concludes the business is in appetite for auto, matching the reference answer of 'Yes, in appetite for that LOB.'",
+  "cost": 0.0002804
+ },
+ "deepseek-v4-pro@provider-a|8dd3f8c0-7639-5e07-9581-b49ef53643cd": {
+  "correct": true,
+  "reason": "The assistant's conclusion (yes, in appetite) matches the reference, and its added NAICS and size-standard reasoning is extra explanation that doesn't contradict it.",
+  "cost": 0.0002401
+ },
+ "glm-5.3@provider-a|8dd3f8c0-7639-5e07-9581-b49ef53643cd": {
+  "correct": true,
+  "reason": "The assistant's conclusion that the company is in appetite for the auto LOB ('Yes') matches the reference answer; the extra classification and limit details are supplementary explanation and do not co",
+  "cost": 0.0002475
+ },
+ "sonnet-5.5|c68a2432-160c-5f94-bb4c-9f487ce2eb27": {
+  "correct": true,
+  "reason": "The assistant concludes the company is in appetite for general liability in New York, matching the reference answer of 'Yes, in appetite for that LOB.'",
+  "cost": 0.0002139
+ },
+ "opus-5.5|c68a2432-160c-5f94-bb4c-9f487ce2eb27": {
+  "correct": true,
+  "reason": "The assistant concludes the company is in appetite for general liability in New York, matching the reference's yes answer, and gives no hedged alternative conclusion.",
+  "cost": 0.0003063
+ },
+ "haiku-5.5|c68a2432-160c-5f94-bb4c-9f487ce2eb27": {
+  "correct": true,
+  "reason": "The assistant concludes the company is in appetite for general liability, matching the reference's 'Yes, in appetite' decision for that LOB.",
+  "cost": 0.0003403
+ },
+ "gpt-6-luna|c68a2432-160c-5f94-bb4c-9f487ce2eb27": {
+  "correct": true,
+  "reason": "The assistant gives a clear 'in appetite' conclusion matching the reference's Yes; the conditional 'assuming' phrasing is a caveat, not a hedge between conclusions.",
+  "cost": 0.0002783
+ },
+ "gpt-6.1-sol|c68a2432-160c-5f94-bb4c-9f487ce2eb27": {
+  "correct": false,
+  "reason": "no final answer at this step",
+  "cost": 0
+ },
+ "deepseek-v4.1-flash@provider-a|c68a2432-160c-5f94-bb4c-9f487ce2eb27": {
+  "correct": false,
+  "reason": "no final answer at this step",
+  "cost": 0
+ },
+ "deepseek-v4-pro@provider-a|c68a2432-160c-5f94-bb4c-9f487ce2eb27": {
+  "correct": true,
+  "reason": "The assistant's conclusion, that the company is in appetite for general liability, matches the reference's 'Yes, in appetite' decision, and the extra NAICS and small-business detail does not contradic",
+  "cost": 0.00023349999999999998
+ },
+ "glm-5.3@provider-a|c68a2432-160c-5f94-bb4c-9f487ce2eb27": {
+  "correct": false,
+  "reason": "no final answer at this step",
+  "cost": 0
+ },
+ "sonnet-5.5|2cf36dca-8ac4-580c-957e-b24883916224": {
+  "correct": true,
+  "reason": "The assistant identifies exactly the six lines of business in appetite: general liability, workers compensation, property, auto, bop, and cyber.",
+  "cost": 0.0028797999999999996
+ },
+ "opus-5.5|2cf36dca-8ac4-580c-957e-b24883916224": {
+  "correct": true,
+  "reason": "The assistant recommends the same six in-appetite lines of business as the reference.",
+  "cost": 0.0026849
+ },
+ "haiku-5.5|2cf36dca-8ac4-580c-957e-b24883916224": {
+  "correct": false,
+  "reason": "no final answer at this step",
+  "cost": 0
+ },
+ "gpt-6-luna|2cf36dca-8ac4-580c-957e-b24883916224": {
+  "correct": true,
+  "reason": "The assistant identifies all six lines of business as in appetite, matching the reference set.",
+  "cost": 0.0023959000000000003
+ },
+ "gpt-6.1-sol|2cf36dca-8ac4-580c-957e-b24883916224": {
+  "correct": false,
+  "reason": "unparseable judge reply: {\"correct\": true, \"reason\": \"The assistant names exactly the six reference lines (general liability plus workers compens",
+  "cost": 0.0005568000000000001
+ },
+ "deepseek-v4.1-flash@provider-a|2cf36dca-8ac4-580c-957e-b24883916224": {
+  "correct": true,
+  "reason": "The assistant recommends exactly the six lines in the reference (general liability plus workers compensation, property, auto, BOP, and cyber), and the extra limit and deductible detail is supplementar",
+  "cost": 0.00038449999999999997
+ },
+ "deepseek-v4-pro@provider-a|2cf36dca-8ac4-580c-957e-b24883916224": {
+  "correct": true,
+  "reason": "The assistant recommends workers compensation, property, general liability, auto, cyber, and BOP, which matches the reference's set of in-appetite lines (general liability plus the other five).",
+  "cost": 0.0002491
+ },
+ "glm-5.3@provider-a|2cf36dca-8ac4-580c-957e-b24883916224": {
+  "correct": true,
+  "reason": "The answer identifies exactly the six in-appetite lines of business specified in the reference, including general liability.",
+  "cost": 0.0023916
+ },
+ "sonnet-5.5|a1b51648-39ef-552d-884c-c52b3d437ee6": {
+  "correct": true,
+  "reason": "The assistant identifies all six lines as in appetite, matching auto plus the five additional lines in the reference.",
+  "cost": 0.0031443
+ },
+ "opus-5.5|a1b51648-39ef-552d-884c-c52b3d437ee6": {
+  "correct": true,
+  "reason": "The assistant names exactly the six lines in the reference (workers compensation, property, general liability, auto, cyber, BOP) as in appetite, and the extra limits and deductible detail does not con",
+  "cost": 0.0005376000000000001
+ },
+ "haiku-5.5|a1b51648-39ef-552d-884c-c52b3d437ee6": {
+  "correct": true,
+  "reason": "The assistant recommends exactly the six lines (workers comp, property, GL, auto, cyber, BOP) that the reference identifies as in appetite, with no extra or missing lines and no hedging between conclu",
+  "cost": 0.0005507999999999999
+ },
+ "gpt-6-luna|a1b51648-39ef-552d-884c-c52b3d437ee6": {
+  "correct": false,
+  "reason": "The reference lists workers compensation as in appetite alongside property, general liability, BOP, cyber, and auto, but the assistant excludes workers compensation based on a payroll limit, so its se",
+  "cost": 0.00027370000000000004
+ },
+ "gpt-6.1-sol|a1b51648-39ef-552d-884c-c52b3d437ee6": {
+  "correct": true,
+  "reason": "The assistant names all six lines (general liability, property, auto, workers compensation, cyber, BOP), matching the reference's full in-appetite set, with no hedging between conclusions.",
+  "cost": 0.0003989
+ },
+ "deepseek-v4.1-flash@provider-a|a1b51648-39ef-552d-884c-c52b3d437ee6": {
+  "correct": false,
+  "reason": "no final answer at this step",
+  "cost": 0
+ },
+ "deepseek-v4-pro@provider-a|a1b51648-39ef-552d-884c-c52b3d437ee6": {
+  "correct": false,
+  "reason": "no final answer at this step",
+  "cost": 0
+ },
+ "glm-5.3@provider-a|a1b51648-39ef-552d-884c-c52b3d437ee6": {
+  "correct": true,
+  "reason": "The assistant recommends exactly the reference's set of lines (workers compensation, property, general liability, auto, cyber, BOP) and does not decline, so it matches the reference's conclusion.",
+  "cost": 0.0004014
+ },
+ "sonnet-5.5|c161a65a-57ef-5aa4-a079-1aabb50d26c4": {
+  "correct": true,
+  "reason": "The assistant's final answer is 'Yes' for workers' compensation in appetite, matching the reference's yes decision for that LOB.",
+  "cost": 0.0002506
+ },
+ "opus-5.5|c161a65a-57ef-5aa4-a079-1aabb50d26c4": {
+  "correct": true,
+  "reason": "The assistant concludes Yes, in appetite for workers' compensation in Florida, matching the reference's yes decision for that LOB.",
+  "cost": 0.0002026
+ },
+ "haiku-5.5|c161a65a-57ef-5aa4-a079-1aabb50d26c4": {
+  "correct": false,
+  "reason": "no final answer at this step",
+  "cost": 0
+ },
+ "gpt-6-luna|c161a65a-57ef-5aa4-a079-1aabb50d26c4": {
+  "correct": true,
+  "reason": "The assistant concludes the company is in appetite for workers' compensation, matching the reference's yes, though it hedges with 'likely' and 'assuming'.",
+  "cost": 0.00030629999999999996
+ },
+ "gpt-6.1-sol|c161a65a-57ef-5aa4-a079-1aabb50d26c4": {
+  "correct": false,
+  "reason": "no final answer at this step",
+  "cost": 0
+ },
+ "deepseek-v4.1-flash@provider-a|c161a65a-57ef-5aa4-a079-1aabb50d26c4": {
+  "correct": false,
+  "reason": "no final answer at this step",
+  "cost": 0
+ },
+ "deepseek-v4-pro@provider-a|c161a65a-57ef-5aa4-a079-1aabb50d26c4": {
+  "correct": true,
+  "reason": "The assistant concludes the company is in appetite ('In appetite'), matching the reference's yes answer for the LOB, with no hedging between conclusions.",
+  "cost": 0.0002319
+ },
+ "glm-5.3@provider-a|c161a65a-57ef-5aa4-a079-1aabb50d26c4": {
+  "correct": true,
+  "reason": "The assistant concludes the company is in appetite for workers' compensation in Florida, matching the reference's 'Yes, in appetite' decision, with extra supporting explanation that does not contradic",
+  "cost": 0.0002302
+ },
+ "sonnet-5.5|12a041c5-fb98-5e57-82d2-1d95256fd72c": {
+  "correct": true,
+  "reason": "The assistant recommends exactly the reference's set of lines (workers compensation, property, general liability, auto, cyber, besides BOP) and states they are in appetite, matching the reference conc",
+  "cost": 0.0003307
+ },
+ "opus-5.5|12a041c5-fb98-5e57-82d2-1d95256fd72c": {
+  "correct": true,
+  "reason": "The assistant recommends exactly the reference's set of lines (workers compensation, property, general liability, auto, cyber in addition to BOP) and does not state the business is out of appetite, so",
+  "cost": 0.0003198
+ },
+ "haiku-5.5|12a041c5-fb98-5e57-82d2-1d95256fd72c": {
+  "correct": true,
+  "reason": "The assistant recommends exactly the six lines of business in the reference and correctly states they are in appetite.",
+  "cost": 0.0025749
+ },
+ "gpt-6-luna|12a041c5-fb98-5e57-82d2-1d95256fd72c": {
+  "correct": false,
+  "reason": "no final answer at this step",
+  "cost": 0
+ },
+ "gpt-6.1-sol|12a041c5-fb98-5e57-82d2-1d95256fd72c": {
+  "correct": false,
+  "reason": "unparseable judge reply: {\"correct\": true, \"reason\": \"The assistant identifies",
+  "cost": 0.0005523
+ },
+ "deepseek-v4.1-flash@provider-a|12a041c5-fb98-5e57-82d2-1d95256fd72c": {
+  "correct": true,
+  "reason": "The assistant recommends the same five lines (workers compensation, property, general liability, auto, cyber) in addition to BOP as the reference requires, matching the reference's set exactly.",
+  "cost": 0.0003256
+ },
+ "deepseek-v4-pro@provider-a|12a041c5-fb98-5e57-82d2-1d95256fd72c": {
+  "correct": true,
+  "reason": "The assistant recommends exactly the reference set of other lines (workers compensation, property, general liability, auto, cyber) in addition to bop, matching the reference's conclusion, with extra e",
+  "cost": 0.0002379
+ },
+ "glm-5.3@provider-a|12a041c5-fb98-5e57-82d2-1d95256fd72c": {
+  "correct": true,
+  "reason": "The assistant names exactly the reference's set of cross-sell lines (workers compensation, property, general liability, auto, cyber) and does not recommend bop as a cross-sell, matching the in-appetit",
+  "cost": 0.00036720000000000004
+ },
+ "sonnet-5.5|38737533-c2eb-5273-8262-193e2244a31f": {
+  "correct": true,
+  "reason": "The assistant recommends exactly the five additional lines in appetite and acknowledges cyber is already being quoted.",
+  "cost": 0.0028308
+ },
+ "opus-5.5|38737533-c2eb-5273-8262-193e2244a31f": {
+  "correct": true,
+  "reason": "The assistant recommends exactly the reference's set of lines (workers compensation, property, general liability, auto, and BOP) besides cyber, and its extra NAICS and limit details don't contradict t",
+  "cost": 0.0004387000000000001
+ },
+ "haiku-5.5|38737533-c2eb-5273-8262-193e2244a31f": {
+  "correct": true,
+  "reason": "The assistant recommends exactly the reference's set of lines (workers' compensation, property, general liability, auto, and BOP) alongside cyber, and does not contradict the reference's in-appetite c",
+  "cost": 0.0005085000000000001
+ },
+ "gpt-6-luna|38737533-c2eb-5273-8262-193e2244a31f": {
+  "correct": true,
+  "reason": "The assistant recommends exactly the five additional lines of business in the reference, treating cyber as already being quoted.",
+  "cost": 0.0025223000000000003
+ },
+ "gpt-6.1-sol|38737533-c2eb-5273-8262-193e2244a31f": {
+  "correct": false,
+  "reason": "unparseable judge reply: {\"correct\": false, \"reason\": \"The reference recommends all",
+  "cost": 0.0005637999999999999
+ },
+ "deepseek-v4.1-flash@provider-a|38737533-c2eb-5273-8262-193e2244a31f": {
+  "correct": true,
+  "reason": "The answer recommends exactly the five additional lines of business in the reference and states that all are in appetite.",
+  "cost": 0.0030730999999999996
+ },
+ "deepseek-v4-pro@provider-a|38737533-c2eb-5273-8262-193e2244a31f": {
+  "correct": false,
+  "reason": "no final answer at this step",
+  "cost": 0
+ },
+ "glm-5.3@provider-a|38737533-c2eb-5273-8262-193e2244a31f": {
+  "correct": true,
+  "reason": "The assistant names the same five in-appetite lines (workers compensation, property, general liability, auto, BOP) as the reference, excluding cyber, and does not declare the business out of appetite.",
+  "cost": 0.0003398
+ },
+ "sonnet-5.5|2c3e0758-f543-5007-ac96-b3b2537cb7a7": {
+  "correct": true,
+  "reason": "The assistant recommends exactly cyber, workers compensation, bop, property, and auto, matching the reference.",
+  "cost": 0.0026783
+ },
+ "opus-5.5|2c3e0758-f543-5007-ac96-b3b2537cb7a7": {
+  "correct": true,
+  "reason": "The assistant recommends exactly workers compensation, property, auto, and BOP alongside cyber, matching the reference set, and it correctly treats the business as in appetite, so the added limits and",
+  "cost": 0.00046560000000000004
+ },
+ "haiku-5.5|2c3e0758-f543-5007-ac96-b3b2537cb7a7": {
+  "correct": true,
+  "reason": "The assistant names exactly the reference's four additional lines (workers compensation, property, auto, BOP) plus cyber, and the extra rationale does not change that set.",
+  "cost": 0.0003187
+ },
+ "gpt-6-luna|2c3e0758-f543-5007-ac96-b3b2537cb7a7": {
+  "correct": true,
+  "reason": "The assistant names exactly the reference's in-appetite lines (property, workers compensation, auto, BOP, plus cyber), with no extra lines, and does not claim out-of-appetite status, so it matches the",
+  "cost": 0.0002693
+ },
+ "gpt-6.1-sol|2c3e0758-f543-5007-ac96-b3b2537cb7a7": {
+  "correct": true,
+  "reason": "The assistant recommends workers compensation, commercial auto, property, and BOP, exactly the reference's set of other in-appetite lines, and does not recommend general liability.",
+  "cost": 0.00030599999999999996
+ },
+ "deepseek-v4.1-flash@provider-a|2c3e0758-f543-5007-ac96-b3b2537cb7a7": {
+  "correct": false,
+  "reason": "no final answer at this step",
+  "cost": 0
+ },
+ "deepseek-v4-pro@provider-a|2c3e0758-f543-5007-ac96-b3b2537cb7a7": {
+  "correct": false,
+  "reason": "no final answer at this step",
+  "cost": 0
+ },
+ "glm-5.3@provider-a|2c3e0758-f543-5007-ac96-b3b2537cb7a7": {
+  "correct": true,
+  "reason": "The assistant recommends workers compensation, property, auto, and BOP, matching the reference's set of in-appetite lines beyond cyber, and it does not treat the business as wholly out of appetite.",
+  "cost": 0.0004383
+ },
+ "sonnet-5.5|6e566ef1-632b-5d68-a682-40844897a7a9": {
+  "correct": true,
+  "reason": "The assistant recommends workers' compensation, property, auto, cyber and BOP in addition to GL, matching the reference's exact set of lines in appetite with no extras or omissions.",
+  "cost": 0.00038449999999999997
+ },
+ "opus-5.5|6e566ef1-632b-5d68-a682-40844897a7a9": {
+  "correct": true,
+  "reason": "The answer recommends exactly the five additional lines in the reference: workers compensation, property, auto, bop, and cyber.",
+  "cost": 0.0026025
+ },
+ "haiku-5.5|6e566ef1-632b-5d68-a682-40844897a7a9": {
+  "correct": true,
+  "reason": "The assistant names exactly the five non-GL lines in the reference (workers compensation, property, auto, cyber, BOP) and treats the company as in appetite, so the conclusion matches; the added limits",
+  "cost": 0.00041900000000000005
+ },
+ "gpt-6-luna|6e566ef1-632b-5d68-a682-40844897a7a9": {
+  "correct": true,
+  "reason": "The assistant recommends exactly the reference's lines (workers compensation, property, auto, cyber, BOP) alongside general liability, and does not claim the business is out of appetite.",
+  "cost": 0.00036089999999999994
+ },
+ "gpt-6.1-sol|6e566ef1-632b-5d68-a682-40844897a7a9": {
+  "correct": true,
+  "reason": "The answer identifies all five additional in-appetite lines\u2014workers compensation, property, auto, bop, and cyber\u2014with no extra lines.",
+  "cost": 0.0029005999999999997
+ },
+ "deepseek-v4.1-flash@provider-a|6e566ef1-632b-5d68-a682-40844897a7a9": {
+  "correct": false,
+  "reason": "no final answer at this step",
+  "cost": 0
+ },
+ "deepseek-v4-pro@provider-a|6e566ef1-632b-5d68-a682-40844897a7a9": {
+  "correct": true,
+  "reason": "The assistant recommends general liability plus workers compensation, property, auto, cyber, and BOP, exactly matching the reference's set of lines in appetite, and does not hedge on the conclusion.",
+  "cost": 0.00023540000000000003
+ },
+ "glm-5.3@provider-a|6e566ef1-632b-5d68-a682-40844897a7a9": {
+  "correct": true,
+  "reason": "The assistant recommends exactly the reference's set of additional lines (workers compensation, property, auto, bop, cyber) on top of general liability, and does not claim the business is out of appet",
+  "cost": 0.0004148
+ },
+ "sonnet-5.5|c03323b4-0acd-5f70-996d-3f73988dbd9f": {
+  "correct": false,
+  "reason": "no final answer at this step",
+  "cost": 0
+ },
+ "opus-5.5|c03323b4-0acd-5f70-996d-3f73988dbd9f": {
+  "correct": false,
+  "reason": "no final answer at this step",
+  "cost": 0
+ },
+ "haiku-5.5|c03323b4-0acd-5f70-996d-3f73988dbd9f": {
+  "correct": true,
+  "reason": "The assistant concludes the company is in appetite for property, matching the reference's 'Yes, in appetite' answer, and does not hedge between conclusions.",
+  "cost": 0.0002784
+ },
+ "gpt-6-luna|c03323b4-0acd-5f70-996d-3f73988dbd9f": {
+  "correct": true,
+  "reason": "The assistant concludes the company is in appetite for property, matching the reference's yes, though it hedges with 'likely' and a conditional reassessment caveat.",
+  "cost": 0.0003853
+ },
+ "gpt-6.1-sol|c03323b4-0acd-5f70-996d-3f73988dbd9f": {
+  "correct": false,
+  "reason": "no final answer at this step",
+  "cost": 0
+ },
+ "deepseek-v4.1-flash@provider-a|c03323b4-0acd-5f70-996d-3f73988dbd9f": {
+  "correct": false,
+  "reason": "no final answer at this step",
+  "cost": 0
+ },
+ "deepseek-v4-pro@provider-a|c03323b4-0acd-5f70-996d-3f73988dbd9f": {
+  "correct": false,
+  "reason": "no final answer at this step",
+  "cost": 0
+ },
+ "glm-5.3@provider-a|c03323b4-0acd-5f70-996d-3f73988dbd9f": {
+  "correct": false,
+  "reason": "no final answer at this step",
+  "cost": 0
+ },
+ "sonnet-5.5|cad192d5-844b-5e06-b438-d757d5ff6dd3": {
+  "correct": true,
+  "reason": "The assistant concludes the company is in appetite for Property in Colorado, matching the reference's 'Yes, in appetite' answer, with supporting reasoning and no hedging between conclusions.",
+  "cost": 0.0002181
+ },
+ "opus-5.5|cad192d5-844b-5e06-b438-d757d5ff6dd3": {
+  "correct": true,
+  "reason": "The assistant concludes the business is in appetite for property in Colorado, matching the reference's 'Yes, in appetite' answer, with a clear single conclusion and supporting reasoning.",
+  "cost": 0.000223
+ },
+ "haiku-5.5|cad192d5-844b-5e06-b438-d757d5ff6dd3": {
+  "correct": true,
+  "reason": "The assistant concludes the Summit Sports Rentals property application is in appetite, matching the reference answer's 'Yes, in appetite' for the property LOB.",
+  "cost": 0.00021950000000000002
+ },
+ "gpt-6-luna|cad192d5-844b-5e06-b438-d757d5ff6dd3": {
+  "correct": false,
+  "reason": "no final answer at this step",
+  "cost": 0
+ },
+ "gpt-6.1-sol|cad192d5-844b-5e06-b438-d757d5ff6dd3": {
+  "correct": true,
+  "reason": "The assistant concludes the company is in appetite for property in Colorado, matching the reference's 'Yes, in appetite' answer, with a clear single conclusion and supporting explanation.",
+  "cost": 0.00019500000000000002
+ },
+ "deepseek-v4.1-flash@provider-a|cad192d5-844b-5e06-b438-d757d5ff6dd3": {
+  "correct": true,
+  "reason": "The assistant concludes the company is in appetite ('Yes') for the requested LOB (property), matching the reference answer's yes decision, with extra supporting rationale that does not contradict it.",
+  "cost": 0.0001762
+ },
+ "deepseek-v4-pro@provider-a|cad192d5-844b-5e06-b438-d757d5ff6dd3": {
+  "correct": true,
+  "reason": "The assistant gives a clear 'Yes' on appetite, matching the reference's yes/no decision, and it commits to a single line of business without hedging.",
+  "cost": 0.0002976
+ },
+ "glm-5.3@provider-a|cad192d5-844b-5e06-b438-d757d5ff6dd3": {
+  "correct": true,
+  "reason": "The assistant concludes the business is in appetite for property, matching the reference's yes decision, and the extra rationale and recommended terms do not contradict it.",
+  "cost": 0.00040550000000000004
+ },
+ "sonnet-5.5 (rerun B)|14f41abe-4221-5929-be86-b5f3d48f5eff": {
+  "correct": true,
+  "reason": "The assistant concludes the applicant is out of appetite for property, matching the reference's 'No, not in appetite for that LOB' answer, with extra explanation that does not contradict it.",
+  "cost": 0.00030520000000000005
+ },
+ "glm-5.3-flash@provider-a|14f41abe-4221-5929-be86-b5f3d48f5eff": {
+  "correct": true,
+  "reason": "The assistant's conclusion that the company is out of appetite for property matches the reference's 'No, not in appetite' answer, with no hedging between conclusions.",
+  "cost": 0.0002407
+ },
+ "gpt-oss-120b@provider-a|14f41abe-4221-5929-be86-b5f3d48f5eff": {
+  "correct": true,
+  "reason": "The assistant concludes the company is out of appetite for the property line, matching the reference's 'No, not in appetite' decision, and does not recommend limits or deductibles.",
+  "cost": 0.0002137
+ },
+ "qwen3.8-27b@provider-a|14f41abe-4221-5929-be86-b5f3d48f5eff": {
+  "correct": true,
+  "reason": "The assistant concludes the company is out of appetite for the property LOB, matching the reference answer's 'No' decision, and does not hedge or recommend limits.",
+  "cost": 0.0002494
+ },
+ "minimax-m3@provider-a|14f41abe-4221-5929-be86-b5f3d48f5eff": {
+  "correct": true,
+  "reason": "The assistant concludes the risk is out of appetite for the property LOB, which matches the reference's 'No, not in appetite' decision, and it does not hedge.",
+  "cost": 0.0002585
+ },
+ "sonnet-5.5 (rerun B)|df9bd56d-4190-5437-a338-f295213e0669": {
+  "correct": true,
+  "reason": "The assistant concludes the company is in appetite for general liability, matching the reference's 'Yes, in appetite' answer, with no conflicting conclusion.",
+  "cost": 0.0002143
+ },
+ "glm-5.3-flash@provider-a|df9bd56d-4190-5437-a338-f295213e0669": {
+  "correct": true,
+  "reason": "The assistant concludes the company is in appetite (Yes) for general liability, matching the reference's yes decision for that LOB, with no conflicting hedging.",
+  "cost": 0.000192
+ },
+ "gpt-oss-120b@provider-a|df9bd56d-4190-5437-a338-f295213e0669": {
+  "correct": true,
+  "reason": "The assistant concludes the company is in appetite (Yes) for the general liability line, matching the reference answer's yes decision, and does not hedge between conclusions.",
+  "cost": 0.0002778
+ },
+ "qwen3.8-27b@provider-a|df9bd56d-4190-5437-a338-f295213e0669": {
+  "correct": true,
+  "reason": "The assistant concludes the company is in appetite for general liability, matching the reference's 'Yes, in appetite' answer, with no hedging on the decision.",
+  "cost": 0.0001765
+ },
+ "minimax-m3@provider-a|df9bd56d-4190-5437-a338-f295213e0669": {
+  "correct": true,
+  "reason": "The assistant concludes the company is in appetite for general liability, matching the reference's yes, and the added limits, deductible, and rationale are extra detail that does not contradict it.",
+  "cost": 0.000282
+ },
+ "sonnet-5.5 (rerun B)|8933c4f9-d7aa-5c57-ab77-4366935ba1de": {
+  "correct": true,
+  "reason": "The assistant concludes the company is out of appetite for property, matching the reference's 'No' decision, and does not recommend limits or deductibles.",
+  "cost": 0.00024189999999999997
+ },
+ "glm-5.3-flash@provider-a|8933c4f9-d7aa-5c57-ab77-4366935ba1de": {
+  "correct": false,
+  "reason": "no final answer at this step",
+  "cost": 0
+ },
+ "gpt-oss-120b@provider-a|8933c4f9-d7aa-5c57-ab77-4366935ba1de": {
+  "correct": true,
+  "reason": "The assistant concludes the company is out of appetite for property, matching the reference's 'No' answer for that LOB, and the extra rationale does not contradict it.",
+  "cost": 0.00022460000000000004
+ },
+ "qwen3.8-27b@provider-a|8933c4f9-d7aa-5c57-ab77-4366935ba1de": {
+  "correct": false,
+  "reason": "no final answer at this step",
+  "cost": 0
+ },
+ "minimax-m3@provider-a|8933c4f9-d7aa-5c57-ab77-4366935ba1de": {
+  "correct": false,
+  "reason": "no final answer at this step",
+  "cost": 0
+ },
+ "sonnet-5.5 (rerun B)|23cd4ad7-f448-551e-8fb1-cd0810255857": {
+  "correct": true,
+  "reason": "The assistant concludes the company is in appetite for Property, matching the reference answer's 'Yes, in appetite for that LOB' conclusion, with supporting reasoning that does not hedge between concl",
+  "cost": 0.0002155
+ },
+ "glm-5.3-flash@provider-a|23cd4ad7-f448-551e-8fb1-cd0810255857": {
+  "correct": true,
+  "reason": "The assistant concludes the company is in appetite for the property LOB, matching the reference's 'Yes' answer, with a clear single conclusion and a caveat that does not hedge the decision.",
+  "cost": 0.0002345
+ },
+ "gpt-oss-120b@provider-a|23cd4ad7-f448-551e-8fb1-cd0810255857": {
+  "correct": true,
+  "reason": "The assistant affirmatively concludes that the company is in appetite for the specified line of business, matching the reference.",
+  "cost": 0.0024369
+ },
+ "qwen3.8-27b@provider-a|23cd4ad7-f448-551e-8fb1-cd0810255857": {
+  "correct": true,
+  "reason": "The assistant's conclusion that InnovateMark Licensing LLC is in appetite for property matches the reference answer of 'Yes, in appetite for that LOB.'",
+  "cost": 0.0001877
+ },
+ "minimax-m3@provider-a|23cd4ad7-f448-551e-8fb1-cd0810255857": {
+  "correct": true,
+  "reason": "The assistant concludes that the company is in appetite for the specified line of business, matching the reference.",
+  "cost": 0.0022111
+ },
+ "sonnet-5.5 (rerun B)|9c90ef20-ae30-5b2f-8ff5-e75315739bb2": {
+  "correct": true,
+  "reason": "The assistant concludes the business is out of appetite for the property LOB, matching the reference's 'No' decision, and gives a consistent rationale without hedging between conclusions.",
+  "cost": 0.0002138
+ },
+ "glm-5.3-flash@provider-a|9c90ef20-ae30-5b2f-8ff5-e75315739bb2": {
+  "correct": false,
+  "reason": "no final answer at this step",
+  "cost": 0
+ },
+ "gpt-oss-120b@provider-a|9c90ef20-ae30-5b2f-8ff5-e75315739bb2": {
+  "correct": true,
+  "reason": "The assistant concludes the property line is out of appetite, matching the reference answer's 'No, not in appetite for that LOB'; the extra reasoning is acceptable, though it hedges slightly by noting",
+  "cost": 0.0002525
+ },
+ "qwen3.8-27b@provider-a|9c90ef20-ae30-5b2f-8ff5-e75315739bb2": {
+  "correct": true,
+  "reason": "The assistant concludes the company is out of appetite for the property LOB, matching the reference's 'not in appetite' answer, and the extra explanation does not hedge between conclusions.",
+  "cost": 0.00034500000000000004
+ },
+ "minimax-m3@provider-a|9c90ef20-ae30-5b2f-8ff5-e75315739bb2": {
+  "correct": true,
+  "reason": "The assistant concludes the business is out of appetite for the property LOB, matching the reference's 'No, not in appetite' decision, and gives a consistent rationale without hedging.",
+  "cost": 0.000152
+ },
+ "sonnet-5.5 (rerun B)|3f6657c2-6ea8-5fd0-b7ce-5fba141a73b2": {
+  "correct": true,
+  "reason": "The assistant's final answer is NAICS 492210, matching the reference answer's code, with a clear single conclusion and supporting rationale.",
+  "cost": 0.0001641
+ },
+ "glm-5.3-flash@provider-a|3f6657c2-6ea8-5fd0-b7ce-5fba141a73b2": {
+  "correct": false,
+  "reason": "no final answer at this step",
+  "cost": 0
+ },
+ "gpt-oss-120b@provider-a|3f6657c2-6ea8-5fd0-b7ce-5fba141a73b2": {
+  "correct": true,
+  "reason": "The assistant's final answer is NAICS 492210, matching the reference answer's code, with extra rationale that does not conflict with it.",
+  "cost": 0.0001537
+ },
+ "qwen3.8-27b@provider-a|3f6657c2-6ea8-5fd0-b7ce-5fba141a73b2": {
+  "correct": true,
+  "reason": "The assistant's final answer gives NAICS code 492210, matching the reference answer's code exactly.",
+  "cost": 0.0001437
+ },
+ "minimax-m3@provider-a|3f6657c2-6ea8-5fd0-b7ce-5fba141a73b2": {
+  "correct": true,
+  "reason": "The assistant's final answer is NAICS 492210, matching the reference answer's code.",
+  "cost": 0.0001631
+ },
+ "sonnet-5.5 (rerun B)|ee14865b-60ce-576f-8470-4a27341a8919": {
+  "correct": true,
+  "reason": "The assistant concludes the company is in appetite (Georgia property 'Yes'), matching the reference's yes decision, with the reasoning and caveats not contradicting that conclusion.",
+  "cost": 0.00032700000000000003
+ },
+ "glm-5.3-flash@provider-a|ee14865b-60ce-576f-8470-4a27341a8919": {
+  "correct": true,
+  "reason": "The assistant concludes the applicant is in appetite for property in Georgia, matching the reference's 'Yes, in appetite for that LOB' determination, with no hedging between conclusions.",
+  "cost": 0.00021700000000000002
+ },
+ "gpt-oss-120b@provider-a|ee14865b-60ce-576f-8470-4a27341a8919": {
+  "correct": false,
+  "reason": "no final answer at this step",
+  "cost": 0
+ },
+ "qwen3.8-27b@provider-a|ee14865b-60ce-576f-8470-4a27341a8919": {
+  "correct": true,
+  "reason": "The assistant concludes the company is in appetite for property, matching the reference's 'Yes, in appetite for that LOB' outcome, with extra supporting rationale that does not contradict it.",
+  "cost": 0.00018200000000000003
+ },
+ "minimax-m3@provider-a|ee14865b-60ce-576f-8470-4a27341a8919": {
+  "correct": false,
+  "reason": "no final answer at this step",
+  "cost": 0
+ },
+ "sonnet-5.5 (rerun B)|05986f48-11cc-59cf-b347-0c126f0b17c5": {
+  "correct": false,
+  "reason": "no final answer at this step",
+  "cost": 0
+ },
+ "glm-5.3-flash@provider-a|05986f48-11cc-59cf-b347-0c126f0b17c5": {
+  "correct": true,
+  "reason": "The assistant concludes the business is out of appetite for the property LOB, matching the reference answer's 'No, not in appetite' decision.",
+  "cost": 0.0002366
+ },
+ "gpt-oss-120b@provider-a|05986f48-11cc-59cf-b347-0c126f0b17c5": {
+  "correct": true,
+  "reason": "The assistant gives a single clear conclusion that the business is out of appetite for the property LOB, matching the reference's 'No, not in appetite' answer, with no hedging.",
+  "cost": 0.00018209999999999998
+ },
+ "qwen3.8-27b@provider-a|05986f48-11cc-59cf-b347-0c126f0b17c5": {
+  "correct": true,
+  "reason": "The assistant concludes the company is out of appetite for the property LOB, matching the reference answer's 'No, not in appetite' decision.",
+  "cost": 0.0001863
+ },
+ "minimax-m3@provider-a|05986f48-11cc-59cf-b347-0c126f0b17c5": {
+  "correct": false,
+  "reason": "no final answer at this step",
+  "cost": 0
+ },
+ "sonnet-5.5 (rerun B)|534fe068-5936-56f5-afd0-0c7319742fbf": {
+  "correct": true,
+  "reason": "The assistant concludes the business is in appetite for property, matching the reference's yes/in-appetite answer, though it adds conditional hedging about construction type.",
+  "cost": 0.0002345
+ },
+ "glm-5.3-flash@provider-a|534fe068-5936-56f5-afd0-0c7319742fbf": {
+  "correct": true,
+  "reason": "The assistant concludes the business is in appetite for the property LOB, matching the reference's 'Yes, in appetite' decision, and the extra rationale does not contradict it.",
+  "cost": 0.0002207
+ },
+ "gpt-oss-120b@provider-a|534fe068-5936-56f5-afd0-0c7319742fbf": {
+  "correct": true,
+  "reason": "The assistant concludes the applicant is in appetite for the Property LOB, matching the reference answer's 'Yes, in appetite for that LOB' conclusion.",
+  "cost": 0.0002745
+ },
+ "qwen3.8-27b@provider-a|534fe068-5936-56f5-afd0-0c7319742fbf": {
+  "correct": true,
+  "reason": "The assistant concludes the company is in appetite for property in New York, which matches the reference's 'Yes, in appetite' decision, and the extra rationale and limit recommendations do not contrad",
+  "cost": 0.0003493
+ },
+ "minimax-m3@provider-a|534fe068-5936-56f5-afd0-0c7319742fbf": {
+  "correct": false,
+  "reason": "no final answer at this step",
+  "cost": 0
+ },
+ "sonnet-5.5 (rerun B)|81d3d5a0-cc7d-533f-ab00-c9ad05e1dc28": {
+  "correct": false,
+  "reason": "The assistant recommends all six LOBs including property, but the reference says property plus five others (workers comp, GL, auto, BOP, cyber), which matches; however the assistant hedges between two",
+  "cost": 0.0003223
+ },
+ "glm-5.3-flash@provider-a|81d3d5a0-cc7d-533f-ab00-c9ad05e1dc28": {
+  "correct": false,
+  "reason": "no final answer at this step",
+  "cost": 0
+ },
+ "gpt-oss-120b@provider-a|81d3d5a0-cc7d-533f-ab00-c9ad05e1dc28": {
+  "correct": true,
+  "reason": "The assistant recommends exactly the six lines in appetite: property, workers compensation, general liability, auto, bop, and cyber.",
+  "cost": 0.0032234
+ },
+ "qwen3.8-27b@provider-a|81d3d5a0-cc7d-533f-ab00-c9ad05e1dc28": {
+  "correct": true,
+  "reason": "The assistant recommends exactly the six in-appetite lines: property, workers compensation, general liability, auto, bop, and cyber.",
+  "cost": 0.0028648
+ },
+ "minimax-m3@provider-a|81d3d5a0-cc7d-533f-ab00-c9ad05e1dc28": {
+  "correct": true,
+  "reason": "The assistant recommends exactly the six lines in the reference (workers' comp, property, general liability, auto, cyber, BOP), and its extra limit and deductible details don't conflict with the refer",
+  "cost": 0.00037129999999999997
+ },
+ "sonnet-5.5 (rerun B)|a0b69c26-93e8-5091-98b9-8afcf1b8ea6b": {
+  "correct": true,
+  "reason": "The assistant concludes the company is in appetite for property in California, matching the reference's 'Yes, in appetite' answer, though it adds extra explanation and limits that do not contradict th",
+  "cost": 0.000288
+ },
+ "glm-5.3-flash@provider-a|a0b69c26-93e8-5091-98b9-8afcf1b8ea6b": {
+  "correct": true,
+  "reason": "The assistant concludes the company is in appetite (yes) for the property LOB, matching the reference's 'Yes, in appetite' decision, and extra rationale and limit notes are permitted explanation.",
+  "cost": 0.0003223
+ },
+ "gpt-oss-120b@provider-a|a0b69c26-93e8-5091-98b9-8afcf1b8ea6b": {
+  "correct": true,
+  "reason": "The assistant concludes the company is in appetite for Property, matching the reference answer 'Yes, in appetite for that LOB'; the extra limits/deductible and rationale are permissible explanation.",
+  "cost": 0.0003398
+ },
+ "qwen3.8-27b@provider-a|a0b69c26-93e8-5091-98b9-8afcf1b8ea6b": {
+  "correct": true,
+  "reason": "The assistant's final answer 'In appetite' matches the reference's yes/in-appetite conclusion for the LOB, with supporting reasoning that does not contradict it.",
+  "cost": 0.0001953
+ },
+ "minimax-m3@provider-a|a0b69c26-93e8-5091-98b9-8afcf1b8ea6b": {
+  "correct": false,
+  "reason": "no final answer at this step",
+  "cost": 0
+ },
+ "sonnet-5.5 (rerun B)|a2e6e12a-afea-50fd-94e4-6739bb15b851": {
+  "correct": true,
+  "reason": "The assistant concludes the business is out of appetite for property, matching the reference's 'No, not in appetite' answer, though its reasoning includes some hedging about a possible change if const",
+  "cost": 0.00023720000000000002
+ },
+ "glm-5.3-flash@provider-a|a2e6e12a-afea-50fd-94e4-6739bb15b851": {
+  "correct": true,
+  "reason": "The assistant concludes the business is out of appetite for the property LOB, matching the reference's 'No, not in appetite for that LOB' answer, with supporting rationale that does not contradict it.",
+  "cost": 0.0002385
+ },
+ "gpt-oss-120b@provider-a|a2e6e12a-afea-50fd-94e4-6739bb15b851": {
+  "correct": false,
+  "reason": "The reference says the company is not in appetite for the property LOB, but the assistant concluded it is in appetite (qualified) for property.",
+  "cost": 0.00015480000000000002
+ },
+ "qwen3.8-27b@provider-a|a2e6e12a-afea-50fd-94e4-6739bb15b851": {
+  "correct": false,
+  "reason": "no final answer at this step",
+  "cost": 0
+ },
+ "minimax-m3@provider-a|a2e6e12a-afea-50fd-94e4-6739bb15b851": {
+  "correct": true,
+  "reason": "The assistant concludes the applicant is out of appetite for the property LOB, matching the reference's 'No, not in appetite' decision without hedging.",
+  "cost": 0.0002462
+ },
+ "sonnet-5.5 (rerun B)|52d9e7f7-ed44-5245-9bac-7f3494e8a6ba": {
+  "correct": true,
+  "reason": "The assistant's final answer recommends the same $1,000,000 per-occurrence and $2,000,000 aggregate auto limits as the reference answer.",
+  "cost": 0.0002385
+ },
+ "glm-5.3-flash@provider-a|52d9e7f7-ed44-5245-9bac-7f3494e8a6ba": {
+  "correct": true,
+  "reason": "The assistant recommends $1M per occurrence and $2M aggregate limits, matching the reference answer's dollar amounts and conclusion that the business is in appetite.",
+  "cost": 0.00028490000000000004
+ },
+ "gpt-oss-120b@provider-a|52d9e7f7-ed44-5245-9bac-7f3494e8a6ba": {
+  "correct": false,
+  "reason": "no final answer at this step",
+  "cost": 0
+ },
+ "qwen3.8-27b@provider-a|52d9e7f7-ed44-5245-9bac-7f3494e8a6ba": {
+  "correct": true,
+  "reason": "The assistant's final answer of $1 million per-occurrence and $2 million aggregate matches the reference limits, and it commits to a single recommendation without hedging between conclusions.",
+  "cost": 0.0002949
+ },
+ "minimax-m3@provider-a|52d9e7f7-ed44-5245-9bac-7f3494e8a6ba": {
+  "correct": false,
+  "reason": "no final answer at this step",
+  "cost": 0
+ },
+ "sonnet-5.5 (rerun B)|a9b30470-5a53-53f1-b019-73bc3c151494": {
+  "correct": true,
+  "reason": "The assistant concludes the business is out of appetite for the property LOB, matching the reference answer's 'No, not in appetite' conclusion, and does not hedge between conclusions.",
+  "cost": 0.0002235
+ },
+ "glm-5.3-flash@provider-a|a9b30470-5a53-53f1-b019-73bc3c151494": {
+  "correct": true,
+  "reason": "The assistant concludes the risk is out of appetite for the property LOB, matching the reference answer's 'No, not in appetite' decision, and gives a clear single conclusion.",
+  "cost": 0.0002542
+ },
+ "gpt-oss-120b@provider-a|a9b30470-5a53-53f1-b019-73bc3c151494": {
+  "correct": true,
+  "reason": "The assistant concludes the applicant is out of appetite for the requested Property line, matching the reference's 'No, not in appetite' determination.",
+  "cost": 0.0002041
+ },
+ "qwen3.8-27b@provider-a|a9b30470-5a53-53f1-b019-73bc3c151494": {
+  "correct": true,
+  "reason": "The assistant's final answer is a clear 'Out of appetite,' matching the reference's 'No, not in appetite' decision, and the added reasoning does not contradict it.",
+  "cost": 0.0002633
+ },
+ "minimax-m3@provider-a|a9b30470-5a53-53f1-b019-73bc3c151494": {
+  "correct": true,
+  "reason": "The assistant concludes the company is out of appetite, matching the reference's 'No, not in appetite' decision for the LOB.",
+  "cost": 0.00017950000000000003
+ },
+ "sonnet-5.5 (rerun B)|382d5313-bea6-5642-bdc6-6c790d095398": {
+  "correct": true,
+  "reason": "The assistant concludes the property line is out of appetite, matching the reference's 'No, not in appetite' answer, and provides extra explanation that does not contradict it.",
+  "cost": 0.0002182
+ },
+ "glm-5.3-flash@provider-a|382d5313-bea6-5642-bdc6-6c790d095398": {
+  "correct": true,
+  "reason": "The assistant gives a clear 'Out of appetite' conclusion matching the reference's 'No, not in appetite,' without recommending limits or deductibles, though it adds a hedge about possible documentation",
+  "cost": 0.0002708
+ },
+ "gpt-oss-120b@provider-a|382d5313-bea6-5642-bdc6-6c790d095398": {
+  "correct": false,
+  "reason": "Although it correctly concludes out of appetite, it introduces coverage limits despite the reference making limits irrelevant.",
+  "cost": 0.0023737999999999997
+ },
+ "qwen3.8-27b@provider-a|382d5313-bea6-5642-bdc6-6c790d095398": {
+  "correct": false,
+  "reason": "no final answer at this step",
+  "cost": 0
+ },
+ "minimax-m3@provider-a|382d5313-bea6-5642-bdc6-6c790d095398": {
+  "correct": true,
+  "reason": "The assistant concludes the business is out of appetite, which matches the reference's 'No, not in appetite' decision, and it commits to that conclusion without hedging.",
+  "cost": 0.00021510000000000002
+ },
+ "sonnet-5.5 (rerun B)|7f628563-90b9-5b86-b46c-c519c199135a": {
+  "correct": true,
+  "reason": "The assistant concludes the business is in appetite, matching the reference answer's 'Yes, in appetite' conclusion, with the hedging limited to a verification note rather than a competing conclusion.",
+  "cost": 0.0002855
+ },
+ "glm-5.3-flash@provider-a|7f628563-90b9-5b86-b46c-c519c199135a": {
+  "correct": false,
+  "reason": "no final answer at this step",
+  "cost": 0
+ },
+ "gpt-oss-120b@provider-a|7f628563-90b9-5b86-b46c-c519c199135a": {
+  "correct": true,
+  "reason": "The assistant clearly concludes that the company is in appetite for the relevant line of business, matching the reference.",
+  "cost": 0.0022358
+ },
+ "qwen3.8-27b@provider-a|7f628563-90b9-5b86-b46c-c519c199135a": {
+  "correct": false,
+  "reason": "The reference says the company is in appetite for the LOB, but the assistant concluded the application is not in appetite (out of appetite for property).",
+  "cost": 0.00016460000000000002
+ },
+ "minimax-m3@provider-a|7f628563-90b9-5b86-b46c-c519c199135a": {
+  "correct": false,
+  "reason": "no final answer at this step",
+  "cost": 0
+ },
+ "sonnet-5.5 (rerun B)|ace0e0a0-a364-5f23-b921-7afe87956c15": {
+  "correct": true,
+  "reason": "The assistant concludes the company is out of appetite for property, matching the reference's 'No, not in appetite' for that LOB, with explanation that does not contradict the decision.",
+  "cost": 0.0002228
+ },
+ "glm-5.3-flash@provider-a|ace0e0a0-a364-5f23-b921-7afe87956c15": {
+  "correct": true,
+  "reason": "The assistant concludes the company is out of appetite for property coverage, matching the reference answer's 'No, not in appetite for that LOB.'",
+  "cost": 0.00021129999999999999
+ },
+ "gpt-oss-120b@provider-a|ace0e0a0-a364-5f23-b921-7afe87956c15": {
+  "correct": true,
+  "reason": "The assistant concludes the applicant is out of appetite for the requested Property line, matching the reference answer's 'No, not in appetite for that LOB.'",
+  "cost": 0.00028649999999999997
+ },
+ "qwen3.8-27b@provider-a|ace0e0a0-a364-5f23-b921-7afe87956c15": {
+  "correct": true,
+  "reason": "The assistant concludes the company is out of appetite for property, which matches the reference's 'No, not in appetite for that LOB' with no hedging.",
+  "cost": 0.0002619
+ },
+ "minimax-m3@provider-a|ace0e0a0-a364-5f23-b921-7afe87956c15": {
+  "correct": false,
+  "reason": "no final answer at this step",
+  "cost": 0
+ },
+ "sonnet-5.5 (rerun B)|08cb019b-db08-582b-909d-3009cf7d067a": {
+  "correct": true,
+  "reason": "The assistant concludes the business is out of appetite for the property line, matching the reference answer's 'No, not in appetite' decision.",
+  "cost": 0.00019340000000000004
+ },
+ "glm-5.3-flash@provider-a|08cb019b-db08-582b-909d-3009cf7d067a": {
+  "correct": true,
+  "reason": "The assistant concludes the applicant is out of appetite and declines, matching the reference's 'No, not in appetite' conclusion without hedging.",
+  "cost": 0.0001901
+ },
+ "gpt-oss-120b@provider-a|08cb019b-db08-582b-909d-3009cf7d067a": {
+  "correct": true,
+  "reason": "The assistant concludes the applicant is out of appetite for the property line, matching the reference's 'No, not in appetite for that LOB' answer, with a consistent rationale.",
+  "cost": 0.0002003
+ },
+ "qwen3.8-27b@provider-a|08cb019b-db08-582b-909d-3009cf7d067a": {
+  "correct": true,
+  "reason": "The assistant concludes the company is out of appetite for property, matching the reference's 'No, not in appetite' decision, with extra explanation that is permitted.",
+  "cost": 0.00019030000000000002
+ },
+ "minimax-m3@provider-a|08cb019b-db08-582b-909d-3009cf7d067a": {
+  "correct": true,
+  "reason": "The assistant concludes the business is out of appetite, matching the reference answer's 'No, not in appetite' decision, and gives no conflicting conclusion or limits recommendation.",
+  "cost": 0.00018800000000000002
+ },
+ "sonnet-5.5 (rerun B)|8dd3f8c0-7639-5e07-9581-b49ef53643cd": {
+  "correct": true,
+  "reason": "The assistant reaches the same 'yes, in appetite' conclusion for auto as the reference, and its added NAICS and policy-term detail is extra explanation that doesn't contradict it.",
+  "cost": 0.0004165
+ },
+ "glm-5.3-flash@provider-a|8dd3f8c0-7639-5e07-9581-b49ef53643cd": {
+  "correct": false,
+  "reason": "no final answer at this step",
+  "cost": 0
+ },
+ "gpt-oss-120b@provider-a|8dd3f8c0-7639-5e07-9581-b49ef53643cd": {
+  "correct": true,
+  "reason": "The assistant concludes the application is in appetite for the auto line, matching the reference answer's 'Yes, in appetite for that LOB.'",
+  "cost": 0.00017800000000000002
+ },
+ "qwen3.8-27b@provider-a|8dd3f8c0-7639-5e07-9581-b49ef53643cd": {
+  "correct": true,
+  "reason": "The assistant's conclusion that the account is in appetite matches the reference's 'Yes,' and it is stated without hedging.",
+  "cost": 0.0002288
+ },
+ "minimax-m3@provider-a|8dd3f8c0-7639-5e07-9581-b49ef53643cd": {
+  "correct": true,
+  "reason": "The assistant concludes the business is in appetite for the auto LOB, matching the reference answer of 'Yes, in appetite'.",
+  "cost": 0.000196
+ },
+ "sonnet-5.5 (rerun B)|c68a2432-160c-5f94-bb4c-9f487ce2eb27": {
+  "correct": true,
+  "reason": "The assistant's conclusion is 'Yes, in appetite' for general liability, matching the reference answer's yes decision for that LOB, with extra supporting explanation that does not contradict it.",
+  "cost": 0.00023079999999999997
+ },
+ "glm-5.3-flash@provider-a|c68a2432-160c-5f94-bb4c-9f487ce2eb27": {
+  "correct": false,
+  "reason": "no final answer at this step",
+  "cost": 0
+ },
+ "gpt-oss-120b@provider-a|c68a2432-160c-5f94-bb4c-9f487ce2eb27": {
+  "correct": true,
+  "reason": "The assistant concludes the company is in appetite, matching the reference's yes decision, and the extra limits and deductible do not contradict it.",
+  "cost": 0.00046140000000000005
+ },
+ "qwen3.8-27b@provider-a|c68a2432-160c-5f94-bb4c-9f487ce2eb27": {
+  "correct": true,
+  "reason": "The assistant concludes 'In appetite' with a yes decision, matching the reference answer's affirmative appetite determination for the LOB.",
+  "cost": 0.00018140000000000002
+ },
+ "minimax-m3@provider-a|c68a2432-160c-5f94-bb4c-9f487ce2eb27": {
+  "correct": false,
+  "reason": "no final answer at this step",
+  "cost": 0
+ },
+ "sonnet-5.5 (rerun B)|2cf36dca-8ac4-580c-957e-b24883916224": {
+  "correct": true,
+  "reason": "The assistant identifies the same six lines of business as in appetite, including all five recommended in addition to general liability.",
+  "cost": 0.0026686
+ },
+ "glm-5.3-flash@provider-a|2cf36dca-8ac4-580c-957e-b24883916224": {
+  "correct": true,
+  "reason": "The assistant recommends exactly the six lines of business in the reference (general liability, workers compensation, property, auto, BOP, cyber) and correctly treats the company as in appetite, so th",
+  "cost": 0.00042810000000000005
+ },
+ "gpt-oss-120b@provider-a|2cf36dca-8ac4-580c-957e-b24883916224": {
+  "correct": true,
+  "reason": "The assistant recommends exactly the six lines in the reference (general liability, workers compensation, property, auto, BOP, cyber) and does not say the business is out of appetite; its extra limits",
+  "cost": 0.00048249999999999996
+ },
+ "qwen3.8-27b@provider-a|2cf36dca-8ac4-580c-957e-b24883916224": {
+  "correct": true,
+  "reason": "The assistant recommends exactly the six lines of business in the reference (general liability, workers compensation, property, auto, cyber, BOP), and the added limits and deductibles don't conflict w",
+  "cost": 0.0003653
+ },
+ "minimax-m3@provider-a|2cf36dca-8ac4-580c-957e-b24883916224": {
+  "correct": true,
+  "reason": "The answer recommends exactly the six in-appetite lines: general liability, workers compensation, property, auto, bop, and cyber.",
+  "cost": 0.0026008
+ },
+ "sonnet-5.5 (rerun B)|a1b51648-39ef-552d-884c-c52b3d437ee6": {
+  "correct": true,
+  "reason": "The assistant recommends exactly the six lines in the reference: auto, workers compensation, property, general liability, bop, and cyber.",
+  "cost": 0.0026938
+ },
+ "glm-5.3-flash@provider-a|a1b51648-39ef-552d-884c-c52b3d437ee6": {
+  "correct": false,
+  "reason": "The assistant excluded workers compensation, but the reference says it is in appetite, so the recommended LOB set does not match the reference's six lines.",
+  "cost": 0.0002721
+ },
+ "gpt-oss-120b@provider-a|a1b51648-39ef-552d-884c-c52b3d437ee6": {
+  "correct": false,
+  "reason": "no final answer at this step",
+  "cost": 0
+ },
+ "qwen3.8-27b@provider-a|a1b51648-39ef-552d-884c-c52b3d437ee6": {
+  "correct": false,
+  "reason": "The assistant recommends excluding workers compensation, whereas the reference says workers compensation is in appetite and should be offered alongside property, GL, BOP, cyber, and auto.",
+  "cost": 0.0002183
+ },
+ "minimax-m3@provider-a|a1b51648-39ef-552d-884c-c52b3d437ee6": {
+  "correct": false,
+  "reason": "no final answer at this step",
+  "cost": 0
+ },
+ "sonnet-5.5 (rerun B)|c161a65a-57ef-5aa4-a079-1aabb50d26c4": {
+  "correct": true,
+  "reason": "The assistant's final conclusion is 'Yes' (in appetite for workers' compensation), matching the reference answer's yes decision for that LOB.",
+  "cost": 0.00026210000000000003
+ },
+ "glm-5.3-flash@provider-a|c161a65a-57ef-5aa4-a079-1aabb50d26c4": {
+  "correct": true,
+  "reason": "The assistant clearly concludes that the company is in appetite for the requested line of business, matching the reference.",
+  "cost": 0.0027189
+ },
+ "gpt-oss-120b@provider-a|c161a65a-57ef-5aa4-a079-1aabb50d26c4": {
+  "correct": true,
+  "reason": "The assistant clearly concludes that the company is in appetite for the requested line of business, matching the reference.",
+  "cost": 0.0021979
+ },
+ "qwen3.8-27b@provider-a|c161a65a-57ef-5aa4-a079-1aabb50d26c4": {
+  "correct": true,
+  "reason": "The assistant concludes the business is in appetite, matching the reference answer's 'Yes, in appetite' decision for the LOB.",
+  "cost": 0.0001609
+ },
+ "minimax-m3@provider-a|c161a65a-57ef-5aa4-a079-1aabb50d26c4": {
+  "correct": true,
+  "reason": "The assistant concludes the company is in appetite, matching the reference's yes decision, and does not hedge; the extra NAICS and deductible details are permitted supporting explanation.",
+  "cost": 0.0002637
+ },
+ "sonnet-5.5 (rerun B)|12a041c5-fb98-5e57-82d2-1d95256fd72c": {
+  "correct": true,
+  "reason": "The assistant names exactly the reference's set of other lines (workers compensation, property, general liability, auto, cyber) in addition to BOP, and its extra conditions and limit details don't cha",
+  "cost": 0.0004561
+ },
+ "glm-5.3-flash@provider-a|12a041c5-fb98-5e57-82d2-1d95256fd72c": {
+  "correct": true,
+  "reason": "The assistant recommends exactly the reference's set of other lines (workers compensation, property, general liability, auto, cyber) alongside bop, with no extra or missing lines and no conflicting co",
+  "cost": 0.0002337
+ },
+ "gpt-oss-120b@provider-a|12a041c5-fb98-5e57-82d2-1d95256fd72c": {
+  "correct": true,
+  "reason": "The assistant recommends exactly the five additional lines in the reference: workers compensation, property, general liability, auto, and cyber.",
+  "cost": 0.0032097
+ },
+ "qwen3.8-27b@provider-a|12a041c5-fb98-5e57-82d2-1d95256fd72c": {
+  "correct": true,
+  "reason": "The answer identifies exactly the five additional in-appetite lines of business listed in the reference.",
+  "cost": 0.0025278
+ },
+ "minimax-m3@provider-a|12a041c5-fb98-5e57-82d2-1d95256fd72c": {
+  "correct": true,
+  "reason": "The assistant names exactly the reference's set of additional lines (property, general liability, workers' compensation, auto, cyber) beyond BOP, and its extra limit and deductible details don't contr",
+  "cost": 0.00035590000000000003
+ },
+ "sonnet-5.5 (rerun B)|38737533-c2eb-5273-8262-193e2244a31f": {
+  "correct": true,
+  "reason": "The answer identifies exactly the five additional lines in appetite and confirms cyber is already being quoted.",
+  "cost": 0.0027179
+ },
+ "glm-5.3-flash@provider-a|38737533-c2eb-5273-8262-193e2244a31f": {
+  "correct": false,
+  "reason": "no final answer at this step",
+  "cost": 0
+ },
+ "gpt-oss-120b@provider-a|38737533-c2eb-5273-8262-193e2244a31f": {
+  "correct": true,
+  "reason": "The assistant recommends exactly the reference's set of additional lines (workers compensation, property, general liability, auto, and BOP), and its extra limits, deductibles, and rationale don't cont",
+  "cost": 0.0004546
+ },
+ "qwen3.8-27b@provider-a|38737533-c2eb-5273-8262-193e2244a31f": {
+  "correct": false,
+  "reason": "unparseable judge reply: ",
+  "cost": 0.0005492
+ },
+ "minimax-m3@provider-a|38737533-c2eb-5273-8262-193e2244a31f": {
+  "correct": true,
+  "reason": "The assistant identifies exactly the five additional in-appetite lines of business specified in the reference.",
+  "cost": 0.0026655000000000003
+ },
+ "sonnet-5.5 (rerun B)|2c3e0758-f543-5007-ac96-b3b2537cb7a7": {
+  "correct": true,
+  "reason": "The assistant recommends exactly workers' compensation, property, auto, and BOP alongside cyber, matching the reference's in-appetite set, and it does not commit to general liability.",
+  "cost": 0.0004896
+ },
+ "glm-5.3-flash@provider-a|2c3e0758-f543-5007-ac96-b3b2537cb7a7": {
+  "correct": true,
+  "reason": "The assistant recommends workers compensation, property, auto, and BOP, which matches the reference set exactly, and it does not hedge or add conflicting conclusions.",
+  "cost": 0.0003983
+ },
+ "gpt-oss-120b@provider-a|2c3e0758-f543-5007-ac96-b3b2537cb7a7": {
+  "correct": true,
+  "reason": "The answer recommends exactly cyber, workers compensation, bop, property, and auto, matching the reference.",
+  "cost": 0.0025005
+ },
+ "qwen3.8-27b@provider-a|2c3e0758-f543-5007-ac96-b3b2537cb7a7": {
+  "correct": true,
+  "reason": "The assistant's recommended set (workers compensation, property, auto, BOP, plus cyber) matches the reference's in-appetite lines exactly, with general liability correctly excluded.",
+  "cost": 0.00026389999999999996
+ },
+ "minimax-m3@provider-a|2c3e0758-f543-5007-ac96-b3b2537cb7a7": {
+  "correct": false,
+  "reason": "no final answer at this step",
+  "cost": 0
+ },
+ "sonnet-5.5 (rerun B)|6e566ef1-632b-5d68-a682-40844897a7a9": {
+  "correct": false,
+  "reason": "unparseable judge reply: ",
+  "cost": 0.0006009000000000001
+ },
+ "glm-5.3-flash@provider-a|6e566ef1-632b-5d68-a682-40844897a7a9": {
+  "correct": false,
+  "reason": "The answer hedges between property and bop instead of unambiguously recommending both required lines.",
+  "cost": 0.0027457999999999996
+ },
+ "gpt-oss-120b@provider-a|6e566ef1-632b-5d68-a682-40844897a7a9": {
+  "correct": true,
+  "reason": "The assistant recommends exactly the reference's set of additional lines (workers compensation, property, auto, bop, cyber) alongside general liability, with an in-appetite conclusion and no out-of-ap",
+  "cost": 0.0003451
+ },
+ "qwen3.8-27b@provider-a|6e566ef1-632b-5d68-a682-40844897a7a9": {
+  "correct": true,
+  "reason": "The answer recommends exactly the five additional lines in appetite and acknowledges the existing general liability coverage.",
+  "cost": 0.0023134
+ },
+ "minimax-m3@provider-a|6e566ef1-632b-5d68-a682-40844897a7a9": {
+  "correct": true,
+  "reason": "The assistant recommends exactly the reference's set of in-appetite lines (workers compensation, property, auto, BOP, cyber) alongside general liability, with no out-of-appetite conclusion or hedging.",
+  "cost": 0.0003738
+ },
+ "sonnet-5.5 (rerun B)|c03323b4-0acd-5f70-996d-3f73988dbd9f": {
+  "correct": true,
+  "reason": "The assistant concludes Autumn Oaks is in appetite for Property, matching the reference's 'Yes' for that LOB, though it hedges with a caveat about a possible alternative classification (lessor code) t",
+  "cost": 0.0003941
+ },
+ "glm-5.3-flash@provider-a|c03323b4-0acd-5f70-996d-3f73988dbd9f": {
+  "correct": true,
+  "reason": "The assistant concludes the company is in appetite for the property LOB, matching the reference's 'Yes, in appetite' answer, though it adds extra limit recommendations and caveats that are permissible",
+  "cost": 0.00037280000000000006
+ },
+ "gpt-oss-120b@provider-a|c03323b4-0acd-5f70-996d-3f73988dbd9f": {
+  "correct": true,
+  "reason": "The assistant concludes the applicant is in appetite for the property line, matching the reference's 'Yes'; the added limits and deductible are extra detail on an in-appetite answer, not a contradicti",
+  "cost": 0.0004037
+ },
+ "qwen3.8-27b@provider-a|c03323b4-0acd-5f70-996d-3f73988dbd9f": {
+  "correct": true,
+  "reason": "The assistant concludes the company is in appetite for property in NC, matching the reference's 'Yes, in appetite' decision for that LOB, with no hedging.",
+  "cost": 0.0002138
+ },
+ "minimax-m3@provider-a|c03323b4-0acd-5f70-996d-3f73988dbd9f": {
+  "correct": true,
+  "reason": "The assistant concludes the company is in appetite for the property LOB, matching the reference's 'Yes', and the added limits and deductible are extra detail the reference does not contradict.",
+  "cost": 0.0002895
+ },
+ "sonnet-5.5 (rerun B)|cad192d5-844b-5e06-b438-d757d5ff6dd3": {
+  "correct": true,
+  "reason": "The assistant's conclusion, 'Yes' for the property LOB in Colorado, matches the reference answer that the company is in appetite for that LOB.",
+  "cost": 0.0002321
+ },
+ "glm-5.3-flash@provider-a|cad192d5-844b-5e06-b438-d757d5ff6dd3": {
+  "correct": true,
+  "reason": "The assistant's conclusion that Summit Sports Rentals is in appetite for the property LOB matches the reference answer of 'Yes, in appetite'.",
+  "cost": 0.0002144
+ },
+ "gpt-oss-120b@provider-a|cad192d5-844b-5e06-b438-d757d5ff6dd3": {
+  "correct": true,
+  "reason": "The assistant concludes the business is in appetite for the property LOB, matching the reference's 'Yes', and does not hedge or contradict it; the extra limits and deductible details are permitted bec",
+  "cost": 0.00041329999999999996
+ },
+ "qwen3.8-27b@provider-a|cad192d5-844b-5e06-b438-d757d5ff6dd3": {
+  "correct": true,
+  "reason": "The assistant concludes the company is in appetite (yes) for the requested LOB, property, matching the reference's 'Yes, in appetite' answer, with the reasoning consistent with that conclusion.",
+  "cost": 0.0001873
+ },
+ "minimax-m3@provider-a|cad192d5-844b-5e06-b438-d757d5ff6dd3": {
+  "correct": false,
+  "reason": "no final answer at this step",
+  "cost": 0
+ }
+}

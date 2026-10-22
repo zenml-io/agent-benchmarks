@@ -1,0 +1,29 @@
+{
+ "model": "glm-5.3-flash@provider-a",
+ "rounds": [
+  {
+   "round": 0,
+   "learn_correct": 79,
+   "learn_n": 84,
+   "kept": true
+  },
+  {
+   "round": 1,
+   "learn_correct": 83,
+   "learn_n": 84,
+   "kept": true,
+   "why": "The failures came from a few recurring causes. In product recommendations, the copilot did not commit to the full set of in-appetite lines. It offered a package policy as an alternative to its component lines, treated \"Qualified\" statuses as uncertain, and declined a line by applying a guideline threshold on its own reading even though the appetite guide marked the line in appetite. The new prompt defines the recommendation as every in-appetite LOB, counts conditional statuses as offerable, and forbids alternatives and self-made exclusions. In another case, the copilot put questions inside a FINAL ANSWER, which ended the conversation before it had the facts it needed. The prompt now requires gathering information in ordinary messages first and never asking questions in the final answer. The copilot also hedged across several values and added a deductible nobody asked for, so the prompt now requires one definitive answer limited to the question asked."
+  },
+  {
+   "round": 2,
+   "learn_correct": 80,
+   "learn_n": 84,
+   "kept": false,
+   "why": "The failure came from the copilot applying the wrong determination to the question. It was asked for product recommendations and found every LOB in appetite. It then ran a small-business size test that nobody had asked for, and used that result to declare the company out of appetite and offer nothing. The old prompt's warning about \"other guideline thresholds\" was too vague to stop this.\n\nThe new prompt makes the copilot first identify the question type, then use only the inputs and checks that type needs. For LOB recommendations, it now states that a size or eligibility result must never remove LOBs, and that the copilot should not ask for employee or revenue figures for that purpose. The size-standard check is limited to questions that actually ask about eligibility. I also added that the copilot should keep its own classification when the underwriter cannot confirm it, and that it should not ask for details the answer does not depend on."
+  }
+ ],
+ "optimizer_cost": 0.10558400000000001,
+ "best_round": 1,
+ "held_correct": 163,
+ "held_n": 167
+}

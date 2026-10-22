@@ -1,0 +1,2090 @@
+{
+ "opus-5.5": {
+  "n": 24,
+  "correct": 8,
+  "rows": [
+   {
+    "task": "codegen-1007",
+    "model": "opus-5.5",
+    "answer": "FINAL ANSWER: Yes. Cranberry Inn & Suites is likely in appetite for the property line, subject to standard underwriting review.\n\nI don't have access to All National's written appetite guidelines here. This answer reflects typical small-commercial property appetite, so please confirm it against our current guide before quoting.\n\n**Why it likely fits:**\n- **Class of business:** A 60-room independent hotel with a restaurant and banquet space is a common, well-understood property class. The kayak tours and bike rentals mainly affect general liability, not property.\n- **Size:** $5.1M in revenue and",
+    "correct": false,
+    "cost": 0.0207262
+   },
+   {
+    "task": "codegen-1028",
+    "model": "opus-5.5",
+    "answer": "FINAL ANSWER: **No. Riverbend Rentals LLC is likely out of appetite for the property line, so I would decline it or refer it to an underwriter.**\n\nI don't have All National's appetite guide in this conversation. This answer reflects standard small-commercial property practice, so please check it against the current guide before acting.\n\n**Why it likely falls outside appetite:**\n\n1. **Wood frame construction on habitational risk.** The buildings are wood frame, the lowest fire-resistance construction class. Apartments are a high fire-frequency occupancy because of tenant cooking, smoking, space",
+    "correct": true,
+    "cost": 0.0243469
+   },
+   {
+    "task": "codegen-1037",
+    "model": "opus-5.5",
+    "answer": "FINAL ANSWER: **Yes. Meadowbrook Inn & Suites is likely in appetite for property**, but I can't see All National's actual appetite guide, so please confirm against it before quoting.\n\n**Why it fits**\n- **Occupancy:** A 55-room independent hotel with dining, pool and meeting space is a standard hospitality property risk. It is not a habitational class that small commercial programs typically exclude, such as apartments or extended-stay motels.\n- **Construction:** Mixed non-combustible and combustible construction, such as tilt-up concrete walls with a glulam roof, usually sits between joisted m",
+    "correct": false,
+    "cost": 0.0232101
+   },
+   {
+    "task": "codegen-1050",
+    "model": "opus-5.5",
+    "answer": "FINAL ANSWER: **No, the Sleepy Fox Bed & Breakfast is not in appetite for the property line of business.** I'm answering from general underwriting principles, not All National's written property guidelines, which I can't see here. Please confirm this against them before declining.\n\n**Why it falls outside property appetite**\n\n- **Wood frame construction:** This is the least fire-resistive construction class. Combustible framing lets fire spread quickly, so losses tend to be severe and often total.\n- **Historic farmhouse:** Older buildings often have outdated wiring, heating or chimneys, and no ",
+    "correct": true,
+    "cost": 0.0233478
+   },
+   {
+    "task": "codegen-1085",
+    "model": "opus-5.5",
+    "answer": "FINAL ANSWER: No. Seaside Sunrise B&B is likely **out of appetite** for the property line.\n\nI don't have access to All National's written property guidelines here, so this is based on standard property underwriting principles. Please confirm against the current appetite guide before quoting or declining.\n\n**Reasons for the decline:**\n\n1. **Wood frame construction (ISO Class 1).** This is the weakest fire-resistive class. A habitational risk with overnight guests, a commercial cooking exposure (gourmet breakfasts) and likely fireplaces or older heating is a poor fit for frame construction.\n2. *",
+    "correct": true,
+    "cost": 0.0188867
+   },
+   {
+    "task": "codegen-1093",
+    "model": "opus-5.5",
+    "answer": "FINAL ANSWER: **Yes, Harvest Moon B&B is in appetite for the property line of business**, subject to standard underwriting review. I can't check All National's actual appetite guide here, so this judgment rests on general small-commercial practice.\n\n**Why it fits**\n- **Class of business:** A small owner-occupied bed-and-breakfast with four guest rooms is a common, generally acceptable small-commercial hospitality risk. Its scale is closer to habitational/residential than to a hotel.\n- **Size:** About $365K in revenue, 3 employees and 4 rooms make this a modest, single-location exposure.\n- **Ow",
+    "correct": false,
+    "cost": 0.021059
+   },
+   {
+    "task": "codegen-1097",
+    "model": "opus-5.5",
+    "answer": "FINAL ANSWER: Yes. Red Maple Motor Lodge is in appetite for the property line of business, subject to standard underwriting review.\n\nI don't have All National's written appetite guide here, so this rests on general small-commercial practice rather than our specific rules.\n\n**Why it fits**\n- **Class of business:** A 70-room motel with on-site amenities is a common, well-understood small-commercial property risk. Lodging is a core class for small business programs.\n- **Size:** $5.8M in revenue and 45 employees put this within small-commercial parameters. It is not a large hotel or resort.\n- **Co",
+    "correct": false,
+    "cost": 0.0224382
+   },
+   {
+    "task": "codegen-1121",
+    "model": "opus-5.5",
+    "answer": "FINAL ANSWER: **No.** I'd treat Summit View Property Group as **out of appetite** for property.\n\nI can't see All National's written underwriting guidelines, so this is based on typical small-commercial property practice. Confirm it against our appetite guide or with a senior underwriter before declining.\n\n**Why it's likely out of appetite**\n\n1. **Habitational class.** The insured owns and leases residential apartment complexes, duplexes and single-family rentals. Small-commercial carriers routinely restrict or exclude habitational risks because of tenant-driven losses: cooking fires, water dam",
+    "correct": true,
+    "cost": 0.0169905
+   },
+   {
+    "task": "codegen-1129",
+    "model": "opus-5.5",
+    "answer": "**FINAL ANSWER: Yes. Maple Ridge Properties is in appetite for the property line of business**, subject to normal underwriting review of the wood-frame construction.\n\nI have no access to All National's appetite guide in this conversation, so this reflects general small-commercial practice. Confirm it against the current guidelines.\n\n**Why it fits**\n- **Class of business:** The company is a lessor and manager of residential buildings (NAICS 531110). Small apartment owners are a core, well-understood property class.\n- **Size:** 44 units across two mid-sized complexes, $2.1M revenue and 11 employ",
+    "correct": false,
+    "cost": 0.0296862
+   },
+   {
+    "task": "codegen-1196",
+    "model": "opus-5.5",
+    "answer": "FINAL ANSWER: Workers compensation, property, general liability, commercial auto and BOP all look in appetite for EasyMed Rentals. I'm judging this from general small-commercial practice, not from All National's written guidelines, which I don't have here, so please confirm each line against our appetite guide.\n\n**Workers compensation: in appetite.**\n- The workforce is 19 people with $740K payroll: delivery drivers, equipment technicians and office/client service staff.\n- These are standard, manageable class exposures.\n- The main concern is lifting injuries during delivery and setup, which is ",
+    "correct": false,
+    "cost": 0.0269455
+   },
+   {
+    "task": "codegen-1344",
+    "model": "opus-5.5",
+    "answer": "FINAL ANSWER: **Workers compensation, property, and cyber are in appetite. General liability and BOP are not.**\n\n**In appetite**\n- **Workers compensation:** Seven employees and $205,000 in payroll is a small, manageable exposure. Delivery, lifting, and tent setup carry moderate strain and fall risk, but that is typical of the equipment rental trades we write.\n- **Property:** Tilt-up concrete with a wood glulam roof is acceptable construction. The contents are rental inventory such as tables, chairs, linens, and tents, with no unusual fire load from hazardous processes.\n- **Cyber:** A small bus",
+    "correct": false,
+    "cost": 0.0164774
+   },
+   {
+    "task": "codegen-378",
+    "model": "opus-5.5",
+    "answer": "FINAL ANSWER: **Workers compensation, general liability, commercial auto, and cyber are in appetite. BOP is not.**\n\nThis answer is based on general small-commercial underwriting practice for a site-preparation contractor (NAICS 238910). I don't have access to All National's written appetite guide, so please confirm against it.\n\n| Line | Appetite | Rationale |\n|---|---|---|\n| **Workers Compensation** | \u2705 In appetite | Excavation and grading are a standard contractor class (e.g., NCCI 6217). Payroll of $1.72M across 29 employees is reasonable. Any demolition or wrecking payroll must be classifie",
+    "correct": false,
+    "cost": 0.025705099999999998
+   },
+   {
+    "task": "codegen-443",
+    "model": "opus-5.5",
+    "answer": "**FINAL ANSWER: Property, General Liability, and Auto are in appetite. Workers Compensation and BOP are not.**\n\n**In appetite**\n\n- **Property:** Yes. The building is non-combustible fire-resistive construction, the best fire class, and a purpose-built museum is a well-protected occupancy. The art collection should be written separately as fine arts (inland marine) or carefully sublimited, but the building and contents risk is acceptable.\n- **General Liability:** Yes. Museum foot traffic, guided tours, workshops and a gift shop are standard premises and products exposures for a cultural institu",
+    "correct": false,
+    "cost": 0.0205072
+   },
+   {
+    "task": "codegen-53",
+    "model": "opus-5.5",
+    "answer": "FINAL ANSWER: Yes, SafeKeep Storage Solutions is in appetite for general liability.\n\n**Why it fits:**\n- **Class of business:** Self-storage (NAICS 531130, lessors of miniwarehouses and self-storage units) is a lessor's risk. Premises liability exposures such as slips and falls, gate and door injuries, and customer access are predictable and well understood.\n- **Size:** $2.2M in revenue, 12 employees and $480K in payroll make this a typical small commercial account.\n- **Risk controls:** The company reports onsite management and strong security, which reduce theft, vandalism and premises inciden",
+    "correct": false,
+    "cost": 0.0190509
+   },
+   {
+    "task": "codegen-959",
+    "model": "opus-5.5",
+    "answer": "FINAL ANSWER: **Yes. Pine Haven Lodge is likely in appetite for the property line**, subject to standard underwriting review. I have no access to All National's written appetite guide here, so this is based on typical small commercial property practice.\n\n**Why it fits**\n- **Class of business:** A 60-room hotel with a restaurant, conference rooms and guest services is a common, well-understood class for small commercial property.\n- **Construction:** Concrete tilt-up walls with a glulam wood roof are generally viewed more favorably than all-frame construction. The heavy timber roof chars rather ",
+    "correct": false,
+    "cost": 0.0225927
+   },
+   {
+    "task": "codegen-962",
+    "model": "opus-5.5",
+    "answer": "FINAL ANSWER: No. Prairie Home Sites LLC is not in appetite for the property line of business. I don't have All National's written guidelines here, so this is a judgment call based on typical small-commercial property appetite and should be confirmed against the actual property guide.\n\n**Reasons:**\n\n1. **Wood frame construction.** The buildings are wood frame, which has low assembly fire resistivity. Property programs for small commercial risks usually want joisted masonry, non-combustible, or better construction, and decline frame buildings in this kind of class.\n2. **The class itself.** The ",
+    "correct": true,
+    "cost": 0.0183869
+   },
+   {
+    "task": "codegen-967",
+    "model": "opus-5.5",
+    "answer": "FINAL ANSWER: No. Open Prairie Real Estate Holdings is not in appetite for the property line of business.\n\nThis is a judgment call. No specific underwriting guidelines were given here, so it should be confirmed against current All National guidelines.\n\n**Reasons for declining property:**\n\n- **Little insurable property.** The business mainly leases bare land: manufactured home pads and grazing parcels. Tenants typically own and insure their own homes, so the insured likely owns little more than a small office, utility hookups and minor outbuildings. That doesn't support a meaningful property po",
+    "correct": false,
+    "cost": 0.0257495
+   },
+   {
+    "task": "codegen-971",
+    "model": "opus-5.5",
+    "answer": "FINAL ANSWER: **No. Sunrise Residential Rentals is likely out of appetite for the property line.**\n\nI can't check All National's written guidelines here, so this is based on standard small-commercial underwriting practice. Please confirm it against the current appetite guide before declining.\n\n**Why it is likely out of appetite:**\n\n1. **Habitational class.** The business is a lessor of residential buildings (NAICS 531110). It owns 22 single-family rentals and two apartment complexes. Small commercial property programs usually restrict or exclude habitational risks because of:\n   - higher fire ",
+    "correct": true,
+    "cost": 0.0167816
+   },
+   {
+    "task": "main-1101",
+    "model": "opus-5.5",
+    "answer": "FINAL ANSWER: **Workers compensation, general liability, auto, and cyber** are in appetite. **BOP is not.**\n\n**In appetite**\n\n- **Workers compensation:** Excavation and grading is a standard contractor class. With 29 employees and $1.72M payroll, the account is a normal size. Texas does not require employers to carry workers comp, but the insured has an exposure we can write. Price for the heavy-equipment hazard, and confirm how much of the payroll is demolition.\n- **General liability:** Excavation, grading, land clearing, septic installation, and stormwater work are acceptable contractor oper",
+    "correct": false,
+    "cost": 0.0186079
+   },
+   {
+    "task": "main-1200",
+    "model": "opus-5.5",
+    "answer": "FINAL ANSWER: Yes. Cranberry Inn & Suites appears to be in appetite for the property line, based on general small-commercial underwriting practice. I don't have access to All National's written appetite guide, so please confirm against it before binding.\n\n**Why it fits**\n- **Class of business:** A 60-room independent hotel with an on-site restaurant and banquet space is a common, well-understood property risk for small-commercial carriers.\n- **Size:** $5.1M in revenue and 38 employees fit a small-business book.\n- **Construction:** Concrete tilt-up walls with a wood glulam roof is a mixed non-c",
+    "correct": false,
+    "cost": 0.0221289
+   },
+   {
+    "task": "main-1208",
+    "model": "opus-5.5",
+    "answer": "**FINAL ANSWER: Property, General Liability, and Auto are in appetite. Workers Compensation and BOP are not.**\n\n**In appetite**\n\n- **Property:** The purpose-built museum has non-combustible, fire-resistive construction, which is the best construction class. That makes the building a favorable property risk. The high-value art collection should be covered by a separate fine arts or inland marine form, not the building and contents policy.\n- **General Liability:** Museums with guided tours, workshops, school partnerships and a gift shop are a standard, manageable premises and products exposure f",
+    "correct": false,
+    "cost": 0.0171346
+   },
+   {
+    "task": "main-1556",
+    "model": "opus-5.5",
+    "answer": "FINAL ANSWER: No. Willow Creek Residential Properties is not in appetite for the property line.\n\nThis is a judgment based on standard small-commercial property practice, since I don't have All National's written appetite guidelines here. Please confirm against the current guide before relying on it.\n\n**Main reasons:**\n\n1. **Habitational exposure.** The business owns and manages a portfolio of apartment complexes and single-family rentals. Many small-commercial property programs restrict or decline residential rental and apartment risks. Tenant-occupied properties carry higher frequency and sev",
+    "correct": true,
+    "cost": 0.016986699999999997
+   },
+   {
+    "task": "main-59",
+    "model": "opus-5.5",
+    "answer": "**FINAL ANSWER: No. Sleepy Fox Bed & Breakfast is likely outside appetite for the property line.**\n\nI don't have All National's written appetite guidelines here, so this is based on general property underwriting standards. Please check the decision against our actual guidelines before quoting or declining.\n\n**Reasons for declining property:**\n\n1. **Combustible construction.** The building is wood frame, which has low fire resistance. That is usually the main reason to decline or restrict property coverage, especially for an occupied lodging risk.\n2. **Historic farmhouse.** Older buildings ofte",
+    "correct": true,
+    "cost": 0.020385
+   },
+   {
+    "task": "main-612",
+    "model": "opus-5.5",
+    "answer": "FINAL ANSWER: Yes. Meadowbrook Inn & Suites is in appetite for the property line, subject to normal underwriting review.\n\nI don't have access to All National's appetite guide in this conversation, so this reflects typical small-commercial property guidelines rather than our written rules. Please confirm against the current guide before quoting.\n\n**Why it fits:**\n- **Class of business:** Hotels and motels (NAICS 721110) are a standard, desirable property class. A 55-room independent hotel is a conventional single-location risk.\n- **Size:** $8.4M in revenue and 38 employees are well under the SB",
+    "correct": false,
+    "cost": 0.023760800000000002
+   }
+  ]
+ },
+ "sonnet-5.5": {
+  "n": 24,
+  "correct": 2,
+  "rows": [
+   {
+    "task": "codegen-1007",
+    "model": "sonnet-5.5",
+    "answer": "FINAL ANSWER: Yes, Cranberry Inn & Suites is generally within appetite for the property line, subject to standard underwriting review and a few referral items.\n\n**Why it fits**\n- **Size and class:** A 60-room independent hotel with $5.1M revenue and 38 employees is a small business risk. Small lodging operations are a typical commercial property class.\n- **Construction:** Hybrid non-combustible/combustible construction (concrete tilt-up walls with a glulam wood roof) is an acceptable construction type. It is not the best fire class, but it is better than full frame. Heavy timber-type glulam ro",
+    "correct": false,
+    "cost": 0.0100413
+   },
+   {
+    "task": "codegen-1028",
+    "model": "sonnet-5.5",
+    "answer": "FINAL ANSWER: Yes, with caveats. Riverbend Rentals LLC is in appetite for the property line of business, subject to standard underwriting review.\n\n**Why it fits**\n- It is a small business, with 12 employees and $4.1M in revenue.\n- It owns and manages real property (small apartment buildings and single-family homes), so there is a clear insurable interest in buildings.\n- Ohio is a state where we write commercial business.\n- Lessor's-risk-type habitational exposures are a typical commercial property class.\n\n**Underwriting considerations**\n- **Wood frame construction:** This is the main concern. ",
+    "correct": false,
+    "cost": 0.0078019000000000005
+   },
+   {
+    "task": "codegen-1037",
+    "model": "sonnet-5.5",
+    "answer": "FINAL ANSWER: No, this risk is most likely outside our appetite for the property line of business.\n\nI don't have access to All National's written underwriting guidelines in this conversation, so this answer rests on general small-business commercial market practice. Please check it against the current appetite guide.\n\n**Why it looks out of appetite:**\n- **Hotel and lodging class:** A 55-room hotel with food service, an indoor pool, conference and wedding space, and guest excursions is a hospitality risk. Small-business carriers that focus on BOP and light commercial property usually exclude ho",
+    "correct": true,
+    "cost": 0.0077158999999999995
+   },
+   {
+    "task": "codegen-1050",
+    "model": "sonnet-5.5",
+    "answer": "FINAL ANSWER: Yes, Sleepy Fox Bed & Breakfast appears to be in appetite for the property line of business, subject to standard underwriting review.\n\n**Why it fits:**\n- **Class and size:** A seven-room B&B is a small lodging operation with $430,000 in revenue and 3 employees. That is squarely within the small-business profile we write.\n- **Eligible state:** Vermont is not a restricted jurisdiction for a small-business property risk based on what I know.\n- **Occupancy:** Small lodging with owner-onsite management is generally a favorable hospitality class. Owner presence tends to improve houseke",
+    "correct": false,
+    "cost": 0.0089941
+   },
+   {
+    "task": "codegen-1085",
+    "model": "sonnet-5.5",
+    "answer": "FINAL ANSWER: Yes, with caveats. Seaside Sunrise B&B is generally in appetite for the property line, and a BOP would likely be the better way to write it.\n\n**Why it fits**\n- It is a small business with 6 rooms and $370,000 in revenue, which is the size of risk we write.\n- It is a small lodging and hospitality operation (a B&B) with an owner-operator and a small staff.\n- It is located in Maine, one of the states we write in.\n- It owns or operates a real building with insurable value, so property coverage applies.\n\n**Underwriting concerns to address**\n- **Wood frame construction:** This is a low",
+    "correct": false,
+    "cost": 0.008595199999999999
+   },
+   {
+    "task": "codegen-1093",
+    "model": "sonnet-5.5",
+    "answer": "FINAL ANSWER: Yes, Harvest Moon B&B appears to be in appetite for the property line of business, subject to standard underwriting review.\n\nReasons:\n- **Class of business:** A small, owner-occupied four-room B&B is a typical small-business lodging risk. Its size, simple operations and on-site owners are favorable, because they mean constant presence and quick response to problems.\n- **Size:** Revenue of $365,000 and three employees put it well within a small-commercial profile.\n- **Construction:** Wood frame has low fire resistance, so it is a rating and underwriting concern, but it does not ma",
+    "correct": false,
+    "cost": 0.008342500000000001
+   },
+   {
+    "task": "codegen-1097",
+    "model": "sonnet-5.5",
+    "answer": "FINAL ANSWER: Yes, Red Maple Motor Lodge appears to be in appetite for the property line, subject to standard underwriting review.\n\n**Why it fits:**\n- **Class of business:** A 70-room motor lodge is a typical small-business hospitality risk. Lodging with an incidental restaurant, pool, laundry and small meeting rooms is a standard, insurable combination, and it is usually written under a BOP or monoline property form.\n- **Size:** Revenue of $5.8M and 45 employees put it within the range of a small commercial account.\n- **Construction:** The hybrid non-combustible/combustible building (concrete",
+    "correct": false,
+    "cost": 0.008927200000000001
+   },
+   {
+    "task": "codegen-1121",
+    "model": "sonnet-5.5",
+    "answer": "FINAL ANSWER: Yes, Summit View Property Group is in appetite for the property line, subject to standard underwriting review.\n\nI have no appetite guide or data access in this conversation, so this rests on general knowledge of the class rather than a check against our written guidelines.\n\n**Why it fits**\n- Owning and managing residential rental buildings is a core small-commercial property class (lessor's risk and habitational).\n- At 18 employees, $950K payroll and 4 vehicles, the operation is small.\n- Property is the right line for the buildings, since the exposure is the real estate rather th",
+    "correct": false,
+    "cost": 0.011996
+   },
+   {
+    "task": "codegen-1129",
+    "model": "sonnet-5.5",
+    "answer": "FINAL ANSWER: Yes, Maple Ridge Properties appears to be in appetite for the property line, subject to standard underwriting review.\n\n**Why it fits**\n- It is a small business. It has 11 employees, $2.1M in revenue, and only two locations.\n- It owns and operates its buildings, so it has a direct insurable interest in the property. The 44 units across two complexes is a modest, manageable scale.\n- Garden-style, wood-frame apartments are common in small commercial property portfolios. Wood frame (low fire resistance) raises the rate and the scrutiny, but it does not by itself make the risk ineligi",
+    "correct": false,
+    "cost": 0.0112117
+   },
+   {
+    "task": "codegen-1196",
+    "model": "sonnet-5.5",
+    "answer": "FINAL ANSWER: All five of our other lines are in appetite: workers compensation, property, general liability, auto, and BOP. I don't have the appetite guide in this conversation, so this is based on the risk profile you gave me.\n\n- **Workers compensation:** The company has 19 employees and $740K in payroll, with drivers, technicians, and office staff. Florida requires coverage at this size. The main exposures are lifting and handling heavy equipment, driving, and warehouse work.\n- **Property:** The warehouse and headquarters office are a hybrid non-combustible/combustible building (tilt-up con",
+    "correct": false,
+    "cost": 0.011690800000000001
+   },
+   {
+    "task": "codegen-1344",
+    "model": "sonnet-5.5",
+    "answer": "FINAL ANSWER: Workers compensation, property, general liability, and BOP are the other lines that fit. Cyber is the only one I would not lead with.\n\nI have no access to our appetite guidelines in this conversation. This answer comes from general underwriting judgment about this risk, so confirm it against the current appetite guide and referral rules.\n\n**Workers compensation: in appetite.**\n- The business has 7 employees and $205,000 in payroll.\n- Delivery, setup, and pickup of heavy items involve lifting, driving, and tent installation. Expect a moderate hazard class, with the main exposures ",
+    "correct": false,
+    "cost": 0.009664200000000001
+   },
+   {
+    "task": "codegen-378",
+    "model": "sonnet-5.5",
+    "answer": "FINAL ANSWER: Besides property, the lines that fit Green Earth Excavating are **workers compensation, general liability, and auto**. Cyber and BOP are not a good fit.\n\n**Workers compensation: in appetite.**\n- The company has 29 employees and $1.72M in payroll.\n- Excavation, demolition, and land clearing are heavy-hazard classes, so expect high class codes and rates, plus a need for safety programs.\n- Texas allows employers to opt out of workers comp (non-subscribers). Many municipal and commercial projects require coverage, so this account will likely want a policy.\n\n**General liability: in ap",
+    "correct": false,
+    "cost": 0.0084469
+   },
+   {
+    "task": "codegen-443",
+    "model": "sonnet-5.5",
+    "answer": "FINAL ANSWER: Besides cyber, the lines in appetite are **property, general liability, and commercial auto**.\n\n- **Property: in appetite.** The building is non-combustible fire-resistive, which is a strong construction class. The museum's large collection needs a close look, though. Fine art and collection coverage usually needs a fine arts floater or a scheduled or specialty endorsement. Standard property forms typically limit or exclude art, so I'd review valuations, appraisals, security, and fire protection.\n- **General liability: in appetite.** The exposures are public premises, events, tou",
+    "correct": false,
+    "cost": 0.0094348
+   },
+   {
+    "task": "codegen-53",
+    "model": "sonnet-5.5",
+    "answer": "FINAL ANSWER: Yes, SafeKeep Storage Solutions appears to be in appetite for general liability, subject to standard underwriting review.\n\n**Why it fits:**\n- **Class of business:** Self-storage facilities are a common, generally acceptable small-commercial class. The main exposures are premises liability (slips and falls, customer injuries, and security-related claims) and some operations exposure, all of which are well understood.\n- **Size:** $2.2M revenue and 12 employees put it comfortably within the small-business market.\n- **Location:** Texas is a standard state for a commercial writer, and",
+    "correct": false,
+    "cost": 0.008949
+   },
+   {
+    "task": "codegen-959",
+    "model": "sonnet-5.5",
+    "answer": "FINAL ANSWER: Yes, Pine Haven Lodge is in appetite for the property line, subject to standard underwriting review.\n\n**Why it fits:**\n- **Class of business:** A 60-room resort hotel with a restaurant, conference rooms, laundry and shuttle service is a standard small-business hospitality risk. Its size (about $6.5M revenue, 38 employees) is in line with the small commercial accounts we write.\n- **Construction:** Concrete tilt-up walls with a glulam wood roof is a hybrid non-combustible/combustible building. That is acceptable, and it is better than fully frame construction. The heavy timber-styl",
+    "correct": false,
+    "cost": 0.0094821
+   },
+   {
+    "task": "codegen-962",
+    "model": "sonnet-5.5",
+    "answer": "FINAL ANSWER: Yes, with caveats. Prairie Home Sites LLC is generally in appetite for property, but the coverage would be limited and subject to underwriter review.\n\n**Why it fits:**\n- It is a small business (8 employees, $3.5M revenue) in Nebraska, which fits our small commercial focus.\n- It is a lessor of land. It does not run manufacturing, hazardous processing, or other high-hazard operations.\n- Property exposure is modest. The insurable property is likely limited to communal infrastructure (roads, utility hook-ups, and any signage, fencing, or maintenance buildings) and possibly an office ",
+    "correct": false,
+    "cost": 0.008216600000000001
+   },
+   {
+    "task": "codegen-967",
+    "model": "sonnet-5.5",
+    "answer": "FINAL ANSWER: Yes, Open Prairie Real Estate Holdings is in appetite for property, on a limited-exposure basis. I'm answering from general underwriting knowledge, not from our appetite guide or any data.\n\n**Why it fits**\n- It is a small commercial lessor-of-land risk with 4 employees and $725K revenue, which is the small-business profile we write.\n- The property exposure is modest. Land, grazing parcels and home sites carry little insurable property value. What is insurable is the owned structures, such as park offices, maintenance sheds, any clubhouse or laundry buildings, and equipment and co",
+    "correct": false,
+    "cost": 0.0118006
+   },
+   {
+    "task": "codegen-971",
+    "model": "sonnet-5.5",
+    "answer": "FINAL ANSWER: Yes, Sunrise Residential Rentals, LLC is in appetite for the property line, subject to standard underwriting review.\n\n**Why it fits:**\n- **Insurable interest:** The company owns the real estate, 22 single-family homes and two small apartment complexes, so it has a clear property exposure. Lessor's risk and landlord property is a standard small-commercial class.\n- **Size:** With $1.75M in revenue, 7 employees and a modest portfolio, it is a small business, which is the segment we write.\n- **Location:** Suburban Austin, Texas is a standard, writable state and market.\n- **Operations",
+    "correct": false,
+    "cost": 0.009109599999999999
+   },
+   {
+    "task": "main-1101",
+    "model": "sonnet-5.5",
+    "answer": "FINAL ANSWER: Besides property, the lines in appetite for Green Earth Excavating are **workers compensation, general liability, and auto**. Cyber and BOP are not a good fit.\n\n**Workers compensation: in appetite.**\n- The company has 29 employees and $1.72M in payroll doing heavy civil work: excavation, grading, demolition, land clearing, and trenching.\n- Texas is the one state where workers comp is not mandatory. We would still write it, because it is core exposure for this class.\n- Expect careful underwriting of trenching and excavation safety, demolition, and heavy equipment operation. We wou",
+    "correct": false,
+    "cost": 0.0097832
+   },
+   {
+    "task": "main-1200",
+    "model": "sonnet-5.5",
+    "answer": "FINAL ANSWER: Yes, Cranberry Inn & Suites is generally within appetite for the property line, subject to standard underwriting review of a few risk factors.\n\n**Why it fits:**\n- **Size:** With $5.1M in revenue, 38 employees, and a single 60-room location, it is a small business risk, which is our target market.\n- **Class:** Independent, limited-service-plus hotels are a common property and BOP class. They are not a prohibited or restricted class for us.\n- **Construction:** The hybrid non-combustible/combustible build (concrete tilt-up walls with a glulam wood roof) is a recognized construction ",
+    "correct": false,
+    "cost": 0.009248600000000001
+   },
+   {
+    "task": "main-1208",
+    "model": "sonnet-5.5",
+    "answer": "FINAL ANSWER: Besides cyber, the lines in appetite are **property, general liability, and auto**.\n\n- **Property (in appetite):** The building is non-combustible fire-resistive construction, which is a strong property risk. The building and standard contents fit. The \"extensive insured collections\" are likely fine art, which standard commercial property forms usually exclude or sublimit. That exposure would need a specialty fine art or inland marine placement, or referral, and shouldn't be assumed covered.\n- **General liability (in appetite):** The museum has premises and operations exposure fr",
+    "correct": false,
+    "cost": 0.0086378
+   },
+   {
+    "task": "main-1556",
+    "model": "sonnet-5.5",
+    "answer": "FINAL ANSWER: Yes, with caveats. Willow Creek Residential Properties is generally in appetite for the property line, subject to standard underwriting review.\n\n**Why it fits**\n- It is a small commercial account (11 employees, 2 vehicles) that owns and operates its own real estate, so there is a real insurable interest in the buildings.\n- Mid-market, suburban, long-term-tenant apartment and single-family rentals are a conventional lessor's risk class. They are usually more desirable than student housing, high-crime urban, or transient/short-term rental exposures.\n- In-house maintenance and leasi",
+    "correct": false,
+    "cost": 0.009238
+   },
+   {
+    "task": "main-59",
+    "model": "sonnet-5.5",
+    "answer": "FINAL ANSWER: Yes, Sleepy Fox Bed & Breakfast appears to be in appetite for property, subject to standard underwriting review.\n\n**Why it fits**\n- A seven-room owner-operated B&B is a small lodging risk, which is typical small-business property business.\n- Revenue of $430,000, 3 employees and one building are well within small-commercial size.\n- The hazards are ordinary hospitality ones: cooking, guest occupancy and seasonal events. Nothing suggests a prohibited or restricted class.\n\n**Concerns to underwrite**\n- **Wood frame construction:** It has low fire resistance, so the rate will be higher",
+    "correct": false,
+    "cost": 0.0094808
+   },
+   {
+    "task": "main-612",
+    "model": "sonnet-5.5",
+    "answer": "FINAL ANSWER: No. Meadowbrook Inn & Suites is not in appetite for the property line of business, based on what I know.\n\nI don't have All National's actual appetite guide in this conversation, so this answer rests on general small-commercial underwriting practice. Please confirm it against the current guidelines.\n\n**Why it falls outside appetite:**\n- **Hotel class:** A 55-room hotel with on-site dining, an indoor pool, conference and wedding space, and guest excursions is a hospitality risk with a lot of exposure. Small-business property and BOP appetites usually exclude lodging above a small r",
+    "correct": true,
+    "cost": 0.0073805
+   }
+  ]
+ },
+ "haiku-5.5": {
+  "n": 24,
+  "correct": 0,
+  "rows": [
+   {
+    "task": "codegen-1007",
+    "model": "haiku-5.5",
+    "answer": "FINAL ANSWER: Yes, Cranberry Inn & Suites is in appetite for the property line, subject to the standard conditions below. I don't have our written property appetite guide in this conversation, so this is based on general commercial property underwriting practice and should be checked against the current guide before binding.\n\n**Why it fits:**\n- **Occupancy:** A 60-room independent hotel with a restaurant, banquet space, and seasonal recreation is a standard hospitality risk. Lodging with ancillary food service is a typical property class.\n- **Construction:** Hybrid non-combustible/combustible ",
+    "correct": false,
+    "cost": 0.0008445
+   },
+   {
+    "task": "codegen-1028",
+    "model": "haiku-5.5",
+    "answer": "FINAL ANSWER: Yes, Riverbend Rentals is generally in appetite for the property line, subject to standard habitational underwriting. I don't have All National's written property appetite guide in this conversation, so this is based on general commercial property practice rather than our specific guidelines.\n\n**Why it fits:**\n- **Class:** Small apartment buildings and single-family rentals managed by the owner are a core habitational lessor class.\n- **Size:** $4.1M revenue and 12 employees is a small, stable operation.\n- **Geography:** Dayton, Ohio is a standard market.\n\n**Items to address:**\n- ",
+    "correct": false,
+    "cost": 0.0007463
+   },
+   {
+    "task": "codegen-1037",
+    "model": "haiku-5.5",
+    "answer": "FINAL ANSWER: Yes, Meadowbrook Inn & Suites is in appetite for the property line, subject to the conditions below. I'm working from general commercial property underwriting practice because I don't have our written property appetite guide in this conversation, so please confirm against it.\n\n**Why it fits:**\n- Boutique hotels with 55 rooms and roughly $8.4M in revenue are a core property segment.\n- The occupancy (lodging, dining, conferences, weddings) is conventional and not a restricted class.\n- Sustainability practices and farm-to-table sourcing don't create a property concern.\n\n**Conditions",
+    "correct": false,
+    "cost": 0.0009303
+   },
+   {
+    "task": "codegen-1050",
+    "model": "haiku-5.5",
+    "answer": "FINAL ANSWER: Yes, Sleepy Fox Bed & Breakfast is in appetite for the property line, conditionally. The wood frame construction is the main risk factor, but a B&B is a commercial lodging risk that property underwriters commonly write, and the account can be accepted if the conditions below are met.\n\nI don't have our current property guidelines in this conversation, so please confirm the final call against them before binding. Items to verify:\n\n- **Building age and updates:** Historic farmhouses often have original wiring, plumbing, and heating. Confirm when the electrical, heating, and roofing ",
+    "correct": false,
+    "cost": 0.0008387000000000001
+   },
+   {
+    "task": "codegen-1085",
+    "model": "haiku-5.5",
+    "answer": "FINAL ANSWER: Yes, Seaside Sunrise B&B appears to be in appetite for the property line, subject to standard underwriting conditions. I don't have the carrier's property guidelines in this conversation, so this is based on general market practice.\n\n**Factors supporting appetite:**\n- **Occupancy:** A 6-room owner-operated B&B is a conventional commercial property risk.\n- **Size:** Revenue of $370,000 and 4 employees indicate a small, stable operation.\n- **Construction:** Wood frame is among the most common construction classes for commercial property and is generally acceptable, though it carrie",
+    "correct": false,
+    "cost": 0.0008063
+   },
+   {
+    "task": "codegen-1093",
+    "model": "haiku-5.5",
+    "answer": "FINAL ANSWER: Yes, Harvest Moon B&B is in appetite for the property line, subject to standard conditions. I don't have the current property guidelines in front of me, so please verify the specifics against them before binding.\n\nFactors supporting appetite:\n- **Operations fit:** A small, owner-operated inn with $365K revenue and 3 employees is a standard small-business risk profile.\n- **Owner-occupied:** The husband-wife owners live on-site, which supports better day-to-day maintenance and hazard control.\n- **Modest scale:** Four guest rooms and a single vehicle keep exposure contained.\n\nFactor",
+    "correct": false,
+    "cost": 0.0007421000000000001
+   },
+   {
+    "task": "codegen-1097",
+    "model": "haiku-5.5",
+    "answer": "FINAL ANSWER: Yes, Red Maple Motor Lodge is generally in appetite for the property line, but the acceptance should be conditional on verifying several exposures. I don't have the carrier's current property guidelines in this conversation, so confirm the final decision against them.\n\n**Why it fits**\n- Motels and small hotels are a standard property class with predictable operations.\n- Revenue ($5.8M) and size (70 rooms, 45 employees) are typical for a single-location, owner-operated risk.\n- Year-round occupancy with a mix of seasonal peaks is manageable.\n\n**Items to verify before binding**\n1. *",
+    "correct": false,
+    "cost": 0.0009986
+   },
+   {
+    "task": "codegen-1121",
+    "model": "haiku-5.5",
+    "answer": "FINAL ANSWER: Yes, Summit View Property Group is in appetite for the property line, conditioned on satisfactory underwriting of the wood-frame construction and the specific buildings. I don't have the current property guidelines in this conversation, so please confirm the habitational and construction rules against them before quoting.\n\n**Why it fits:**\n- Residential rental and multi-family ownership is a standard property risk class.\n- Revenue ($8.5M) and portfolio size (three apartment complexes plus single-family homes and duplexes) are consistent with a mid-market account.\n- Professional i",
+    "correct": false,
+    "cost": 0.0008927
+   },
+   {
+    "task": "codegen-1129",
+    "model": "haiku-5.5",
+    "answer": "FINAL ANSWER: Yes, Maple Ridge Properties is in appetite for the property line, subject to the conditions below. I don't have the current property appetite guide in this conversation, so please confirm against it before binding.\n\nReasons it fits:\n- Residential habitational risk (44 units in two complexes) is a standard property class.\n- The size is consistent with a small-to-mid-sized apartment operator.\n- Ohio is a standard state for this business, with no state-specific restriction I'm aware of.\n\nConditions and underwriting considerations:\n- **Wood frame construction** is the main issue. Its",
+    "correct": false,
+    "cost": 0.0007585
+   },
+   {
+    "task": "codegen-1196",
+    "model": "haiku-5.5",
+    "answer": "FINAL ANSWER: All five of the other lines (workers compensation, property, general liability, auto, and BOP) appear to be in appetite for EasyMed Rentals, subject to the conditions below. I'm working from general market knowledge, not our current appetite guide, so please confirm against the guide before quoting.\n\n- **Workers compensation:** In appetite. EasyMed has 19 employees and a $740,000 payroll in Florida, where coverage is mandatory for most non-construction employers with four or more employees. Drivers, technicians, and client service staff are standard classes.\n- **Property:** In ap",
+    "correct": false,
+    "cost": 0.0009582
+   },
+   {
+    "task": "codegen-1344",
+    "model": "haiku-5.5",
+    "answer": "FINAL ANSWER: Party Place Rentals is in appetite for all of our other lines: workers compensation, property, general liability, cyber, and BOP. Each has conditions, and the bounce houses and building construction need the most attention.\n\n- **Workers Compensation:** In appetite. A 7-employee business with $205,000 payroll in Oregon is a standard risk. Delivery, setup, and pickup involve lifting and vehicle work, so classification should reflect those operations.\n- **General Liability:** In appetite with conditions. The inflatables are the main exposure. Expect requirements such as manufacturer",
+    "correct": false,
+    "cost": 0.0010257999999999999
+   },
+   {
+    "task": "codegen-378",
+    "model": "haiku-5.5",
+    "answer": "FINAL ANSWER: Workers compensation, general liability, auto, and cyber are in appetite for Green Earth Excavating. BOP is not.\n\n- **Workers compensation:** In appetite. Excavation, grading, and demolition are physically hazardous, but a 29-employee contractor with $1.72M payroll is a standard workers comp risk. Pricing should reflect the class codes for excavation, demolition, and any septic or dewatering work.\n- **General liability:** In appetite. Contractor GL is a core fit, and developer and municipal contracts will require it. Underground utility damage (XCU) exposure and demolition-relate",
+    "correct": false,
+    "cost": 0.0009232999999999999
+   },
+   {
+    "task": "codegen-443",
+    "model": "haiku-5.5",
+    "answer": "FINAL ANSWER: Based on the profile, the other lines in appetite are **General Liability, Property, Auto, and BOP**. **Workers Compensation is not**, because Ohio is a monopolistic state for workers' comp, so employers must buy coverage from the Ohio Bureau of Workers' Compensation or self-insure.\n\n- **General Liability:** Yes. A museum with public visitors, tours, workshops, and school programs has ordinary premises and operations exposure.\n- **Property:** Yes. The non-combustible fire-resistive building is favorable. The extensive art collection, however, will likely need scheduled limits, su",
+    "correct": false,
+    "cost": 0.000825
+   },
+   {
+    "task": "codegen-53",
+    "model": "haiku-5.5",
+    "answer": "FINAL ANSWER: Yes, SafeKeep Storage Solutions appears to be in appetite for general liability, subject to confirming a few conditions with the current GL guidelines. I don't have the carrier's written guidelines in this conversation, so this is based on general industry practice for self-storage risks.\n\n**Factors supporting appetite:**\n- **Operations:** Self-storage is a commonly written class for GL.\n- **Size:** $2.2M revenue, 12 employees, and $480K payroll are typical for a small, single-location operator.\n- **Construction:** Non-combustible (steel columns, beams, and deck) is favorable for",
+    "correct": false,
+    "cost": 0.0008405000000000001
+   },
+   {
+    "task": "codegen-959",
+    "model": "haiku-5.5",
+    "answer": "FINAL ANSWER: Yes, Pine Haven Lodge is in appetite for the property line, conditionally. I don't have the carrier's property appetite guidelines in this conversation, so please confirm the final decision against them.\n\n**Supporting factors:**\n- Hotel and lodging operations (60 rooms, restaurant, conference rooms) are a standard property class.\n- Revenue ($6.5M) and employee count (38) fall within typical small-business parameters.\n- Family ownership and a stated focus on sustainability suggest a well-run operation.\n\n**Conditions and concerns to address before binding:**\n- **Wildfire/WUI exposu",
+    "correct": false,
+    "cost": 0.0009012
+   },
+   {
+    "task": "codegen-962",
+    "model": "haiku-5.5",
+    "answer": "FINAL ANSWER: Yes, Prairie Home Sites LLC is in appetite for the property line, provided the insurable property is the company's own improvements and not the land or tenant-owned homes.\n\n- **Land is not insurable property.** The vacant lots and grazing parcels are not written. Coverage applies to company-owned improvements such as buildings, roads, utility infrastructure, fencing, and any maintenance or office structures.\n- **Tenant-owned manufactured homes are excluded.** The lots are leased to individual owners, so the homes on them belong to tenants and should be insured under their own pol",
+    "correct": false,
+    "cost": 0.0007381000000000001
+   },
+   {
+    "task": "codegen-967",
+    "model": "haiku-5.5",
+    "answer": "FINAL ANSWER: Yes, Open Prairie Real Estate Holdings is in appetite for the property line, subject to underwriting review of the mobile home park exposures and a complete statement of values. I don't have the carrier's property appetite guide in this conversation, so this is based on general commercial property practice.\n\n**Why it fits:**\n- It is a small commercial lessor with modest revenue ($725,000) and four employees, a typical small-business profile.\n- Insurable property is identifiable: park-owned buildings and infrastructure, maintenance and storage structures, farm buildings and fencin",
+    "correct": false,
+    "cost": 0.0010951000000000001
+   },
+   {
+    "task": "codegen-971",
+    "model": "haiku-5.5",
+    "answer": "FINAL ANSWER: Yes, Sunrise Residential Rentals is in appetite for the property line, subject to standard underwriting conditions. I'm working from general commercial-property practice because I don't have our written appetite guidelines in this conversation, so please confirm against the current guide before binding.\n\n**Reasons it fits:**\n- **Habitational lessor risk:** Residential rental operations are a normal property class for us.\n- **Operational quality:** In-house management, routine maintenance, and tenant retention programs point to well-maintained buildings and lower loss frequency.\n-",
+    "correct": false,
+    "cost": 0.0008906999999999999
+   },
+   {
+    "task": "main-1101",
+    "model": "haiku-5.5",
+    "answer": "FINAL ANSWER: Four of the other five lines are in appetite for Green Earth Excavating: **workers compensation, general liability, auto, and cyber**. **BOP is not** in appetite.\n\n- **Workers compensation: In appetite.** Excavation, grading, and demolition are physically hazardous, but a 29-employee contractor with $1.72M payroll is a standard WC risk. Texas is the only state where private employers can opt out of workers' comp, so confirm the insured is a subscriber. Their safety program and loss history will drive pricing.\n- **General liability: In appetite.** Contractors with municipal and de",
+    "correct": false,
+    "cost": 0.0008931000000000001
+   },
+   {
+    "task": "main-1200",
+    "model": "haiku-5.5",
+    "answer": "FINAL ANSWER: Yes, Cranberry Inn & Suites is in appetite for the property line, subject to the conditions below.\n\n**Why it fits:**\n- Hotels with restaurants and banquet space are a standard property class.\n- A 60-room building with $5.1M revenue is a small-to-mid-size commercial risk, which is within the typical property range.\n- Hybrid non-combustible/combustible construction (tilt-up concrete with glulam roof) is acceptable. It is somewhat less favorable than fully non-combustible, so it may affect rating but does not make the risk unacceptable.\n\n**Conditions and underwriting points:**\n1. **",
+    "correct": false,
+    "cost": 0.0008401
+   },
+   {
+    "task": "main-1208",
+    "model": "haiku-5.5",
+    "answer": "FINAL ANSWER: Based on the information provided, four of the other five lines are likely in appetite: **property, general liability, auto, and bop**. Workers compensation is not available.\n\n- **Property: In appetite.** The non-combustible fire-resistive construction and purpose-built facility are favorable. The extensive art collection will need careful valuation, and high-value pieces may need to be scheduled or placed under a fine art policy.\n- **General liability: In appetite.** A museum with public visitors, tours, workshops, and school partnerships is a standard GL risk. Consider event an",
+    "correct": false,
+    "cost": 0.0007972
+   },
+   {
+    "task": "main-1556",
+    "model": "haiku-5.5",
+    "answer": "FINAL ANSWER: Yes, Willow Creek Residential Properties is in appetite for the property line, subject to the conditions below. I don't have the current property guidelines in this conversation, so please confirm against the manual before binding.\n\nResidential lessor's risks like this are generally within appetite. The wood frame construction is the main underwriting consideration. It has low fire resistance and typically drives a higher rate and more scrutiny, but it doesn't by itself take the risk out of appetite. The following should be verified before quoting:\n\n- **Building details:** total ",
+    "correct": false,
+    "cost": 0.000791
+   },
+   {
+    "task": "main-59",
+    "model": "haiku-5.5",
+    "answer": "FINAL ANSWER: Yes, Sleepy Fox Bed & Breakfast is in appetite for the property line, subject to standard underwriting conditions. I don't have the written property guidelines in this conversation, so please confirm against the current manual before binding.\n\n**Reasons it fits:**\n- **Operations:** A small, owner-operated B&B with seven rooms and $430,000 in revenue is a typical hospitality risk for commercial property.\n- **Occupancy profile:** Guest lodging is a normal exposure, and the business is small and personally managed.\n- **Location:** Rural Vermont has lower exposure to crime, flood-pro",
+    "correct": false,
+    "cost": 0.0007934
+   },
+   {
+    "task": "main-612",
+    "model": "haiku-5.5",
+    "answer": "FINAL ANSWER: Yes, Meadowbrook Inn & Suites appears to be in appetite for the property line, subject to the verification items below. I don't have the current property appetite guide in this conversation, so confirm against it before binding.\n\n**Why it fits:**\n- **Class of business:** A 55-room independent hotel with $8.4M in revenue is a standard small-commercial hotel risk. The on-site restaurant, pool, and conference space are typical hotel exposures that property underwriters routinely write.\n- **Construction:** Concrete tilt-up walls with a glulam roof is a sound hybrid build. Tilt-up mas",
+    "correct": false,
+    "cost": 0.0009158
+   }
+  ]
+ },
+ "gpt-6.1-sol": {
+  "n": 24,
+  "correct": 1,
+  "rows": [
+   {
+    "task": "codegen-1007",
+    "model": "gpt-6.1-sol",
+    "answer": "FINAL ANSWER: **Refer for property underwriting review; in-appetite status is not confirmed.**\n\nThe hotel\u2019s coastal Maine location, 60-room lodging exposure, restaurant operations, and partially combustible roof warrant review of wind exposure, coastal flooding, fire protection, and building values and condition.\n\nAll National Insurance\u2019s property appetite guidelines are not available here, so a definitive eligibility determination would be unsupported.",
+    "correct": false,
+    "cost": 0.0023077
+   },
+   {
+    "task": "codegen-1028",
+    "model": "gpt-6.1-sol",
+    "answer": "FINAL ANSWER: **Refer for property underwriting review; in-appetite status is not established.**\n\nRiverbend\u2019s residential rental operations, wood-frame buildings, and college-student tenant exposure warrant review. These characteristics do not, by themselves, establish eligibility or require a decline.\n\nAll National\u2019s property appetite guidelines are not available here. Confirmation would require those guidelines and location-level details, particularly building age, values, unit counts, student occupancy percentage, fire protection, building-system updates, and loss history.",
+    "correct": false,
+    "cost": 0.0026677000000000003
+   },
+   {
+    "task": "codegen-1037",
+    "model": "gpt-6.1-sol",
+    "answer": "FINAL ANSWER: **Refer for property underwriting review\u2014not confirmed in appetite.**\n\nAll National Insurance\u2019s property appetite guidelines are not available in this conversation, so a definitive eligibility determination cannot be supported.\n\nKey review items include:\n- **Hotel occupancy with on-site dining**, including kitchen fire protection.\n- **Mixed combustible/noncombustible construction**, particularly the wood roof components.\n- **Location-specific flood, wind, and wildfire exposure** near Asheville.\n- **Building values, age, roof condition, sprinklers, and loss history**, which were n",
+    "correct": false,
+    "cost": 0.003034
+   },
+   {
+    "task": "codegen-1050",
+    "model": "gpt-6.1-sol",
+    "answer": "FINAL ANSWER: **Refer for property underwriting review; appetite is not confirmed.**\n\nAll National Insurance\u2019s property appetite guidelines have not been provided, so a reliable yes/no eligibility determination cannot be made.\n\nKey review factors include the historic wood-frame building, overnight guest occupancy, and cooking for breakfasts and dinner events. Underwriting should verify building age and updates, replacement cost, fire protection, distance to responding fire services, and cooking safeguards before confirming eligibility.",
+    "correct": false,
+    "cost": 0.0024027
+   },
+   {
+    "task": "codegen-1085",
+    "model": "gpt-6.1-sol",
+    "answer": "FINAL ANSWER: Refer for underwriting review; property appetite is not confirmed.\n\nThe historic, wood-frame B&B presents elevated fire and coastal wind/flood concerns. Its six-room size is modest, but acceptance depends on All National Insurance\u2019s eligibility rules and details such as building updates, fire protection, replacement cost, and distance from the shoreline. Without those guidelines and details, a definite \u201cin appetite\u201d determination would be unsupported.",
+    "correct": false,
+    "cost": 0.0024804
+   },
+   {
+    "task": "codegen-1093",
+    "model": "gpt-6.1-sol",
+    "answer": "FINAL ANSWER: Refer for underwriting review; property appetite cannot be confirmed from the information provided.\n\nHarvest Moon B&B\u2019s small size does not establish eligibility. The historic wood-frame farmhouse, rural location, lodging occupancy, and cooking activities warrant review of fire protection, building condition, and replacement cost.\n\nA definite in-appetite determination requires All National Insurance\u2019s property appetite guidelines, plus details on building age and updates, heating systems, fire alarms or sprinklers, and distance to a responding fire department.",
+    "correct": false,
+    "cost": 0.0024628000000000002
+   },
+   {
+    "task": "codegen-1097",
+    "model": "gpt-6.1-sol",
+    "answer": "FINAL ANSWER: **Property appetite cannot be determined from the information provided.** All National Insurance\u2019s property eligibility guidelines are not available here, so a definite acceptance or rejection would be unsupported.\n\nThis is a motel exposure with a restaurant and mixed combustible/noncombustible construction. Eligibility requires confirming that All National accepts those characteristics in Vermont, along with reviewing building age, roof condition, fire protection, replacement values, and loss history.",
+    "correct": false,
+    "cost": 0.0025339
+   },
+   {
+    "task": "codegen-1121",
+    "model": "gpt-6.1-sol",
+    "answer": "FINAL ANSWER: **Refer for underwriting review; do not classify this account as in appetite yet.**\n\nSummit View\u2019s wood-frame apartment complexes and rental homes present habitational property exposures. Eligibility depends on All National Insurance\u2019s guidelines for multifamily rentals and wood-frame construction, which are not provided.\n\nA determination requires property-level details, including building values, ages, unit counts, sprinkler protection, roof condition, loss history, and wildfire/hail exposure. Revenue and employee counts alone do not establish property eligibility.",
+    "correct": false,
+    "cost": 0.0024147
+   },
+   {
+    "task": "codegen-1129",
+    "model": "gpt-6.1-sol",
+    "answer": "FINAL ANSWER: **Refer for property underwriting review; do not classify as in appetite yet.**\n\nMaple Ridge Properties operates wood-frame apartment buildings, creating multifamily residential fire exposure. This does not automatically make it ineligible, but All National Insurance\u2019s property appetite guidelines are not available here.\n\nA determination requires those guidelines, plus building values, age and condition, roof and system updates, fire protection, occupancy, and loss history.",
+    "correct": false,
+    "cost": 0.0028161
+   },
+   {
+    "task": "codegen-1196",
+    "model": "gpt-6.1-sol",
+    "answer": "FINAL ANSWER: **Workers compensation, property, general liability, and commercial auto are potential fits, but I cannot confirm they are in All National\u2019s appetite without its underwriting guidelines. BOP eligibility also requires verification.**\n\n| Line | Key underwriting considerations |\n|---|---|\n| **Workers compensation** | Delivery, lifting and installing heavy equipment, technician duties, and work in customers\u2019 homes. |\n| **Property** | Warehouse inventory, mixed combustible/noncombustible construction, and Orlando windstorm exposure. |\n| **General liability** | Rental equipment malfunc",
+    "correct": false,
+    "cost": 0.0044044999999999996
+   },
+   {
+    "task": "codegen-1344",
+    "model": "gpt-6.1-sol",
+    "answer": "FINAL ANSWER: **I cannot confirm any additional lines as in appetite without All National\u2019s underwriting guidelines.** The business description alone does not establish carrier eligibility.\n\n| Line | Assessment |\n|---|---|\n| Workers compensation | Requires review of delivery, loading/unloading, tent installation, and inflatable setup duties. |\n| Property | Requires confirmation that the hybrid construction and rental inventory are eligible. |\n| General liability | **Bounce-house rentals are a significant eligibility concern**, alongside tent installation and event setup. |\n| Cyber | Potential ",
+    "correct": false,
+    "cost": 0.0029796
+   },
+   {
+    "task": "codegen-378",
+    "model": "gpt-6.1-sol",
+    "answer": "FINAL ANSWER: **I can\u2019t confirm which additional lines are in All National\u2019s appetite without its underwriting guidelines.** The company description alone does not establish eligibility.\n\n| Line | Assessment |\n|---|---|\n| **Workers compensation** | Requires review of excavation depth, trenching, demolition methods, and employee classifications. |\n| **General liability** | Requires review of demolition, underground utility work, dewatering, septic installation, and potential pollution exposures. |\n| **Commercial auto** | A potential fit, subject to vehicle types, operating radius, driver qualif",
+    "correct": false,
+    "cost": 0.0040311
+   },
+   {
+    "task": "codegen-443",
+    "model": "gpt-6.1-sol",
+    "answer": "FINAL ANSWER: **Workers\u2019 compensation, general liability, commercial auto, and property are the lines to consider**, besides cyber. These are preliminary suitability recommendations\u2014not confirmation of All National Insurance\u2019s appetite, which requires its underwriting guidelines.\n\n| Line | Assessment |\n|---|---|\n| **Workers\u2019 compensation** | Potential fit for the museum\u2019s 32 employees and $1.8 million payroll, subject to Ohio-specific eligibility requirements. |\n| **General liability** | Potential fit for visitor exposures, guided tours, workshops, and gift shop operations. |\n| **Commercial au",
+    "correct": false,
+    "cost": 0.0048622
+   },
+   {
+    "task": "codegen-53",
+    "model": "gpt-6.1-sol",
+    "answer": "FINAL ANSWER: Yes\u2014SafeKeep Storage Solutions appears to be a suitable general liability risk on a preliminary basis. Its described operations are typical self-storage activities, with onsite management and security measures.\n\nKey underwriting considerations include premises maintenance, customer access, security procedures, and liability associated with outdoor vehicle and boat storage.\n\nThis is not a verified All National appetite determination; final eligibility depends on the carrier\u2019s guidelines, loss history, and application review.",
+    "correct": false,
+    "cost": 0.0024292000000000003
+   },
+   {
+    "task": "codegen-959",
+    "model": "gpt-6.1-sol",
+    "answer": "FINAL ANSWER: **Refer for property underwriting review\u2014not confirmed in appetite.**\n\nPine Haven Lodge\u2019s eligibility cannot be determined without All National Insurance\u2019s property appetite guidelines. Key considerations include:\n\n- **Wildfire exposure:** The Estes Park location warrants a site-specific wildfire assessment.\n- **Construction:** Combustible roof components require verification of the building\u2019s construction classification.\n- **Hotel and restaurant operations:** Guest accommodations, commercial cooking, and laundry introduce property loss exposures.\n- **Missing underwriting details",
+    "correct": false,
+    "cost": 0.0035028000000000004
+   },
+   {
+    "task": "codegen-962",
+    "model": "gpt-6.1-sol",
+    "answer": "FINAL ANSWER: **Do not approve as in appetite based on the information provided; property appetite is unverified.**\n\nPrairie Home Sites LLC\u2019s primary exposure is **manufactured/mobile-home community ownership and operation**, rather than ordinary vacant-land leasing. Eligibility depends on All National Insurance\u2019s property underwriting rules for that occupancy, which are not available here.\n\nAlso, land itself is generally not insured under commercial property coverage. Review would require details on the company-owned buildings and infrastructure to be insured, their values, protection feature",
+    "correct": false,
+    "cost": 0.0035662
+   },
+   {
+    "task": "codegen-967",
+    "model": "gpt-6.1-sol",
+    "answer": "FINAL ANSWER: **Refer to underwriting\u2014not confirmed in appetite for property.**\n\nOpen Prairie\u2019s primary exposure is leasing land and manufactured-home sites, including five mobile home parks. Property eligibility depends on whether All National accepts these occupancies and what buildings or other property Open Prairie owns and wants insured.\n\nConfirm:\n- Whether coverage is for park-owned manufactured homes, offices, maintenance buildings, or other structures.\n- Building values, ages, conditions, and fire protection.\n- Applicable mobile home park and vacant-land eligibility rules.\n\nWood-frame ",
+    "correct": false,
+    "cost": 0.0028433
+   },
+   {
+    "task": "codegen-971",
+    "model": "gpt-6.1-sol",
+    "answer": "FINAL ANSWER: **Refer for underwriting review; do not classify as in appetite based on the information provided.**\n\nSunrise\u2019s residential rental properties present a potential commercial property exposure, but I cannot confirm eligibility without All National Insurance\u2019s property appetite guidelines. Wood-frame construction and multifamily occupancy are key considerations\u2014not automatic grounds for acceptance or decline.\n\nReview should include each location\u2019s building value, age, roof condition, fire protection, loss history, and wind/hail exposure, plus the apartment complexes\u2019 unit counts. Re",
+    "correct": false,
+    "cost": 0.0025743999999999997
+   },
+   {
+    "task": "main-1101",
+    "model": "gpt-6.1-sol",
+    "answer": "FINAL ANSWER: **Commercial auto, cyber, workers\u2019 compensation, and general liability are potential fits for underwriting review.** I cannot confirm that they are in All National Insurance\u2019s appetite without its eligibility guidelines.\n\n| Line | Preliminary assessment |\n|---|---|\n| **Commercial auto** | Potential fit for the 12-vehicle fleet, subject to vehicle types, operating radius, drivers, and loss history. |\n| **Cyber** | Potential fit, subject to cybersecurity controls and coverage needs. |\n| **Workers\u2019 compensation** | Requires contractor-specific review of excavation, demolition, trenc",
+    "correct": false,
+    "cost": 0.0040757
+   },
+   {
+    "task": "main-1200",
+    "model": "gpt-6.1-sol",
+    "answer": "FINAL ANSWER: **Refer for property underwriting review; do not classify this account as in appetite without All National\u2019s eligibility guidelines.**\n\nThe key property concerns are:\n- **Coastal Maine location:** Potential windstorm, storm surge, and flood exposure.\n- **Hotel with restaurant and banquet operations:** Overnight occupancy and commercial cooking increase fire and life-safety concerns.\n- **Partially combustible construction:** The wood roof components affect construction classification and fire exposure.\n\nA final appetite decision requires the carrier\u2019s hotel and coastal-property ru",
+    "correct": false,
+    "cost": 0.0033458
+   },
+   {
+    "task": "main-1208",
+    "model": "gpt-6.1-sol",
+    "answer": "FINAL ANSWER: **All National\u2019s actual appetite cannot be confirmed without its underwriting guidelines.** Based on the museum\u2019s operations, the non-cyber lines to consider are:\n\n| Line | Preliminary assessment |\n|---|---|\n| **Workers compensation** | Potential fit for museum, administrative, educational, and gift shop employees. |\n| **General liability** | Potential fit for visitor premises exposure, guided tours, and workshops; special events need review. |\n| **Commercial auto** | Potential fit for the two vehicles, subject to their types, drivers, and use. |\n| **Property** | Requires special",
+    "correct": false,
+    "cost": 0.0041011
+   },
+   {
+    "task": "main-1556",
+    "model": "gpt-6.1-sol",
+    "answer": "FINAL ANSWER: **No\u2014my preliminary recommendation is that this account is not in appetite for property coverage.**\n\nThe primary concern is the **wood-frame residential rental exposure**, particularly the apartment complexes, where multiple dwelling units can increase fire-loss severity.\n\nThis is a risk-based screening recommendation, **not a verified All National Insurance eligibility determination**. Confirmation requires the carrier\u2019s appetite guidelines and location-level details, including building values, ages, unit counts, sprinkler protection, and loss history.",
+    "correct": true,
+    "cost": 0.0030976
+   },
+   {
+    "task": "main-59",
+    "model": "gpt-6.1-sol",
+    "answer": "FINAL ANSWER: Refer for underwriting review\u2014property appetite cannot be confirmed from the information provided.\n\nSleepy Fox is a small lodging operation in a historic, wood-frame building. Key property considerations include building age and updates, replacement cost, fire protection and distance to responding fire services, and cooking safeguards for breakfast and dinner events.\n\nWithout All National Insurance\u2019s property appetite guidelines and those building details, a reliable in-appetite determination cannot be made.",
+    "correct": false,
+    "cost": 0.0022903999999999997
+   },
+   {
+    "task": "main-612",
+    "model": "gpt-6.1-sol",
+    "answer": "FINAL ANSWER: **Refer for property underwriting review; do not treat this account as confirmed in appetite.**\n\nAll National Insurance\u2019s property appetite guidelines have not been provided, so a definitive eligibility decision would be unsupported. The key items requiring review are:\n\n- **Hotel occupancy**, including on-site dining and event facilities.\n- **Mixed combustible/noncombustible construction**, particularly the wood roof components.\n- **Asheville-area location**, requiring address-specific evaluation of flood, wind, and wildfire exposure.\n- Missing building values, age, sprinkler pro",
+    "correct": false,
+    "cost": 0.0036316
+   }
+  ]
+ },
+ "gpt-6-luna": {
+  "n": 24,
+  "correct": 11,
+  "rows": [
+   {
+    "task": "codegen-1007",
+    "model": "gpt-6-luna",
+    "answer": "FINAL ANSWER: No. Cranberry Inn & Suites is not in appetite for the property line based on the information provided. The coastal location and hybrid construction with combustible roof components are significant property concerns for a 60-room hotel with restaurant and event facilities.",
+    "correct": true,
+    "cost": 0.0003339
+   },
+   {
+    "task": "codegen-1028",
+    "model": "gpt-6-luna",
+    "answer": "FINAL ANSWER: No. Riverbend Rentals is not in appetite for property based on the information provided. Its portfolio is primarily residential rentals with wood-frame construction, which presents elevated fire-severity risk. The student and working-family tenant mix adds occupancy exposure.",
+    "correct": true,
+    "cost": 0.0004217
+   },
+   {
+    "task": "codegen-1037",
+    "model": "gpt-6-luna",
+    "answer": "FINAL ANSWER: Yes. Meadowbrook Inn & Suites appears to be within appetite for property coverage as a small, independently operated hotel. The hybrid construction\u2014including combustible roof components\u2014should receive careful underwriting review, along with the property\u2019s fire protection and loss history.",
+    "correct": false,
+    "cost": 0.0003527
+   },
+   {
+    "task": "codegen-1050",
+    "model": "gpt-6-luna",
+    "answer": "FINAL ANSWER: No. The historic wood-frame farmhouse presents elevated property fire risk, making Sleepy Fox Bed & Breakfast outside appetite for the property line.",
+    "correct": true,
+    "cost": 0.0002481
+   },
+   {
+    "task": "codegen-1085",
+    "model": "gpt-6-luna",
+    "answer": "FINAL ANSWER: No. Seaside Sunrise B&B is outside appetite for the property line: its historic wood-frame building and lodging occupancy create elevated fire and property-loss exposure.",
+    "correct": true,
+    "cost": 0.0003409
+   },
+   {
+    "task": "codegen-1093",
+    "model": "gpt-6-luna",
+    "answer": "FINAL ANSWER: No. Harvest Moon B&B is not in appetite for property as described. The historic wood-frame farmhouse presents elevated fire and property-loss exposure, and the information provided does not establish protective features that would offset that concern.",
+    "correct": true,
+    "cost": 0.0003142
+   },
+   {
+    "task": "codegen-1097",
+    "model": "gpt-6-luna",
+    "answer": "FINAL ANSWER: Yes\u2014Red Maple Motor Lodge appears to be within appetite for the property line, subject to confirming the building\u2019s condition, fire protection, roof details, and applicable property eligibility requirements.",
+    "correct": false,
+    "cost": 0.0005278
+   },
+   {
+    "task": "codegen-1121",
+    "model": "gpt-6-luna",
+    "answer": "FINAL ANSWER: No. Summit View Property Group is not in appetite for the property line based on the provided information. Its wood-frame buildings have low fire resistance, which is a significant property risk factor.",
+    "correct": true,
+    "cost": 0.0002635
+   },
+   {
+    "task": "codegen-1129",
+    "model": "gpt-6-luna",
+    "answer": "FINAL ANSWER: No\u2014Maple Ridge Properties is not in appetite for the property line as described. The wood-frame construction creates elevated fire-spread and property-loss risk across the apartment buildings. A review could be reconsidered if substantial fire-protection features or other risk controls are documented.",
+    "correct": true,
+    "cost": 0.0004862
+   },
+   {
+    "task": "codegen-1196",
+    "model": "gpt-6-luna",
+    "answer": "FINAL ANSWER: Workers\u2019 compensation, commercial auto, property, and general liability are in appetite for EasyMed Rentals. I would not place it as a BOP; the equipment-rental and product-liability exposures, warehouse, and fleet are better handled with separately underwritten policies. Property and liability would still need review of the oxygen-equipment safeguards, building details, and Florida wind exposure.",
+    "correct": false,
+    "cost": 0.0007355
+   },
+   {
+    "task": "codegen-1344",
+    "model": "gpt-6-luna",
+    "answer": "FINAL ANSWER: Besides auto, **workers compensation, property, and cyber** are in appetite based on the information provided. **General liability and BOP are not in appetite** because renting and setting up bounce houses creates significant liability exposure.",
+    "correct": false,
+    "cost": 0.00038490000000000003
+   },
+   {
+    "task": "codegen-378",
+    "model": "gpt-6-luna",
+    "answer": "FINAL ANSWER: Besides property, **commercial auto and cyber** are in appetite. **Workers compensation and general liability** are not, given the high-hazard excavation, demolition, and land-clearing operations. **BOP** is also not a fit for this contractor.",
+    "correct": false,
+    "cost": 0.0007197
+   },
+   {
+    "task": "codegen-443",
+    "model": "gpt-6-luna",
+    "answer": "FINAL ANSWER: Workers compensation, property, general liability, and auto are in appetite. The museum\u2019s building construction is favorable for property, and its employee, payroll, and vehicle exposures fit those lines. BOP is not in appetite given the museum\u2019s scale and specialized collection exposure.",
+    "correct": false,
+    "cost": 0.0004363
+   },
+   {
+    "task": "codegen-53",
+    "model": "gpt-6-luna",
+    "answer": "FINAL ANSWER: Yes. SafeKeep Storage Solutions appears to be within appetite for general liability as a self-storage facility; its outdoor vehicle and boat storage exposures should be reviewed during underwriting.",
+    "correct": false,
+    "cost": 0.00024609999999999996
+   },
+   {
+    "task": "codegen-959",
+    "model": "gpt-6-luna",
+    "answer": "FINAL ANSWER: No\u2014Pine Haven Lodge is not in appetite for the property line. Its resort-hotel occupancy, hybrid combustible/non-combustible construction, and location in a high-wildfire-exposure area near Rocky Mountain National Park present significant property risks.",
+    "correct": true,
+    "cost": 0.00032629999999999996
+   },
+   {
+    "task": "codegen-962",
+    "model": "gpt-6-luna",
+    "answer": "FINAL ANSWER: No. Prairie Home Sites LLC is not in appetite for the property line. Its portfolio is primarily rural lots leased for manufactured-home and mobile-home use, with communal infrastructure and seasonal grazing land\u2014exposures that are generally outside standard property appetite. The stated wood-frame construction also presents elevated fire risk.",
+    "correct": true,
+    "cost": 0.00029979999999999997
+   },
+   {
+    "task": "codegen-967",
+    "model": "gpt-6-luna",
+    "answer": "FINAL ANSWER: No. Open Prairie Real Estate Holdings is not in appetite for the property line. Its five manufactured-home parks present a higher property risk, and the stated wood-frame construction has relatively low fire resistance.",
+    "correct": true,
+    "cost": 0.00030500000000000004
+   },
+   {
+    "task": "codegen-971",
+    "model": "gpt-6-luna",
+    "answer": "FINAL ANSWER: Yes\u2014Sunrise appears to be within appetite for the property line as a residential rental property owner. The wood-frame construction and Texas weather exposure warrant careful review of each location, including building values, roof age and condition, protection features, and loss history.",
+    "correct": false,
+    "cost": 0.00040260000000000003
+   },
+   {
+    "task": "main-1101",
+    "model": "gpt-6-luna",
+    "answer": "FINAL ANSWER: Workers compensation, commercial auto, and cyber are in appetite, subject to normal underwriting review. General liability is not in appetite because the excavation, demolition, and land-clearing operations carry significant third-party property-damage and injury exposures. BOP is also not a fit for this higher-hazard contracting business.",
+    "correct": false,
+    "cost": 0.0005325
+   },
+   {
+    "task": "main-1200",
+    "model": "gpt-6-luna",
+    "answer": "FINAL ANSWER: Yes\u2014Cranberry Inn & Suites appears to be in appetite for the property line based on the information provided. Its hotel occupancy and hybrid construction do not, by themselves, indicate an out-of-appetite risk. The Maine coastal location warrants review of wind, flood, and storm-surge exposure before quoting.",
+    "correct": false,
+    "cost": 0.0003788
+   },
+   {
+    "task": "main-1208",
+    "model": "gpt-6-luna",
+    "answer": "FINAL ANSWER: Besides cyber, **workers compensation, property, general liability, and auto** are in appetite. The museum\u2019s non-combustible construction is favorable for property; the collection would need appropriate valuation and protection details. **BOP is not in appetite** given the museum\u2019s size and specialized collection exposure.",
+    "correct": false,
+    "cost": 0.0004313
+   },
+   {
+    "task": "main-1556",
+    "model": "gpt-6-luna",
+    "answer": "FINAL ANSWER: No. Willow Creek is not in appetite for the property line based on the information provided. Its portfolio is primarily residential rental properties, and the stated wood-frame construction has low fire resistance, making it a less suitable property risk.",
+    "correct": true,
+    "cost": 0.0003365
+   },
+   {
+    "task": "main-59",
+    "model": "gpt-6-luna",
+    "answer": "FINAL ANSWER: Yes\u2014based on the information provided, Sleepy Fox Bed & Breakfast appears to be in appetite for property coverage. Its small, owner-operated lodging operation is a manageable size, though the historic wood-frame construction warrants careful review of the building\u2019s condition, fire protection, and replacement cost before binding.",
+    "correct": false,
+    "cost": 0.0002982
+   },
+   {
+    "task": "main-612",
+    "model": "gpt-6-luna",
+    "answer": "FINAL ANSWER: Yes\u2014based on the information provided, Meadowbrook Inn & Suites is in appetite for property coverage. Its 55-room hotel and related dining and conference operations appear to be a manageable commercial property risk. The hybrid construction, especially the combustible roof components, should be reviewed along with building age and condition, fire protection, and any flood or wildfire exposure before terms are finalized.",
+    "correct": false,
+    "cost": 0.00033790000000000003
+   }
+  ]
+ },
+ "deepseek-v4-pro@provider-a": {
+  "n": 24,
+  "correct": 4,
+  "rows": [
+   {
+    "task": "codegen-1007",
+    "model": "deepseek-v4-pro@provider-a",
+    "answer": "",
+    "correct": false,
+    "cost": 0.00753375
+   },
+   {
+    "task": "codegen-1028",
+    "model": "deepseek-v4-pro@provider-a",
+    "answer": "FINAL ANSWER: Yes, Riverbend Rentals LLC is in appetite for the property line of business. The portfolio consists of small apartment buildings and single-family homes, which are typical habitational/lessor\u2019s risk exposures for small commercial property coverage. Wood frame construction is common for this class and generally acceptable, though it may be subject to standard underwriting review for age, protection, updates, and loss history.",
+    "correct": false,
+    "cost": 0.0031488
+   },
+   {
+    "task": "codegen-1037",
+    "model": "deepseek-v4-pro@provider-a",
+    "answer": "FINAL ANSWER: Yes, Meadowbrook Inn & Suites is in appetite for the property line of business. The risk is a small commercial hotel with acceptable hybrid non-combustible/combustible construction, and its property exposures are typical for hospitality. Underwriting would likely proceed subject to standard review of building condition, fire protection, roof age, and property valuation.",
+    "correct": false,
+    "cost": 0.0023225
+   },
+   {
+    "task": "codegen-1050",
+    "model": "deepseek-v4-pro@provider-a",
+    "answer": "FINAL ANSWER: No, Sleepy Fox Bed & Breakfast is not in appetite for the property line of business. The risk is a historic wood-frame building with low fire resistivity, used as a bed-and-breakfast with cooking and seasonal dinner events, which presents elevated fire and property exposure outside our small-business property appetite.",
+    "correct": true,
+    "cost": 0.00317675
+   },
+   {
+    "task": "codegen-1085",
+    "model": "deepseek-v4-pro@provider-a",
+    "answer": "FINAL ANSWER: Yes, this company is in appetite for the property line of business. A 6-room bed-and-breakfast with $370,000 annual revenue and 4 employees is a small hospitality risk that generally fits within our property appetite, although wood frame construction may warrant standard underwriting review.",
+    "correct": false,
+    "cost": 0.002284
+   },
+   {
+    "task": "codegen-1093",
+    "model": "deepseek-v4-pro@provider-a",
+    "answer": "FINAL ANSWER: No. Harvest Moon B&B is not in appetite for the property line of business. The risk presents a historic wood frame farmhouse with low assembly fire resistivity, hospitality and cooking exposures, and a rural Vermont location, which place it outside our property underwriting appetite.",
+    "correct": true,
+    "cost": 0.004920549999999999
+   },
+   {
+    "task": "codegen-1097",
+    "model": "deepseek-v4-pro@provider-a",
+    "answer": "FINAL ANSWER: Yes, Red Maple Motor Lodge is in appetite for the property line of business. It is a small commercial lodging account with a hybrid non-combustible/combustible building, standard motel exposures such as restaurant and laundry, and a non-catastrophe-prone Vermont location. This generally fits our property appetite, subject to normal underwriting review of protection class, loss history, and property valuation.",
+    "correct": false,
+    "cost": 0.00375955
+   },
+   {
+    "task": "codegen-1121",
+    "model": "deepseek-v4-pro@provider-a",
+    "answer": "",
+    "correct": false,
+    "cost": 0.007497
+   },
+   {
+    "task": "codegen-1129",
+    "model": "deepseek-v4-pro@provider-a",
+    "answer": "",
+    "correct": false,
+    "cost": 0.0074935
+   },
+   {
+    "task": "codegen-1196",
+    "model": "deepseek-v4-pro@provider-a",
+    "answer": "FINAL ANSWER: Besides cyber, the other lines of business in appetite for EasyMed Rentals are workers compensation, property, general liability, auto, and BOP.",
+    "correct": false,
+    "cost": 0.007035
+   },
+   {
+    "task": "codegen-1344",
+    "model": "deepseek-v4-pro@provider-a",
+    "answer": "",
+    "correct": false,
+    "cost": 0.0075215
+   },
+   {
+    "task": "codegen-378",
+    "model": "deepseek-v4-pro@provider-a",
+    "answer": "",
+    "correct": false,
+    "cost": 0.007539
+   },
+   {
+    "task": "codegen-443",
+    "model": "deepseek-v4-pro@provider-a",
+    "answer": "FINAL ANSWER: Workers compensation, property, general liability, auto, and BOP are all in appetite for this account.",
+    "correct": false,
+    "cost": 0.00417915
+   },
+   {
+    "task": "codegen-53",
+    "model": "deepseek-v4-pro@provider-a",
+    "answer": "FINAL ANSWER: Yes, SafeKeep Storage Solutions appears to be in appetite for the general liability line of business. It is a small commercial self-storage operation with modest revenue, no high-risk activities, a non-combustible building, and standard premises/operations exposures.",
+    "correct": false,
+    "cost": 0.0017843
+   },
+   {
+    "task": "codegen-959",
+    "model": "deepseek-v4-pro@provider-a",
+    "answer": "FINAL ANSWER: No, Pine Haven Lodge is not in appetite for the property line. The hotel occupancy, full-service restaurant and laundry operations, combustible wood glulam roof, and wildfire exposure in Estes Park, CO present too much property risk for our small-business property appetite.",
+    "correct": true,
+    "cost": 0.005131849999999999
+   },
+   {
+    "task": "codegen-962",
+    "model": "deepseek-v4-pro@provider-a",
+    "answer": "",
+    "correct": false,
+    "cost": 0.0075495
+   },
+   {
+    "task": "codegen-967",
+    "model": "deepseek-v4-pro@provider-a",
+    "answer": "FINAL ANSWER: No. Open Prairie Real Estate Holdings is not in appetite for the property line of business because its exposure includes mobile home parks and wood-frame construction, which present low fire resistivity and habitational/mobile home park risks outside our small-commercial property appetite.",
+    "correct": true,
+    "cost": 0.00545265
+   },
+   {
+    "task": "codegen-971",
+    "model": "deepseek-v4-pro@provider-a",
+    "answer": "FINAL ANSWER: Yes, Sunrise Residential Rentals, LLC is in appetite for the property line of business. It is a small habitational/lessors risk with 22 single-family rental homes and two small apartment complexes. Wood frame construction is acceptable but will likely require underwriting review of protection class, updates, and loss history.",
+    "correct": false,
+    "cost": 0.0042947
+   },
+   {
+    "task": "main-1101",
+    "model": "deepseek-v4-pro@provider-a",
+    "answer": "",
+    "correct": false,
+    "cost": 0.007539
+   },
+   {
+    "task": "main-1200",
+    "model": "deepseek-v4-pro@provider-a",
+    "answer": "FINAL ANSWER: Yes, Cranberry Inn & Suites is in appetite for the property line of business. The described 60-room hotel with Hybrid Non-Combustible/Combustible construction is an acceptable property risk, subject to normal coastal underwriting review.",
+    "correct": false,
+    "cost": 0.00379855
+   },
+   {
+    "task": "main-1208",
+    "model": "deepseek-v4-pro@provider-a",
+    "answer": "",
+    "correct": false,
+    "cost": 0.00754425
+   },
+   {
+    "task": "main-1556",
+    "model": "deepseek-v4-pro@provider-a",
+    "answer": "FINAL ANSWER: Yes, this company is generally in appetite for the property line of business as a small commercial habitational/lessors risk. The main underwriting consideration is the wood-frame construction, which may require higher rates, protective safeguards, or inspection, but it would not typically make the account ineligible by itself.",
+    "correct": false,
+    "cost": 0.00707185
+   },
+   {
+    "task": "main-59",
+    "model": "deepseek-v4-pro@provider-a",
+    "answer": "FINAL ANSWER: Yes, the Sleepy Fox Bed & Breakfast is generally in appetite for the property line of business, subject to standard underwriting review of the wood frame construction, rural fire protection, and commercial cooking/dinner event exposures.",
+    "correct": false,
+    "cost": 0.00307785
+   },
+   {
+    "task": "main-612",
+    "model": "deepseek-v4-pro@provider-a",
+    "answer": "FINAL ANSWER: Yes, this company is in appetite for the property line of business. Meadowbrook Inn & Suites is a small commercial hotel operation with 55 rooms, and its revenue, payroll, and employee count are within small-business parameters. The hybrid non-combustible/combustible construction with a wood glulam roof may require additional underwriting review or specific terms, but it is not automatically outside appetite. Property exposures such as the restaurant, indoor pool, and conference facilities are manageable with appropriate underwriting conditions.",
+    "correct": false,
+    "cost": 0.0045144
+   }
+  ]
+ },
+ "deepseek-v4.1-flash@provider-a": {
+  "n": 24,
+  "correct": 1,
+  "rows": [
+   {
+    "task": "codegen-1007",
+    "model": "deepseek-v4.1-flash@provider-a",
+    "answer": "",
+    "correct": false,
+    "cost": 0.0024971999999999998
+   },
+   {
+    "task": "codegen-1028",
+    "model": "deepseek-v4.1-flash@provider-a",
+    "answer": "",
+    "correct": false,
+    "cost": 0.0024963000000000003
+   },
+   {
+    "task": "codegen-1037",
+    "model": "deepseek-v4.1-flash@provider-a",
+    "answer": "",
+    "correct": false,
+    "cost": 0.0025029
+   },
+   {
+    "task": "codegen-1050",
+    "model": "deepseek-v4.1-flash@provider-a",
+    "answer": "",
+    "correct": false,
+    "cost": 0.0024912
+   },
+   {
+    "task": "codegen-1085",
+    "model": "deepseek-v4.1-flash@provider-a",
+    "answer": "",
+    "correct": false,
+    "cost": 0.0024981
+   },
+   {
+    "task": "codegen-1093",
+    "model": "deepseek-v4.1-flash@provider-a",
+    "answer": "",
+    "correct": false,
+    "cost": 0.0024978
+   },
+   {
+    "task": "codegen-1097",
+    "model": "deepseek-v4.1-flash@provider-a",
+    "answer": "",
+    "correct": false,
+    "cost": 0.0025008
+   },
+   {
+    "task": "codegen-1121",
+    "model": "deepseek-v4.1-flash@provider-a",
+    "answer": "",
+    "correct": false,
+    "cost": 0.0024909
+   },
+   {
+    "task": "codegen-1129",
+    "model": "deepseek-v4.1-flash@provider-a",
+    "answer": "",
+    "correct": false,
+    "cost": 0.0024903
+   },
+   {
+    "task": "codegen-1196",
+    "model": "deepseek-v4.1-flash@provider-a",
+    "answer": "",
+    "correct": false,
+    "cost": 0.0024969000000000002
+   },
+   {
+    "task": "codegen-1344",
+    "model": "deepseek-v4.1-flash@provider-a",
+    "answer": "",
+    "correct": false,
+    "cost": 0.0024951
+   },
+   {
+    "task": "codegen-378",
+    "model": "deepseek-v4.1-flash@provider-a",
+    "answer": "FINAL ANSWER: Besides property, the in-appetite lines are workers compensation, general liability, commercial auto, and cyber. BOP is not in appetite for this risk because Green Earth Excavating is a heavy excavation/demolition/land-clearing contractor with 12 vehicles and significant payroll, which falls outside standard BOP eligibility.",
+    "correct": false,
+    "cost": 0.0020375999999999997
+   },
+   {
+    "task": "codegen-443",
+    "model": "deepseek-v4.1-flash@provider-a",
+    "answer": "",
+    "correct": false,
+    "cost": 0.002499
+   },
+   {
+    "task": "codegen-53",
+    "model": "deepseek-v4.1-flash@provider-a",
+    "answer": "FINAL ANSWER: Yes \u2014 SafeKeep Storage Solutions is in appetite for the general liability line. It is a small, family-owned self-storage operation in Texas with $2.2M revenue, 12 employees, $480k payroll, and non-combustible construction. Self-storage is a standard, low-hazard GL class; the primary exposure is premises liability at the facility\u2014customer slips/trips, parking areas, and common areas\u2014not products or completed operations. Passive outdoor storage of vehicles and boats does not by itself remove GL appetite, provided the company does not perform vehicle/boat repair, fueling, servicing,",
+    "correct": false,
+    "cost": 0.0017759
+   },
+   {
+    "task": "codegen-959",
+    "model": "deepseek-v4.1-flash@provider-a",
+    "answer": "",
+    "correct": false,
+    "cost": 0.0024984
+   },
+   {
+    "task": "codegen-962",
+    "model": "deepseek-v4.1-flash@provider-a",
+    "answer": "",
+    "correct": false,
+    "cost": 0.0024999
+   },
+   {
+    "task": "codegen-967",
+    "model": "deepseek-v4.1-flash@provider-a",
+    "answer": "",
+    "correct": false,
+    "cost": 0.0024954
+   },
+   {
+    "task": "codegen-971",
+    "model": "deepseek-v4.1-flash@provider-a",
+    "answer": "FINAL ANSWER: No. Sunrise Residential Rentals, LLC is not in appetite for the property line of business. Its exposure is a residential rental/habitational portfolio\u201422 single-family rental homes and two small apartment complexes\u2014with wood-frame construction, which falls outside All National\u2019s small-business commercial property appetite for this line.",
+    "correct": true,
+    "cost": 0.0016034999999999999
+   },
+   {
+    "task": "main-1101",
+    "model": "deepseek-v4.1-flash@provider-a",
+    "answer": "",
+    "correct": false,
+    "cost": 0.0024981
+   },
+   {
+    "task": "main-1200",
+    "model": "deepseek-v4.1-flash@provider-a",
+    "answer": "",
+    "correct": false,
+    "cost": 0.0024971999999999998
+   },
+   {
+    "task": "main-1208",
+    "model": "deepseek-v4.1-flash@provider-a",
+    "answer": "FINAL ANSWER: Besides cyber, the in-appetite lines are **workers compensation, property, general liability, and commercial auto**.  \n**BOP is not in appetite** for this account because the museum\u2019s revenue/employee size exceeds typical BOP small-business eligibility and its public-assembly/fine-arts/collections exposures fall outside standard BOP underwriting. Property should be written as a standalone commercial property/fine-arts monoline, and general liability as a standalone GL.",
+    "correct": false,
+    "cost": 0.0022827999999999998
+   },
+   {
+    "task": "main-1556",
+    "model": "deepseek-v4.1-flash@provider-a",
+    "answer": "",
+    "correct": false,
+    "cost": 0.0024942
+   },
+   {
+    "task": "main-59",
+    "model": "deepseek-v4.1-flash@provider-a",
+    "answer": "FINAL ANSWER: Yes \u2014 Sleepy Fox Bed & Breakfast is in appetite for the property line of business, subject to standard underwriting conditions such as a satisfactory inspection, adequate fire protection, and no unrepaired prior losses. Wood-frame construction is acceptable but will be rated and may require protective safeguards or higher deductibles.",
+    "correct": false,
+    "cost": 0.0015981
+   },
+   {
+    "task": "main-612",
+    "model": "deepseek-v4.1-flash@provider-a",
+    "answer": "",
+    "correct": false,
+    "cost": 0.0025029
+   }
+  ]
+ },
+ "glm-5.3@provider-a": {
+  "n": 24,
+  "correct": 2,
+  "rows": [
+   {
+    "task": "codegen-1007",
+    "model": "glm-5.3@provider-a",
+    "answer": "",
+    "correct": false,
+    "cost": 0.009140200000000001
+   },
+   {
+    "task": "codegen-1028",
+    "model": "glm-5.3@provider-a",
+    "answer": "**FINAL ANSWER: Yes \u2014 Riverbend Rentals LLC is in appetite for the property line of business.**\n\nReasoning based on the account profile:\n\n- **Class acceptability:** Residential rental real estate (lessors risk \u2014 apartments and single-family dwellings) is a core, commonly written property class for small commercial carriers. Riverbend manages its own portfolio, so there is no third-party management/TIC exposure complicating the risk.\n- **Size fits small commercial:** $4.1M revenue and 12 employees are well within typical small-business property parameters, and a portfolio of small apartment bui",
+    "correct": false,
+    "cost": 0.007360800000000001
+   },
+   {
+    "task": "codegen-1037",
+    "model": "glm-5.3@provider-a",
+    "answer": "",
+    "correct": false,
+    "cost": 0.0091696
+   },
+   {
+    "task": "codegen-1050",
+    "model": "glm-5.3@provider-a",
+    "answer": "**FINAL ANSWER: Yes \u2014 Sleepy Fox Bed & Breakfast is in appetite for the property line of business.**\n\n**Why it fits:**\n- **Occupancy/class:** Small inn/B&B lodging is a standard, acceptable hospitality class for small commercial property programs. At seven rooms, it's comfortably below the room-count thresholds (typically 8\u201315 rooms) where carriers begin tightening appetite.\n- **Size:** $430K in annual revenue, 3 employees, and 1 vehicle place this firmly in small commercial territory \u2014 well within typical property appetite for a writer focused on small businesses.\n- **Construction:** Wood fra",
+    "correct": false,
+    "cost": 0.005108199999999999
+   },
+   {
+    "task": "codegen-1085",
+    "model": "glm-5.3@provider-a",
+    "answer": "FINAL ANSWER: Yes \u2014 Seaside Sunrise B&B is in appetite for the property line of business.\n\nReasoning:\n\n**In-appetite factors:**\n- **Business type:** A 6-room bed-and-breakfast is a standard small commercial hospitality risk. Inns and B&Bs are a staple occupancy for small commercial property programs, and the light residential-style lodging exposure is generally well within appetite.\n- **Size:** $370,000 in annual revenue, 4 employees, and a single location fit comfortably within typical small-business size thresholds for property.\n- **Building use:** Owner-occupied single building, no unusual ",
+    "correct": false,
+    "cost": 0.007085500000000001
+   },
+   {
+    "task": "codegen-1093",
+    "model": "glm-5.3@provider-a",
+    "answer": "FINAL ANSWER: Yes \u2014 Harvest Moon B&B is in appetite for the property line of business.\n\nReasoning:\n- **Occupancy/Class:** A small, four-room bed-and-breakfast is a standard hospitality risk that fits our small commercial property appetite. It's owner-occupied with the owners living on-site, which is a favorable risk factor (continuous supervision, quick incident response, well-maintained premises).\n- **Size:** With $365,000 in annual revenue and only 3 employees, this is squarely a small business risk within our target segment.\n- **Operations:** Farm-to-table breakfasts and small-group cooking",
+    "correct": false,
+    "cost": 0.004556
+   },
+   {
+    "task": "codegen-1097",
+    "model": "glm-5.3@provider-a",
+    "answer": "**FINAL ANSWER: Yes \u2014 Red Maple Motor Lodge is in appetite for the property line of business.**\n\n**Why it fits:**\n\n- **Occupancy:** A 70-room motel/habitational lodging risk is a standard, commonly written small commercial property class. The\u9644\u5c5e restaurant, pool, and meeting rooms are typical ancillary exposures for this class, not disqualifying ones.\n- **Construction:** Hybrid concrete tilt-up walls with a wood glulam roof is an acceptable mid-grade construction (better than full frame; classified as joisted masonry / mixed non-combustible-combustible). This is very common lodging construction",
+    "correct": false,
+    "cost": 0.009337199999999999
+   },
+   {
+    "task": "codegen-1121",
+    "model": "glm-5.3@provider-a",
+    "answer": "**FINAL ANSWER: No \u2014 Summit View Property Group is not in appetite for the property line of business.**\n\n**Key reasons:**\n\n1. **Habitational occupancy** \u2014 This is a residential rental risk (three apartment complexes plus single-family homes and duplexes). Habitational/multi-family risks are commonly excluded or heavily restricted in small commercial property programs due to elevated loss frequency from tenant cooking fires, arson, smoking, and water damage.\n\n2. **Wood frame construction with low fire resistivity** \u2014 All buildings in the portfolio are frame construction. In an apartment setting",
+    "correct": true,
+    "cost": 0.0062433
+   },
+   {
+    "task": "codegen-1129",
+    "model": "glm-5.3@provider-a",
+    "answer": "FINAL ANSWER: Yes \u2014 Maple Ridge Properties is in appetite for the property line of business, subject to standard underwriting conditions.\n\nRationale:\n\n- **Occupancy/class fit:** Residential apartment building ownership and management is a core, bread-and-butter commercial property class for a small-business carrier. Landlords of this size routinely purchase building, contents, and loss-of-rents coverage.\n- **Size fit:** $2.1M in revenue, 44 units across two mid-sized complexes, and 11 employees put this squarely in the small-commercial range (likely $4\u20138M in total insurable values across the t",
+    "correct": false,
+    "cost": 0.005879700000000001
+   },
+   {
+    "task": "codegen-1196",
+    "model": "glm-5.3@provider-a",
+    "answer": "",
+    "correct": false,
+    "cost": 0.009140200000000001
+   },
+   {
+    "task": "codegen-1344",
+    "model": "glm-5.3@provider-a",
+    "answer": "",
+    "correct": false,
+    "cost": 0.0091304
+   },
+   {
+    "task": "codegen-378",
+    "model": "glm-5.3@provider-a",
+    "answer": "",
+    "correct": false,
+    "cost": 0.009151399999999999
+   },
+   {
+    "task": "codegen-443",
+    "model": "glm-5.3@provider-a",
+    "answer": "",
+    "correct": false,
+    "cost": 0.009152799999999999
+   },
+   {
+    "task": "codegen-53",
+    "model": "glm-5.3@provider-a",
+    "answer": "FINAL ANSWER: Yes \u2014 SafeKeep Storage Solutions is in appetite for the general liability line of business.\n\n**Rationale:**\n\n- **Class acceptability:** Self-storage facilities are a low-hazard, service-based class that is commonly written in the small commercial market. The primary GL exposure is premises liability (slip/trip and fall), which historically generates low claim frequency and severity for this occupancy.\n- **Favorable risk characteristics:** Non-combustible construction (steel frame/deck), onsite management, and top-rated security measures are all positive risk-control indicators th",
+    "correct": false,
+    "cost": 0.005716200000000001
+   },
+   {
+    "task": "codegen-959",
+    "model": "glm-5.3@provider-a",
+    "answer": "",
+    "correct": false,
+    "cost": 0.0091486
+   },
+   {
+    "task": "codegen-962",
+    "model": "glm-5.3@provider-a",
+    "answer": "",
+    "correct": false,
+    "cost": 0.0091556
+   },
+   {
+    "task": "codegen-967",
+    "model": "glm-5.3@provider-a",
+    "answer": "**FINAL ANSWER: No** \u2014 Open Prairie Real Estate Holdings is **out of appetite** for the property line of business.\n\nKey reasons:\n\n1. **Occupancy/class of business:** The portfolio is dominated by mobile home (manufactured housing) parks and vacant agricultural grazing land. Manufactured housing communities are a specialty class that most standard small-commercial property programs exclude or heavily restrict due to elevated fire loss frequency, older utility infrastructure, and high tenant turnover.\n\n2. **Construction:** Wood frame construction with low assembly fire resistivity is one of the ",
+    "correct": true,
+    "cost": 0.006056199999999999
+   },
+   {
+    "task": "codegen-971",
+    "model": "glm-5.3@provider-a",
+    "answer": "FINAL ANSWER: Yes \u2014 Sunrise Residential Rentals is in appetite for the property line of business.\n\n**Why it fits:**\n- **Occupancy/class:** Residential real estate rental (lessors of residential buildings/property managers) is a standard target class for small commercial property. The company owns the properties it manages, which is generally preferable to third-party managed exposure.\n- **Renting model:** Long-term family rentals with tenant retention programs \u2014 no short-term/vacation rental exposure, which is the model most often restricted or excluded in property appetite.\n- **Location:** Su",
+    "correct": false,
+    "cost": 0.0076902
+   },
+   {
+    "task": "main-1101",
+    "model": "glm-5.3@provider-a",
+    "answer": "**FINAL ANSWER:** In appetite (besides property): **Workers' Compensation, General Liability, Commercial Auto, and Cyber**. **Out of appetite: BOP.**\n\n**Reasoning by line:**\n\n- **Workers' Compensation \u2014 IN APPETITE.** Excavation contractors are a standard construction class. With 29 employees and $1.72M payroll, there's a clear coverage need, and the operation (grading, site work) is a routinely written contractors' class. Note that Texas is a comp-optional (non-subscriber) state, so coverage would be voluntary but still marketable.\n\n- **General Liability \u2014 IN APPETITE.** Excavation, grading, ",
+    "correct": false,
+    "cost": 0.0071331
+   },
+   {
+    "task": "main-1200",
+    "model": "glm-5.3@provider-a",
+    "answer": "",
+    "correct": false,
+    "cost": 0.009140200000000001
+   },
+   {
+    "task": "main-1208",
+    "model": "glm-5.3@provider-a",
+    "answer": "",
+    "correct": false,
+    "cost": 0.009152799999999999
+   },
+   {
+    "task": "main-1556",
+    "model": "glm-5.3@provider-a",
+    "answer": "**FINAL ANSWER: Yes \u2014 Willow Creek Residential Properties is in appetite for the property line of business.**\n\n**Why it fits:**\n\n- **Class of business:** Real estate owner/manager of residential rental property (small apartment complexes and single-family homes) is a standard, commonly written habitational class for a small commercial carrier.\n- **Account size:** $16M revenue, 11 employees, $750K",
+    "correct": false,
+    "cost": 0.0092624
+   },
+   {
+    "task": "main-59",
+    "model": "glm-5.3@provider-a",
+    "answer": "**FINAL ANSWER: Yes** \u2014 Sleepy Fox Bed & Breakfast appears to be **in appetite for the property line of business**, subject to standard underwriting review and likely a few conditions.\n\n**Why it fits appetite:**\n- **Occupancy:** A small (7-room) bed & breakfast is a low-hazard lodging/hospitality occupancy, generally an acceptable class for small commercial property writers.\n- **Size:** $430K in annual revenue, 3 employees, and a single location make this a small, straightforward account \u2014 well within typical small commercial/BOP-style property parameters.\n- **Construction:** Wood frame constr",
+    "correct": false,
+    "cost": 0.0075579
+   },
+   {
+    "task": "main-612",
+    "model": "glm-5.3@provider-a",
+    "answer": "**FINAL ANSWER: Yes \u2014 Meadowbrook Inn & Suites is in appetite for the property line of business**, subject to standard underwriting review and conditions.\n\n**Supporting rationale:**\n\n*Why it fits:*\n- **Class/size:** A 55-room boutique hotel with $8.4M revenue and 38 employees falls squarely within small commercial property parameters for a hospitality risk.\n- **Construction:** Concrete tilt-up walls are a favorable non-combustible element. The wood glulam roof deck makes this a hybrid/combustible-rated structure overall (effectively joisted-masonry-like), which is generally acceptable \u2014 glulam",
+    "correct": false,
+    "cost": 0.009388
+   }
+  ]
+ },
+ "glm-5.3-flash@provider-a": {
+  "n": 24,
+  "correct": 3,
+  "rows": [
+   {
+    "task": "codegen-1007",
+    "model": "glm-5.3-flash@provider-a",
+    "answer": "FINAL ANSWER: Yes \u2014 Cranberry Inn & Suites is in appetite for the property line of business, subject to standard coastal wind/hail underwriting.\n\nRationale:\n\n- **Occupancy:** A 60-room independent hotel/motel is a standard, eligible class for small commercial property. The on-site restaurant, conference/banquet space, and seasonal recreation offerings don't disqualify it for property \u2014 the kayak tours and bike rentals are liability exposure items, not property appetite concerns.\n- **Size:** $5.1M in annual revenue and 38 employees sit comfortably within small business thresholds (typically up ",
+    "correct": false,
+    "cost": 0.0009409500000000001
+   },
+   {
+    "task": "codegen-1028",
+    "model": "glm-5.3-flash@provider-a",
+    "answer": "FINAL ANSWER: Yes \u2014 Riverbend Rentals LLC is in appetite for the property line of business, subject to standard underwriting verification.\n\nReasoning:\n- Occupancy: A small habitational risk (apartment buildings and single-family rentals) is a common, well-established class for small commercial property writers. Fire, water damage, and tenant-caused losses in this class are generally manageable with proper rating.\n- Size: $4.1M revenue and 12 employees place this squarely within a small commercial account profile.\n- Location: Ohio is an acceptable territory, though the Dayton area carries moder",
+    "correct": false,
+    "cost": 0.00109215
+   },
+   {
+    "task": "codegen-1037",
+    "model": "glm-5.3-flash@provider-a",
+    "answer": "FINAL ANSWER: Yes \u2014 Meadowbrook Inn & Suites is in appetite for the property line of business.\n\n**Why it fits:**\n\n- **Occupancy:** A 55-room boutique hotel is a standard habitational class that small commercial property appetite typically targets. The on-site dining (cooking exposure) and conference/wedding space (light assembly) are common, manageable ancillary exposures \u2014 not appetite killers \u2014 provided the kitchen has proper hood/suppression and the building is sprinklered or adequately protected.\n- **Construction:** Hybrid non-combustible/combustible (tilt-up concrete walls with glulam woo",
+    "correct": false,
+    "cost": 0.0011557
+   },
+   {
+    "task": "codegen-1050",
+    "model": "glm-5.3-flash@provider-a",
+    "answer": "FINAL ANSWER: Yes \u2014 Sleepy Fox Bed & Breakfast is in appetite for the property line of business.\n\n**Why it fits:**\n- **Occupancy class:** Bed & breakfasts are an acceptable, commonly written habitational/commercial lodging class for small commercial property. This is not a prohibited or high-hazard occupancy (e.g., no chemical storage, manufacturing, or vacant building exposure).\n- **Size:** With ~$430K in annual revenue, 3 employees, and a single 7-room building, this is a small, straightforward property risk well within typical small-commercial property appetite limits.\n- **Use:** The on-sit",
+    "correct": false,
+    "cost": 0.00077625
+   },
+   {
+    "task": "codegen-1085",
+    "model": "glm-5.3-flash@provider-a",
+    "answer": "FINAL ANSWER: Yes \u2014 Seaside Sunrise B&B falls within appetite for the property line of business.\n\n**Rationale:**\n- **Occupancy:** Small bed-and-breakfast/habitational risks are typically acceptable classes for small commercial property. It's a modest, owner-operated lodging risk (6 rooms, couple-owned with 2 part-time staff), not a large hotel/motel operation.\n- **Size:** $370,000 annual revenue and a single small property fit squarely within small-business property appetite.\n- **Construction:** Wood frame is the most common construction class and is generally writable, though it carries a hig",
+    "correct": false,
+    "cost": 0.0007615
+   },
+   {
+    "task": "codegen-1093",
+    "model": "glm-5.3-flash@provider-a",
+    "answer": "FINAL ANSWER: Yes \u2014 Harvest Moon B&B is within appetite for the property line.\n\nReasoning:\n- **Size fits small commercial appetite:** $365,000 in annual revenue and a 4-room owner-occupied inn is a modest, low-hazard property exposure \u2014 well within typical small-business property thresholds.\n- **Occupancy is acceptable:** Bed-and-breakfasts and small inns are commonly written property risks for small commercial carriers. This is not a large hotel/motel or rooming house, which are the versions of this occupancy that often fall outside appetite.\n- **Location is favorable:** Rural Vermont carries",
+    "correct": false,
+    "cost": 0.0007071
+   },
+   {
+    "task": "codegen-1097",
+    "model": "glm-5.3-flash@provider-a",
+    "answer": "**FINAL ANSWER: Yes \u2014 Red Maple Motor Lodge is within appetite for the property line of business.**\n\n**Reasoning:**\n\n- **Eligible occupancy:** Hotels/motels (habitational/transient lodging) are a commonly accepted property class for small commercial carriers. The ancillary exposures \u2014 restaurant, guest laundry, meeting rooms, seasonal pool \u2014 are typical for this class and not disqualifying. The pool is primarily a liability concern; the restaurant introduces a cooking exposure but as an ancillary operation it's generally acceptable (verify hood suppression/hood protection).\n- **Acceptable cons",
+    "correct": false,
+    "cost": 0.0007769000000000001
+   },
+   {
+    "task": "codegen-1121",
+    "model": "glm-5.3-flash@provider-a",
+    "answer": "FINAL ANSWER: Yes \u2014 Summit View Property Group is in appetite for the property line of business.\n\nReasoning:\n- **Class of business**: Residential rental/habitational risks (apartment complexes, duplexes, single-family rentals) are a standard target class for small commercial property writers. Summit View's profile as a landlord managing its own leasing and maintenance fits squarely in this space.\n- **Size fits small business appetite**: With $8.5M in annual revenue and 18 employees, this is a typical small commercial account \u2014 well within the revenue and headcount ranges we underwrite.\n- **Con",
+    "correct": false,
+    "cost": 0.00072165
+   },
+   {
+    "task": "codegen-1129",
+    "model": "glm-5.3-flash@provider-a",
+    "answer": "FINAL ANSWER: Yes \u2014 Maple Ridge Properties is in appetite for the property line of business, subject to standard habitational underwriting requirements.\n\nReasoning:\n- **Business profile fits:** At $2.1M revenue, 11 employees, and a modest schedule (two complexes, 44 total units), this is squarely a small commercial risk \u2014 well within typical small-business property eligibility thresholds.\n- **Class is acceptable:** Residential rental/habitational property (apartment building owners) is a commonly written property class for small commercial carriers. The ancillary maintenance and landscaping se",
+    "correct": false,
+    "cost": 0.0008102999999999999
+   },
+   {
+    "task": "codegen-1196",
+    "model": "glm-5.3-flash@provider-a",
+    "answer": "",
+    "correct": false,
+    "cost": 0.00103645
+   },
+   {
+    "task": "codegen-1344",
+    "model": "glm-5.3-flash@provider-a",
+    "answer": "FINAL ANSWER: All five of the remaining lines are in appetite for Party Place Rentals \u2014 workers compensation, general liability, property, BOP, and cyber.\n\n- **Workers compensation** \u2014 In appetite. 7 employees and $205K payroll fit our small-account profile. Exposure is moderate-hazard warehouse/material handling plus delivery, setup, and takedown work (lifting tables, tents, inflatables), which is typical rental operations and priced accordingly.\n\n- **General liability** \u2014 In appetite. This is the core line for a party rental operation: premises/operations exposure from setup and takedown at ",
+    "correct": false,
+    "cost": 0.0012122
+   },
+   {
+    "task": "codegen-378",
+    "model": "glm-5.3-flash@provider-a",
+    "answer": "FINAL ANSWER: For Green Earth Excavating, besides property, the lines in appetite are **workers compensation, general liability, and commercial auto**.\n\n- **Workers compensation \u2013 In appetite.** With 29 employees and $1.72M in payroll, this is a standard WC account. Excavation is a heavier hazard class, but the payroll size and employee count fit small-business contractor appetite.\n- **General liability \u2013 In appetite.** Excavation, grading, demolition, and land clearing contractors are an eligible GL class for small commercial risk. Note the operation carries elevated hazard exposure (undergro",
+    "correct": false,
+    "cost": 0.00076645
+   },
+   {
+    "task": "codegen-443",
+    "model": "glm-5.3-flash@provider-a",
+    "answer": "FINAL ANSWER: All four of our remaining lines are in appetite \u2014 workers compensation, property, general liability, auto, and the BOP (i.e., every line we write besides cyber fits this account).\n\nLine-by-line:\n\n- **Workers Compensation \u2014 In appetite.** 32 employees with $1.8M payroll, mostly low-hazard museum operations (curatorial, docents, gift shop, education, light maintenance). No significant workplace injury exposure.\n\n- **Property \u2014 In appetite.** Non-combustible, fire-resistive construction (concrete columns, beams, floors) is a favorable construction class, and the purpose-built facili",
+    "correct": false,
+    "cost": 0.0008385999999999999
+   },
+   {
+    "task": "codegen-53",
+    "model": "glm-5.3-flash@provider-a",
+    "answer": "FINAL ANSWER: Yes \u2014 SafeKeep Storage Solutions is in appetite for general liability.\n\nRationale:\n- **Low-hazard class**: Self-storage operations are a typically preferred GL class. The exposure is primarily premises-based (slip-and-fall, trip hazards on the grounds, customer interactions), with no manufacturing, heavy machinery, or significant product liability exposure.\n- **Favorable risk characteristics**: Small, stable operation with only 12 employees, $2.2M revenue, and $480K payroll \u2014 squarely within small-business commercial appetite. No employees would raise concerns, but this size is c",
+    "correct": false,
+    "cost": 0.00069125
+   },
+   {
+    "task": "codegen-959",
+    "model": "glm-5.3-flash@provider-a",
+    "answer": "",
+    "correct": false,
+    "cost": 0.0010373499999999998
+   },
+   {
+    "task": "codegen-962",
+    "model": "glm-5.3-flash@provider-a",
+    "answer": "FINAL ANSWER: No \u2014 this company is generally not in appetite for the property line of business.\n\nKey reasons:\n\n1. **Occupancy/class concerns:** The core operation is a manufactured/mobile home land-lease community. This class is typically restricted or declined under standard small commercial property programs because of elevated fire loss potential (closely spaced, combustible dwellings). Note that the tenant-owned manufactured homes themselves would be insured under the tenants' own policies, not the landlord's \u2014 so the insurable property exposure is thin.\n\n2. **Construction:** Wood frame co",
+    "correct": true,
+    "cost": 0.0012859
+   },
+   {
+    "task": "codegen-967",
+    "model": "glm-5.3-flash@provider-a",
+    "answer": "FINAL ANSWER: No \u2014 Open Prairie Real Estate Holdings is **not in appetite for the property line of business**.\n\n**Reasoning:**\n\n- **Occupancy drives the decision.** The account's core exposure is leasing vacant land \u2014 manufactured home sites and agricultural grazing parcels. Vacant/undeveloped land presents little to no insurable building or content exposure, and agricultural/ranching operations (cattle grazing) are typically ineligible classes for standard small commercial property.\n- **Mobile home parks are a restricted class.** Manufactured housing communities are commonly excluded or requi",
+    "correct": true,
+    "cost": 0.00113705
+   },
+   {
+    "task": "codegen-971",
+    "model": "glm-5.3-flash@provider-a",
+    "answer": "FINAL ANSWER: Yes \u2014 Sunrise Residential Rentals, LLC is in appetite for the property line of business.\n\nRationale:\n- Small commercial profile: 7 employees, ~$1.75M revenue, and a modest portfolio (22 single-family rentals plus two small apartment complexes) fits squarely within small-business commercial property appetite. Habitational/landlord risks are a standard eligible class for small commercial property programs.\n- Acceptable construction, with caveats: Wood frame construction is insurable but carries higher fire susceptibility and typically higher rates. The account remains acceptable if",
+    "correct": false,
+    "cost": 0.00084895
+   },
+   {
+    "task": "main-1101",
+    "model": "glm-5.3-flash@provider-a",
+    "answer": "FINAL ANSWER: All five remaining lines are in appetite \u2014 workers compensation, general liability, auto, cyber, and BOP.\n\n- **Workers compensation:** 29",
+    "correct": false,
+    "cost": 0.00123665
+   },
+   {
+    "task": "main-1200",
+    "model": "glm-5.3-flash@provider-a",
+    "answer": "FINAL ANSWER: Yes \u2014 Cranberry Inn & Suites is in appetite for the property line.\n\nRationale:\n- Business size: With $5.1M in annual revenue, 38 employees, and a single 60-room property, this fits the small-business commercial profile we target.\n- Occupancy: Hotels/motels are an eligible occupancy class. The mixed-use nature (lodging, restaurant, conference space, seasonal recreation) is common for this class and does not disqualify the risk for property. Note that the kayak tours and bike rentals are primarily a general liability exposure, not a property one \u2014 they don't affect property eligibi",
+    "correct": false,
+    "cost": 0.00065635
+   },
+   {
+    "task": "main-1208",
+    "model": "glm-5.3-flash@provider-a",
+    "answer": "FINAL ANSWER: In appetite: **Property, General Liability, Auto, and BOP**. Not in appetite: **Workers' Compensation**.\n\nReasoning by line:\n\n- **Workers' Compensation \u2013 NOT in appetite.** Ohio is a monopolistic workers' compensation state. All employers must obtain WC coverage through the Ohio Bureau of Workers' Compensation (or qualify as self-insured); private carriers like All National cannot write WC policies in Ohio, regardless of the risk's merits.\n\n- **Property \u2013 In appetite.** The museum operates from a purpose-built facility with non-combustible, fire-resistive construction (concrete c",
+    "correct": false,
+    "cost": 0.0011294999999999999
+   },
+   {
+    "task": "main-1556",
+    "model": "glm-5.3-flash@provider-a",
+    "answer": "FINAL ANSWER: Yes \u2014 Willow Creek Residential Properties is within appetite for the property line of business.\n\n**Why it fits:**\n- **Eligible class:** Residential rental (habitational) property \u2014 small apartment complexes and rental dwellings \u2014 is a generally acceptable class for small commercial property. Their in-house maintenance model and focus on well-maintained, long-term tenancy are positive risk management indicators.\n- **Geography:** Suburban Columbus, Ohio is a moderate catastrophe zone (mainly convective storm, hail, and winter freeze exposure) \u2014 well within typical geographic appeti",
+    "correct": false,
+    "cost": 0.0009733
+   },
+   {
+    "task": "main-59",
+    "model": "glm-5.3-flash@provider-a",
+    "answer": "FINAL ANSWER: No \u2014 Sleepy Fox Bed & Breakfast is **not in appetite** for the property line of business.\n\n**Reasons this risk falls outside property appetite:**\n\n- **Occupancy (lodging/hospitality):** Bed & breakfasts are typically ineligible or heavily restricted under standard small commercial property programs. Lodging risks with overnight guests carry elevated fire and life-safety exposure, and they're usually referred to specialty hospitality markets rather than a standard small-business property book.\n\n- **Construction:** Wood frame construction with low assembly fire resistivity is the l",
+    "correct": true,
+    "cost": 0.00087405
+   },
+   {
+    "task": "main-612",
+    "model": "glm-5.3-flash@provider-a",
+    "answer": "FINAL ANSWER: Yes \u2014 Meadowbrook Inn & Suites is in appetite for the property line of business.\n\n**Why it fits:**\n- **Occupancy:** Hotels/motels are a standard, eligible class for small commercial property. A 55-room boutique inn is a typical main-street-scale risk, and ancillary uses (dining, conference space, pool) are common hotel features, not unusual hazards.\n- **Size:** $8.4M revenue, 38 employees, and 4 vehicles sit comfortably within small-business thresholds \u2014 the property exposure itself is the relevant driver, and a 55-room hotel is well within small commercial scale.\n- **Constructio",
+    "correct": false,
+    "cost": 0.0010636
+   }
+  ]
+ },
+ "gpt-oss-120b@provider-a": {
+  "n": 24,
+  "correct": 0,
+  "rows": [
+   {
+    "task": "codegen-1007",
+    "model": "gpt-oss-120b@provider-a",
+    "answer": "FINAL ANSWER: Yes. Cranberry\u202fInn\u202f&\u202fSuites falls within All National Insurance\u2019s appetite for the Property line of business. The hotel\u2019s size (60 rooms), annual revenue ($5.1\u202fM), payroll ($1.95\u202fM) and modest vehicle fleet (3 vehicles) are all within our typical underwriting thresholds for small\u2011to\u2011mid\u2011size hospitality accounts. While the hybrid non\u2011combustible/combustible construction introduces a slight rating consideration, it is not a deal\u2011breaker for this risk class, and the Maine coastal location does not exceed our wind/hurricane exposure limits. Consequently, the account can be placed in",
+    "correct": false,
+    "cost": 0.00046549999999999993
+   },
+   {
+    "task": "codegen-1028",
+    "model": "gpt-oss-120b@provider-a",
+    "answer": "FINAL ANSWER: Yes. Riverbend Rentals LLC falls squarely within All National\u2019s appetite for the Property line of business. Its size (\u2248\u202f$4.1\u202fM annual revenue, 12 employees, $410\u202fK payroll), the modest number of vehicles, and its focus on leasing and managing small residential properties align with the underwriting guidelines for residential\u2011rental portfolios. The wood\u2011frame construction is acceptable, provided the usual fire\u2011protection requirements (e.g., smoke detectors, fire alarms and, where feasible, sprinkler coverage) are met. Assuming those safety controls are in place, the company is eli",
+    "correct": false,
+    "cost": 0.00043085
+   },
+   {
+    "task": "codegen-1037",
+    "model": "gpt-oss-120b@provider-a",
+    "answer": "FINAL ANSWER: Yes \u2013 Meadowbrook Inn & Suites falls within All National Insurance\u2019s appetite for the Property line of business. The hotel\u2019s size (55 rooms), annual revenue ($8.4\u202fM), payroll ($1.6\u202fM), and modest vehicle fleet are typical of the boutique\u2011hotel segment we underwrite. Its hybrid non\u2011combustible/combustible construction (concrete tilt\u2011up with wood glulam roof) is acceptable provided it has an approved fire\u2011suppression system and adheres to local building codes. The North Carolina location does not present a disqualifying hazard, and the company\u2019s sustainability initiatives and on\u2011si",
+    "correct": false,
+    "cost": 0.00050625
+   },
+   {
+    "task": "codegen-1050",
+    "model": "gpt-oss-120b@provider-a",
+    "answer": "FINAL ANSWER: Yes. The Sleepy Fox Bed &\u202fBreakfast falls within All National\u2019s appetite for the Property line of business, provided the usual underwriting conditions are met (e.g., appropriate fire\u2011protection measures such as sprinklers or fire alarms, and compliance with any occupancy\u2011type limitations for a wood\u2011frame historic lodging operation).",
+    "correct": false,
+    "cost": 0.0003546
+   },
+   {
+    "task": "codegen-1085",
+    "model": "gpt-oss-120b@provider-a",
+    "answer": "FINAL ANSWER: Yes \u2013 Seaside Sunrise B&B falls within All National Insurance\u2019s appetite for the Property line of business, provided the usual underwriting conditions for a historic, wood\u2011frame, coastal bed\u2011and\u2011breakfast are met (e.g., verified fire\u2011suppression/alarms, appropriate limits, optional flood endorsement and any required loss\u2011control recommendations).",
+    "correct": false,
+    "cost": 0.00041145
+   },
+   {
+    "task": "codegen-1093",
+    "model": "gpt-oss-120b@provider-a",
+    "answer": "FINAL ANSWER: Yes. Harvest Moon B&B falls within All National Insurance\u2019s appetite for the Property line of business, provided the usual underwriting conditions are met (e.g., adequate fire\u2011suppression or detection systems, reasonable coverage limits relative to the modest revenue and payroll, and standard loss\u2011prevention measures for a wood\u2011frame historic farmhouse). The small size, low payroll, and limited exposure make it an acceptable risk for the Property line.",
+    "correct": false,
+    "cost": 0.00038990000000000004
+   },
+   {
+    "task": "codegen-1097",
+    "model": "gpt-oss-120b@provider-a",
+    "answer": "FINAL ANSWER: Yes \u2013 Red\u202fMaple Motor Lodge falls within All National Insurance\u2019s appetite for the Property line of business. Its size (70 rooms, $5.8\u202fM in revenue, 45 employees), the hybrid non\u2011combustible/combustible construction, and modest vehicle fleet align with the typical underwriting guidelines for small\u2011to\u2011mid\u2011size lodging properties.",
+    "correct": false,
+    "cost": 0.00032505
+   },
+   {
+    "task": "codegen-1121",
+    "model": "gpt-oss-120b@provider-a",
+    "answer": "FINAL ANSWER: Yes. Summit View Property Group falls within the typical size and risk parameters for All National\u2019s Property line (revenues under $10\u202fM, modest payroll, a small fleet, and a portfolio of residential rental assets). The primary underwriting \u201cred\u2011flag\u201d is the wood\u2011frame construction, which has lower fire resistance, so the account would be accepted pending verification that the properties have adequate fire protection (e.g., sprinkler systems, fire alarms, fire\u2011department connections) and that any wildfire exposure on the Front\u202fRange is within acceptable limits. In short, the comp",
+    "correct": false,
+    "cost": 0.0004286
+   },
+   {
+    "task": "codegen-1129",
+    "model": "gpt-oss-120b@provider-a",
+    "answer": "FINAL ANSWER: Yes, Maple Ridge Properties falls within All\u202fNational Insurance\u2019s appetite for the Property line of business. The company\u2019s size (44 rental units), annual revenue ($2.1\u202fM), modest payroll ($340\u202fK) and limited fleet (2 vehicles) align with our small\u2011business property guidelines. While the wood\u2011frame construction presents a higher fire\u2011risk profile, it is acceptable provided the usual risk\u2011mitigation conditions are met (e.g., working fire alarm system, adequate fire protection, and standard loss\u2011prevention inspections). No other appetite\u2011blocking factors are evident.",
+    "correct": false,
+    "cost": 0.00037870000000000004
+   },
+   {
+    "task": "codegen-1196",
+    "model": "gpt-oss-120b@provider-a",
+    "answer": "FINAL ANSWER: All National Insurance\u2019s appetite for EasyMed Rentals includes the following lines (in addition to cyber):\n\n1. **Workers Compensation** \u2013 Small\u2011business payroll ($740\u202fK) and 19 employees fall comfortably within our Workers Comp underwriting guidelines for Florida.\n\n2. **Commercial Property** \u2013 The hybrid non\u2011combustible/combustible warehouse and headquarters are acceptable, provided standard Florida wind/hurricane underwriting criteria are met.\n\n3. **General Liability** \u2013 Standard GL coverage is in appetite for a medical\u2011equipment rental operation, with the usual product\u2011liabilit",
+    "correct": false,
+    "cost": 0.0006141
+   },
+   {
+    "task": "codegen-1344",
+    "model": "gpt-oss-120b@provider-a",
+    "answer": "FINAL ANSWER:  \nBased on All\u202fNational Insurance\u2019s underwriting appetite for a small\u2011to\u2011mid\u2011size event\u2011rental business in Oregon, the following lines (aside from auto) are **in appetite** for Party Place Rentals:\n\n- **Workers Compensation** \u2013 payroll of $205\u202fk and a staff of 7 falls comfortably within our standard WC appetite for service\u2011type businesses.  \n- **Commercial Property** \u2013 the hybrid non\u2011combustible/combustible construction and the owned equipment (tables, chairs, linens, tents, bounce houses, etc.) are acceptable for a standard property program.  \n- **General Liability** \u2013 event\u2011ren",
+    "correct": false,
+    "cost": 0.00056315
+   },
+   {
+    "task": "codegen-378",
+    "model": "gpt-oss-120b@provider-a",
+    "answer": "FINAL ANSWER:  \n**In\u2011appetite lines for Green Earth Excavating (aside from Property)**  \n\n| Line of Business | Appetite? | Rationale |\n|------------------|-----------|-----------|\n| **Workers Compensation** | **Yes** | Texas\u2011based contractor with 29 employees and a $1.72\u202fM payroll fits our standard Workers\u202fComp underwriting guidelines for construction\u2011type firms. |\n| **General Liability** | **Yes** | The company performs excavation, grading, demolition and septic\u2011system work \u2013 all classic exposures covered under our Contractor General Liability program. |\n| **Commercial Auto** | **Yes** | A fl",
+    "correct": false,
+    "cost": 0.0006566499999999999
+   },
+   {
+    "task": "codegen-443",
+    "model": "gpt-oss-120b@provider-a",
+    "answer": "FINAL ANSWER:\n\nFor Riverfront Modern Art Museum, the lines of business that are **in appetite** (aside from cyber) are:\n\n1. **Workers Compensation** \u2013 32 employees and a payroll of $1.8\u202fM place the museum squarely within our standard Workers Comp guidelines for small\u2011to\u2011mid\u2011size cultural institutions.\n\n2. **Property** \u2013 The museum\u2019s purpose\u2011built, non\u2011combustible fire\u2011resistive building and its valuable art collections fall well within the exposure limits for our Property line.\n\n3. **General Liability** \u2013 Public admission, guided tours, workshops, and collaborations with schools create the typ",
+    "correct": false,
+    "cost": 0.0005367
+   },
+   {
+    "task": "codegen-53",
+    "model": "gpt-oss-120b@provider-a",
+    "answer": "FINAL ANSWER: Yes. SafeKeep Storage Solutions falls well within All National Insurance\u2019s appetite for a Commercial General Liability (GL) policy. The business is a small\u2011to\u2011mid\u2011size self\u2011storage operation with modest revenue ($2.2\u202fM), a limited number of employees (12), a low payroll ($480\u202fK), and non\u2011combustible construction\u2014all factors that align with our standard GL underwriting guidelines for self\u2011storage facilities in Texas. Assuming the applicant has a clean loss history and maintains its stated security measures, the risk is acceptable and can be placed under standard GL terms and condi",
+    "correct": false,
+    "cost": 0.00035630000000000004
+   },
+   {
+    "task": "codegen-959",
+    "model": "gpt-oss-120b@provider-a",
+    "answer": "FINAL ANSWER: Yes \u2013 Pine Haven Lodge falls within All National Insurance\u2019s appetite for the Property line of business. The hotel\u2019s size (60 rooms, $6.5\u202fM annual revenue, $1.1\u202fM payroll), employee count (38), and modest vehicle fleet (5) are all within the typical underwriting thresholds for hospitality/property accounts. The hybrid non\u2011combustible/combustible construction (concrete tilt\u2011up with wood glulam roof) is acceptable, and while Colorado carries wildfire considerations, the building\u2019s fire\u2011resistant core mitigates that risk. Assuming no outstanding exclusions (e.g., high\u2011value historic",
+    "correct": false,
+    "cost": 0.0004356
+   },
+   {
+    "task": "codegen-962",
+    "model": "gpt-oss-120b@provider-a",
+    "answer": "FINAL ANSWER: Yes. Prairie Home Sites LLC falls within All National Insurance\u2019s appetite for the Property line. The company\u2019s modest size (8 employees, $3.5\u202fM annual revenue), limited physical assets (only a few wood\u2011frame structures and the leased land), and relatively low exposure (no high\u2011value buildings, no manufacturing operations) align with our typical property underwriting guidelines for small\u2011business landlords. While the wood\u2011frame construction does carry a higher fire\u2011risk profile, the exposure is limited in size and can be managed with appropriate coverage limits, fire\u2011prevention r",
+    "correct": false,
+    "cost": 0.0004286
+   },
+   {
+    "task": "codegen-967",
+    "model": "gpt-oss-120b@provider-a",
+    "answer": "FINAL ANSWER: Yes\u2014Open Prairie Real Estate Holdings falls within the appetite for the Property line of business. Its modest revenue ($725\u202fK), small payroll ($115\u202fK), limited number of employees (4), and low\u2011value wood\u2011frame structures keep the exposure within All National\u2019s acceptable limits for commercial property. While the wood\u2011frame construction and mobile\u2011home park component do introduce fire\u2011risk considerations, the overall risk profile (small footprint, rural locations, and limited number of vehicles) is acceptable, provided standard fire\u2011protection requirements (e.g., sprinklers, fire ",
+    "correct": false,
+    "cost": 0.00039105
+   },
+   {
+    "task": "codegen-971",
+    "model": "gpt-oss-120b@provider-a",
+    "answer": "FINAL ANSWER: **Yes** \u2013 Sunrise Residential Rentals, LLC falls within All National Insurance\u2019s appetite for the Property line of business.\n\n**Why it fits the appetite:**\n\n| Underwriting Factor | Company Detail | Appetite Guideline | Verdict |\n|----------------------|----------------|--------------------|---------|\n| **Business type** | Owner\u2011operator of single\u2011family rentals & small apartment complexes | Acceptable for residential rental/property management owners | \u2705 |\n| **Location** | Suburban Austin, Texas | Texas is a standard approved state for Property coverage | \u2705 |\n| **Annual Revenue**",
+    "correct": false,
+    "cost": 0.0007411
+   },
+   {
+    "task": "main-1101",
+    "model": "gpt-oss-120b@provider-a",
+    "answer": "FINAL ANSWER: For Green Earth Excavating, All\u202fNational\u2019s underwriting appetite extends beyond Property to the following lines:\n\n- **Workers Compensation** \u2013 Construction\u2011type payroll and 29 crew members fall well within our standard appetite for Texas contractors.  \n- **General Liability** \u2013 The company\u2019s excavation, grading, demolition and septic\u2011system work present the typical commercial general liability exposures we underwrite for this market segment.  \n- **Commercial Auto** \u2013 With 12 work\u2011related vehicles, the account meets the size and risk criteria for our commercial auto program.  \n- *",
+    "correct": false,
+    "cost": 0.00054505
+   },
+   {
+    "task": "main-1200",
+    "model": "gpt-oss-120b@provider-a",
+    "answer": "FINAL ANSWER: Yes, Cranberry Inn & Suites is within All National Insurance\u2019s appetite for the **Property** line of business.\n\n**Why it fits the appetite:**\n\n1. **Risk Profile** \u2013 A 60\u2011room independent hotel is a classic small\u2011to\u2011mid\u2011size hospitality risk that All National routinely underwrites in the property program.  \n2. **Revenue & Payroll** \u2013 $5.1\u202fM in annual revenue and $1.95\u202fM in payroll place the operation well within the typical exposure limits for the property line (generally up to $10\u202fM in revenue for hotels of this size).  \n3. **Construction** \u2013 The hybrid non\u2011combustible/combustibl",
+    "correct": false,
+    "cost": 0.000526
+   },
+   {
+    "task": "main-1208",
+    "model": "gpt-oss-120b@provider-a",
+    "answer": "FINAL ANSWER: For Riverfront Modern Art Museum, All\u202fNational Insurance\u2019s appetite includes the following lines (in addition to cyber):\n\n- **Workers Compensation** \u2013 required for the 32 employees and well\u2011within our standard underwriting limits.  \n- **Commercial Property** \u2013 the non\u2011combustible, fire\u2011resistive building and the high\u2011value art collection fit our property appetite (the collection will be scheduled separately).  \n- **General Liability** \u2013 public\u2011facing museum activities, tours, workshops and events fall squarely within our GL guidelines.  \n- **Commercial Auto** \u2013 two museum vehicle",
+    "correct": false,
+    "cost": 0.0005552
+   },
+   {
+    "task": "main-1556",
+    "model": "gpt-oss-120b@provider-a",
+    "answer": "FINAL ANSWER: **Yes**, Willow Creek Residential Properties falls within All National Insurance\u2019s appetite for the Property line of business.  \n\n**Key points supporting this conclusion**\n\n| Underwriting Factor | Company Detail | All\u2011National Appetite Guideline |\n|---------------------|----------------|---------------------------------|\n| **Annual Revenue** | $16\u202fM | \u2264\u202f$25\u202fM (acceptable) |\n| **Employees** | 11 | \u2264\u202f20 (acceptable) |\n| **Payroll** | $750\u202fk | \u2264\u202f$1\u202fM (acceptable) |\n| **Location** | Columbus, Ohio | Standard rating territory (acceptable) |\n| **Construction** | Wood\u2011frame (typical for",
+    "correct": false,
+    "cost": 0.0007036500000000001
+   },
+   {
+    "task": "main-59",
+    "model": "gpt-oss-120b@provider-a",
+    "answer": "FINAL ANSWER: Yes.\u202fAll\u202fNational\u202fInsurance\u2019s appetite for the Property line includes small, owner\u2011operated lodging businesses like a seven\u2011room historic farmhouse B&B in Vermont. The key underwriting considerations (size, revenue, payroll, and a single vehicle) are well within our typical limits for this line. The only potential red flag is the wood\u2011frame construction, which has lower fire resistance; however, as long as the property meets standard fire\u2011safety requirements (e.g., working smoke detectors, a fire\u2011extinguishing system or sprinkler coverage, up\u2011to\u2011code electrical and heating system",
+    "correct": false,
+    "cost": 0.0004124
+   },
+   {
+    "task": "main-612",
+    "model": "gpt-oss-120b@provider-a",
+    "answer": "FINAL ANSWER: Yes, Meadowbrook Inn & Suites falls within All National Insurance\u2019s appetite for the Property line of business. Its revenue ($8.4\u202fM), employee count (38), payroll ($1.6\u202fM), size (55\u2011room boutique hotel), and hybrid non\u2011combustible/combustible construction are all within the typical underwriting thresholds for small\u2011hotel property coverage in North Carolina.",
+    "correct": false,
+    "cost": 0.00033285
+   }
+  ]
+ },
+ "qwen3.8-27b@provider-a": {
+  "n": 24,
+  "correct": 0,
+  "rows": [
+   {
+    "task": "codegen-1007",
+    "model": "qwen3.8-27b@provider-a",
+    "answer": "",
+    "correct": false,
+    "cost": 0.00613185
+   },
+   {
+    "task": "codegen-1028",
+    "model": "qwen3.8-27b@provider-a",
+    "answer": "\n\nFINAL ANSWER: Yes, Riverbend Rentals LLC is in appetite for the property line of business. The risk is a small Ohio property-owner/property-management business with standard residential rental exposure, modest revenue, and no apparent hazardous operations. It can be underwritten with typical property conditions and enhanced scrutiny for wood-frame construction, building age/roof condition, loss history, vacancy/tenant screening, and protective devices.",
+    "correct": false,
+    "cost": 0.00266945
+   },
+   {
+    "task": "codegen-1037",
+    "model": "qwen3.8-27b@provider-a",
+    "answer": "",
+    "correct": false,
+    "cost": 0.00614175
+   },
+   {
+    "task": "codegen-1050",
+    "model": "qwen3.8-27b@provider-a",
+    "answer": "\n\nFINAL ANSWER: Yes \u2014 Sleepy Fox Bed & Breakfast appears to be in appetite for the property line of business. The risk is a small seven-room rural bed-and-breakfast with modest revenue, low employee/payroll exposure, and only one vehicle. Wood-frame construction increases fire exposure, but at this size and occupancy level it is generally underwritable for small commercial property, subject to standard requirements such as adequate maintenance, fire protection, appropriate limits, deductibles, and construction/appraisal review.",
+    "correct": false,
+    "cost": 0.0055569
+   },
+   {
+    "task": "codegen-1085",
+    "model": "qwen3.8-27b@provider-a",
+    "answer": "",
+    "correct": false,
+    "cost": 0.00613185
+   },
+   {
+    "task": "codegen-1093",
+    "model": "qwen3.8-27b@provider-a",
+    "answer": "",
+    "correct": false,
+    "cost": 0.00613185
+   },
+   {
+    "task": "codegen-1097",
+    "model": "qwen3.8-27b@provider-a",
+    "answer": "",
+    "correct": false,
+    "cost": 0.006138149999999999
+   },
+   {
+    "task": "codegen-1121",
+    "model": "qwen3.8-27b@provider-a",
+    "answer": "",
+    "correct": false,
+    "cost": 0.00612375
+   },
+   {
+    "task": "codegen-1129",
+    "model": "qwen3.8-27b@provider-a",
+    "answer": "",
+    "correct": false,
+    "cost": 0.0061233
+   },
+   {
+    "task": "codegen-1196",
+    "model": "qwen3.8-27b@provider-a",
+    "answer": "",
+    "correct": false,
+    "cost": 0.0061313999999999995
+   },
+   {
+    "task": "codegen-1344",
+    "model": "qwen3.8-27b@provider-a",
+    "answer": "",
+    "correct": false,
+    "cost": 0.00612825
+   },
+   {
+    "task": "codegen-378",
+    "model": "qwen3.8-27b@provider-a",
+    "answer": "",
+    "correct": false,
+    "cost": 0.0061359
+   },
+   {
+    "task": "codegen-443",
+    "model": "qwen3.8-27b@provider-a",
+    "answer": "",
+    "correct": false,
+    "cost": 0.0061363500000000005
+   },
+   {
+    "task": "codegen-53",
+    "model": "qwen3.8-27b@provider-a",
+    "answer": "\n\nFINAL ANSWER: Yes \u2014 SafeKeep Storage Solutions appears to be in appetite for general liability.\n\nThe profile is generally acceptable for a small-business general liability program:\n\n- **Self-storage is a traditional, manageable GL risk** when the facility has standard security controls, customer agreements, and operating procedures.\n- **Non-combustible construction** reduces loss potential, which supports the overall risk profile.\n- **Onsite management and security measures** are favorable for reducing third-party injury/property-damage exposure.\n- **Revenue and payroll are modest** for comm",
+    "correct": false,
+    "cost": 0.0022502000000000004
+   },
+   {
+    "task": "codegen-959",
+    "model": "qwen3.8-27b@provider-a",
+    "answer": "\n\nFINAL ANSWER: Yes \u2014 Pine Haven Lodge appears to be in appetite for the property line of business, subject to standard property underwriting review. The 60-room scale, $6.5M revenue, and hybrid non-combustible/combustible construction are generally manageable, but property underwriting should confirm wildfire mitigation, roof condition, kitchen/laundry fire-protection measures, alarm/protective equipment, and accurate property valuation.",
+    "correct": false,
+    "cost": 0.00530035
+   },
+   {
+    "task": "codegen-962",
+    "model": "qwen3.8-27b@provider-a",
+    "answer": "",
+    "correct": false,
+    "cost": 0.0061368
+   },
+   {
+    "task": "codegen-967",
+    "model": "qwen3.8-27b@provider-a",
+    "answer": "",
+    "correct": false,
+    "cost": 0.0061305
+   },
+   {
+    "task": "codegen-971",
+    "model": "qwen3.8-27b@provider-a",
+    "answer": "\n\nFINAL ANSWER: Yes. Sunrise Residential Rentals appears to be in appetite for the property line of business: it is a small residential rental landlord with a modest portfolio of 22 single-family homes and two small apartment complexes in suburban Austin, Texas, with limited employees and operations. Wood-frame construction is a standard, though higher-hazard, small-property feature and would still require normal property underwriting review of location, construction, roof, maintenance, and Texas wind/hail/wildfire exposure.",
+    "correct": false,
+    "cost": 0.0046649000000000005
+   },
+   {
+    "task": "main-1101",
+    "model": "qwen3.8-27b@provider-a",
+    "answer": "\n\nFINAL ANSWER: Workers compensation, general liability, and commercial auto are in appetite for Green Earth Excavating. Cyber is not a meaningful in-appetite line for this profile, and BOP is generally not appropriate given the construction/earthmoving risk.",
+    "correct": false,
+    "cost": 0.006002799999999999
+   },
+   {
+    "task": "main-1200",
+    "model": "qwen3.8-27b@provider-a",
+    "answer": "",
+    "correct": false,
+    "cost": 0.00613185
+   },
+   {
+    "task": "main-1208",
+    "model": "qwen3.8-27b@provider-a",
+    "answer": "",
+    "correct": false,
+    "cost": 0.0061363500000000005
+   },
+   {
+    "task": "main-1556",
+    "model": "qwen3.8-27b@provider-a",
+    "answer": "",
+    "correct": false,
+    "cost": 0.006129600000000001
+   },
+   {
+    "task": "main-59",
+    "model": "qwen3.8-27b@provider-a",
+    "answer": "\n\nFINAL ANSWER: Yes \u2014 this company is in appetite for the property line of business. A seven-room rural Vermont bed-and-breakfast with modest revenue, a small employee base, and wood-frame construction is generally acceptable as a small commercial property risk, though the historic wood-frame construction and on-site food service/guest occupancy increase fire exposure and should be underwritten with standard property conditions and limits.",
+    "correct": false,
+    "cost": 0.005651399999999999
+   },
+   {
+    "task": "main-612",
+    "model": "qwen3.8-27b@provider-a",
+    "answer": "",
+    "correct": false,
+    "cost": 0.00614175
+   }
+  ]
+ },
+ "minimax-m3@provider-a": {
+  "n": 24,
+  "correct": 9,
+  "rows": [
+   {
+    "task": "codegen-1007",
+    "model": "minimax-m3@provider-a",
+    "answer": "FINAL ANSWER: Yes, Cranberry Inn & Suites appears to be in appetite for the property line of business.\n\nReasoning:\n- **Class of business**: Independent hotels are a standard commercial property class, and Cranberry Inn & Suites' operations (lodging, restaurant, conference/banquet, recreational activities) are typical coverages under a commercial property policy.\n- **Size**: 60 rooms and $5.1M in annual revenue places this well within small commercial parameters.\n- **Construction**: Hybrid Non-Combustible/Combustible (concrete tilt-up with wood glulam roof) is a generally acceptable constructio",
+    "correct": false,
+    "cost": 0.0015716
+   },
+   {
+    "task": "codegen-1028",
+    "model": "minimax-m3@provider-a",
+    "answer": "FINAL ANSWER: **Yes, this account appears to be in appetite for the property line of business**, with some underwriting considerations.\n\n**Reasoning:**\n\n**In Appetite Factors:**\n- Standard commercial residential rental operation (apartment buildings and single-family homes) is a commonly written property class\n- Operations are modest in scale (12 employees, $4.1M revenue) \u2014 appropriate for a small commercial account\n- Geographic concentration in a single metro area (Dayton, OH) is manageable\n- Owner-operated property management with on-site maintenance suggests active risk management\n\n**Underw",
+    "correct": false,
+    "cost": 0.0014497
+   },
+   {
+    "task": "codegen-1037",
+    "model": "minimax-m3@provider-a",
+    "answer": "FINAL ANSWER: No.\n\nA hotel with transient lodging is generally outside All National's small commercial property appetite. The reasons:\n\n1. **Occupancy class** \u2013 Hotels are a hospitality/transient lodging occupancy with high liability and loss frequency (guest injuries, theft, fire spread), which most small commercial property carriers exclude or place with specialty hotel insurers.\n\n2. **Size and complexity** \u2013 55 rooms, on-site dining, indoor pool, conference facilities, weddings, and outdoor excursions push this well beyond a typical small commercial account in both TIV and operational compl",
+    "correct": true,
+    "cost": 0.001644
+   },
+   {
+    "task": "codegen-1050",
+    "model": "minimax-m3@provider-a",
+    "answer": "FINAL ANSWER: **No** \u2013 this risk is likely out of appetite for the property line of business.\n\n**Reasoning \u2013 Key Out-of-Appetite Indicators:**\n\n1. **Construction (Primary Issue):** The account is explicitly described as **Wood Frame Construction with low assembly fire resistivity**. For a lodging/hospitality occupancy that houses overnight guests, this construction class is generally outside appetite or requires significant sublimits/special handling.\n\n2. **Historic Older Structure:** A \"historic farmhouse\" typically implies aged electrical, plumbing, and heating systems, balloon framing, and ",
+    "correct": true,
+    "cost": 0.0014926000000000002
+   },
+   {
+    "task": "codegen-1085",
+    "model": "minimax-m3@provider-a",
+    "answer": "FINAL ANSWER: **No, this risk is not in appetite for the property line of business.**\n\nWhile Seaside Sunrise B&B is a small, well-operated hospitality business that might fit other lines (e.g., BOP, general liability), several property-specific characteristics take it outside of appetite:\n\n**Key Out-of-Appetite Factors:**\n\n1. **Construction / Fire Resistivity** \u2013 Wood frame construction is explicitly described as having *low* assembly fire resistivity. For a property line risk, this is a leading concern. Wood frame (ISO Construction Class V/VI) carries significantly higher fire loss severity t",
+    "correct": true,
+    "cost": 0.002128
+   },
+   {
+    "task": "codegen-1093",
+    "model": "minimax-m3@provider-a",
+    "answer": "FINAL ANSWER: No, this risk is not in appetite for the property line of business.\n\nWhile Harvest Moon B&B is a small, well-run operation, the property risk profile falls outside appetite for several compounding reasons:\n\n**Construction Risk \u2013 Out of Appetite**\n- Wood frame construction is the most fire-vulnerable construction class, with low assembly fire resistivity. This is a fundamental appetite concern.\n\n**Older/Historic Construction Concerns**\n- A historic Vermont farmhouse typically implies aged infrastructure: outdated knob-and-tube or cloth-wrapped wiring, original plumbing, and relian",
+    "correct": true,
+    "cost": 0.0011784
+   },
+   {
+    "task": "codegen-1097",
+    "model": "minimax-m3@provider-a",
+    "answer": "FINAL ANSWER: **No \u2013 this risk is outside appetite for the property line of business.**\n\nWhile All National writes property for small businesses, Red Maple Motor Lodge presents several features that fall outside a standard small commercial property appetite:\n\n1. **Habitational/Hospitality class \u2013 70 rooms.** Motels and hotels with this many rooms are typically beyond the small commercial property threshold (most carriers cap habitational lodging at far fewer rooms or exclude it altogether). This is a mid-sized hospitality risk that generally requires a hospitality-specialty or surplus-lines ma",
+    "correct": true,
+    "cost": 0.0014230999999999998
+   },
+   {
+    "task": "codegen-1121",
+    "model": "minimax-m3@provider-a",
+    "answer": "FINAL ANSWER: **Likely borderline/out of appetite** for property, primarily due to construction and geographic exposure concerns, though not a flat decline.\n\n**Reasoning:**\n\n**Pro-appetite factors:**\n- Residential rental property management is a standard commercial property class\n- Revenue size ($8.5M) and payroll ($950K) indicate a mid-sized, established operation\n- In-house leasing, maintenance, and tenant management suggests operational control\n- Portfolio is diversified across three asset types (apartments, SFRs, duplexes), spreading concentration risk\n- 4 vehicles is modest and manageable",
+    "correct": false,
+    "cost": 0.001601
+   },
+   {
+    "task": "codegen-1129",
+    "model": "minimax-m3@provider-a",
+    "answer": "FINAL ANSWER: No, Maple Ridge Properties is not in appetite for the property line of business.\n\nThe primary disqualifying feature is the **wood frame construction** classification. Wood frame habitational buildings\u2014particularly multi-family apartment complexes\u2014present an elevated property risk profile due to their low fire resistivity, higher susceptibility to total loss in a fire, and potential for fire spread between adjoining units. Most carriers writing commercial property exclude or restrict wood frame apartment buildings of this size.\n\nAdditional features that reinforce an out-of-appetit",
+    "correct": false,
+    "cost": 0.0035554000000000002
+   },
+   {
+    "task": "codegen-1196",
+    "model": "minimax-m3@provider-a",
+    "answer": "FINAL ANSWER:\n\nAll five of the other lines of business are in appetite for EasyMed Rentals:\n\n1. **Workers Compensation** \u2013 Standard small-business WC exposure. Delivery drivers, equipment technicians, and clerical staff are all within typical underwriting appetite. Payroll of $740K across 19 employees is well within small-commercial thresholds.\n\n2. **General Liability** \u2013 Equipment rental to homes and assisted living facilities (not direct patient care) is a customary GL class. Premises/operations exposure from the warehouse and office, plus products/completed operations exposure on the rented",
+    "correct": false,
+    "cost": 0.0018179000000000001
+   },
+   {
+    "task": "codegen-1344",
+    "model": "minimax-m3@provider-a",
+    "answer": "FINAL ANSWER:\n\nBased on Party Place Rentals' profile (Salem, OR; $2.3M revenue; 7 employees; 3 vehicles; hybrid non-combustible/combustible building), the following lines are in appetite:\n\n**Clearly In Appetite:**\n- **Workers Compensation** \u2013 Standard clerical/light delivery/setup exposure with 7 W-2 employees and a manageable $205K payroll. No prohibited classifications (no roofers, no heavy manufacturing, no traveling employees as the primary class).\n- **Property** \u2013 Eligible construction class (Hybrid Non-Combustible / Combustible is acceptable), occupied by a standard light-hazard tenant w",
+    "correct": false,
+    "cost": 0.0023693
+   },
+   {
+    "task": "codegen-378",
+    "model": "minimax-m3@provider-a",
+    "answer": "FINAL ANSWER:\n\nAfter evaluating Green Earth Excavating against our appetite guidelines:\n\n**IN APPETITE:**\n\n- **Workers Compensation** \u2014 Excavation, grading, and land clearing are standard class codes (e.g., 6217) within our WC appetite. Payroll of $1.72M with 29 employees is a manageable size, and Texas is a competitive state for us. Demolition exposure may warrant a slight premium load but remains insurable.\n\n- **Auto** \u2014 12 vehicles for a $5.9M excavation operation is within appetite. A mix of pickups, dump trucks, and service vehicles is standard commercial auto territory. We should confirm",
+    "correct": false,
+    "cost": 0.0023372
+   },
+   {
+    "task": "codegen-443",
+    "model": "minimax-m3@provider-a",
+    "answer": "FINAL ANSWER:\n\nBased on the risk profile of Riverfront Modern Art Museum, the following lines of business are in appetite:\n\n**In Appetite:**\n\n1. **Workers Compensation** \u2013 A museum operation with 32 employees (administrative staff, guides, educators, maintenance) is a relatively low-hazard classification. Payroll of $1.8M is well within appetite.\n\n2. **Property** \u2013 The purpose-built facility with **non-combustible fire-resistive construction** is an excellent construction class (Class 1 equivalent). While the extensive art collections require careful scheduling and valuation, the building itse",
+    "correct": false,
+    "cost": 0.0014264999999999998
+   },
+   {
+    "task": "codegen-53",
+    "model": "minimax-m3@provider-a",
+    "answer": "FINAL ANSWER: Yes, SafeKeep Storage Solutions is in appetite for the general liability line of business.\n\nThis account fits well within typical GL appetite for the following reasons:\n\n1. **Favorable class of business**: Self-storage facilities are considered a desirable, low-to-moderate hazard GL class. Operations are relatively straightforward with limited complex liability exposures.\n\n2. **Operations profile**: The combination of climate-controlled units, standard units, and outdoor vehicle/boat storage represents a standard self-storage risk with predictable premises liability and limited p",
+    "correct": false,
+    "cost": 0.0010451
+   },
+   {
+    "task": "codegen-959",
+    "model": "minimax-m3@provider-a",
+    "answer": "FINAL ANSWER: Yes, Pine Haven Lodge appears to be in appetite for the property line of business.\n\n**Supporting analysis:**\n\n- **Construction:** Hybrid Non-Combustible / Combustible (concrete tilt-up with wood glulam roof) is generally an acceptable construction class (typically Construction Class 3-4). While not the most preferred (Class 1-2 masonry or fire-resistive), it is well within appetite for commercial habitational risks.\n\n- **Size/Revenue:** A 60-room resort hotel with $6.5M annual revenue and $1.1M payroll fits within the small commercial thresholds All National typically writes.\n\n- ",
+    "correct": false,
+    "cost": 0.001396
+   },
+   {
+    "task": "codegen-962",
+    "model": "minimax-m3@provider-a",
+    "answer": "FINAL ANSWER: No, this company is not in appetite for the property line of business.\n\nWhile Prairie Home Sites LLC's revenue ($3.5M) and employee count (8) fall within typical small commercial parameters, the company's primary operations create significant appetite concerns:\n\n**Primary disqualifying exposure: Manufactured Home / Mobile Home Community Operations**\n- Prairie Home Sites' core business is operating manufactured home communities across eastern Nebraska\n- Mobile home / manufactured home parks are a class of business that All National Insurance (writing standard commercial property f",
+    "correct": true,
+    "cost": 0.001433
+   },
+   {
+    "task": "codegen-967",
+    "model": "minimax-m3@provider-a",
+    "answer": "FINAL ANSWER: **No, this account is not in appetite for the property line of business.**\n\nReasoning:\n\n1. **Mobile home park exposure** \u2013 Open Prairie operates five mobile home parks. This occupancy class is excluded from most commercial property appetites because of the catastrophic loss potential (concentration of manufactured housing, high fire spread risk, and exposure to severe weather events). Even though the carrier would only insure the park-owned structures (not the tenants' homes), the underlying park operation is treated as an unaccepted class.\n\n2. **Wood frame construction** \u2013 The s",
+    "correct": true,
+    "cost": 0.0015431999999999998
+   },
+   {
+    "task": "codegen-971",
+    "model": "minimax-m3@provider-a",
+    "answer": "FINAL ANSWER: Yes, this account appears to be in appetite for the property line of business.\n\n**Supporting factors:**\n\n1. **Occupancy is favorable** \u2013 Habitational residential rentals (single-family homes and small apartment complexes) are a common and acceptable property class for small commercial carriers.\n\n2. **Construction is standard for the occupancy** \u2013 Wood frame is the predominant construction type for residential rental properties and is routinely accepted for habitational risks. While the construction note flags lower fire resistivity, this is typical and expected for this class of ",
+    "correct": false,
+    "cost": 0.0018356
+   },
+   {
+    "task": "main-1101",
+    "model": "minimax-m3@provider-a",
+    "answer": "FINAL ANSWER:\n\n**Lines in appetite (besides Property):**\n\n1. **Workers Compensation** \u2013 Excavation/grading/demolition contractors are standard WC classes (e.g., 6217 excavation, 5403/5551 related construction codes). With 29 employees and $1.72M payroll, this account fits comfortably within typical WC appetite for contractor operations in Texas.\n\n2. **General Liability** \u2013 Excavation, grading, land clearing, septic, and dewatering work is written in the contractor GL market. Coverage would typically be issued on a Contractors/Operations form (e.g., CG 00 10 with contractor enhancements), with ",
+    "correct": false,
+    "cost": 0.0022288
+   },
+   {
+    "task": "main-1200",
+    "model": "minimax-m3@provider-a",
+    "answer": "FINAL ANSWER: **Yes, this risk is in appetite for the property line of business**, with some conditions and considerations to address.\n\n**Why it fits:**\n- **Construction**: The hybrid non-combustible/combustible (concrete tilt-up with wood glulam roof) is an acceptable construction class for commercial property. While not fully non-combustible, the tilt-up walls provide good fire resistance, and the wood glulam subdiaphragm roof is widely used in hospitality construction.\n- **Size/risk profile**: A 60-room independent hotel with ~$5.1M revenue and a $1.95M payroll falls within the mid-sized co",
+    "correct": false,
+    "cost": 0.0017591000000000002
+   },
+   {
+    "task": "main-1208",
+    "model": "minimax-m3@provider-a",
+    "answer": "FINAL ANSWER:\n\nBased on the account profile, the following lines are in appetite:\n\n**In Appetite:**\n- **Workers Compensation** \u2013 Museum operations (administrative, educational, curatorial, security/maintenance staff) are generally low-to-moderate hazard; 32 employees and $1.8M payroll is well within appetite.\n- **Property** \u2013 Purpose-built, non-combustible fire-resistive construction is the most favorable construction class we write; modern museum facilities with adequate protection are an acceptable property risk given the building quality.\n- **General Liability** \u2013 Standard premises/operatio",
+    "correct": false,
+    "cost": 0.0017143
+   },
+   {
+    "task": "main-1556",
+    "model": "minimax-m3@provider-a",
+    "answer": "FINAL ANSWER: Yes, Willow Creek Residential Properties appears to be within appetite for the property line of business, though several risk characteristics warrant underwriting attention and likely pricing/term adjustments.\n\n**Supporting factors (in appetite):**\n- **Target class of business**: A residential rental property owner/operator with owned buildings is a core commercial property account; All National writes property for small businesses, and habitational owners/managers are a standard target segment.\n- **Account size is appropriate**: $16M revenue and 11 employees falls comfortably wi",
+    "correct": false,
+    "cost": 0.0020696
+   },
+   {
+    "task": "main-59",
+    "model": "minimax-m3@provider-a",
+    "answer": "FINAL ANSWER: No, this risk is not in appetite for the property line of business.\n\n**Reasoning:**\n\nWhile Sleepy Fox B&B is a small, charming operation, it presents several compounding property risk concerns that fall outside standard underwriting appetite:\n\n1. **Wood Frame Construction** \u2013 Explicitly flagged with low assembly fire resistivity. This is the most concerning factor for property coverage, especially when combined with other risk drivers.\n\n2. **Historic Farmhouse** \u2013 Older buildings typically have outdated electrical systems (knob-and-tube, aluminum wiring), aging plumbing, older he",
+    "correct": true,
+    "cost": 0.0016267999999999999
+   },
+   {
+    "task": "main-612",
+    "model": "minimax-m3@provider-a",
+    "answer": "FINAL ANSWER: **No, Meadowbrook Inn & Suites is not in appetite for the property line of business.**\n\n**Reasoning:**\n\nWhile Meadowbrook is a small-to-mid-sized independent hotel and All National writes small commercial property, several features place this risk outside our property appetite:\n\n1. **Hospitality/habitational class:** A 55-room hotel is a lodging risk, which is generally excluded or requires specialty treatment in standard small commercial property programs. We typically rely on hospitality-specialist carriers or the BOP/market for lodging occupancies of this complexity.\n\n2. **Mul",
+    "correct": true,
+    "cost": 0.0019795
+   }
+  ]
+ }
+}

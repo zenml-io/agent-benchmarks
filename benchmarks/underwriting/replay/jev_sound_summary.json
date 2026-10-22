@@ -1,0 +1,69 @@
+{
+ "per_model": {
+  "glm-5.3@provider-a": {
+   "n": 249,
+   "mean_p": 0.8007228915662651,
+   "sound": 0.9879518072289156
+  },
+  "opus-5.5": {
+   "n": 250,
+   "mean_p": 0.82384,
+   "sound": 0.976
+  },
+  "deepseek-v4.1-flash@provider-a": {
+   "n": 250,
+   "mean_p": 0.7884800000000001,
+   "sound": 0.972
+  },
+  "haiku-5.5": {
+   "n": 250,
+   "mean_p": 0.83416,
+   "sound": 0.98
+  },
+  "deepseek-v4-pro@provider-a": {
+   "n": 250,
+   "mean_p": 0.80944,
+   "sound": 0.968
+  },
+  "gpt-6.1-sol": {
+   "n": 247,
+   "mean_p": 0.8151012145748988,
+   "sound": 0.9595141700404858
+  },
+  "sonnet-5.5": {
+   "n": 250,
+   "mean_p": 0.802,
+   "sound": 0.968
+  },
+  "gpt-6-luna": {
+   "n": 250,
+   "mean_p": 0.8071200000000001,
+   "sound": 0.96
+  },
+  "sonnet-5.5 (rerun B)": {
+   "n": 250,
+   "mean_p": 0.8005599999999999,
+   "sound": 0.96
+  },
+  "minimax-m3@provider-a": {
+   "n": 250,
+   "mean_p": 0.81796,
+   "sound": 0.96
+  },
+  "gpt-oss-120b@provider-a": {
+   "n": 250,
+   "mean_p": 0.78236,
+   "sound": 0.896
+  },
+  "glm-5.3-flash@provider-a": {
+   "n": 250,
+   "mean_p": 0.799,
+   "sound": 0.952
+  },
+  "qwen3.8-27b@provider-a": {
+   "n": 250,
+   "mean_p": 0.81276,
+   "sound": 0.972
+  }
+ }
+}

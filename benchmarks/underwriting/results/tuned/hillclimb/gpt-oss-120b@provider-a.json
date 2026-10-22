@@ -1,0 +1,29 @@
+{
+ "model": "gpt-oss-120b@provider-a",
+ "rounds": [
+  {
+   "round": 0,
+   "learn_correct": 56,
+   "learn_n": 84,
+   "kept": true
+  },
+  {
+   "round": 1,
+   "learn_correct": 56,
+   "learn_n": 84,
+   "kept": false,
+   "why": "The failures came from a few recurring causes:\n\n- **Missing key facts.** The copilot didn't gather the business description or the LOB being applied for. It also treated a missing NAICS code as a blocker, so it hedged or refused, when it should have classified the business itself.\n- **Generic answers.** It skipped the database, sometimes making zero tool calls, and gave generic insurance lists. It also invented rules, such as a payroll cutoff.\n- **Wrong eligibility logic.** It judged small-business status against the range of all NAICS codes instead of the business's own code.\n- **Off-scope or indefinite answers.** It hedged instead of giving yes/no conclusions, added unrequested deductibles and extra LOBs, and included the LOB already applied for in product recommendations.\n- **Misuse of the end convention.** It once sent a request for information as a FINAL ANSWER.\n\nThe new prompt addresses each of these with general instructions. It covers what to gather, classifying the business yo"
+  },
+  {
+   "round": 2,
+   "learn_correct": 64,
+   "learn_n": 84,
+   "kept": true,
+   "why": "The failures came from a few recurring causes:\n\n- **Generic answers and invented rules.** The copilot answered from general insurance knowledge instead of the database. Several cases had zero tool calls, and one invented a payroll cutoff. The new prompt makes the tables and guidelines the only source of truth and tells the copilot to read units and data dictionaries.\n- **Stalling on a missing NAICS code.** When the underwriter had no code, the copilot hedged, reasoned over the range of all size standards, or ended with a request for more information. The prompt now requires asking for the business description and classifying the company itself.\n- **Wrong size comparison.** The prompt requires using the size standard for the applicant's specific code, measured in revenue or employees as that code specifies.\n- **Hedged appetite answers.** The prompt requires reading the exact appetite entry, applying the guideline conditions, and giving a definite yes or no.\n- **Product recommendations.*"
+  }
+ ],
+ "optimizer_cost": 0.19264799999999999,
+ "best_round": 2,
+ "held_correct": 128,
+ "held_n": 168
+}

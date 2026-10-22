@@ -1,0 +1,20 @@
+{
+ "model": "gpt-6-luna",
+ "rounds": [
+  {
+   "round": 0,
+   "learn_correct": 78,
+   "learn_n": 84,
+   "kept": true
+  },
+  {
+   "round": 1,
+   "learn_correct": 78,
+   "learn_n": 84,
+   "kept": false,
+   "why": "All six failures shared one root cause: the copilot hedged instead of committing. It offered two NAICS codes, gave \"conditional\" appetite answers, wrote \"property or BOP,\" and flagged lines as \"worth evaluating if\u2026\". The new prompt requires one decisive answer for each task type. It says to read descriptions at their plain meaning and to treat described features that meet a guideline criterion as satisfying it. For product recommendations, it says to list every in-appetite line definitively. A second cause was gathering: the copilot never asked which LOB the company was applying for or already held, so it couldn't name the \"other\" lines. That question is now mandatory. I added a rule to wait after asking a question, because one case asked and then ended in the same turn. Finally, the prompt asks for a short final answer with the decision first, since long answers were being truncated."
+  }
+ ],
+ "optimizer_cost": 0.062532,
+ "best_round": 0
+}

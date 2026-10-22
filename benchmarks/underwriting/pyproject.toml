@@ -1,0 +1,15 @@
+[project]
+name = "underwriting-benchmark"
+version = "0.1.0"
+description = "Underwriting agent benchmark: cost of a correct decision across 12 models (Snorkel AI underwriting data)"
+requires-python = ">=3.11"
+# The harness itself uses only the standard library (urllib, sqlite3). These are for rebuilding the environment from
+# Snorkel's parquet files and the Census xlsx files (env/), and for harness/validate_judge.py.
+dependencies = [
+    "pandas==2.3.3",
+    "pyarrow==21.0.0",
+    "openpyxl==3.1.5",
+]
+
+[tool.uv]
+package = false

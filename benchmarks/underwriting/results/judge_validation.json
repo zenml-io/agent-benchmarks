@@ -1,0 +1,451 @@
+{
+ "gpt-6.1-sol": {
+  "n": 160,
+  "unparsed": 0,
+  "agreement": 0.875,
+  "kappa": 0.75,
+  "cost": 0.202862,
+  "false_pass": 9,
+  "false_fail": 11,
+  "disagreements": [
+   {
+    "task": "Product Recommendations",
+    "label": true,
+    "judge": false,
+    "reason": "The recommendations omit property as a separate in-appetite line of business required by the reference.",
+    "reference": "In addition to cyber, the other LOBs in appetite for this company are property, bop, workers compensation, auto.",
+    "answer": "ifies as a small business (annual revenue \u2264 $27.5 MM or head-count within SBA limits), all of the above are in-appetite. General Liability by itself shows \u201cNo,\u201d so we should quote it through the BOP.\n\nKey items we still need to confirm before quoting: estimated annual revenue, employee payroll, number of owned or regularly-used vehicles, and total insured value of the building plus art collection."
+   },
+   {
+    "task": "Appetite Check",
+    "label": true,
+    "judge": false,
+    "reason": "The answer does not state that appetite for the company and line of business is qualified.",
+    "reference": "Our appetite for that company and LOB is qualified.",
+    "answer": "final answer."
+   },
+   {
+    "task": "Product Recommendations",
+    "label": true,
+    "judge": false,
+    "reason": "The assistant makes the appetite recommendations contingent on unresolved small-business qualification instead of affirmatively recommending the reference\u2019s lines of business.",
+    "reference": "In addition to auto, the other LOBs in appetite for this company are property, bop, workers compensation, general liability, cyber.",
+    "answer": "siness\" according to All National Insurance's internal definitions, as this is a prerequisite for us to write any policy. The client's revenue is $2.95M and they have 7 employees. Standard policy limits and deductibles have been noted, with specific attention to Auto deductibles and potential checks for Auto (vehicle count) and Workers' Compensation (payroll size) based on underwriting guidelines."
+   },
+   {
+    "task": "Policy Limits",
+    "label": true,
+    "judge": false,
+    "reason": "The limits match, but the assistant additionally recommends a $500 deductible not specified in the reference.",
+    "reference": "You should offer a per-incident policy limit of $3.0 million and an aggregate limit of $5.0 million.",
+    "answer": "al\u2019s underwriting guidelines call for elevated cyber limits ($3M/$5M) for any business in NAICS sector 621 (Ambulatory Health Care Services) because these operations handle protected health information (PHI) and other sensitive patient data, creating higher breach-cost exposure than the typical small business. An optometry practice falls squarely in this sector, so the higher limits are indicated."
+   },
+   {
+    "task": "Policy Limits",
+    "label": true,
+    "judge": false,
+    "reason": "The limits match, but the answer adds a $500 deductible not specified in the reference.",
+    "reference": "You should offer a per-incident policy limit of $3.0 million and an aggregate limit of $5.0 million.",
+    "answer": " $500 deductible.\n\nRationale: The applicant operates in the Finance and Insurance sector (NAICS 52). All National\u2019s underwriting guidelines specify that for cyber liability coverage written for NAICS code 52 businesses we should quote the higher limits of $3 M / $5 M rather than the default $1 M / $2 M. No special deductible adjustment is indicated for cyber, so the normal $500 deductible applies."
+   },
+   {
+    "task": "Policy Limits",
+    "label": true,
+    "judge": false,
+    "reason": "The policy limits match, but the answer adds a $500 deductible not included in the reference.",
+    "reference": "You should offer a per-incident policy limit of $3.0 million and an aggregate limit of $5.0 million.",
+    "answer": "*Aggregate limit: $5 million**\n- **Deductible: $500**\n\nThe reason for these higher limits is that businesses in the Finance and Insurance sector (NAICS code 52) handle sensitive financial data and are at higher risk for cyber incidents. The underwriting guidelines specifically recommend these enhanced limits for financial services businesses due to the amount and type of customer data they handle."
+   },
+   {
+    "task": "Appetite Check",
+    "label": true,
+    "judge": false,
+    "reason": "The assistant asks for revenue instead of concluding that the company is not in appetite for the LOB.",
+    "reference": "No, the company is not in appetite for that LOB.",
+    "answer": "final answer, I need to verify one more thing. According to the underwriting rules, All National Insurance only writes policies for small businesses. What is the annual revenue of Pine Haven Lodge?"
+   },
+   {
+    "task": "Small Business Elibility Check",
+    "label": true,
+    "judge": false,
+    "reason": "The assistant says the company is not a small business, contradicting the reference that it qualifies.",
+    "reference": "This company qualifies as a small business.",
+    "answer": "FINAL ANSWER: NOT A SMALL BUSINESS.** The reason is that the organization has an annual revenue of $25.5 million, which is below the $38.5 million threshold for compost manufacturing (NAICS code 325315). However, I need to verify if there's a specific threshold for this NAICS code, as it didn't appear in the small business definition table. Let me double-check this."
+   },
+   {
+    "task": "Appetite Check",
+    "label": true,
+    "judge": false,
+    "reason": "The reference specifies qualified appetite, but the assistant gives conflicting not-in-appetite and in-appetite conclusions instead.",
+    "reference": "Our appetite for that company and LOB is qualified.",
+    "answer": "the threshold for software publishers is $38.5 million. The appetite guide shows \"Qualified\" for cyber LOB for businesses in the Information sector. Additionally, since this is an Information sector business (NAICS code 51), our underwriting guidelines recommend higher cyber liability limits of $3 million per-occurrence and $5 million aggregate instead of the standard $1 million/$2 million limits."
+   },
+   {
+    "task": "Policy Limits",
+    "label": true,
+    "judge": false,
+    "reason": "The limits match, but the assistant adds a $500 deductible not included in the reference answer.",
+    "reference": "You should offer a per-incident policy limit of $3.0 million and an aggregate limit of $5.0 million.",
+    "answer": "ty category that warrants elevated limits of $3 M / $5 M.  \n\u2022 With annual revenue of $4.3 M (well below the $15 M SBA \u201csmall business\u201d threshold for NAICS 621512), the account still qualifies as a small business, so All National will write the policy.  \n\u2022 No special deductible requirement applies to cyber beyond the default small-business deductible, so the standard $500 deductible is appropriate."
+   },
+   {
+    "task": "Appetite Check",
+    "label": true,
+    "judge": false,
+    "reason": "The assistant asks for more information instead of stating that the company is not in appetite for that LOB.",
+    "reference": "No, the company is not in appetite for that LOB.",
+    "answer": "final answer. **What is the annual revenue of the resort hotel, and what is the building construction type (Type I, II, III, IV, or V)?**"
+   },
+   {
+    "task": "Small Business Elibility Check",
+    "label": false,
+    "judge": true,
+    "reason": "The assistant correctly concludes that the company qualifies as a small business.",
+    "reference": "This company qualifies as a small business.",
+    "answer": "sed roofing products, which classifies it under NAICS code 324122 (Asphalt Shingle and Coating Materials Manufacturing). For this NAICS code, the small business definition is based on number of employees with a maximum of 750 employees. Since this company has 595 employees, which is below the 750 employee threshold, it qualifies as a small business according to All National Insurance's definition."
+   },
+   {
+    "task": "Policy Limits",
+    "label": false,
+    "judge": true,
+    "reason": "The recommended per-incident limit of $3 million and aggregate limit of $5 million match the reference.",
+    "reference": "You should offer a per-incident policy limit of $3.0 million and an aggregate limit of $5.0 million.",
+    "answer": "quirement.  \n\u2022 Appetite: Our underwriting guidelines list NAICS 517 under the industries for which we prefer to write Cyber coverage and recommend higher limits. Therefore the risk is in appetite.  \n\nRecommended Cyber limits & deductible  \n\u2022 Per-occurrence limit: $3 million  \n\u2022 Aggregate limit: $5 million  \n\u2022 Deductible: $500 (standard deductible for Cyber where no higher deductible is prescribed)"
+   },
+   {
+    "task": "Appetite Check",
+    "label": false,
+    "judge": true,
+    "reason": "The assistant concludes the company is out of appetite for property coverage, matching the reference decision.",
+    "reference": "No, the company is not in appetite for that LOB.",
+    "answer": "e / Combustible\u2014concrete and wood glulam,\" which indicates it contains combustible materials (wood glulam). This hybrid construction with combustible components does not meet the Type I or Type II fire-resistive construction requirements.\n\nTherefore, despite meeting the small business size criteria, the hotel is out of appetite for property coverage due to insufficient fire-resistive construction."
+   },
+   {
+    "task": "Appetite Check",
+    "label": false,
+    "judge": true,
+    "reason": "The assistant concludes that the company is in appetite for the specified line of business, matching the reference.",
+    "reference": "Yes, the company is in appetite for that LOB.",
+    "answer": "der NAICS code 492110 \"Couriers and Express Delivery Services.\" For this business classification, our small business definition requires 1,500 employees or fewer. Since the insured has 320 employees, they qualify as a small business. Our underwriting guidelines state that we only write policies for small businesses, and since they meet this requirement, they are within appetite for Cyber coverage."
+   },
+   {
+    "task": "Appetite Check",
+    "label": false,
+    "judge": true,
+    "reason": "The assistant concludes the company is out of appetite for the property LOB, matching the reference.",
+    "reference": "No, the company is not in appetite for that LOB.",
+    "answer": "CS code 721110) in Maine, for which the Property LOB appetite is 'Qualified'. This qualification depends on the building construction being Type I or Type II (sufficiently fire resistive). The provided construction type, \"Hybrid Non-Combustible / Combustible \u2013 concrete tilt-up, wood glulam,\" includes combustible elements (wood glulam), and therefore does not meet the Type I or Type II requirement."
+   },
+   {
+    "task": "Appetite Check",
+    "label": false,
+    "judge": true,
+    "reason": "The assistant correctly concludes that the company is out of appetite for the LOB and does not recommend limits or deductibles.",
+    "reference": "No, the company is not in appetite for that LOB.",
+    "answer": "e the business is a Bed-and-Breakfast Inn (NAICS code 721191). According to our underwriting guidelines, for Property LOB, businesses in the hospitality sector, such as Bed-and-Breakfast Inns, are only in appetite if the building construction is Type I or Type II (fire resistive). Since the historic farmhouse has wood frame construction with low fire resistivity, it does not meet this requirement."
+   },
+   {
+    "task": "Appetite Check",
+    "label": false,
+    "judge": true,
+    "reason": "The assistant correctly concludes that the company is not in appetite for the requested line of business.",
+    "reference": "No, the company is not in appetite for that LOB.",
+    "answer": " underwriting guidelines, hotels (NAICS code 721110) are only in appetite for property coverage if the building construction is Type I or Type II (fire-resistive). The building's hybrid construction with concrete tilt-up walls and wood glulam roof includes combustible materials, which disqualifies it from meeting the fire-resistive construction requirement necessary for property coverage appetite."
+   },
+   {
+    "task": "Appetite Check",
+    "label": false,
+    "judge": true,
+    "reason": "The assistant correctly concludes that the company is not in appetite for the requested line of business.",
+    "reference": "No, the company is not in appetite for that LOB.",
+    "answer": "illion, they exceed this threshold. Since All National Insurance only writes policies for small businesses, the company is out of appetite for Workers Compensation coverage (and all other lines of business).\n\nThe fact that their annual payroll of $3.2 million is below the $5 million Workers Compensation threshold is irrelevant because they fail the initial small business qualification requirement."
+   },
+   {
+    "task": "Appetite Check",
+    "label": false,
+    "judge": true,
+    "reason": "The assistant clearly concludes that the company is in appetite, matching the reference decision.",
+    "reference": "Yes, the company is in appetite for that LOB.",
+    "answer": " of $6 million is not a limiting factor for this NAICS code, as the small business definition for 424910 is based solely on employee count, not revenue.\n\nSince All National Insurance only writes policies for small businesses and this company meets all the criteria (correct NAICS code in appetite and qualifies as a small business), the company fits within your target profile for insurance products."
+   }
+  ]
+ },
+ "haiku-5.5": {
+  "n": 150,
+  "unparsed": 10,
+  "agreement": 0.9,
+  "kappa": 0.8,
+  "cost": 0.0219985,
+  "false_pass": 9,
+  "false_fail": 6,
+  "disagreements": [
+   {
+    "task": "Product Recommendations",
+    "label": true,
+    "judge": false,
+    "reason": "The reference lists property as an in-appetite line, but the assistant never recommends property as a separate line; it only mentions property inside the BOP, so the set of lines does not match.",
+    "reference": "In addition to cyber, the other LOBs in appetite for this company are property, bop, workers compensation, auto.",
+    "answer": "ifies as a small business (annual revenue \u2264 $27.5 MM or head-count within SBA limits), all of the above are in-appetite. General Liability by itself shows \u201cNo,\u201d so we should quote it through the BOP.\n\nKey items we still need to confirm before quoting: estimated annual revenue, employee payroll, number of owned or regularly-used vehicles, and total insured value of the building plus art collection."
+   },
+   {
+    "task": "Appetite Check",
+    "label": true,
+    "judge": false,
+    "reason": "The assistant's final answer 'final answer.' gives no appetite conclusion and does not state the qualified appetite the reference requires.",
+    "reference": "Our appetite for that company and LOB is qualified.",
+    "answer": "final answer."
+   },
+   {
+    "task": "Appetite Check",
+    "label": true,
+    "judge": false,
+    "reason": "The assistant does not give a yes/no appetite decision; it instead asks for Pine Haven Lodge's annual revenue, leaving the conclusion unresolved and not matching the reference's 'not in appetite' answer.",
+    "reference": "No, the company is not in appetite for that LOB.",
+    "answer": "final answer, I need to verify one more thing. According to the underwriting rules, All National Insurance only writes policies for small businesses. What is the annual revenue of Pine Haven Lodge?"
+   },
+   {
+    "task": "Small Business Elibility Check",
+    "label": true,
+    "judge": false,
+    "reason": "The assistant's final answer concludes 'NOT A SMALL BUSINESS', which contradicts the reference conclusion that the company qualifies as a small business, and its reasoning is internally inconsistent and hedged.",
+    "reference": "This company qualifies as a small business.",
+    "answer": "FINAL ANSWER: NOT A SMALL BUSINESS.** The reason is that the organization has an annual revenue of $25.5 million, which is below the $38.5 million threshold for compost manufacturing (NAICS code 325315). However, I need to verify if there's a specific threshold for this NAICS code, as it didn't appear in the small business definition table. Let me double-check this."
+   },
+   {
+    "task": "Appetite Check",
+    "label": true,
+    "judge": false,
+    "reason": "The reference answer is 'qualified' appetite, but the assistant's final answer is a flat 'IN APPETITE', and it first stated 'NOT IN APPETITE' before reversing, which is hedging between conclusions.",
+    "reference": "Our appetite for that company and LOB is qualified.",
+    "answer": "the threshold for software publishers is $38.5 million. The appetite guide shows \"Qualified\" for cyber LOB for businesses in the Information sector. Additionally, since this is an Information sector business (NAICS code 51), our underwriting guidelines recommend higher cyber liability limits of $3 million per-occurrence and $5 million aggregate instead of the standard $1 million/$2 million limits."
+   },
+   {
+    "task": "Appetite Check",
+    "label": true,
+    "judge": false,
+    "reason": "The assistant does not answer the appetite question; it asks for more information about revenue and construction type instead of stating that the company is not in appetite.",
+    "reference": "No, the company is not in appetite for that LOB.",
+    "answer": "final answer. **What is the annual revenue of the resort hotel, and what is the building construction type (Type I, II, III, IV, or V)?**"
+   },
+   {
+    "task": "Small Business Elibility Check",
+    "label": false,
+    "judge": true,
+    "reason": "The assistant concludes the company qualifies as a small business, matching the reference answer, with extra supporting explanation that does not contradict it.",
+    "reference": "This company qualifies as a small business.",
+    "answer": "sed roofing products, which classifies it under NAICS code 324122 (Asphalt Shingle and Coating Materials Manufacturing). For this NAICS code, the small business definition is based on number of employees with a maximum of 750 employees. Since this company has 595 employees, which is below the 750 employee threshold, it qualifies as a small business according to All National Insurance's definition."
+   },
+   {
+    "task": "Policy Limits",
+    "label": false,
+    "judge": true,
+    "reason": "The assistant recommends a $3 million per-occurrence limit and a $5 million aggregate, matching the reference, and treats the risk as in appetite, so there is no conflicting conclusion.",
+    "reference": "You should offer a per-incident policy limit of $3.0 million and an aggregate limit of $5.0 million.",
+    "answer": "quirement.  \n\u2022 Appetite: Our underwriting guidelines list NAICS 517 under the industries for which we prefer to write Cyber coverage and recommend higher limits. Therefore the risk is in appetite.  \n\nRecommended Cyber limits & deductible  \n\u2022 Per-occurrence limit: $3 million  \n\u2022 Aggregate limit: $5 million  \n\u2022 Deductible: $500 (standard deductible for Cyber where no higher deductible is prescribed)"
+   },
+   {
+    "task": "Appetite Check",
+    "label": false,
+    "judge": true,
+    "reason": "The assistant concludes the hotel is out of appetite for property, matching the reference's 'No' answer, and gives a clear single conclusion without hedging.",
+    "reference": "No, the company is not in appetite for that LOB.",
+    "answer": "e / Combustible\u2014concrete and wood glulam,\" which indicates it contains combustible materials (wood glulam). This hybrid construction with combustible components does not meet the Type I or Type II fire-resistive construction requirements.\n\nTherefore, despite meeting the small business size criteria, the hotel is out of appetite for property coverage due to insufficient fire-resistive construction."
+   },
+   {
+    "task": "Appetite Check",
+    "label": false,
+    "judge": true,
+    "reason": "The assistant concludes the insured is in appetite, matching the reference's 'Yes, in appetite' decision for the LOB (cyber), with a supporting NAICS-based small business rationale.",
+    "reference": "Yes, the company is in appetite for that LOB.",
+    "answer": "der NAICS code 492110 \"Couriers and Express Delivery Services.\" For this business classification, our small business definition requires 1,500 employees or fewer. Since the insured has 320 employees, they qualify as a small business. Our underwriting guidelines state that we only write policies for small businesses, and since they meet this requirement, they are within appetite for Cyber coverage."
+   },
+   {
+    "task": "Appetite Check",
+    "label": false,
+    "judge": true,
+    "reason": "The assistant concludes the company is out of appetite, matching the reference's 'No, not in appetite' decision, and its added reasoning does not contradict it.",
+    "reference": "No, the company is not in appetite for that LOB.",
+    "answer": "CS code 721110) in Maine, for which the Property LOB appetite is 'Qualified'. This qualification depends on the building construction being Type I or Type II (sufficiently fire resistive). The provided construction type, \"Hybrid Non-Combustible / Combustible \u2013 concrete tilt-up, wood glulam,\" includes combustible elements (wood glulam), and therefore does not meet the Type I or Type II requirement."
+   },
+   {
+    "task": "Appetite Check",
+    "label": false,
+    "judge": true,
+    "reason": "The assistant's conclusion that the business is out of appetite matches the reference's 'No, not in appetite for that LOB,' and the extra explanation is permitted.",
+    "reference": "No, the company is not in appetite for that LOB.",
+    "answer": "e the business is a Bed-and-Breakfast Inn (NAICS code 721191). According to our underwriting guidelines, for Property LOB, businesses in the hospitality sector, such as Bed-and-Breakfast Inns, are only in appetite if the building construction is Type I or Type II (fire resistive). Since the historic farmhouse has wood frame construction with low fire resistivity, it does not meet this requirement."
+   },
+   {
+    "task": "Appetite Check",
+    "label": false,
+    "judge": true,
+    "reason": "The assistant states the company is not in appetite, matching the reference's 'No, not in appetite' conclusion, with extra explanation that is permitted.",
+    "reference": "No, the company is not in appetite for that LOB.",
+    "answer": " underwriting guidelines, hotels (NAICS code 721110) are only in appetite for property coverage if the building construction is Type I or Type II (fire-resistive). The building's hybrid construction with concrete tilt-up walls and wood glulam roof includes combustible materials, which disqualifies it from meeting the fire-resistive construction requirement necessary for property coverage appetite."
+   },
+   {
+    "task": "Appetite Check",
+    "label": false,
+    "judge": true,
+    "reason": "The assistant concludes the company is not in appetite, matching the reference's 'No' decision, with a clear single conclusion and no hedging.",
+    "reference": "No, the company is not in appetite for that LOB.",
+    "answer": "illion, they exceed this threshold. Since All National Insurance only writes policies for small businesses, the company is out of appetite for Workers Compensation coverage (and all other lines of business).\n\nThe fact that their annual payroll of $3.2 million is below the $5 million Workers Compensation threshold is irrelevant because they fail the initial small business qualification requirement."
+   },
+   {
+    "task": "Appetite Check",
+    "label": false,
+    "judge": true,
+    "reason": "The assistant concludes the company is in appetite, matching the reference's 'Yes, in appetite' decision, with supporting reasoning about NAICS code and small business status.",
+    "reference": "Yes, the company is in appetite for that LOB.",
+    "answer": " of $6 million is not a limiting factor for this NAICS code, as the small business definition for 424910 is based solely on employee count, not revenue.\n\nSince All National Insurance only writes policies for small businesses and this company meets all the criteria (correct NAICS code in appetite and qualifies as a small business), the company fits within your target profile for insurance products."
+   }
+  ]
+ },
+ "gpt-6-luna": {
+  "n": 157,
+  "unparsed": 3,
+  "agreement": 0.89171974522293,
+  "kappa": 0.7834131299196625,
+  "cost": 0.0153531,
+  "false_pass": 9,
+  "false_fail": 8,
+  "disagreements": [
+   {
+    "task": "Appetite Check",
+    "label": true,
+    "judge": false,
+    "reason": "The answer does not state that the company and line of business are qualified.",
+    "reference": "Our appetite for that company and LOB is qualified.",
+    "answer": "final answer."
+   },
+   {
+    "task": "Product Recommendations",
+    "label": true,
+    "judge": false,
+    "reason": "The reference asks for the lines in addition to property, but the assistant includes property in its recommended set.",
+    "reference": "In addition to property, the other LOBs in appetite for this company are bop, workers compensation, general liability, cyber, auto.",
+    "answer": " appetite_guide table indicates \u201cYes\u201d to each of those LOBs (no state-level restrictions observed in the guide). Because the insured manufactures rubber medical and consumer products, product exposure, premises exposure, employee injury potential, vehicle use for deliveries, and data/privacy risks are all significant\u2014making the listed coverages pertinent and aligned with our underwriting appetite."
+   },
+   {
+    "task": "Policy Limits",
+    "label": true,
+    "judge": false,
+    "reason": "The limits match, but the assistant adds an unsupported $500 deductible.",
+    "reference": "You should offer a per-incident policy limit of $3.0 million and an aggregate limit of $5.0 million.",
+    "answer": "*Aggregate limit: $5 million**\n- **Deductible: $500**\n\nThe reason for these higher limits is that businesses in the Finance and Insurance sector (NAICS code 52) handle sensitive financial data and are at higher risk for cyber incidents. The underwriting guidelines specifically recommend these enhanced limits for financial services businesses due to the amount and type of customer data they handle."
+   },
+   {
+    "task": "Appetite Check",
+    "label": true,
+    "judge": false,
+    "reason": "The assistant does not state that the company is out of appetite and instead asks for more information.",
+    "reference": "No, the company is not in appetite for that LOB.",
+    "answer": "final answer, I need to verify one more thing. According to the underwriting rules, All National Insurance only writes policies for small businesses. What is the annual revenue of Pine Haven Lodge?"
+   },
+   {
+    "task": "Product Recommendations",
+    "label": true,
+    "judge": false,
+    "reason": "The assistant includes property even though the reference asks for the other in-appetite lines in addition to property.",
+    "reference": "In addition to property, the other LOBs in appetite for this company are workers compensation, bop, cyber, auto.",
+    "answer": "rence/$2M aggregate.\n\n5. **Business Owners Policy (BOP)** - IN APPETITE. This bundles property and liability coverages for comprehensive protection.\n\nThe company qualifies as a small business (under the $15M revenue threshold for NAICS 238910), so they're eligible for all in-appetite LOBs. Note that General Liability as a standalone is not in appetite for excavation contractors per our guidelines."
+   },
+   {
+    "task": "Small Business Elibility Check",
+    "label": true,
+    "judge": false,
+    "reason": "The assistant concludes the company is not a small business, contrary to the reference.",
+    "reference": "This company qualifies as a small business.",
+    "answer": "FINAL ANSWER: NOT A SMALL BUSINESS.** The reason is that the organization has an annual revenue of $25.5 million, which is below the $38.5 million threshold for compost manufacturing (NAICS code 325315). However, I need to verify if there's a specific threshold for this NAICS code, as it didn't appear in the small business definition table. Let me double-check this."
+   },
+   {
+    "task": "Policy Limits",
+    "label": true,
+    "judge": false,
+    "reason": "The limits match, but the assistant adds a $500 deductible that is not in the reference answer.",
+    "reference": "You should offer a per-incident policy limit of $3.0 million and an aggregate limit of $5.0 million.",
+    "answer": "ty category that warrants elevated limits of $3 M / $5 M.  \n\u2022 With annual revenue of $4.3 M (well below the $15 M SBA \u201csmall business\u201d threshold for NAICS 621512), the account still qualifies as a small business, so All National will write the policy.  \n\u2022 No special deductible requirement applies to cyber beyond the default small-business deductible, so the standard $500 deductible is appropriate."
+   },
+   {
+    "task": "Appetite Check",
+    "label": true,
+    "judge": false,
+    "reason": "The assistant did not state that the company is not in appetite for the line of business.",
+    "reference": "No, the company is not in appetite for that LOB.",
+    "answer": "final answer. **What is the annual revenue of the resort hotel, and what is the building construction type (Type I, II, III, IV, or V)?**"
+   },
+   {
+    "task": "Small Business Elibility Check",
+    "label": false,
+    "judge": true,
+    "reason": "The assistant concludes that the company qualifies as a small business, matching the reference.",
+    "reference": "This company qualifies as a small business.",
+    "answer": "sed roofing products, which classifies it under NAICS code 324122 (Asphalt Shingle and Coating Materials Manufacturing). For this NAICS code, the small business definition is based on number of employees with a maximum of 750 employees. Since this company has 595 employees, which is below the 750 employee threshold, it qualifies as a small business according to All National Insurance's definition."
+   },
+   {
+    "task": "Appetite Check",
+    "label": false,
+    "judge": true,
+    "reason": "The assistant concludes that the company is out of appetite, matching the reference.",
+    "reference": "No, the company is not in appetite for that LOB.",
+    "answer": "e / Combustible\u2014concrete and wood glulam,\" which indicates it contains combustible materials (wood glulam). This hybrid construction with combustible components does not meet the Type I or Type II fire-resistive construction requirements.\n\nTherefore, despite meeting the small business size criteria, the hotel is out of appetite for property coverage due to insufficient fire-resistive construction."
+   },
+   {
+    "task": "Policy Limits",
+    "label": false,
+    "judge": true,
+    "reason": "The recommended per-incident and aggregate limits match the reference; the extra deductible does not change those limits.",
+    "reference": "You should offer a per-incident policy limit of $3.0 million and an aggregate limit of $5.0 million.",
+    "answer": "r cyber limits of $3 M per-occurrence and $5 M aggregate.  \n3. Small-business check: SBA size standard for NAICS 523xxx is $38.5 M revenue; applicant\u2019s revenue is $25 M, so it remains in-appetite.  \n4. Deductible: No special cyber deductible is prescribed; default small-business deductible is $500.\n\nTherefore the appropriate, in-appetite recommendation is $3 M / $5 M limits with a $500 deductible."
+   },
+   {
+    "task": "Appetite Check",
+    "label": false,
+    "judge": true,
+    "reason": "The assistant concludes that the company is in appetite, matching the reference.",
+    "reference": "Yes, the company is in appetite for that LOB.",
+    "answer": "der NAICS code 492110 \"Couriers and Express Delivery Services.\" For this business classification, our small business definition requires 1,500 employees or fewer. Since the insured has 320 employees, they qualify as a small business. Our underwriting guidelines state that we only write policies for small businesses, and since they meet this requirement, they are within appetite for Cyber coverage."
+   },
+   {
+    "task": "Appetite Check",
+    "label": false,
+    "judge": true,
+    "reason": "The assistant concludes that the company is out of appetite, matching the reference.",
+    "reference": "No, the company is not in appetite for that LOB.",
+    "answer": "CS code 721110) in Maine, for which the Property LOB appetite is 'Qualified'. This qualification depends on the building construction being Type I or Type II (sufficiently fire resistive). The provided construction type, \"Hybrid Non-Combustible / Combustible \u2013 concrete tilt-up, wood glulam,\" includes combustible elements (wood glulam), and therefore does not meet the Type I or Type II requirement."
+   },
+   {
+    "task": "Appetite Check",
+    "label": false,
+    "judge": true,
+    "reason": "The assistant concludes the company is out of appetite, matching the reference.",
+    "reference": "No, the company is not in appetite for that LOB.",
+    "answer": "e the business is a Bed-and-Breakfast Inn (NAICS code 721191). According to our underwriting guidelines, for Property LOB, businesses in the hospitality sector, such as Bed-and-Breakfast Inns, are only in appetite if the building construction is Type I or Type II (fire resistive). Since the historic farmhouse has wood frame construction with low fire resistivity, it does not meet this requirement."
+   },
+   {
+    "task": "Appetite Check",
+    "label": false,
+    "judge": true,
+    "reason": "The assistant concludes that the company is not in appetite, matching the reference.",
+    "reference": "No, the company is not in appetite for that LOB.",
+    "answer": " underwriting guidelines, hotels (NAICS code 721110) are only in appetite for property coverage if the building construction is Type I or Type II (fire-resistive). The building's hybrid construction with concrete tilt-up walls and wood glulam roof includes combustible materials, which disqualifies it from meeting the fire-resistive construction requirement necessary for property coverage appetite."
+   },
+   {
+    "task": "Appetite Check",
+    "label": false,
+    "judge": true,
+    "reason": "The assistant gives the same no/inappetite conclusion as the reference.",
+    "reference": "No, the company is not in appetite for that LOB.",
+    "answer": "illion, they exceed this threshold. Since All National Insurance only writes policies for small businesses, the company is out of appetite for Workers Compensation coverage (and all other lines of business).\n\nThe fact that their annual payroll of $3.2 million is below the $5 million Workers Compensation threshold is irrelevant because they fail the initial small business qualification requirement."
+   },
+   {
+    "task": "Appetite Check",
+    "label": false,
+    "judge": true,
+    "reason": "The assistant\u2019s conclusion that the company is in appetite matches the reference.",
+    "reference": "Yes, the company is in appetite for that LOB.",
+    "answer": " of $6 million is not a limiting factor for this NAICS code, as the small business definition for 424910 is based solely on employee count, not revenue.\n\nSince All National Insurance only writes policies for small businesses and this company meets all the criteria (correct NAICS code in appetite and qualifies as a small business), the company fits within your target profile for insurance products."
+   }
+  ]
+ }
+}

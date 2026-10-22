@@ -1,0 +1,22 @@
+{
+ "model": "sonnet-5.5",
+ "rounds": [
+  {
+   "round": 0,
+   "learn_correct": 74,
+   "learn_n": 84,
+   "kept": true
+  },
+  {
+   "round": 1,
+   "learn_correct": 84,
+   "learn_n": 84,
+   "kept": true,
+   "why": "The failures came from a few recurring causes. In product recommendations, the copilot asked which LOBs were \"already quoted or applied for.\" The underwriter couldn't answer that, so the copilot listed every LOB, including the one the application was for. The new prompt tells it to ask which LOB this application is for, to press for that answer, and to exclude that LOB. In several cases the copilot hedged its answer on its own NAICS inference or made it conditional on missing facts. The new prompt tells it to treat its classification as settled, to get missing facts another way where possible, and to commit to a definitive answer with no \"either/or\" options. Answers also included unrequested content, such as deductibles, cyber suggestions and limits. The new prompt restricts answers to the question asked. Finally, in one case the copilot put \"FINAL ANSWER:\" on a message that was asking questions, which ended the conversation early. The prompt now explicitly forbids using it on a questi"
+  }
+ ],
+ "optimizer_cost": 0.077928,
+ "best_round": 1,
+ "held_correct": 167,
+ "held_n": 168
+}

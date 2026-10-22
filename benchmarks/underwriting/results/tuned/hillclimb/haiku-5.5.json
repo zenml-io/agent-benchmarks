@@ -1,0 +1,29 @@
+{
+ "model": "haiku-5.5",
+ "rounds": [
+  {
+   "round": 0,
+   "learn_correct": 76,
+   "learn_n": 84,
+   "kept": true
+  },
+  {
+   "round": 1,
+   "learn_correct": 82,
+   "learn_n": 84,
+   "kept": true,
+   "why": "The failures came from three recurring causes.\n\nFirst, the copilot refused to commit whenever a fact was missing or not stated in the guideline's exact terms. It gave scenario answers, said \"cannot be determined,\" and treated a non-combustible steel building as unverified. In one case it waited for an applicant reply until it hit the turn limit. The new prompt has the copilot classify the business itself from the description and choose the primary activity. It tells the copilot to map described facts to guideline categories reasonably and to never wait for outside data. It also requires one definitive answer.\n\nSecond, the copilot added content nobody asked for. It attached deductibles to limits answers and gave limits after an out-of-appetite decision. The prompt now restricts the answer to the question asked and forbids recommendations after an out-of-appetite result.\n\nThird, the copilot kept asking after the underwriter said they didn't know. The prompt now says to stop asking at tha"
+  },
+  {
+   "round": 2,
+   "learn_correct": 82,
+   "learn_n": 84,
+   "kept": false,
+   "why": "Both failures had the same cause. The copilot sent a long, grouped questionnaire. The underwriter answered with a single \"I don't know,\" and the copilot read that as having no information at all. Prompt rules then turned the gap into a negative ruling: \"small business is a prerequisite,\" \"always commit,\" and \"never ask again\" led it to treat unestablished size as \"not small\" and declare the business out of appetite. I made four changes. I replaced the \"group all questions into one message\" rule with short, prioritized questions, plus a single focused re-ask when a blanket \"I don't know\" answers a multi-part message. I added an explicit rule that missing data is never evidence of ineligibility, with a presumption of small size when no figures are available. I limited \"not small, so out of appetite\" to cases where the known facts show it. I also defined the scope and format for product-recommendation answers: check every offered LOB against the appetite data and list the in-appetite ones"
+  }
+ ],
+ "optimizer_cost": 0.139356,
+ "best_round": 1,
+ "held_correct": 163,
+ "held_n": 167
+}

@@ -1,0 +1,29 @@
+{
+ "model": "opus-5.5",
+ "rounds": [
+  {
+   "round": 0,
+   "learn_correct": 82,
+   "learn_n": 84,
+   "kept": true
+  },
+  {
+   "round": 1,
+   "learn_correct": 83,
+   "learn_n": 84,
+   "kept": true,
+   "why": "Both failures came from hedged final answers. In the first case, the copilot made auto conditional on a vehicle count it never asked for. In the second, it split its answer between two possible classifications instead of choosing one. The new prompt tells the copilot to read the guidelines first so it knows which facts the rules depend on, and to ask for those facts before answering. If ambiguity remains after asking, it must choose the most plausible interpretation, state that assumption briefly, and give a single definitive conclusion with no conditional or branching answers. I also added general guidance on basing answers on the insurer's data, on each task type, and on listing all in-appetite lines for product recommendations. Finally, I discouraged sending duplicate messages and kept the \"FINAL ANSWER:\" convention unchanged."
+  },
+  {
+   "round": 2,
+   "learn_correct": 84,
+   "learn_n": 84,
+   "kept": true,
+   "why": "The failure happened because the copilot applied its own outside reasoning to the appetite results. It found a line marked in appetite, then dropped it because it judged that line redundant with others. The old instruction to \"resolve with your best judgment\" was broad enough to invite this. I limited judgment to settling ambiguous facts and said it must never override or filter what the data concludes. I also made the product-recommendation rule explicit: list every line the data marks in appetite, leave out only the line already applied for, and exclude anything else only when a guideline or data value puts it out of appetite. Finally, I added a rule against sending internal notes as messages, because the copilot posted a stray planning message to the underwriter."
+  }
+ ],
+ "optimizer_cost": 0.08449599999999999,
+ "best_round": 2,
+ "held_correct": 165,
+ "held_n": 168
+}

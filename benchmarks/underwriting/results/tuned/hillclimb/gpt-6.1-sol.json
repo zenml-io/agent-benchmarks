@@ -1,0 +1,29 @@
+{
+ "model": "gpt-6.1-sol",
+ "rounds": [
+  {
+   "round": 0,
+   "learn_correct": 73,
+   "learn_n": 84,
+   "kept": true
+  },
+  {
+   "round": 1,
+   "learn_correct": 79,
+   "learn_n": 84,
+   "kept": true,
+   "why": "The failures came from three recurring causes. First, the copilot put \"FINAL ANSWER:\" on its opening request for information, or sent an empty one, which ended the conversation before any facts were gathered. The new prompt says plainly that questions must never carry the prefix and that the final message must lead with a definite conclusion. Second, once facts were available, the copilot hedged (\"provisional,\" \"potentially qualifies,\" \"pending,\" branching tables) whenever the underwriter said a detail was unknown. The new prompt tells it to stop asking once the underwriter has given what they have and commit to one answer. It should classify by the clearly stated primary activity or the most plausible reading. It should also translate descriptive facts into guideline categories using standard definitions instead of treating a missing formal label as blocking. Third, the copilot asked the underwriter to confirm database values or obtain outside documents. The prompt now says tool data "
+  },
+  {
+   "round": 2,
+   "learn_correct": 84,
+   "learn_n": 84,
+   "kept": true,
+   "why": "All five failures share one pattern. The copilot sent a long checklist, which was itself truncated. The underwriter replied \"I don't know,\" and the copilot ended with a negative answer: \"No,\" or no LOBs recommended. It treated the missing information as disqualifying. The old instructions \"send each question only once\" and \"do not keep asking\" helped push it to end immediately. I replaced those with guidance to ask short, prioritized questions. The new prompt also has the copilot re-ask for one essential fact after a blanket \"I don't know\" and handle cut-off messages. Most importantly, it treats unknown qualifiers (size, vehicles, payroll, construction) as non-disqualifying, presuming small-business status when size is unknown. For product recommendations, the copilot now lists all in-appetite LOBs when the LOB under review is unknown."
+  }
+ ],
+ "optimizer_cost": 0.15162799999999999,
+ "best_round": 2,
+ "held_correct": 164,
+ "held_n": 168
+}

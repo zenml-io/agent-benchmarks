@@ -1,0 +1,519 @@
+{
+ "rows": [
+  {
+   "name": "sonnet-5.5",
+   "reference": true,
+   "open_weights": false,
+   "tool_choice": 0.5833,
+   "exact": 0.24,
+   "failure": 0.0,
+   "answered": 250,
+   "judge_adjusted": 0.484,
+   "query_tool": 0.5148514851485149,
+   "query_exact": 0.13861386138613863,
+   "final_equiv": 0.9310344827586207,
+   "final_correct": 0.9310344827586207,
+   "final_steps": 29,
+   "step_cost_per_call": "0.01166881",
+   "full": null
+  },
+  {
+   "name": "opus-5.5",
+   "reference": false,
+   "open_weights": false,
+   "tool_choice": 0.244,
+   "exact": 0.084,
+   "failure": 0.0,
+   "answered": 250,
+   "judge_adjusted": 0.256,
+   "query_tool": 0.2871287128712871,
+   "query_exact": 0.0891089108910891,
+   "final_equiv": 0.9310344827586207,
+   "final_correct": 0.9310344827586207,
+   "final_steps": 29,
+   "step_cost_per_call": "0.02219834",
+   "full": {
+    "n": 252,
+    "delta": 0.08333333333333333,
+    "lo": 0.03968253968253968,
+    "hi": 0.12698412698412698,
+    "success": 0.9722222222222222,
+    "cost_per_success": 0.05259223183673469
+   }
+  },
+  {
+   "name": "haiku-5.5",
+   "reference": false,
+   "open_weights": false,
+   "tool_choice": 0.2976,
+   "exact": 0.056,
+   "failure": 0.0,
+   "answered": 250,
+   "judge_adjusted": 0.232,
+   "query_tool": 0.40594059405940597,
+   "query_exact": 0.04950495049504951,
+   "final_equiv": 0.7241379310344828,
+   "final_correct": 0.7241379310344828,
+   "final_steps": 29,
+   "step_cost_per_call": "0.00066620",
+   "full": {
+    "n": 252,
+    "delta": -0.015873015873015872,
+    "lo": -0.07142857142857142,
+    "hi": 0.03968253968253968,
+    "success": 0.873015873015873,
+    "cost_per_success": 0.004996964681818182
+   }
+  },
+  {
+   "name": "gpt-6-luna",
+   "reference": false,
+   "open_weights": false,
+   "tool_choice": 0.0893,
+   "exact": 0.02,
+   "failure": 0.0,
+   "answered": 250,
+   "judge_adjusted": 0.188,
+   "query_tool": 0.1188118811881188,
+   "query_exact": 0.019801980198019802,
+   "final_equiv": 0.5862068965517241,
+   "final_correct": 0.5517241379310345,
+   "final_steps": 29,
+   "step_cost_per_call": "0.00017445",
+   "full": {
+    "n": 252,
+    "delta": -0.01984126984126984,
+    "lo": -0.07539682539682539,
+    "hi": 0.03571428571428571,
+    "success": 0.8690476190476191,
+    "cost_per_success": 0.0019027927397260275
+   }
+  },
+  {
+   "name": "gpt-6.1-sol",
+   "reference": false,
+   "open_weights": false,
+   "tool_choice": 0.2036,
+   "exact": 0.0688,
+   "failure": 0.012,
+   "answered": 247,
+   "judge_adjusted": 0.27530364372469635,
+   "query_tool": 0.2376237623762376,
+   "query_exact": 0.06930693069306931,
+   "final_equiv": 0.5862068965517241,
+   "final_correct": 0.4827586206896552,
+   "final_steps": 29,
+   "step_cost_per_call": "0.00247269",
+   "full": {
+    "n": 252,
+    "delta": -0.051587301587301584,
+    "lo": -0.11507936507936507,
+    "hi": 0.011904761904761904,
+    "success": 0.8373015873015873,
+    "cost_per_success": 0.02012322085308057
+   }
+  },
+  {
+   "name": "deepseek-v4.1-flash@provider-a",
+   "reference": false,
+   "open_weights": true,
+   "tool_choice": 0.2083,
+   "exact": 0.032,
+   "failure": 0.0,
+   "answered": 250,
+   "judge_adjusted": 0.152,
+   "query_tool": 0.31683168316831684,
+   "query_exact": 0.04950495049504951,
+   "final_equiv": 0.6206896551724138,
+   "final_correct": 0.5862068965517241,
+   "final_steps": 29,
+   "step_cost_per_call": "0.00135984",
+   "full": {
+    "n": 252,
+    "delta": 0.023809523809523808,
+    "lo": -0.027777777777777776,
+    "hi": 0.07936507936507936,
+    "success": 0.9126984126984127,
+    "cost_per_success": 0.02101051043478261
+   }
+  },
+  {
+   "name": "deepseek-v4-pro@provider-a",
+   "reference": false,
+   "open_weights": true,
+   "tool_choice": 0.256,
+   "exact": 0.1,
+   "failure": 0.0,
+   "answered": 250,
+   "judge_adjusted": 0.296,
+   "query_tool": 0.22772277227722773,
+   "query_exact": 0.04950495049504951,
+   "final_equiv": 0.7586206896551724,
+   "final_correct": 0.7931034482758621,
+   "final_steps": 29,
+   "step_cost_per_call": "0.00245984",
+   "full": {
+    "n": 252,
+    "delta": 0.0873015873015873,
+    "lo": 0.04365079365079365,
+    "hi": 0.13095238095238096,
+    "success": 0.9761904761904762,
+    "cost_per_success": 0.03554070406504065
+   }
+  },
+  {
+   "name": "glm-5.3@provider-a",
+   "reference": false,
+   "open_weights": true,
+   "tool_choice": 0.2515,
+   "exact": 0.0964,
+   "failure": 0.004,
+   "answered": 249,
+   "judge_adjusted": 0.2289156626506024,
+   "query_tool": 0.27,
+   "query_exact": 0.09,
+   "final_equiv": 0.6551724137931034,
+   "final_correct": 0.7586206896551724,
+   "final_steps": 29,
+   "step_cost_per_call": "0.00609856",
+   "full": {
+    "n": 252,
+    "delta": 0.05952380952380952,
+    "lo": 0.011904761904761904,
+    "hi": 0.10714285714285714,
+    "success": 0.9484126984126984,
+    "cost_per_success": 0.08251341087866108
+   }
+  },
+  {
+   "name": "glm-5.3-flash@provider-a",
+   "reference": false,
+   "open_weights": true,
+   "tool_choice": 0.2262,
+   "exact": 0.068,
+   "failure": 0.0,
+   "answered": 250,
+   "judge_adjusted": 0.192,
+   "query_tool": 0.2376237623762376,
+   "query_exact": 0.0297029702970297,
+   "final_equiv": 0.6206896551724138,
+   "final_correct": 0.6551724137931034,
+   "final_steps": 29,
+   "step_cost_per_call": "0.00061912",
+   "full": {
+    "n": 252,
+    "delta": 0.03571428571428571,
+    "lo": -0.015873015873015872,
+    "hi": 0.0873015873015873,
+    "success": 0.9246031746031746,
+    "cost_per_success": 0.009749741630901287
+   }
+  },
+  {
+   "name": "gpt-oss-120b@provider-a",
+   "reference": false,
+   "open_weights": true,
+   "tool_choice": 0.119,
+   "exact": 0.016,
+   "failure": 0.0,
+   "answered": 250,
+   "judge_adjusted": 0.108,
+   "query_tool": 0.1782178217821782,
+   "query_exact": 0.019801980198019802,
+   "final_equiv": 0.5517241379310345,
+   "final_correct": 0.8275862068965517,
+   "final_steps": 29,
+   "step_cost_per_call": "0.00058815",
+   "full": {
+    "n": 252,
+    "delta": -0.29365079365079366,
+    "lo": -0.3611111111111111,
+    "hi": -0.23015873015873015,
+    "success": 0.5952380952380952,
+    "cost_per_success": 0.009899980999999999
+   }
+  },
+  {
+   "name": "qwen3.8-27b@provider-a",
+   "reference": false,
+   "open_weights": true,
+   "tool_choice": 0.1667,
+   "exact": 0.048,
+   "failure": 0.0,
+   "answered": 250,
+   "judge_adjusted": 0.156,
+   "query_tool": 0.24752475247524752,
+   "query_exact": 0.0891089108910891,
+   "final_equiv": 0.7241379310344828,
+   "final_correct": 0.7931034482758621,
+   "final_steps": 29,
+   "step_cost_per_call": "0.00200873",
+   "full": {
+    "n": 252,
+    "delta": -0.047619047619047616,
+    "lo": -0.1111111111111111,
+    "hi": 0.015873015873015872,
+    "success": 0.8412698412698413,
+    "cost_per_success": 0.03706713537735849
+   }
+  },
+  {
+   "name": "minimax-m3@provider-a",
+   "reference": false,
+   "open_weights": true,
+   "tool_choice": 0.1667,
+   "exact": 0.036,
+   "failure": 0.0,
+   "answered": 250,
+   "judge_adjusted": 0.14,
+   "query_tool": 0.2376237623762376,
+   "query_exact": 0.04950495049504951,
+   "final_equiv": 0.41379310344827586,
+   "final_correct": 0.5862068965517241,
+   "final_steps": 29,
+   "step_cost_per_call": "0.00120184",
+   "full": {
+    "n": 252,
+    "delta": -0.023809523809523808,
+    "lo": -0.07936507936507936,
+    "hi": 0.031746031746031744,
+    "success": 0.8650793650793651,
+    "cost_per_success": 0.01751174724770642
+   }
+  }
+ ],
+ "picks": [
+  {
+   "goal": "Closest to today",
+   "candidate": "sonnet-5.5",
+   "why": "Picks the same tool as your current model 58% of the time.",
+   "full": [
+    {
+     "name": "sonnet-5.5"
+    }
+   ]
+  },
+  {
+   "goal": "Cheapest",
+   "candidate": "sonnet-5.5",
+   "why": "$0.01166881 per call, within 10 points of the closest match.",
+   "full": [
+    {
+     "name": "sonnet-5.5"
+    }
+   ]
+  },
+  {
+   "goal": "Fastest",
+   "candidate": "sonnet-5.5",
+   "why": "2.28s median latency, within 10 points of the closest match.",
+   "full": [
+    {
+     "name": "sonnet-5.5"
+    }
+   ]
+  },
+  {
+   "goal": "Best open model",
+   "candidate": "deepseek-v4-pro@provider-a",
+   "why": "Picks the same tool as your current model 26% of the time, and you can run it anywhere.",
+   "full": [
+    {
+     "name": "deepseek-v4-pro@provider-a",
+     "n": 252,
+     "delta": 0.0873015873015873,
+     "lo": 0.04365079365079365,
+     "hi": 0.13095238095238096,
+     "success": 0.9761904761904762,
+     "cost_per_success": 0.03554070406504065
+    }
+   ]
+  }
+ ],
+ "spearman": {
+  "tool_choice~success": 0.7334870966009104,
+  "tool_choice~cost_per_success": 0.3280190742563078,
+  "exact~success": 0.6909090909090909,
+  "exact~cost_per_success": 0.5909090909090909,
+  "judge_adjusted~success": 0.5545454545454546,
+  "judge_adjusted~cost_per_success": 0.2636363636363636,
+  "query_tool~success": 0.30276503540974914,
+  "query_tool~cost_per_success": 0.36698792170878686,
+  "query_exact~success": 0.27580936205249484,
+  "query_exact~cost_per_success": 0.850801760907696,
+  "final_equiv~success": 0.7002453337511801,
+  "final_equiv~cost_per_success": 0.5217514251479382,
+  "final_correct~success": 0.296806747235195,
+  "final_correct~cost_per_success": 0.47945705322608423
+ },
+ "noise": {
+  "tool_choice_A": 0.5833,
+  "final_correct_B": 0.896551724137931
+ },
+ "finalists": {
+  "tool_choice": {
+   "top3": [
+    "haiku-5.5",
+    "deepseek-v4-pro@provider-a",
+    "glm-5.3@provider-a"
+   ],
+   "holders_in_top3": [
+    "haiku-5.5",
+    "deepseek-v4-pro@provider-a",
+    "glm-5.3@provider-a"
+   ],
+   "cheapest_holder_rank": 11
+  },
+  "final_correct": {
+   "top3": [
+    "opus-5.5",
+    "gpt-oss-120b@provider-a",
+    "deepseek-v4-pro@provider-a"
+   ],
+   "holders_in_top3": [
+    "opus-5.5",
+    "deepseek-v4-pro@provider-a"
+   ],
+   "cheapest_holder_rank": 10
+  }
+ },
+ "holders": [
+  "opus-5.5",
+  "haiku-5.5",
+  "gpt-6-luna",
+  "deepseek-v4.1-flash@provider-a",
+  "deepseek-v4-pro@provider-a",
+  "glm-5.3@provider-a",
+  "glm-5.3-flash@provider-a",
+  "qwen3.8-27b@provider-a",
+  "minimax-m3@provider-a"
+ ],
+ "cheapest_holder": "gpt-6-luna",
+ "best_mix": {
+  "A": {
+   "groups": [
+    {
+     "group": "after a user message",
+     "share": 0.212,
+     "calls": 53,
+     "candidate": "haiku-5.5",
+     "rate": 0.5472,
+     "cost_per_call_usd": "0.00063620",
+     "too_few_calls": false,
+     "noisy_reference": false
+    },
+    {
+     "group": "after get_table_data_dictionary",
+     "share": 0.004,
+     "calls": 1,
+     "candidate": null,
+     "rate": null,
+     "cost_per_call_usd": "0.00830000",
+     "too_few_calls": true,
+     "noisy_reference": false
+    },
+    {
+     "group": "after get_table_data_dictionary + get_table_schema",
+     "share": 0.076,
+     "calls": 19,
+     "candidate": null,
+     "rate": null,
+     "cost_per_call_usd": "0.00911800",
+     "too_few_calls": true,
+     "noisy_reference": false
+    },
+    {
+     "group": "after get_table_data_dictionary + get_table_schema + read_query",
+     "share": 0.004,
+     "calls": 1,
+     "candidate": null,
+     "rate": null,
+     "cost_per_call_usd": "0.01601200",
+     "too_few_calls": true,
+     "noisy_reference": true
+    },
+    {
+     "group": "after get_table_data_dictionary + read_query",
+     "share": 0.028,
+     "calls": 7,
+     "candidate": null,
+     "rate": null,
+     "cost_per_call_usd": "0.01037057",
+     "too_few_calls": true,
+     "noisy_reference": false
+    },
+    {
+     "group": "after get_table_descriptions + get_underwriting_guidelines",
+     "share": 0.12,
+     "calls": 30,
+     "candidate": null,
+     "rate": null,
+     "cost_per_call_usd": "0.00732280",
+     "too_few_calls": false,
+     "noisy_reference": true
+    },
+    {
+     "group": "after get_table_schema",
+     "share": 0.068,
+     "calls": 17,
+     "candidate": null,
+     "rate": null,
+     "cost_per_call_usd": "0.01202000",
+     "too_few_calls": true,
+     "noisy_reference": true
+    },
+    {
+     "group": "after get_table_schema + read_query",
+     "share": 0.12,
+     "calls": 30,
+     "candidate": null,
+     "rate": null,
+     "cost_per_call_usd": "0.01518387",
+     "too_few_calls": false,
+     "noisy_reference": false
+    },
+    {
+     "group": "after read_query",
+     "share": 0.248,
+     "calls": 62,
+     "candidate": "haiku-5.5",
+     "rate": 0.7419,
+     "cost_per_call_usd": "0.00101833",
+     "too_few_calls": false,
+     "noisy_reference": false
+    },
+    {
+     "group": "first turn",
+     "share": 0.12,
+     "calls": 30,
+     "candidate": null,
+     "rate": null,
+     "cost_per_call_usd": "0.00288340",
+     "too_few_calls": false,
+     "noisy_reference": false
+    }
+   ],
+   "min_calls": 20,
+   "today_source": "reference replay",
+   "cost": {
+    "per_call_usd": "0.00533218",
+    "per_session_usd": "0.04447716",
+    "per_month_usd": "1334.31471681"
+   },
+   "recorded_cost": {
+    "per_call_usd": "0.01166881",
+    "per_session_usd": "0.09733268",
+    "per_month_usd": "2919.98049782"
+   }
+  },
+  "B": null
+ },
+ "spent": {
+  "A": "11.81111633",
+  "B": "4.04346008"
+ },
+ "incumbent": {
+  "success": 0.8888888888888888,
+  "n": 252
+ }
+}
