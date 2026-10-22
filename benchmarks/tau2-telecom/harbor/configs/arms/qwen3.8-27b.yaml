@@ -1,0 +1,6 @@
+# Model swap: Qwen3.8 27B on provider-a.
+agents:
+  - import_path: tau2_kitaru_harbor.agent:Tau2KitaruAgent
+    model_name: provider-a:Qwen/Qwen3.8-27B
+    kwargs:
+      arm: qwen3.8-27b

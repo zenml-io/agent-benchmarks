@@ -1,0 +1,6 @@
+# Model swap: DeepSeek V4.1 Flash on provider-a.
+agents:
+  - import_path: tau2_kitaru_harbor.agent:Tau2KitaruAgent
+    model_name: provider-a:deepseek-ai/DeepSeek-V4.1-Flash
+    kwargs:
+      arm: deepseek-v4.1-flash

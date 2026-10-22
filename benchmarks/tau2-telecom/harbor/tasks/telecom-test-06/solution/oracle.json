@@ -1,0 +1,72 @@
+{
+  "actions": [
+    {
+      "action_id": "toggle_airplane_mode_0",
+      "name": "toggle_airplane_mode",
+      "arguments": {},
+      "requestor": "user",
+      "compare_args": null
+    },
+    {
+      "action_id": "toggle_wifi_calling_1",
+      "name": "toggle_wifi_calling",
+      "arguments": {},
+      "requestor": "user",
+      "compare_args": null
+    },
+    {
+      "action_id": "toggle_roaming_2",
+      "name": "toggle_roaming",
+      "arguments": {},
+      "requestor": "user",
+      "compare_args": null
+    }
+  ],
+  "communicate_info": [],
+  "initialization_data": null,
+  "initialization_actions": [
+    {
+      "env_type": "user",
+      "func_name": "set_user_info",
+      "arguments": {
+        "name": "John Smith",
+        "phone_number": "555-123-2002"
+      }
+    },
+    {
+      "env_type": "user",
+      "func_name": "turn_airplane_mode_on",
+      "arguments": {}
+    },
+    {
+      "env_type": "user",
+      "func_name": "set_wifi_calling",
+      "arguments": {
+        "enabled": true,
+        "mms_over_wifi": true
+      }
+    },
+    {
+      "env_type": "user",
+      "func_name": "set_user_location",
+      "arguments": {
+        "abroad": true
+      }
+    },
+    {
+      "env_type": "user",
+      "func_name": "turn_roaming_off",
+      "arguments": {}
+    },
+    {
+      "env_type": "assistant",
+      "func_name": "enable_roaming",
+      "arguments": {
+        "customer_id": "C1001",
+        "line_id": "L1002"
+      }
+    }
+  ],
+  "domain": "telecom",
+  "task_id": "[mms_issue]airplane_mode_on|bad_wifi_calling|user_abroad_roaming_enabled_off[PERSONA:Easy]"
+}

@@ -1,0 +1,64 @@
+{
+  "actions": [
+    {
+      "action_id": "reset_apn_settings_0",
+      "name": "reset_apn_settings",
+      "arguments": {},
+      "requestor": "user",
+      "compare_args": null
+    },
+    {
+      "action_id": "reboot_device_1",
+      "name": "reboot_device",
+      "arguments": {},
+      "requestor": "user",
+      "compare_args": null
+    },
+    {
+      "action_id": "toggle_roaming_2",
+      "name": "toggle_roaming",
+      "arguments": {},
+      "requestor": "user",
+      "compare_args": null
+    }
+  ],
+  "communicate_info": [],
+  "initialization_data": null,
+  "initialization_actions": [
+    {
+      "env_type": "user",
+      "func_name": "set_user_info",
+      "arguments": {
+        "name": "John Smith",
+        "phone_number": "555-123-2002"
+      }
+    },
+    {
+      "env_type": "user",
+      "func_name": "break_apn_mms_setting",
+      "arguments": {}
+    },
+    {
+      "env_type": "user",
+      "func_name": "set_user_location",
+      "arguments": {
+        "abroad": true
+      }
+    },
+    {
+      "env_type": "user",
+      "func_name": "turn_roaming_off",
+      "arguments": {}
+    },
+    {
+      "env_type": "assistant",
+      "func_name": "enable_roaming",
+      "arguments": {
+        "customer_id": "C1001",
+        "line_id": "L1002"
+      }
+    }
+  ],
+  "domain": "telecom",
+  "task_id": "[mms_issue]break_apn_mms_setting|user_abroad_roaming_enabled_off[PERSONA:Hard]"
+}

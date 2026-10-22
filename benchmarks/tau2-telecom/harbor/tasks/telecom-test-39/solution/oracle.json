@@ -1,0 +1,79 @@
+{
+  "actions": [
+    {
+      "action_id": "send_payment_request_0",
+      "name": "send_payment_request",
+      "arguments": {
+        "customer_id": "C1001",
+        "bill_id": "B1234321"
+      },
+      "requestor": "assistant",
+      "compare_args": null
+    },
+    {
+      "action_id": "make_payment_1",
+      "name": "make_payment",
+      "arguments": {},
+      "requestor": "user",
+      "compare_args": null
+    },
+    {
+      "action_id": "resume_line_2",
+      "name": "resume_line",
+      "arguments": {
+        "customer_id": "C1001",
+        "line_id": "L1002"
+      },
+      "requestor": "assistant",
+      "compare_args": null
+    },
+    {
+      "action_id": "reboot_device_3",
+      "name": "reboot_device",
+      "arguments": {},
+      "requestor": "user",
+      "compare_args": null
+    },
+    {
+      "action_id": "reseat_sim_card_4",
+      "name": "reseat_sim_card",
+      "arguments": {},
+      "requestor": "user",
+      "compare_args": null
+    }
+  ],
+  "communicate_info": [],
+  "initialization_data": null,
+  "initialization_actions": [
+    {
+      "env_type": "user",
+      "func_name": "set_user_info",
+      "arguments": {
+        "name": "John Smith",
+        "phone_number": "555-123-2002"
+      }
+    },
+    {
+      "env_type": "assistant",
+      "func_name": "suspend_line_for_overdue_bill",
+      "arguments": {
+        "customer_id": "C1001",
+        "line_id": "L1002",
+        "new_bill_id": "B1234321",
+        "contract_ended": false
+      }
+    },
+    {
+      "env_type": "user",
+      "func_name": "simulate_network_search",
+      "arguments": {}
+    },
+    {
+      "env_type": "user",
+      "func_name": "unseat_sim_card",
+      "arguments": {}
+    }
+  ],
+  "domain": "telecom",
+  "task_id": "[service_issue]overdue_bill_suspension|unseat_sim_card[PERSONA:Easy]"
+}

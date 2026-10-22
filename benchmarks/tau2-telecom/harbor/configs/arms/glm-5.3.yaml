@@ -1,0 +1,6 @@
+# Model swap: GLM-5.3 on the OpenAI-compatible provider-a (OPENAI_COMPAT_*_PROVIDER_A).
+agents:
+  - import_path: tau2_kitaru_harbor.agent:Tau2KitaruAgent
+    model_name: provider-a:zai-org/GLM-5.3
+    kwargs:
+      arm: glm-5.3

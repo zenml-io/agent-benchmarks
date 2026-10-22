@@ -1,0 +1,59 @@
+{
+  "actions": [
+    {
+      "action_id": "transfer_to_human_agents",
+      "name": "transfer_to_human_agents",
+      "arguments": {
+        "summary": "I cannot fix the issue."
+      },
+      "requestor": "assistant",
+      "compare_args": []
+    }
+  ],
+  "communicate_info": [],
+  "initialization_data": null,
+  "initialization_actions": [
+    {
+      "env_type": "user",
+      "func_name": "set_user_info",
+      "arguments": {
+        "name": "John Smith",
+        "phone_number": "555-123-2002"
+      }
+    },
+    {
+      "env_type": "user",
+      "func_name": "break_apn_settings",
+      "arguments": {}
+    },
+    {
+      "env_type": "assistant",
+      "func_name": "suspend_line_for_overdue_bill",
+      "arguments": {
+        "customer_id": "C1001",
+        "line_id": "L1002",
+        "new_bill_id": "B1234321",
+        "contract_ended": true
+      }
+    },
+    {
+      "env_type": "user",
+      "func_name": "simulate_network_search",
+      "arguments": {}
+    },
+    {
+      "env_type": "user",
+      "func_name": "lock_sim_card",
+      "arguments": {
+        "mode": "pin"
+      }
+    },
+    {
+      "env_type": "user",
+      "func_name": "unseat_sim_card",
+      "arguments": {}
+    }
+  ],
+  "domain": "telecom",
+  "task_id": "[service_issue]break_apn_settings|contract_end_suspension|lock_sim_card_pin|unseat_sim_card[PERSONA:Hard]"
+}

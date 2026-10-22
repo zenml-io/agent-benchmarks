@@ -1,0 +1,39 @@
+schema_version = "1.1"
+
+[task]
+name = "zenml/tau2-telecom-test-15"
+authors = [
+    { name = "Victor Barres", email = "victor@sierra.ai" },
+    { name = "Honghua Dong" },
+    { name = "Soham Ray" },
+    { name = "Xujie Si" },
+    { name = "Karthik Narasimhan" },
+]
+keywords = ["tau2-bench", "telecom", "tool-use", "simulated-user"]
+
+[metadata]
+difficulty = "medium"
+category = "customer_service"
+source_task_id = "[mms_issue]break_app_sms_permission|data_mode_off[PERSONA:None]"
+source_split = "test"
+case = 15
+tau2_bench_ref = "05736c27219b769d0be507574dd3135010916644"
+adapter = "harbor adapters/tau3-bench @ 209a48a7424218828465c3c716b042f2b381dbed"
+user_model = "gpt-4.1-2025-04-14"
+
+[verifier]
+timeout_sec = 300.0
+
+[agent]
+timeout_sec = 1200.0
+
+[environment]
+build_timeout_sec = 900.0
+cpus = 2
+memory_mb = 4096
+storage_mb = 10240
+
+[[environment.mcp_servers]]
+name = "tau3-runtime"
+transport = "streamable-http"
+url = "http://tau3-runtime:8000/mcp"

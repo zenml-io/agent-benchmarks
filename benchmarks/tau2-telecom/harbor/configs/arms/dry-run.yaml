@@ -1,0 +1,8 @@
+# Free infrastructure check: installs the agent, connects to the task's MCP sidecar and records to Kitaru's
+# local sink, without a model and without starting the simulated user. Every trial scores 0.
+agents:
+  - import_path: tau2_kitaru_harbor.agent:Tau2KitaruAgent
+    model_name: dry-run
+    kwargs:
+      arm: dry-run
+      dry_run: true

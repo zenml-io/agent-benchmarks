@@ -1,0 +1,6 @@
+# Model swap: GPT-5.6 Sol (Responses API, as in the original override).
+agents:
+  - import_path: tau2_kitaru_harbor.agent:Tau2KitaruAgent
+    model_name: openai-responses:gpt-5.6-sol
+    kwargs:
+      arm: gpt-5.6-sol

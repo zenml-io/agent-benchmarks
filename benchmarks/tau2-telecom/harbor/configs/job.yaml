@@ -1,0 +1,11 @@
+# Shared settings for every run: the 40 tasks on Modal sandboxes. Stack one or more arm files after this one
+# (agents lists append, so all arms named on one command line run in the same job, interleaved).
+# Run from benchmarks/tau2-telecom/ with PYTHONPATH=harbor/agent so Harbor can import the agent.
+environment:
+  type: modal
+  kwargs:
+    app_name: tau2-telecom-harbor   # own Modal app, so leftover sandboxes are easy to find and stop
+    sandbox_timeout_secs: 3600      # a sandbox outlives an interrupted Harbor by at most an hour
+n_concurrent_trials: 8
+datasets:
+  - path: harbor/tasks

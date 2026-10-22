@@ -1,0 +1,6 @@
+# Model swap: Kimi K3 on provider-a.
+agents:
+  - import_path: tau2_kitaru_harbor.agent:Tau2KitaruAgent
+    model_name: provider-a:moonshotai/Kimi-K3
+    kwargs:
+      arm: kimi-k3

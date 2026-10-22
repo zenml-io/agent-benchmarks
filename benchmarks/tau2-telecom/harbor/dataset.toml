@@ -1,0 +1,173 @@
+# Dataset manifest for zenml/tau2-telecom-test40
+# Add tasks using: harbor dataset add <org>/<name>
+# Publish using: harbor publish
+
+[dataset]
+name = "zenml/tau2-telecom-test40"
+version = "0.1.0"
+description = "tau2-bench Telecom, test split (40 tasks): tau2's tools and simulated user (gpt-4.1) as an MCP sidecar, graded by tau2's evaluator; built from Harbor's tau3-bench adapter with tau2-bench pinned. https://github.com/zenml-io/agent-benchmarks/tree/main/benchmarks/tau2-telecom/harbor"
+keywords = [ "tau2-bench", "telecom", "customer-service", "simulated-user", "mcp", "kitaru",]
+[[dataset.authors]]
+name = "Hamza Tahir"
+
+
+[[tasks]]
+name = "zenml/tau2-telecom-test-00"
+digest = "sha256:b8442ac462eb90de43b9bfd0763454851aba48c06cd2a7a70c8880625132158a"
+
+[[tasks]]
+name = "zenml/tau2-telecom-test-01"
+digest = "sha256:be9f83db851afa1e188a94ca9fcd2163f74e5b61c28d05f799cbd60b1b23d7dc"
+
+[[tasks]]
+name = "zenml/tau2-telecom-test-02"
+digest = "sha256:97448dc9dd5a6095b1260bab7d6e4388d692628759b47df10f64a1ff8060a1a4"
+
+[[tasks]]
+name = "zenml/tau2-telecom-test-03"
+digest = "sha256:140db5ae501edfc2c5161205db16a5d81752316e5cc67432e340b46141939c89"
+
+[[tasks]]
+name = "zenml/tau2-telecom-test-04"
+digest = "sha256:9c94ff2f3c050a1a4d407425a6f03761151162261d24fa30b1b778f5f28f50e5"
+
+[[tasks]]
+name = "zenml/tau2-telecom-test-05"
+digest = "sha256:a26f69018a22ed003090c0adcd143988c6d7f57eb5af47237a0f988b1c4151d1"
+
+[[tasks]]
+name = "zenml/tau2-telecom-test-06"
+digest = "sha256:ba766441a119d5989a7a7fe5144acbe117b61bbed178a1ece78d8dced4e0909b"
+
+[[tasks]]
+name = "zenml/tau2-telecom-test-07"
+digest = "sha256:f0f0c22d12ef4bdb0f21fc4eac31403a94abf547a0eac5d787dcd8f5ce8bfcfd"
+
+[[tasks]]
+name = "zenml/tau2-telecom-test-08"
+digest = "sha256:3c06198488d2da3fc750ff73373deb055539b3b70cd1936bc5cfa3bc444faecf"
+
+[[tasks]]
+name = "zenml/tau2-telecom-test-09"
+digest = "sha256:5fefa5dc426c654ac4f362727924f5af7ee45dccddbc2f8781039aa19b31be56"
+
+[[tasks]]
+name = "zenml/tau2-telecom-test-10"
+digest = "sha256:3335278a6188d73e46c7e42ab90148a787ac55f3ef58695fd837cde8df4754dd"
+
+[[tasks]]
+name = "zenml/tau2-telecom-test-11"
+digest = "sha256:eb775fdbff9b303a0f3224a6da40f98725cdeafc078f46b4339a6c8e545ae938"
+
+[[tasks]]
+name = "zenml/tau2-telecom-test-12"
+digest = "sha256:517a644ecd1f02f24acb91e83e9428606c694b4b4f3a0dcfc613c1a571ce0f63"
+
+[[tasks]]
+name = "zenml/tau2-telecom-test-13"
+digest = "sha256:0b9edc6e92f86c90d6d3170791971984d29202e8edd87934bb689dc11b9a26af"
+
+[[tasks]]
+name = "zenml/tau2-telecom-test-14"
+digest = "sha256:5becdc39a04a4255f1076dde46d51fdba9f598deb0e760da2f77bb9f8027a19f"
+
+[[tasks]]
+name = "zenml/tau2-telecom-test-15"
+digest = "sha256:d7451f91460474261334a0cb47b842b5b0860eb836ac18639cde365287e568e0"
+
+[[tasks]]
+name = "zenml/tau2-telecom-test-16"
+digest = "sha256:22d5545e15fc793b5327422f37ce40f8e8534c36712cf2c46596e8d1c31d7bc9"
+
+[[tasks]]
+name = "zenml/tau2-telecom-test-17"
+digest = "sha256:4d318581e9873ead204076022fcc437fd35e48275bdc97d437012fd799a1a748"
+
+[[tasks]]
+name = "zenml/tau2-telecom-test-18"
+digest = "sha256:0aa13383bd1e29a9b23cfa4e461c434d7c65a008308451aca191816b566ff713"
+
+[[tasks]]
+name = "zenml/tau2-telecom-test-19"
+digest = "sha256:02438fc339decb172f0bb4000cb3fcfddce7915fe82c970cf57cfbe8d4382876"
+
+[[tasks]]
+name = "zenml/tau2-telecom-test-20"
+digest = "sha256:d3029a287b98f31c98868b778ef7292490ee9a7fe3fad73d88fbd16a26260233"
+
+[[tasks]]
+name = "zenml/tau2-telecom-test-21"
+digest = "sha256:c3a165123cfa708bcf396de9205dba37a480c368694707a7b8fa1f9df1287ec8"
+
+[[tasks]]
+name = "zenml/tau2-telecom-test-22"
+digest = "sha256:b4e3ff6f74d909e70477fa2cbe27fa432c5f6fdc0ae91773bc4f76f45745c312"
+
+[[tasks]]
+name = "zenml/tau2-telecom-test-23"
+digest = "sha256:60162b8e7be347e59980244eec156f30dc90c29893d15bb1cf33d7e1ee498fa5"
+
+[[tasks]]
+name = "zenml/tau2-telecom-test-24"
+digest = "sha256:1858b465eb2cf79a6541787375054386e57826fb4a5336f7c24ea90861ba9f89"
+
+[[tasks]]
+name = "zenml/tau2-telecom-test-25"
+digest = "sha256:d3296d9957e86273352b431ee1cfeecac90bec2c80dc4580f6d7d48ba0ba6f45"
+
+[[tasks]]
+name = "zenml/tau2-telecom-test-26"
+digest = "sha256:2b9aa3d7c2015fafa93729aca3e124217a2702fcbe35fcc3152fc0490b97a9d3"
+
+[[tasks]]
+name = "zenml/tau2-telecom-test-27"
+digest = "sha256:4ea4ce3d2ccd0aad9a0fd03f9b3326172de9b2f0eaaf5010f7f36c2f22f5fb76"
+
+[[tasks]]
+name = "zenml/tau2-telecom-test-28"
+digest = "sha256:da1dfe94d88ab6d389bbf5837d7f49e90d59a4588c8df93642b1a487f57a656a"
+
+[[tasks]]
+name = "zenml/tau2-telecom-test-29"
+digest = "sha256:f3d21015214da6062a6a968bee984fde69caefe51e67f4a850903f850a642dc1"
+
+[[tasks]]
+name = "zenml/tau2-telecom-test-30"
+digest = "sha256:b41eba414a95be7219be4eda2fb9b890643bafc20774c674cf9f2e4c01f0ee14"
+
+[[tasks]]
+name = "zenml/tau2-telecom-test-31"
+digest = "sha256:e70b95f8a567a24f7c871d052bee318043175b1c1378f3c7ae7e1a83fe9b842d"
+
+[[tasks]]
+name = "zenml/tau2-telecom-test-32"
+digest = "sha256:87bfdfca59a874532a2bc342670c2029d039f4cd4acf2231966fbf4537d06beb"
+
+[[tasks]]
+name = "zenml/tau2-telecom-test-33"
+digest = "sha256:f75c90f7619acd910d8009143122939b502632de3fdf5db8c24c7375e49c5c27"
+
+[[tasks]]
+name = "zenml/tau2-telecom-test-34"
+digest = "sha256:73630d4c77fab3717bdfa0c84342c4b1c3c9a198026efe84dd2296b785040c56"
+
+[[tasks]]
+name = "zenml/tau2-telecom-test-35"
+digest = "sha256:65ba010d250fa57d86d7abc0ca0839a8b7f934edb52e2e60e34162c27ed37815"
+
+[[tasks]]
+name = "zenml/tau2-telecom-test-36"
+digest = "sha256:8bc855feffea29b698c4bf9c013595d60879979226f0c9cb1f525ea06471e8d4"
+
+[[tasks]]
+name = "zenml/tau2-telecom-test-37"
+digest = "sha256:74e2eeaa96609898184a5e728818b639f905b058fb4f406f1d129920af956be4"
+
+[[tasks]]
+name = "zenml/tau2-telecom-test-38"
+digest = "sha256:78cc490920dfed101eae2c2ae0f8f364601f3107d3fe9bb0a896b73305dcdc08"
+
+[[tasks]]
+name = "zenml/tau2-telecom-test-39"
+digest = "sha256:86e61509af0ed922b483df33c73066496910ac86065a8157f01907f9f570a68a"
+

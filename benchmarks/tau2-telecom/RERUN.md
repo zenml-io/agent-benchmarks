@@ -145,6 +145,8 @@ Rows land in `harness/replay/results/smoke.jsonl`; success is a row per case wit
 
 ## 7. Full rerun (paid, not re-run)
 
+Part B can also run as a Harbor job, one config file per arm, without a Kitaru server: see [harbor/README.md](harbor/README.md). The steps below are the original Kitaru path.
+
 Wall times below come from the Kitaru session ids (UUIDv7, which encode each session's start time): they are the spread of session start times per arm, not exact durations. Costs are from `results/costs/replay.json` and the export (`agent_cost_usd`, `user_simulator_cost_usd`).
 
 ### Part A: step check

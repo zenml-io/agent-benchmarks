@@ -1,0 +1,48 @@
+{
+  "actions": [
+    {
+      "action_id": "grant_app_permission_0",
+      "name": "grant_app_permission",
+      "arguments": {
+        "app_name": "messaging",
+        "permission": "sms"
+      },
+      "requestor": "user",
+      "compare_args": null
+    },
+    {
+      "action_id": "toggle_data_1",
+      "name": "toggle_data",
+      "arguments": {},
+      "requestor": "user",
+      "compare_args": null
+    }
+  ],
+  "communicate_info": [],
+  "initialization_data": null,
+  "initialization_actions": [
+    {
+      "env_type": "user",
+      "func_name": "set_user_info",
+      "arguments": {
+        "name": "John Smith",
+        "phone_number": "555-123-2002"
+      }
+    },
+    {
+      "env_type": "user",
+      "func_name": "remove_app_permission",
+      "arguments": {
+        "app_name": "messaging",
+        "permission": "sms"
+      }
+    },
+    {
+      "env_type": "user",
+      "func_name": "turn_data_off",
+      "arguments": {}
+    }
+  ],
+  "domain": "telecom",
+  "task_id": "[mms_issue]break_app_sms_permission|data_mode_off[PERSONA:None]"
+}

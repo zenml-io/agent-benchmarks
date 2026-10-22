@@ -1,0 +1,128 @@
+{
+  "actions": [
+    {
+      "action_id": "toggle_airplane_mode_0",
+      "name": "toggle_airplane_mode",
+      "arguments": {},
+      "requestor": "user",
+      "compare_args": null
+    },
+    {
+      "action_id": "grant_app_permission_1",
+      "name": "grant_app_permission",
+      "arguments": {
+        "app_name": "messaging",
+        "permission": "sms"
+      },
+      "requestor": "user",
+      "compare_args": null
+    },
+    {
+      "action_id": "grant_app_permission_2",
+      "name": "grant_app_permission",
+      "arguments": {
+        "app_name": "messaging",
+        "permission": "storage"
+      },
+      "requestor": "user",
+      "compare_args": null
+    },
+    {
+      "action_id": "refuel_data_3",
+      "name": "refuel_data",
+      "arguments": {
+        "customer_id": "C1001",
+        "line_id": "L1002",
+        "gb_amount": 2.0
+      },
+      "requestor": "assistant",
+      "compare_args": null
+    },
+    {
+      "action_id": "enable_roaming_4",
+      "name": "enable_roaming",
+      "arguments": {
+        "customer_id": "C1001",
+        "line_id": "L1002"
+      },
+      "requestor": "assistant",
+      "compare_args": null
+    },
+    {
+      "action_id": "toggle_roaming_5",
+      "name": "toggle_roaming",
+      "arguments": {},
+      "requestor": "user",
+      "compare_args": null
+    }
+  ],
+  "communicate_info": [],
+  "initialization_data": null,
+  "initialization_actions": [
+    {
+      "env_type": "user",
+      "func_name": "set_user_info",
+      "arguments": {
+        "name": "John Smith",
+        "phone_number": "555-123-2002"
+      }
+    },
+    {
+      "env_type": "user",
+      "func_name": "turn_airplane_mode_on",
+      "arguments": {}
+    },
+    {
+      "env_type": "user",
+      "func_name": "remove_app_permission",
+      "arguments": {
+        "app_name": "messaging",
+        "permission": "sms"
+      }
+    },
+    {
+      "env_type": "user",
+      "func_name": "remove_app_permission",
+      "arguments": {
+        "app_name": "messaging",
+        "permission": "storage"
+      }
+    },
+    {
+      "env_type": "assistant",
+      "func_name": "set_data_usage",
+      "arguments": {
+        "customer_id": "C1001",
+        "line_id": "L1002",
+        "data_used_gb": 15.1
+      }
+    },
+    {
+      "env_type": "user",
+      "func_name": "set_user_location",
+      "arguments": {
+        "abroad": true
+      }
+    },
+    {
+      "env_type": "user",
+      "func_name": "turn_roaming_off",
+      "arguments": {}
+    },
+    {
+      "env_type": "assistant",
+      "func_name": "disable_roaming",
+      "arguments": {
+        "customer_id": "C1001",
+        "line_id": "L1002"
+      }
+    },
+    {
+      "env_type": "user",
+      "func_name": "simulate_network_search",
+      "arguments": {}
+    }
+  ],
+  "domain": "telecom",
+  "task_id": "[mms_issue]airplane_mode_on|break_app_both_permissions|data_usage_exceeded|user_abroad_roaming_disabled_off[PERSONA:None]"
+}
