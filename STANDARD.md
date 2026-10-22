@@ -53,3 +53,14 @@ Every command in sections 3-5 must have been run while writing the doc, and it s
 ## `results/<slug>.json`
 
 The export schema (`meta`, `dataset`, `models`, `setup`, `grading`, `noise`, `results`, `per_type`, `failures`, `replays_and_step_checks`, `headline_findings`, `limitations`, `public_safety`, `inconsistencies`) is defined in [EXPORT_SCHEMA.md](EXPORT_SCHEMA.md).
+
+## Harbor-native target (the second pass)
+
+The first pass documents each benchmark as it was run. The goal is for every benchmark that has agents and tasks to run as a Harbor job, following the conventions of [zenml-bench](https://github.com/zenml-io/zenml-bench):
+
+- **Task format.** One directory per task: `instruction.md`, `task.toml`, `environment/` (Dockerfile or compose file, built on a shared base image), `solution/solve.sh` (reference solution), and hidden `tests/` that write a reward. Graders score facts the environment recorded, never the agent's prose.
+- **Four checks before a task counts.** The reference solution passes 5 of 5 times (`-a oracle`), doing nothing scores 0 (`-a nop`), every listed shortcut scores 0, and at least one different valid solution passes. Grader unit tests cover the reference, the empty answer, each trap and messy real answers.
+- **Setups as config.** Agent, model, MCP servers, skills and prompts live in job config files; conditions differ only in their setup file. Custom agents use `import_path: package.module:Class` and declare their options in an options model.
+- **Simulated users and tools** run as MCP servers next to the agent (the way Harbor's τ-bench adapter does), so multi-turn benchmarks fit the task format.
+- **Publishing.** `dataset.toml` and `registry.json` so the whole set runs from the repo: `harbor run --repo zenml-io/agent-benchmarks@<tag> -d <dataset>@<version> -a <agent> -m <model>`.
+- **Reading results.** Attempts per task and setup (5 or more for anything but large gaps), the baseline in the same batch, infrastructure errors counted apart from wrong answers, and the summary table committed with the command and the commit it ran from; raw job folders stay outside the checkout.
