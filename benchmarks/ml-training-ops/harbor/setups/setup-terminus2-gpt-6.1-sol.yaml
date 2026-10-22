@@ -1,0 +1,5 @@
+# Setup: Harbor's Terminus 2 harness with GPT-6.1 Sol (built into Harbor 0.24.0, nothing to pin).
+# Needs OPENAI_API_KEY.
+agents:
+  - name: terminus-2
+    model_name: openai/gpt-6.1-sol

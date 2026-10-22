@@ -1,0 +1,101 @@
+# Dataset manifest for zenml/ml-training-ops
+# Add tasks using: harbor dataset add <org>/<name>
+# Publish using: harbor publish
+
+[dataset]
+name = "zenml/ml-training-ops"
+version = "2.0.0"
+description = "ml-training-ops: 22 CPU Harbor tasks where coding agents fix injected faults in multi-process PyTorch training setups (distributed jobs, checkpoints, OOMs, stragglers, Kubernetes, Ray, scheduling); graded by hidden tests that re-run the job. https://github.com/zenml-io/agent-benchmarks"
+keywords = [ "ml-training", "pytorch", "distributed-training", "mlops", "kubernetes", "ray", "debugging",]
+[[dataset.authors]]
+name = "Hamza Tahir"
+
+
+[[tasks]]
+name = "zenml/mlops-atomic-checkpoint"
+digest = "sha256:23bb9b9b6424f2cb2491a767a706448760ff6691221368d1afd2f0df6a457ef1"
+
+[[tasks]]
+name = "zenml/mlops-corrupt-shard"
+digest = "sha256:ae49631f166b18eff31bf53269e1cc5b506ae731574f709e1058e69454418a77"
+
+[[tasks]]
+name = "zenml/mlops-ddp-replica-drift"
+digest = "sha256:2e354d698a610db12010223d01f8109bbd67bfe14898a164af8e2a9e70d73287"
+
+[[tasks]]
+name = "zenml/mlops-ddp-sharding"
+digest = "sha256:e6c1f429f391339931fcae1f734576694f98540976a5bd1cdf63ab0b9a760329"
+
+[[tasks]]
+name = "zenml/mlops-elastic-churn"
+digest = "sha256:0cda4e598f26f546f77ab66f30c30fca609412266c6a3b5d1785d8c1acd861a6"
+
+[[tasks]]
+name = "zenml/mlops-eval-mode"
+digest = "sha256:6fe643ce8cd345499a6915307d545074d210b246983bfe325a584abce9f09212"
+
+[[tasks]]
+name = "zenml/mlops-exact-resume"
+digest = "sha256:f1a713bfaf736bcdef7802d8aa3ab6cf3c399ee01416daf54e74b5342ff20257"
+
+[[tasks]]
+name = "zenml/mlops-gang-controller"
+digest = "sha256:d93c287cf2216b588b220e1df6ee3028445ded9d36d542214321f4872fcc731f"
+
+[[tasks]]
+name = "zenml/mlops-k8s-quota-zone"
+digest = "sha256:d861527dba9a804d7a3efc3e7afdf70b3759f778a314d6b001670f9a5ba9ea2b"
+
+[[tasks]]
+name = "zenml/mlops-k8s-unschedulable"
+digest = "sha256:da915fff7e795a5feb556989ea2131ad09932937272fa259262b8bacabfa5695"
+
+[[tasks]]
+name = "zenml/mlops-label-shuffle"
+digest = "sha256:6552e8c62f7da20370537d0222cd945c9d3ce6a0aa0bfdebf27e51356e3001f8"
+
+[[tasks]]
+name = "zenml/mlops-memory-leak-oom"
+digest = "sha256:56785d2dcf277e65b0b21ff80920a8580f03ea50cc1029b5567dc71359fc7972"
+
+[[tasks]]
+name = "zenml/mlops-nan-loss"
+digest = "sha256:fd2773814fa901ec25747df38b11d8db4ae0fa6e13d1920f45ad60482f9c23b6"
+
+[[tasks]]
+name = "zenml/mlops-oom-grad-accum"
+digest = "sha256:8fc9b3d25fafecdb4d833643d79b5e892d7b7de24e56a30d7f9e9e572a2bbef6"
+
+[[tasks]]
+name = "zenml/mlops-ray-exactly-once"
+digest = "sha256:fdc9f8ebee22b36f8cec319c4af1301bb1c35228f740857943332a13d516680b"
+
+[[tasks]]
+name = "zenml/mlops-regression-bisect"
+digest = "sha256:7d756e636e57d73ab6fe57f303aafc91638e39ccea178a72820d7f32d38fc278"
+
+[[tasks]]
+name = "zenml/mlops-reshard-optimizer"
+digest = "sha256:0484f16b9313016d15d1891df06cdf571e4dd87ba651b0cb951b30479447da00"
+
+[[tasks]]
+name = "zenml/mlops-resume-checkpoint"
+digest = "sha256:d77b365b0f2cb2a2bc240fb4ebaeed9777c1aedfd419252991d33d17d651cfde"
+
+[[tasks]]
+name = "zenml/mlops-straggler-diagnosis"
+digest = "sha256:bfbc0028875e7dfe25c06db7d4e1ce0d3052ece5f68858e3c5d38cce7498a0f5"
+
+[[tasks]]
+name = "zenml/mlops-throughput-sla"
+digest = "sha256:c32034ee447691b23da4da9c9c1d5bae70561b605630cc273385ed9936d1ef9a"
+
+[[tasks]]
+name = "zenml/mlops-two-stragglers"
+digest = "sha256:40373af4b048f9e244d8b3bfb1045b16ab9760e5a92ea421604c6ebb8dbf0d63"
+
+[[tasks]]
+name = "zenml/mlops-uneven-shard-hang"
+digest = "sha256:551f5a3805398f9bd734d03c9a0f2e28b3ffa1b500619dc7a4e8be1846946122"
+

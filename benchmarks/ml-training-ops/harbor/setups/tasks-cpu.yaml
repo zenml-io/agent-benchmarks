@@ -1,0 +1,26 @@
+# Tasks: all 22 CPU tasks (v1, hard, v2, v3); the torchtitan tasks are in tasks-titan.yaml.
+datasets:
+  - path: harbor/tasks
+    task_names:
+      - nan-loss
+      - label-shuffle
+      - resume-checkpoint
+      - oom-grad-accum
+      - ddp-sharding
+      - eval-mode
+      - ddp-replica-drift
+      - uneven-shard-hang
+      - straggler-diagnosis
+      - corrupt-shard
+      - atomic-checkpoint
+      - reshard-optimizer
+      - k8s-unschedulable
+      - memory-leak-oom
+      - exact-resume
+      - k8s-quota-zone
+      - two-stragglers
+      - regression-bisect
+      - throughput-sla
+      - ray-exactly-once
+      - gang-controller
+      - elastic-churn

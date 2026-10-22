@@ -1,0 +1,8 @@
+# Where trials run: Modal sandboxes (the original runs' environment). Run harbor from the benchmark folder
+# (benchmarks/ml-training-ops). sandbox_timeout_secs caps a sandbox's life if Harbor dies mid-run.
+environment:
+  type: modal
+  kwargs:
+    app_name: mlops-harbor
+    sandbox_timeout_secs: 7200
+n_concurrent_trials: 8

@@ -1,0 +1,8 @@
+FROM python:3.11-slim
+RUN apt-get update && apt-get install -y --no-install-recommends git tmux asciinema procps time build-essential && rm -rf /var/lib/apt/lists/*
+RUN pip install --no-cache-dir torch==2.11.0 --index-url https://download.pytorch.org/whl/cu128 && pip install --no-cache-dir pytest==8.4.1
+WORKDIR /app
+COPY app/ /app/
+COPY gen/ /tmp/gen/
+COPY titan-requirements.txt /tmp/titan-requirements.txt
+RUN cd /app && bash /tmp/gen/gen.sh && rm -rf /tmp/gen

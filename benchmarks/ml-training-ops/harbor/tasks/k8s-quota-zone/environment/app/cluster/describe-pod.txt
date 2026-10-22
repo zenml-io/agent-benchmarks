@@ -1,0 +1,36 @@
+$ kubectl -n training describe pod cpt-1010-master-0
+Name:             cpt-1010-master-0
+Namespace:        training
+Priority:         1000
+Priority Class Name:  training-default
+Service Account:  default
+Node:             <none>
+Labels:           run=cpt-1010
+                  training.kubeflow.org/job-name=cpt-1010
+                  training.kubeflow.org/replica-index=0
+                  training.kubeflow.org/replica-type=master
+Status:           Pending
+Containers:
+  pytorch:
+    Image:      123456789012.dkr.ecr.us-east-1.amazonaws.com/llm/train:2026.10.2
+    Limits:
+      memory:                 2000Gi
+      nvidia.com/gpu:         8
+      vpc.amazonaws.com/efa:  32
+    Requests:
+      cpu:                    180
+      memory:                 2000Gi
+      nvidia.com/gpu:         8
+      vpc.amazonaws.com/efa:  32
+Conditions:
+  Type           Status
+  PodScheduled   False
+Node-Selectors:              nvidia.com/gpu.product=NVIDIA-H100-80GB
+                             topology.kubernetes.io/zone=us-east-1a
+Tolerations:                 node.kubernetes.io/not-ready:NoExecute op=Exists for 300s
+                             node.kubernetes.io/unreachable:NoExecute op=Exists for 300s
+Events:
+  Type     Reason            Age                  From               Message
+  ----     ------            ----                 ----               -------
+  Warning  FailedCreate      3h12m                pytorchjob-controller  Error creating: pods "cpt-1010-worker-0" is forbidden: [maximum memory usage per Container is 1500Gi, but limit is 2000Gi, exceeded quota: training-quota, requested: requests.memory=2000Gi, used: requests.memory=2800Gi, limited: requests.memory=7000Gi]
+  Warning  FailedScheduling  3m12s (x41 over 3h)  default-scheduler  0/13 nodes are available: 13 node(s) didn't match Pod's node affinity/selector. preemption: 0/13 nodes are available: 13 Preemption is not helpful for scheduling.

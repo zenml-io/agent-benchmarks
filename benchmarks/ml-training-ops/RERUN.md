@@ -134,6 +134,10 @@ Total recorded API cost $29.2653. Codex 0.162.1 and Claude Code 2.1.296 were ins
 
 Point the rebuild at your rows: copy your `attempts.jsonl` (made publishable with `BENCH_DIR=. python ../self-hosted-agents-harness/make_public_rows.py --task-sets mlops-k5 mlops_hard-k3 mlops_hard2-k6`) and `api_attempts*.jsonl` over `results/runs/` in a scratch copy and run `scripts/rebuild_export.py`; it lists every value that differs. Compare cells with the paired bootstrap of `src/mlops_hard_analysis.py` (written to `mlops_hard.md`). Identical self-hosted runs differed by up to 7 solves of 24 (mini-swe-agent with thinking off: 8/24 vs 15/24); with 8 tasks only differences of about 20 points or more are distinguishable, and a paired CI that includes 0 means no difference.
 
+## Harbor-native version
+
+`harbor/` holds the tasks as Harbor-native tasks (separate-container grading, shortcuts, alternatives, job configs, dataset manifests); its README has the commands for the free four checks on Modal, a real agent comparison, and the self-hosted harness with `data/tasks_harbor_*.json`. The steps above use the original task folders, which are unchanged.
+
 ## 9. Troubleshooting
 
 - Every trial errors instead of scoring: Harbor without the `[modal]` extra, or the hard tasks were not built (`build.py`).

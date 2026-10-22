@@ -1,0 +1,12 @@
+# Tasks: the hard set (8 tasks, two per family; 4 CPUs / 8 GB, 30-minute limit), as data/tasks_mlops_hard.json.
+datasets:
+  - path: harbor/tasks
+    task_names:
+      - ddp-replica-drift
+      - uneven-shard-hang
+      - straggler-diagnosis
+      - corrupt-shard
+      - atomic-checkpoint
+      - reshard-optimizer
+      - k8s-unschedulable
+      - memory-leak-oom

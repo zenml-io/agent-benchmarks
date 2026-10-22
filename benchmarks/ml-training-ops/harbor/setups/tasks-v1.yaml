@@ -1,0 +1,10 @@
+# Tasks: the v1 pilot (6 tasks; 2 CPUs / 4 GB, 20-minute agent limit).
+datasets:
+  - path: harbor/tasks
+    task_names:
+      - nan-loss
+      - label-shuffle
+      - resume-checkpoint
+      - oom-grad-accum
+      - ddp-sharding
+      - eval-mode

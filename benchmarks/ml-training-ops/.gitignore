@@ -11,5 +11,6 @@ __pycache__/
 *.log
 # task inputs the agent reads (the original repo lost these to a *.log rule)
 !tasks/**/*.log
+!harbor/tasks/**/*.log
 # built from tasks/mlops_hard/src by build.py
 /tasks/mlops_hard/tasks/

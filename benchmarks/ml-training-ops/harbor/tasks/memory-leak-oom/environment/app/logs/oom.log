@@ -1,0 +1,9 @@
+2026-10-09T01:00:04Z nightly-ft-1009 started (limit 8Gi, steps=20000)
+2026-10-09T01:04:10Z container_memory_working_set_bytes=1.31Gi step~2400
+2026-10-09T01:09:20Z container_memory_working_set_bytes=2.66Gi step~5200
+2026-10-09T01:14:31Z container_memory_working_set_bytes=4.02Gi step~8000
+2026-10-09T01:19:45Z container_memory_working_set_bytes=5.40Gi step~10800
+2026-10-09T01:24:58Z container_memory_working_set_bytes=6.77Gi step~13600
+2026-10-09T01:29:02Z container_memory_working_set_bytes=7.86Gi step~15800
+2026-10-09T01:29:40Z OOMKilled (exit 137) restartCount=1
+2026-10-09T01:29:41Z note from on-call: probably the DataLoader workers again? (we fixed that in July by setting num_workers=0)

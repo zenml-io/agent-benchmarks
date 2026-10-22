@@ -1,0 +1,6 @@
+# Setup: Codex CLI with GPT-6 Astra (the most expensive original setup). Codex pinned. Needs OPENAI_API_KEY.
+agents:
+  - name: codex
+    model_name: openai/gpt-6-astra
+    kwargs:
+      version: "0.162.1"

@@ -1,0 +1,7 @@
+# Tasks: the three new v2 tasks (the v2 rounds also re-ran atomic-checkpoint; add it with tasks-hard.yaml or -i).
+datasets:
+  - path: harbor/tasks
+    task_names:
+      - exact-resume
+      - k8s-quota-zone
+      - two-stragglers

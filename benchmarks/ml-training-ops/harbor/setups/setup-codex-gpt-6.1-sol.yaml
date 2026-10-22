@@ -1,0 +1,6 @@
+# Setup: Codex CLI with GPT-6.1 Sol. Codex pinned to the version of the original runs. Needs OPENAI_API_KEY.
+agents:
+  - name: codex
+    model_name: openai/gpt-6.1-sol
+    kwargs:
+      version: "0.162.1"

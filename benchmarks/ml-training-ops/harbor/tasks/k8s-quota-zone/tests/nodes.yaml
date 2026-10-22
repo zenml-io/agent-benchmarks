@@ -1,0 +1,824 @@
+apiVersion: v1
+kind: List
+items:
+- apiVersion: v1
+  kind: Node
+  metadata:
+    name: gpu-a-1
+    labels:
+      kubernetes.io/hostname: gpu-a-1
+      kubernetes.io/os: linux
+      kubernetes.io/arch: amd64
+      node.kubernetes.io/instance-type: p5.48xlarge
+      topology.kubernetes.io/region: us-east-1
+      topology.kubernetes.io/zone: us-east-1a
+      pool: training
+      nvidia.com/gpu.product: NVIDIA-H100-80GB-HBM3
+      nvidia.com/gpu.count: '8'
+      nvidia.com/gpu.memory: '81559'
+      nvidia.com/cuda.driver.major: '560'
+      eks.amazonaws.com/nodegroup: p5-training-a
+      efa.capable: 'true'
+    annotations:
+      node.alpha.kubernetes.io/ttl: '0'
+      volumes.kubernetes.io/controller-managed-attach-detach: 'true'
+  spec:
+    providerID: aws:///us-east-1a/i-00000002702d63bf
+    taints:
+    - key: nvidia.com/gpu
+      value: present
+      effect: NoSchedule
+  status:
+    capacity:
+      cpu: '192'
+      memory: 2063Gi
+      ephemeral-storage: 3400Gi
+      nvidia.com/gpu: '8'
+      vpc.amazonaws.com/efa: '32'
+      hugepages-2Mi: '0'
+      pods: '110'
+    allocatable:
+      cpu: '190'
+      memory: 1952Gi
+      ephemeral-storage: 3400Gi
+      nvidia.com/gpu: '8'
+      vpc.amazonaws.com/efa: '32'
+      hugepages-2Mi: '0'
+      pods: '110'
+    conditions:
+    - type: MemoryPressure
+      status: 'False'
+      reason: KubeletHasSufficientMemory
+    - type: DiskPressure
+      status: 'False'
+      reason: KubeletHasNoDiskPressure
+    - type: PIDPressure
+      status: 'False'
+      reason: KubeletHasSufficientPID
+    - type: Ready
+      status: 'True'
+      reason: KubeletReady
+    nodeInfo:
+      kubeletVersion: v1.30.4-eks-a737599
+      containerRuntimeVersion: containerd://1.7.22
+      osImage: Amazon Linux 2023.5.20240916
+      kernelVersion: 6.1.109-118.189.amzn2023.x86_64
+- apiVersion: v1
+  kind: Node
+  metadata:
+    name: gpu-a-2
+    labels:
+      kubernetes.io/hostname: gpu-a-2
+      kubernetes.io/os: linux
+      kubernetes.io/arch: amd64
+      node.kubernetes.io/instance-type: p5.48xlarge
+      topology.kubernetes.io/region: us-east-1
+      topology.kubernetes.io/zone: us-east-1a
+      pool: training
+      nvidia.com/gpu.product: NVIDIA-H100-80GB-HBM3
+      nvidia.com/gpu.count: '8'
+      nvidia.com/gpu.memory: '81559'
+      nvidia.com/cuda.driver.major: '560'
+      eks.amazonaws.com/nodegroup: p5-training-a
+      efa.capable: 'true'
+    annotations:
+      node.alpha.kubernetes.io/ttl: '0'
+      volumes.kubernetes.io/controller-managed-attach-detach: 'true'
+  spec:
+    providerID: aws:///us-east-1a/i-000000029f5fbcb8
+    taints:
+    - key: nvidia.com/gpu
+      value: present
+      effect: NoSchedule
+  status:
+    capacity:
+      cpu: '192'
+      memory: 2063Gi
+      ephemeral-storage: 3400Gi
+      nvidia.com/gpu: '8'
+      vpc.amazonaws.com/efa: '32'
+      hugepages-2Mi: '0'
+      pods: '110'
+    allocatable:
+      cpu: '190'
+      memory: 1952Gi
+      ephemeral-storage: 3400Gi
+      nvidia.com/gpu: '8'
+      vpc.amazonaws.com/efa: '32'
+      hugepages-2Mi: '0'
+      pods: '110'
+    conditions:
+    - type: MemoryPressure
+      status: 'False'
+      reason: KubeletHasSufficientMemory
+    - type: DiskPressure
+      status: 'False'
+      reason: KubeletHasNoDiskPressure
+    - type: PIDPressure
+      status: 'False'
+      reason: KubeletHasSufficientPID
+    - type: Ready
+      status: 'True'
+      reason: KubeletReady
+    nodeInfo:
+      kubeletVersion: v1.30.4-eks-a737599
+      containerRuntimeVersion: containerd://1.7.22
+      osImage: Amazon Linux 2023.5.20240916
+      kernelVersion: 6.1.109-118.189.amzn2023.x86_64
+- apiVersion: v1
+  kind: Node
+  metadata:
+    name: gpu-a-3
+    labels:
+      kubernetes.io/hostname: gpu-a-3
+      kubernetes.io/os: linux
+      kubernetes.io/arch: amd64
+      node.kubernetes.io/instance-type: p5.48xlarge
+      topology.kubernetes.io/region: us-east-1
+      topology.kubernetes.io/zone: us-east-1a
+      pool: training
+      nvidia.com/gpu.product: NVIDIA-H100-80GB-HBM3
+      nvidia.com/gpu.count: '8'
+      nvidia.com/gpu.memory: '81559'
+      nvidia.com/cuda.driver.major: '560'
+      eks.amazonaws.com/nodegroup: p5-training-a
+      efa.capable: 'true'
+    annotations:
+      node.alpha.kubernetes.io/ttl: '0'
+      volumes.kubernetes.io/controller-managed-attach-detach: 'true'
+  spec:
+    providerID: aws:///us-east-1a/i-00000002ce9215b1
+    taints:
+    - key: nvidia.com/gpu
+      value: present
+      effect: NoSchedule
+  status:
+    capacity:
+      cpu: '192'
+      memory: 2063Gi
+      ephemeral-storage: 3400Gi
+      nvidia.com/gpu: '8'
+      vpc.amazonaws.com/efa: '32'
+      hugepages-2Mi: '0'
+      pods: '110'
+    allocatable:
+      cpu: '190'
+      memory: 1952Gi
+      ephemeral-storage: 3400Gi
+      nvidia.com/gpu: '8'
+      vpc.amazonaws.com/efa: '32'
+      hugepages-2Mi: '0'
+      pods: '110'
+    conditions:
+    - type: MemoryPressure
+      status: 'False'
+      reason: KubeletHasSufficientMemory
+    - type: DiskPressure
+      status: 'False'
+      reason: KubeletHasNoDiskPressure
+    - type: PIDPressure
+      status: 'False'
+      reason: KubeletHasSufficientPID
+    - type: Ready
+      status: 'True'
+      reason: KubeletReady
+    nodeInfo:
+      kubeletVersion: v1.30.4-eks-a737599
+      containerRuntimeVersion: containerd://1.7.22
+      osImage: Amazon Linux 2023.5.20240916
+      kernelVersion: 6.1.109-118.189.amzn2023.x86_64
+- apiVersion: v1
+  kind: Node
+  metadata:
+    name: gpu-a-4
+    labels:
+      kubernetes.io/hostname: gpu-a-4
+      kubernetes.io/os: linux
+      kubernetes.io/arch: amd64
+      node.kubernetes.io/instance-type: p5.48xlarge
+      topology.kubernetes.io/region: us-east-1
+      topology.kubernetes.io/zone: us-east-1a
+      pool: training
+      nvidia.com/gpu.product: NVIDIA-H100-80GB-HBM3
+      nvidia.com/gpu.count: '8'
+      nvidia.com/gpu.memory: '81559'
+      nvidia.com/cuda.driver.major: '560'
+      eks.amazonaws.com/nodegroup: p5-training-a
+      efa.capable: 'true'
+    annotations:
+      node.alpha.kubernetes.io/ttl: '0'
+      volumes.kubernetes.io/controller-managed-attach-detach: 'true'
+  spec:
+    providerID: aws:///us-east-1a/i-00000002fdc46eaa
+    taints:
+    - key: nvidia.com/gpu
+      value: present
+      effect: NoSchedule
+  status:
+    capacity:
+      cpu: '192'
+      memory: 2063Gi
+      ephemeral-storage: 3400Gi
+      nvidia.com/gpu: '8'
+      vpc.amazonaws.com/efa: '32'
+      hugepages-2Mi: '0'
+      pods: '110'
+    allocatable:
+      cpu: '190'
+      memory: 1952Gi
+      ephemeral-storage: 3400Gi
+      nvidia.com/gpu: '8'
+      vpc.amazonaws.com/efa: '32'
+      hugepages-2Mi: '0'
+      pods: '110'
+    conditions:
+    - type: MemoryPressure
+      status: 'False'
+      reason: KubeletHasSufficientMemory
+    - type: DiskPressure
+      status: 'False'
+      reason: KubeletHasNoDiskPressure
+    - type: PIDPressure
+      status: 'False'
+      reason: KubeletHasSufficientPID
+    - type: Ready
+      status: 'True'
+      reason: KubeletReady
+    nodeInfo:
+      kubeletVersion: v1.30.4-eks-a737599
+      containerRuntimeVersion: containerd://1.7.22
+      osImage: Amazon Linux 2023.5.20240916
+      kernelVersion: 6.1.109-118.189.amzn2023.x86_64
+- apiVersion: v1
+  kind: Node
+  metadata:
+    name: gpu-b-1
+    labels:
+      kubernetes.io/hostname: gpu-b-1
+      kubernetes.io/os: linux
+      kubernetes.io/arch: amd64
+      node.kubernetes.io/instance-type: p5.48xlarge
+      topology.kubernetes.io/region: us-east-1
+      topology.kubernetes.io/zone: us-east-1b
+      pool: training
+      nvidia.com/gpu.product: NVIDIA-H100-80GB-HBM3
+      nvidia.com/gpu.count: '8'
+      nvidia.com/gpu.memory: '81559'
+      nvidia.com/cuda.driver.major: '560'
+      eks.amazonaws.com/nodegroup: p5-training-b
+      efa.capable: 'true'
+    annotations:
+      node.alpha.kubernetes.io/ttl: '0'
+      volumes.kubernetes.io/controller-managed-attach-detach: 'true'
+  spec:
+    providerID: aws:///us-east-1b/i-000000032cf6c7a3
+    taints:
+    - key: nvidia.com/gpu
+      value: present
+      effect: NoSchedule
+  status:
+    capacity:
+      cpu: '192'
+      memory: 2063Gi
+      ephemeral-storage: 3400Gi
+      nvidia.com/gpu: '8'
+      vpc.amazonaws.com/efa: '32'
+      hugepages-2Mi: '0'
+      pods: '110'
+    allocatable:
+      cpu: '190'
+      memory: 1952Gi
+      ephemeral-storage: 3400Gi
+      nvidia.com/gpu: '8'
+      vpc.amazonaws.com/efa: '32'
+      hugepages-2Mi: '0'
+      pods: '110'
+    conditions:
+    - type: MemoryPressure
+      status: 'False'
+      reason: KubeletHasSufficientMemory
+    - type: DiskPressure
+      status: 'False'
+      reason: KubeletHasNoDiskPressure
+    - type: PIDPressure
+      status: 'False'
+      reason: KubeletHasSufficientPID
+    - type: Ready
+      status: 'True'
+      reason: KubeletReady
+    nodeInfo:
+      kubeletVersion: v1.30.4-eks-a737599
+      containerRuntimeVersion: containerd://1.7.22
+      osImage: Amazon Linux 2023.5.20240916
+      kernelVersion: 6.1.109-118.189.amzn2023.x86_64
+- apiVersion: v1
+  kind: Node
+  metadata:
+    name: gpu-b-2
+    labels:
+      kubernetes.io/hostname: gpu-b-2
+      kubernetes.io/os: linux
+      kubernetes.io/arch: amd64
+      node.kubernetes.io/instance-type: p5.48xlarge
+      topology.kubernetes.io/region: us-east-1
+      topology.kubernetes.io/zone: us-east-1b
+      pool: training
+      nvidia.com/gpu.product: NVIDIA-H100-80GB-HBM3
+      nvidia.com/gpu.count: '8'
+      nvidia.com/gpu.memory: '81559'
+      nvidia.com/cuda.driver.major: '560'
+      eks.amazonaws.com/nodegroup: p5-training-b
+      efa.capable: 'true'
+    annotations:
+      node.alpha.kubernetes.io/ttl: '0'
+      volumes.kubernetes.io/controller-managed-attach-detach: 'true'
+  spec:
+    providerID: aws:///us-east-1b/i-000000035c29209c
+    taints:
+    - key: nvidia.com/gpu
+      value: present
+      effect: NoSchedule
+  status:
+    capacity:
+      cpu: '192'
+      memory: 2063Gi
+      ephemeral-storage: 3400Gi
+      nvidia.com/gpu: '8'
+      vpc.amazonaws.com/efa: '32'
+      hugepages-2Mi: '0'
+      pods: '110'
+    allocatable:
+      cpu: '190'
+      memory: 1952Gi
+      ephemeral-storage: 3400Gi
+      nvidia.com/gpu: '8'
+      vpc.amazonaws.com/efa: '32'
+      hugepages-2Mi: '0'
+      pods: '110'
+    conditions:
+    - type: MemoryPressure
+      status: 'False'
+      reason: KubeletHasSufficientMemory
+    - type: DiskPressure
+      status: 'False'
+      reason: KubeletHasNoDiskPressure
+    - type: PIDPressure
+      status: 'False'
+      reason: KubeletHasSufficientPID
+    - type: Ready
+      status: 'True'
+      reason: KubeletReady
+    nodeInfo:
+      kubeletVersion: v1.30.4-eks-a737599
+      containerRuntimeVersion: containerd://1.7.22
+      osImage: Amazon Linux 2023.5.20240916
+      kernelVersion: 6.1.109-118.189.amzn2023.x86_64
+- apiVersion: v1
+  kind: Node
+  metadata:
+    name: gpu-b-3
+    labels:
+      kubernetes.io/hostname: gpu-b-3
+      kubernetes.io/os: linux
+      kubernetes.io/arch: amd64
+      node.kubernetes.io/instance-type: p5.48xlarge
+      topology.kubernetes.io/region: us-east-1
+      topology.kubernetes.io/zone: us-east-1b
+      pool: training
+      nvidia.com/gpu.product: NVIDIA-H100-80GB-HBM3
+      nvidia.com/gpu.count: '8'
+      nvidia.com/gpu.memory: '81559'
+      nvidia.com/cuda.driver.major: '560'
+      eks.amazonaws.com/nodegroup: p5-training-b
+      efa.capable: 'true'
+    annotations:
+      node.alpha.kubernetes.io/ttl: '0'
+      volumes.kubernetes.io/controller-managed-attach-detach: 'true'
+  spec:
+    providerID: aws:///us-east-1b/i-000000038b5b7995
+    taints:
+    - key: nvidia.com/gpu
+      value: present
+      effect: NoSchedule
+    - key: node.kubernetes.io/unschedulable
+      effect: NoSchedule
+    unschedulable: true
+  status:
+    capacity:
+      cpu: '192'
+      memory: 2063Gi
+      ephemeral-storage: 3400Gi
+      nvidia.com/gpu: '8'
+      vpc.amazonaws.com/efa: '32'
+      hugepages-2Mi: '0'
+      pods: '110'
+    allocatable:
+      cpu: '190'
+      memory: 1952Gi
+      ephemeral-storage: 3400Gi
+      nvidia.com/gpu: '8'
+      vpc.amazonaws.com/efa: '32'
+      hugepages-2Mi: '0'
+      pods: '110'
+    conditions:
+    - type: MemoryPressure
+      status: 'False'
+      reason: KubeletHasSufficientMemory
+    - type: DiskPressure
+      status: 'False'
+      reason: KubeletHasNoDiskPressure
+    - type: PIDPressure
+      status: 'False'
+      reason: KubeletHasSufficientPID
+    - type: Ready
+      status: 'True'
+      reason: KubeletReady
+    nodeInfo:
+      kubeletVersion: v1.30.4-eks-a737599
+      containerRuntimeVersion: containerd://1.7.22
+      osImage: Amazon Linux 2023.5.20240916
+      kernelVersion: 6.1.109-118.189.amzn2023.x86_64
+- apiVersion: v1
+  kind: Node
+  metadata:
+    name: gpu-b-4
+    labels:
+      kubernetes.io/hostname: gpu-b-4
+      kubernetes.io/os: linux
+      kubernetes.io/arch: amd64
+      node.kubernetes.io/instance-type: p5.48xlarge
+      topology.kubernetes.io/region: us-east-1
+      topology.kubernetes.io/zone: us-east-1b
+      pool: training
+      nvidia.com/gpu.product: NVIDIA-H100-80GB-HBM3
+      nvidia.com/gpu.count: '8'
+      nvidia.com/gpu.memory: '81559'
+      nvidia.com/cuda.driver.major: '560'
+      eks.amazonaws.com/nodegroup: p5-training-b
+      efa.capable: 'true'
+    annotations:
+      node.alpha.kubernetes.io/ttl: '0'
+      volumes.kubernetes.io/controller-managed-attach-detach: 'true'
+  spec:
+    providerID: aws:///us-east-1b/i-00000003ba8dd28e
+    taints:
+    - key: nvidia.com/gpu
+      value: present
+      effect: NoSchedule
+  status:
+    capacity:
+      cpu: '192'
+      memory: 2063Gi
+      ephemeral-storage: 3400Gi
+      nvidia.com/gpu: '8'
+      vpc.amazonaws.com/efa: '32'
+      hugepages-2Mi: '0'
+      pods: '110'
+    allocatable:
+      cpu: '190'
+      memory: 1952Gi
+      ephemeral-storage: 3400Gi
+      nvidia.com/gpu: '8'
+      vpc.amazonaws.com/efa: '32'
+      hugepages-2Mi: '0'
+      pods: '110'
+    conditions:
+    - type: MemoryPressure
+      status: 'False'
+      reason: KubeletHasSufficientMemory
+    - type: DiskPressure
+      status: 'False'
+      reason: KubeletHasNoDiskPressure
+    - type: PIDPressure
+      status: 'False'
+      reason: KubeletHasSufficientPID
+    - type: Ready
+      status: 'True'
+      reason: KubeletReady
+    nodeInfo:
+      kubeletVersion: v1.30.4-eks-a737599
+      containerRuntimeVersion: containerd://1.7.22
+      osImage: Amazon Linux 2023.5.20240916
+      kernelVersion: 6.1.109-118.189.amzn2023.x86_64
+- apiVersion: v1
+  kind: Node
+  metadata:
+    name: gpu-b-5
+    labels:
+      kubernetes.io/hostname: gpu-b-5
+      kubernetes.io/os: linux
+      kubernetes.io/arch: amd64
+      node.kubernetes.io/instance-type: p5.48xlarge
+      topology.kubernetes.io/region: us-east-1
+      topology.kubernetes.io/zone: us-east-1b
+      pool: inference
+      nvidia.com/gpu.product: NVIDIA-H100-80GB-HBM3
+      nvidia.com/gpu.count: '8'
+      nvidia.com/gpu.memory: '81559'
+      nvidia.com/cuda.driver.major: '560'
+      eks.amazonaws.com/nodegroup: p5-inference-b
+      efa.capable: 'true'
+    annotations:
+      node.alpha.kubernetes.io/ttl: '0'
+      volumes.kubernetes.io/controller-managed-attach-detach: 'true'
+  spec:
+    providerID: aws:///us-east-1b/i-00000003e9c02b87
+    taints:
+    - key: nvidia.com/gpu
+      value: present
+      effect: NoSchedule
+    - key: dedicated
+      value: inference
+      effect: NoSchedule
+  status:
+    capacity:
+      cpu: '192'
+      memory: 2063Gi
+      ephemeral-storage: 3400Gi
+      nvidia.com/gpu: '8'
+      vpc.amazonaws.com/efa: '32'
+      hugepages-2Mi: '0'
+      pods: '110'
+    allocatable:
+      cpu: '190'
+      memory: 1952Gi
+      ephemeral-storage: 3400Gi
+      nvidia.com/gpu: '8'
+      vpc.amazonaws.com/efa: '32'
+      hugepages-2Mi: '0'
+      pods: '110'
+    conditions:
+    - type: MemoryPressure
+      status: 'False'
+      reason: KubeletHasSufficientMemory
+    - type: DiskPressure
+      status: 'False'
+      reason: KubeletHasNoDiskPressure
+    - type: PIDPressure
+      status: 'False'
+      reason: KubeletHasSufficientPID
+    - type: Ready
+      status: 'True'
+      reason: KubeletReady
+    nodeInfo:
+      kubeletVersion: v1.30.4-eks-a737599
+      containerRuntimeVersion: containerd://1.7.22
+      osImage: Amazon Linux 2023.5.20240916
+      kernelVersion: 6.1.109-118.189.amzn2023.x86_64
+- apiVersion: v1
+  kind: Node
+  metadata:
+    name: gpu-b-6
+    labels:
+      kubernetes.io/hostname: gpu-b-6
+      kubernetes.io/os: linux
+      kubernetes.io/arch: amd64
+      node.kubernetes.io/instance-type: p5.48xlarge
+      topology.kubernetes.io/region: us-east-1
+      topology.kubernetes.io/zone: us-east-1b
+      pool: training
+      nvidia.com/gpu.product: NVIDIA-H100-80GB-HBM3
+      nvidia.com/gpu.count: '8'
+      nvidia.com/gpu.memory: '81559'
+      nvidia.com/cuda.driver.major: '560'
+      eks.amazonaws.com/nodegroup: p5-training-b
+      efa.capable: 'true'
+    annotations:
+      node.alpha.kubernetes.io/ttl: '0'
+      volumes.kubernetes.io/controller-managed-attach-detach: 'true'
+  spec:
+    providerID: aws:///us-east-1b/i-0000000418f28480
+    taints:
+    - key: nvidia.com/gpu
+      value: present
+      effect: NoSchedule
+  status:
+    capacity:
+      cpu: '192'
+      memory: 2063Gi
+      ephemeral-storage: 3400Gi
+      nvidia.com/gpu: '8'
+      vpc.amazonaws.com/efa: '32'
+      hugepages-2Mi: '0'
+      pods: '110'
+    allocatable:
+      cpu: '190'
+      memory: 1952Gi
+      ephemeral-storage: 3400Gi
+      nvidia.com/gpu: '8'
+      vpc.amazonaws.com/efa: '32'
+      hugepages-2Mi: '0'
+      pods: '110'
+    conditions:
+    - type: MemoryPressure
+      status: 'False'
+      reason: KubeletHasSufficientMemory
+    - type: DiskPressure
+      status: 'False'
+      reason: KubeletHasNoDiskPressure
+    - type: PIDPressure
+      status: 'False'
+      reason: KubeletHasSufficientPID
+    - type: Ready
+      status: 'True'
+      reason: KubeletReady
+    nodeInfo:
+      kubeletVersion: v1.30.4-eks-a737599
+      containerRuntimeVersion: containerd://1.7.22
+      osImage: Amazon Linux 2023.5.20240916
+      kernelVersion: 6.1.109-118.189.amzn2023.x86_64
+- apiVersion: v1
+  kind: Node
+  metadata:
+    name: gpu-c-1
+    labels:
+      kubernetes.io/hostname: gpu-c-1
+      kubernetes.io/os: linux
+      kubernetes.io/arch: amd64
+      node.kubernetes.io/instance-type: p5.48xlarge
+      topology.kubernetes.io/region: us-east-1
+      topology.kubernetes.io/zone: us-east-1c
+      pool: research
+      nvidia.com/gpu.product: NVIDIA-H100-80GB-HBM3
+      nvidia.com/gpu.count: '8'
+      nvidia.com/gpu.memory: '81559'
+      nvidia.com/cuda.driver.major: '560'
+      eks.amazonaws.com/nodegroup: p5-research-c
+      efa.capable: 'true'
+    annotations:
+      node.alpha.kubernetes.io/ttl: '0'
+      volumes.kubernetes.io/controller-managed-attach-detach: 'true'
+  spec:
+    providerID: aws:///us-east-1c/i-000000044824dd79
+    taints:
+    - key: nvidia.com/gpu
+      value: present
+      effect: NoSchedule
+    - key: dedicated
+      value: research
+      effect: NoSchedule
+  status:
+    capacity:
+      cpu: '192'
+      memory: 2063Gi
+      ephemeral-storage: 3400Gi
+      nvidia.com/gpu: '8'
+      vpc.amazonaws.com/efa: '32'
+      hugepages-2Mi: '0'
+      pods: '110'
+    allocatable:
+      cpu: '190'
+      memory: 1952Gi
+      ephemeral-storage: 3400Gi
+      nvidia.com/gpu: '8'
+      vpc.amazonaws.com/efa: '32'
+      hugepages-2Mi: '0'
+      pods: '110'
+    conditions:
+    - type: MemoryPressure
+      status: 'False'
+      reason: KubeletHasSufficientMemory
+    - type: DiskPressure
+      status: 'False'
+      reason: KubeletHasNoDiskPressure
+    - type: PIDPressure
+      status: 'False'
+      reason: KubeletHasSufficientPID
+    - type: Ready
+      status: 'True'
+      reason: KubeletReady
+    nodeInfo:
+      kubeletVersion: v1.30.4-eks-a737599
+      containerRuntimeVersion: containerd://1.7.22
+      osImage: Amazon Linux 2023.5.20240916
+      kernelVersion: 6.1.109-118.189.amzn2023.x86_64
+- apiVersion: v1
+  kind: Node
+  metadata:
+    name: gpu-c-2
+    labels:
+      kubernetes.io/hostname: gpu-c-2
+      kubernetes.io/os: linux
+      kubernetes.io/arch: amd64
+      node.kubernetes.io/instance-type: p5.48xlarge
+      topology.kubernetes.io/region: us-east-1
+      topology.kubernetes.io/zone: us-east-1c
+      pool: research
+      nvidia.com/gpu.product: NVIDIA-H100-80GB-HBM3
+      nvidia.com/gpu.count: '8'
+      nvidia.com/gpu.memory: '81559'
+      nvidia.com/cuda.driver.major: '560'
+      eks.amazonaws.com/nodegroup: p5-research-c
+      efa.capable: 'true'
+    annotations:
+      node.alpha.kubernetes.io/ttl: '0'
+      volumes.kubernetes.io/controller-managed-attach-detach: 'true'
+  spec:
+    providerID: aws:///us-east-1c/i-0000000477573672
+    taints:
+    - key: nvidia.com/gpu
+      value: present
+      effect: NoSchedule
+    - key: dedicated
+      value: research
+      effect: NoSchedule
+  status:
+    capacity:
+      cpu: '192'
+      memory: 2063Gi
+      ephemeral-storage: 3400Gi
+      nvidia.com/gpu: '8'
+      vpc.amazonaws.com/efa: '32'
+      hugepages-2Mi: '0'
+      pods: '110'
+    allocatable:
+      cpu: '190'
+      memory: 1952Gi
+      ephemeral-storage: 3400Gi
+      nvidia.com/gpu: '8'
+      vpc.amazonaws.com/efa: '32'
+      hugepages-2Mi: '0'
+      pods: '110'
+    conditions:
+    - type: MemoryPressure
+      status: 'False'
+      reason: KubeletHasSufficientMemory
+    - type: DiskPressure
+      status: 'False'
+      reason: KubeletHasNoDiskPressure
+    - type: PIDPressure
+      status: 'False'
+      reason: KubeletHasSufficientPID
+    - type: Ready
+      status: 'True'
+      reason: KubeletReady
+    nodeInfo:
+      kubeletVersion: v1.30.4-eks-a737599
+      containerRuntimeVersion: containerd://1.7.22
+      osImage: Amazon Linux 2023.5.20240916
+      kernelVersion: 6.1.109-118.189.amzn2023.x86_64
+- apiVersion: v1
+  kind: Node
+  metadata:
+    name: gpu-c-3
+    labels:
+      kubernetes.io/hostname: gpu-c-3
+      kubernetes.io/os: linux
+      kubernetes.io/arch: amd64
+      node.kubernetes.io/instance-type: p5.48xlarge
+      topology.kubernetes.io/region: us-east-1
+      topology.kubernetes.io/zone: us-east-1c
+      pool: research
+      nvidia.com/gpu.product: NVIDIA-H100-80GB-HBM3
+      nvidia.com/gpu.count: '8'
+      nvidia.com/gpu.memory: '81559'
+      nvidia.com/cuda.driver.major: '560'
+      eks.amazonaws.com/nodegroup: p5-research-c
+      efa.capable: 'true'
+    annotations:
+      node.alpha.kubernetes.io/ttl: '0'
+      volumes.kubernetes.io/controller-managed-attach-detach: 'true'
+  spec:
+    providerID: aws:///us-east-1c/i-00000004a6898f6b
+    taints:
+    - key: nvidia.com/gpu
+      value: present
+      effect: NoSchedule
+    - key: dedicated
+      value: research
+      effect: NoSchedule
+  status:
+    capacity:
+      cpu: '192'
+      memory: 2063Gi
+      ephemeral-storage: 3400Gi
+      nvidia.com/gpu: '8'
+      vpc.amazonaws.com/efa: '32'
+      hugepages-2Mi: '0'
+      pods: '110'
+    allocatable:
+      cpu: '190'
+      memory: 1952Gi
+      ephemeral-storage: 3400Gi
+      nvidia.com/gpu: '8'
+      vpc.amazonaws.com/efa: '32'
+      hugepages-2Mi: '0'
+      pods: '110'
+    conditions:
+    - type: MemoryPressure
+      status: 'False'
+      reason: KubeletHasSufficientMemory
+    - type: DiskPressure
+      status: 'False'
+      reason: KubeletHasNoDiskPressure
+    - type: PIDPressure
+      status: 'False'
+      reason: KubeletHasSufficientPID
+    - type: Ready
+      status: 'True'
+      reason: KubeletReady
+    nodeInfo:
+      kubeletVersion: v1.30.4-eks-a737599
+      containerRuntimeVersion: containerd://1.7.22
+      osImage: Amazon Linux 2023.5.20240916
+      kernelVersion: 6.1.109-118.189.amzn2023.x86_64

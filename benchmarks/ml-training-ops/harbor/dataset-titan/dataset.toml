@@ -1,0 +1,21 @@
+# Dataset manifest for zenml/ml-training-ops-titan
+# Add tasks using: harbor dataset add <org>/<name>
+# Publish using: harbor publish
+
+[dataset]
+name = "zenml/ml-training-ops-titan"
+version = "2.0.0"
+description = "ml-training-ops, torchtitan tasks: 2 Harbor tasks on a faulted fork of torchtitan v0.2.2 (reproduce a golden loss curve); each trial needs 2x L40S GPUs. https://github.com/zenml-io/agent-benchmarks"
+keywords = [ "ml-training", "torchtitan", "pytorch", "gpu", "reproducibility",]
+[[dataset.authors]]
+name = "Hamza Tahir"
+
+
+[[tasks]]
+name = "zenml/mlops-titan-fork-drift"
+digest = "sha256:68e694a11afc8596c78fc098001e81ab495b3c18b147045059671d6a87711abe"
+
+[[tasks]]
+name = "zenml/mlops-titan-silent-divergence"
+digest = "sha256:3f186807c24f2fff83acb695bece87f965835d330b5f6c386297cbf21e55dbea"
+

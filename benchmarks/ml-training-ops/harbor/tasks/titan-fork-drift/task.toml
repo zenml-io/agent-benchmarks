@@ -1,0 +1,33 @@
+schema_version = "1.4"
+
+# The verifier container gets the agent's /app back (and nothing else of the agent's container).
+artifacts = [{ source = "/app", exclude = ["__pycache__", "outputs"] }]
+
+[task]
+name = "zenml/mlops-titan-fork-drift"
+version = "2.0.0"
+description = "Our torchtitan fork no longer reproduces its own training run"
+keywords = ["ml-training", "operations", "pytorch"]
+
+[metadata]
+round = "torchtitan"
+difficulty = "hard"
+category = "ml-training-ops"
+tags = ["torchtitan", "fsdp", "numerics", "real-system"]
+grader_changed_from_original = false
+needs_gpu = true
+
+[verifier]
+timeout_sec = 1800.0
+environment_mode = "separate"
+
+[agent]
+timeout_sec = 3600.0
+
+[environment]
+build_timeout_sec = 3600.0
+cpus = 8
+memory_mb = 32768
+storage_mb = 40960
+gpus = 2
+gpu_types = ["L40S"]

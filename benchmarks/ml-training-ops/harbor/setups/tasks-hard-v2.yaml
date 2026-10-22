@@ -1,0 +1,15 @@
+# Tasks: hard + v2 (11 tasks), the set the vendor-API rounds of 2026-10-12/13 ran (data/tasks_mlops_all.json).
+datasets:
+  - path: harbor/tasks
+    task_names:
+      - ddp-replica-drift
+      - uneven-shard-hang
+      - straggler-diagnosis
+      - corrupt-shard
+      - atomic-checkpoint
+      - reshard-optimizer
+      - k8s-unschedulable
+      - memory-leak-oom
+      - exact-resume
+      - k8s-quota-zone
+      - two-stragglers

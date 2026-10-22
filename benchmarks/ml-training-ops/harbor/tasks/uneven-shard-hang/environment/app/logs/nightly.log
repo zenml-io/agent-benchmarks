@@ -1,0 +1,122 @@
+==== nightly 2026-10-06 (NPROC=2, N_TRAIN=19802) ====
+epoch 0 step 50 loss 2.0562
+epoch 0 step 100 loss 2.0398
+epoch 0 step 150 loss 2.0270
+epoch 0 done, mean train loss 2.0770
+epoch 1 step 50 loss 2.0231
+epoch 1 step 100 loss 2.0071
+epoch 1 step 150 loss 2.0024
+epoch 1 step 200 loss 1.9441
+epoch 1 step 250 loss 1.9129
+epoch 1 step 300 loss 1.9108
+epoch 1 done, mean train loss 1.9608
+epoch 2 step 50 loss 1.8910
+epoch 2 step 100 loss 1.8867
+epoch 2 step 150 loss 1.8352
+epoch 2 step 200 loss 1.8058
+epoch 2 step 250 loss 1.7635
+epoch 2 step 300 loss 1.7397
+epoch 2 step 350 loss 1.7181
+epoch 2 step 400 loss 1.6631
+epoch 2 step 450 loss 1.6211
+epoch 2 done, mean train loss 1.6711
+val accuracy 0.7291
+
+==== nightly 2026-10-07 (NPROC=3, N_TRAIN=19970, GLOO_SOCKET_IFNAME=eth0) ====
+WARNING:__main__:
+*****************************************
+Setting OMP_NUM_THREADS environment variable for each process to be 1 in default, to avoid your system being overloaded, please further tune the variable for optimal performance in your application as needed. 
+*****************************************
+[W1010 12:52:33.774633095 socket.cpp:752] [c10d] The client socket cannot be initialized to connect to [localhost]:46077 (errno: 97 - Address family not supported by protocol).
+[W1010 12:52:34.246663133 socket.cpp:752] [c10d] The client socket cannot be initialized to connect to [localhost]:46077 (errno: 97 - Address family not supported by protocol).
+[W1010 12:52:34.256890692 socket.cpp:752] [c10d] The client socket cannot be initialized to connect to [localhost]:46077 (errno: 97 - Address family not supported by protocol).
+[W1010 12:52:34.300499418 socket.cpp:752] [c10d] The client socket cannot be initialized to connect to [localhost]:46077 (errno: 97 - Address family not supported by protocol).
+epoch 0 step 50 loss 1.1194
+epoch 0 step 100 loss 1.0879
+terminate called after throwing an instance of 'gloo::EnforceNotMet'
+  what():  [enforce fail at ../third_party/gloo/gloo/transport/tcp/pair.cc:446] op.preamble.length <= op.nbytes. 6144 vs 4
+[rank1]: Traceback (most recent call last):
+[rank1]:   File "/app/train.py", line 71, in <module>
+[rank1]:     main()
+[rank1]:     ~~~~^^
+[rank1]:   File "/app/train.py", line 47, in main
+[rank1]:     average_gradients(model)
+[rank1]:     ~~~~~~~~~~~~~~~~~^^^^^^^
+[rank1]:   File "/usr/local/lib/python3.11/site-packages/torch/utils/_contextlib.py", line 116, in decorate_context
+[rank1]:     return func(*args, **kwargs)
+[rank1]:   File "/app/trainer/sync.py", line 9, in average_gradients
+[rank1]:     dist.all_reduce(p.grad, op=dist.ReduceOp.SUM)
+[rank1]:     ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[rank1]:   File "/usr/local/lib/python3.11/site-packages/torch/distributed/c10d_logger.py", line 83, in wrapper
+[rank1]:     return func(*args, **kwargs)
+[rank1]:   File "/usr/local/lib/python3.11/site-packages/torch/distributed/distributed_c10d.py", line 2506, in all_reduce
+[rank1]:     work.wait()
+[rank1]:     ~~~~~~~~~^^
+[rank1]: RuntimeError: [../third_party/gloo/gloo/transport/tcp/pair.cc:534] Connection closed by peer [127.0.0.1]:51892
+[rank0]: Traceback (most recent call last):
+[rank0]:   File "/app/train.py", line 71, in <module>
+[rank0]:     main()
+[rank0]:     ~~~~^^
+[rank0]:   File "/app/train.py", line 47, in main
+[rank0]:     average_gradients(model)
+[rank0]:     ~~~~~~~~~~~~~~~~~^^^^^^^
+[rank0]:   File "/usr/local/lib/python3.11/site-packages/torch/utils/_contextlib.py", line 116, in decorate_context
+[rank0]:     return func(*args, **kwargs)
+[rank0]:   File "/app/trainer/sync.py", line 9, in average_gradients
+[rank0]:     dist.all_reduce(p.grad, op=dist.ReduceOp.SUM)
+[rank0]:     ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[rank0]:   File "/usr/local/lib/python3.11/site-packages/torch/distributed/c10d_logger.py", line 83, in wrapper
+[rank0]:     return func(*args, **kwargs)
+[rank0]:   File "/usr/local/lib/python3.11/site-packages/torch/distributed/distributed_c10d.py", line 2506, in all_reduce
+[rank0]:     work.wait()
+[rank0]:     ~~~~~~~~~^^
+[rank0]: RuntimeError: [../third_party/gloo/gloo/transport/tcp/pair.cc:525] Read error [127.0.0.1]:31116: Connection reset by peer
+W1010 12:52:37.279000 795 torch/distributed/elastic/multiprocessing/api.py:897] Sending process 801 closing signal SIGTERM
+W1010 12:52:37.280000 795 torch/distributed/elastic/multiprocessing/api.py:897] Sending process 802 closing signal SIGTERM
+E1010 12:52:37.296000 795 torch/distributed/elastic/multiprocessing/api.py:869] failed (exitcode: -6) local_rank: 2 (pid: 803) of binary: /usr/local/bin/python
+Traceback (most recent call last):
+  File "<frozen runpy>", line 203, in _run_module_as_main
+  File "<frozen runpy>", line 88, in _run_code
+  File "/usr/local/lib/python3.11/site-packages/torch/distributed/run.py", line 923, in <module>
+    main()
+    ~~~~^^
+  File "/usr/local/lib/python3.11/site-packages/torch/distributed/elastic/multiprocessing/errors/__init__.py", line 355, in wrapper
+    return f(*args, **kwargs)
+  File "/usr/local/lib/python3.11/site-packages/torch/distributed/run.py", line 919, in main
+    run(args)
+    ~~~^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/torch/distributed/run.py", line 910, in run
+    elastic_launch(
+    ~~~~~~~~~~~~~~~
+        config=config,
+        ~~~~~~~~~~~~~~
+        entrypoint=cmd,
+        ~~~~~~~~~~~~~~~
+    )(*cmd_args)
+    ~^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/torch/distributed/launcher/api.py", line 138, in __call__
+    return launch_agent(self._config, self._entrypoint, list(args))
+  File "/usr/local/lib/python3.11/site-packages/torch/distributed/launcher/api.py", line 269, in launch_agent
+    raise ChildFailedError(
+    ...<2 lines>...
+    )
+torch.distributed.elastic.multiprocessing.errors.ChildFailedError: 
+====================================================
+train.py FAILED
+----------------------------------------------------
+Failures:
+  <NO_OTHER_FAILURES>
+----------------------------------------------------
+Root Cause (first observed failure):
+[0]:
+  time      : 2026-10-10_12:52:37
+  host      : localhost
+  rank      : 2 (local_rank: 2)
+  exitcode  : -6 (pid: 803)
+  error_file: <N/A>
+  traceback : Signal 6 (SIGABRT) received by PID 803
+====================================================
+
+
+==== retry 2026-10-07 (GLOO_SOCKET_IFNAME=lo, TORCH_GLOO_LAZY_INIT=1) ====
+(same failure, log not kept)

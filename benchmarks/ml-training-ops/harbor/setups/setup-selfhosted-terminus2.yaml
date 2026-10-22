@@ -1,0 +1,8 @@
+# Setup: Terminus 2 against a self-hosted OpenAI-compatible server, as ../self-hosted-agents-harness runs it
+# (Qwen3.8-27B served as "agent-model" by vLLM on Modal). Start the server, export OPENAI_BASE_URL and
+# OPENAI_API_BASE=<server>/v1 and OPENAI_API_KEY=not-used, and add --ak api_base=<server>/v1.
+agents:
+  - name: terminus-2
+    model_name: openai/agent-model
+    kwargs:
+      model_info: {max_input_tokens: 65536, max_output_tokens: 16384, input_cost_per_token: 0, output_cost_per_token: 0}

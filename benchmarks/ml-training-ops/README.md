@@ -101,13 +101,16 @@ The two Claude Code runs are not capability results: the first failed in setup o
 - All 24 task directories load with Harbor 0.24.0's own task loader, and every task named in the four task lists exists (`scripts/validate_tasks.py`).
 - Local fault checks without containers (`build.py --check`, `make_tasks.py --check`): for all 16 CPU tasks of the hard, v2 and v3 rounds and all 6 v1 tasks, the original code fails its hidden tests and the reference fix passes (`throughput-sla`, a timing test, needed an idle machine; RERUN.md section 5).
 
-**Not reproduced:** no agent run was repeated. The Modal oracle / no-op validations of the original runs were not re-run (they need Modal sandboxes). The torchtitan tasks need 2 GPUs and were not checked locally. `hard_trace_signals.md` needs the raw trajectories (not published).
+**Checked on Modal (2026-10-22, Harbor-native version in `harbor/`):** for all 22 CPU tasks, oracle 5/5, nop 0, every listed shortcut 0 and an alternative fix 1 (all but `ray-exactly-once`); see Harbor status.
+
+**Not reproduced:** no agent run was repeated. The torchtitan tasks need 2 GPUs; only their GPU-free checks ran. `hard_trace_signals.md` needs the raw trajectories (not published).
 
 **Found while porting:**
 
 - The self-hosted sandbox estimate under-counts by about 4x for these tasks: `experiment.py` looks up a task's CPU and memory in Harbor's registry cache and falls back to 1 CPU / 2 GiB for local tasks, but the hard, v2 and v3 tasks request 4 CPUs / 8 GB (v1: 2 / 4). Re-priced from the recorded sandbox lifetimes at the requested resources, the estimate is $223.0465 instead of $56.8279, so every self-hosted `cost_per_correct_cents` in the export is too low (the GPU part, `gpu_only_cost_per_correct_cents`, is right). The published JSON is left as computed; `scripts/rebuild_export.py` prints the re-priced figure.
 - The original repository's `.gitignore` excluded `*.log`, so five task inputs the agents read (`logs/*.log` in atomic-checkpoint, corrupt-shard, memory-leak-oom, reshard-optimizer, uneven-shard-hang) were never committed there; they were taken from the working tree that built the tasks, and the rebuilt tasks match the ones that ran.
 - One task input (`uneven-shard-hang/app/logs/nightly.log`) contains the build machine's file paths in a traceback; it is kept as the agents saw it.
+- Eight hidden tests accepted a plausible wrong fix (found by writing one shortcut per task for the Harbor-native version; each confirmed to score 1 under the original test): retraining from step 0 instead of resuming (`resume-checkpoint`, `atomic-checkpoint`, `exact-resume`, `elastic-churn`), rank 0 alone running the specification (`elastic-churn`), dropping up to world-1 examples per epoch (`uneven-shard-hang`), inflating the accuracy `train.py` reports (`regression-bisect`), rescaling the init behind a source-text check (`nan-loss`), and computing the totals file in the driver while the live actor stays empty (`ray-exactly-once`). The published solve rates on these tasks may include such fixes (trajectories not published); `harbor/` grades them with the added checks.
 
 **Known inconsistencies (from the export):**
 
@@ -121,8 +124,8 @@ The two Claude Code runs are not capability results: the first failed in setup o
 
 **Steps that would vet it further:**
 
-1. Run the free Harbor checks on Modal for every task: `-a oracle -k 5` must score 5/5 and `-a nop` 0 (only oracle 1x and nop 1x were recorded, and v3 no-op runs were not recorded).
-2. Write and run one shortcut per task that must score 0 (for example, writing `/logs/verifier/reward.json` directly, or editing the test-visible outputs without fixing the job), since only three hard tasks had a partial-fix check.
+1. Done for the CPU tasks (Harbor status): oracle 5/5, nop 0, shortcuts 0, alternatives 1. Still open: the torchtitan tasks' GPU checks.
+2. Read the original trajectories (private archive) of passing trials on the eight tasks whose graders changed, to see whether any published pass used one of these shortcuts.
 3. Rerun the headline cell pair (terminus-2 and mini-swe-agent, H100 defaults vs H200 at 24 agents, hard set, 3 attempts per task; recorded $1.57-4.11 GPU per run) and compare the paired differences with +22.92 / +18.75 points.
 4. Hand-read the 17 trials where mini-swe-agent's defaults runs at 24 agents failed and classify them (time-out while working, wrong fix, harness error), since the self-hosted failure classes here come only from Harbor exception types.
 5. Pull the Modal bills for 2026-10-10/12/13 to replace the estimated sandbox cost with billed cost.
@@ -130,16 +133,15 @@ The two Claude Code runs are not capability results: the first failed in setup o
 
 ## Harbor status
 
-`native`. Every trial ran as a Harbor 0.24.0 job on Modal sandboxes against local task directories: self-hosted runs through `../self-hosted-agents-harness/experiment.py` (`harbor run -y -p tasks/mlops_hard/tasks -a <terminus-2 | mini-swe-agent> -m openai/agent-model -e modal -n <agents> -k <attempts> -i <task> ...` against our vLLM server), vendor-API runs through `src/api_runs.py` (`harbor run -y -p tasks/mlops_hard/tasks -a <codex | claude-code | terminus-2> -m <openai/... | anthropic/...> -e modal -n <N> -k <attempts> --ek sandbox_timeout_secs=7200 -i <task> ...`). Tasks use Harbor's format (`instruction.md`, `task.toml`, `environment/Dockerfile`, `solution/solve.sh`, hidden `tests/` with `test.sh` writing `/logs/verifier/reward.txt`).
+`native` for the 22 CPU tasks, checked on Modal on 2026-10-22; the two torchtitan tasks are native but only their GPU-free checks ran. Everything is in [harbor/](harbor/README.md); the original runs' task folders and scripts are unchanged.
 
-Distance to this repo's Harbor-native target:
-
-- Four checks: partly done. Oracle passed once per task on Modal (hard 8/8, v1 6/6, v2 4/4 after a fix to exact-resume (the first oracle run scored 2/3 on the then-new tasks), v3 and torchtitan 1-2 runs each); no-op scored 0 on v1, hard, v2 and torchtitan (v3: not recorded). Not done: oracle 5/5, listed shortcuts scoring 0 (only three hard tasks had a partial-fix check), a second valid solution per task. The local `--check` mode is a grader test for "original fails, reference passes" only.
-- Grader robustness: `test.sh` writes the reward on every path (no `set -e`), but does not clear `/logs/verifier` first, so an agent that wrote its own `reward.json` there would win over `reward.txt`. Tests are hidden from the agent (copied in after it finishes).
-- Base image: one shared `python:3.11-slim` + CPU torch 2.5.1 Dockerfile template; torchtitan tasks install `torchao` and torchtitan's requirements unpinned at build.
-- Setups as config: no. Harness, model and serving config are CLI flags; Codex and Claude Code versions were not pinned (0.162.1 and 2.1.296 were installed).
-- Publishing: no `dataset.toml` or `registry.json`; tasks run with `-p` from this directory. The hard tasks must be built first (`build.py`).
-- Reading results: self-hosted runs have 3-6 attempts per task and the baseline repeated; vendor-API rounds have 1-3 attempts, and the v3 / torchtitan rounds were run one task at a time.
+- **Tasks.** `harbor/build.py` builds all 24 tasks into `harbor/tasks/` (committed, 3.6 MB) from `tasks/mlops_tasks/` and `tasks/mlops_hard/src/` without changing instructions, code, data or reference fixes, adding a shared `test.sh`, shortcuts, alternatives and grader overlays. Listed in `harbor/dataset.toml` (`zenml/ml-training-ops`, 22 CPU tasks), `harbor/dataset-titan/dataset.toml` and the repo-root `registry.json` (`ml-training-ops@2.0.0`, `ml-training-ops-titan@2.0.0`).
+- **Grading.** The verifier runs in a separate container that receives only the agent's `/app`, so nothing outside `/app` (packages, `/tests`, `/logs/verifier`) reaches it; `test.sh` deletes any reward file, always writes one, runs pytest with its own config (`-P`, no conftest, no plugin autoload) and requires a JUnit report in which every test passed.
+- **Four checks (Modal, 211 trials):** oracle 110/110 (22 tasks × 5), nop 0/22, 58 shortcuts 0/58 (a shared grade forgery per task plus 36 task-specific wrong fixes such as silencing NaNs, dropping the shard remainder, resetting optimizer moments, a blanket toleration or blaming the commit that looks guilty), an alternative valid fix 21/21 (all but `ray-exactly-once`). Grader unit tests: 62 offline tests.
+- **Grader changes.** Writing the shortcuts found eight graders that a plausible wrong fix passed (retraining from scratch instead of resuming in four checkpoint tasks, rank 0 alone running the specification, dropping examples to stop the hang, inflating the reported accuracy, rescaling the init behind a source check, a driver that never feeds the live totals actor). Those graders now also check the missing requirement (harbor/README.md, "Grader changes"); published solve rates on these eight tasks are upper bounds under the new graders.
+- **Setups as config.** `harbor/setups/`: one file per original setup (Codex pinned to 0.162.1 with each OpenAI model, Terminus 2, Claude Code pinned to 2.1.296, the self-hosted Terminus 2 and mini-swe-agent 2.4.6) plus task lists and Modal settings. Self-hosted runs still go through `../self-hosted-agents-harness/experiment.py`; `data/tasks_harbor_*.json` point it at `harbor/tasks`.
+- **Torchtitan.** Images now pin torchao 0.18.0 and torchtitan's requirements (read from a cached build of the original Dockerfile). Checked without GPUs: images build, the reference and the untouched fork pass the GPU-free tests, two rule-breaking shortcuts score 0. Not run: oracle / nop / shortcuts on the training curve (2x L40S per trial, about $15-30 for the set).
+- **Left:** a paid pilot with real agents against the published rows, the torchtitan GPU checks, an alternative fix for `ray-exactly-once` and the torchtitan tasks.
 
 ## Limitations
 

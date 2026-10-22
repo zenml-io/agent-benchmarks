@@ -1,0 +1,9 @@
+# Setup: mini-swe-agent (pinned to the original runs' 2.4.6) against a self-hosted OpenAI-compatible server;
+# see setup-selfhosted-terminus2.yaml for the server variables.
+agents:
+  - name: mini-swe-agent
+    model_name: openai/agent-model
+    kwargs:
+      version: "2.4.6"
+      litellm_model_registry:
+        openai/agent-model: {max_input_tokens: 65536, max_output_tokens: 16384, input_cost_per_token: 0, output_cost_per_token: 0}

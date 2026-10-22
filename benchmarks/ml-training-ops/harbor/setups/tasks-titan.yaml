@@ -1,0 +1,6 @@
+# Tasks: the torchtitan tasks: each trial needs 2x L40S, 8 CPUs, 32 GB (expensive; see harbor/README.md).
+datasets:
+  - path: harbor/tasks
+    task_names:
+      - titan-fork-drift
+      - titan-silent-divergence

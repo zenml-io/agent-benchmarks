@@ -1,0 +1,3 @@
+# Setup: the reference solution (free). Expect reward 1 on every trial.
+agents:
+  - name: oracle

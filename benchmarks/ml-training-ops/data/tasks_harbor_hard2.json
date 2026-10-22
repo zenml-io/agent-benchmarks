@@ -1,0 +1,10 @@
+{
+ "_comment": "Harbor-native version (harbor/tasks, built by harbor/build.py): same tasks as tasks_mlops_hard2.json, graded in a separate verifier container; some graders are stricter (harbor/README.md, section Grader changes).",
+ "path": "harbor/tasks",
+ "tasks": [
+  "exact-resume",
+  "k8s-quota-zone",
+  "two-stragglers",
+  "atomic-checkpoint"
+ ]
+}

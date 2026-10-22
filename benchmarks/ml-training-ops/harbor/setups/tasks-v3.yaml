@@ -1,0 +1,9 @@
+# Tasks: the v3 round (5 tasks designed to be hard for frontier models).
+datasets:
+  - path: harbor/tasks
+    task_names:
+      - regression-bisect
+      - throughput-sla
+      - ray-exactly-once
+      - gang-controller
+      - elastic-churn

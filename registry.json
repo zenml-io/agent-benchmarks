@@ -53,5 +53,282 @@
         "path": "benchmarks/underwriting/harbor/tasks/main-124"
       }
     ]
+  },
+  {
+    "name": "tau2-telecom-test40",
+    "version": "0.1.0",
+    "description": "tau2-bench Telecom test split (40 tasks): tau2's 13 agent tools and a gpt-4.1 simulated customer on an MCP sidecar, graded by tau2's own evaluator (no model calls in grading; needs OPENAI_API_KEY for the user simulator). Built from Harbor's tau3-bench adapter with tau2-bench pinned at 05736c2. Every task passed the four verifier checks (oracle 5/5, nop 0, shortcuts 0, alternative 1). Custom agent and arms: benchmarks/tau2-telecom/harbor/README.md.",
+    "tasks": [
+      {
+        "name": "telecom-test-00",
+        "path": "benchmarks/tau2-telecom/harbor/tasks/telecom-test-00"
+      },
+      {
+        "name": "telecom-test-01",
+        "path": "benchmarks/tau2-telecom/harbor/tasks/telecom-test-01"
+      },
+      {
+        "name": "telecom-test-02",
+        "path": "benchmarks/tau2-telecom/harbor/tasks/telecom-test-02"
+      },
+      {
+        "name": "telecom-test-03",
+        "path": "benchmarks/tau2-telecom/harbor/tasks/telecom-test-03"
+      },
+      {
+        "name": "telecom-test-04",
+        "path": "benchmarks/tau2-telecom/harbor/tasks/telecom-test-04"
+      },
+      {
+        "name": "telecom-test-05",
+        "path": "benchmarks/tau2-telecom/harbor/tasks/telecom-test-05"
+      },
+      {
+        "name": "telecom-test-06",
+        "path": "benchmarks/tau2-telecom/harbor/tasks/telecom-test-06"
+      },
+      {
+        "name": "telecom-test-07",
+        "path": "benchmarks/tau2-telecom/harbor/tasks/telecom-test-07"
+      },
+      {
+        "name": "telecom-test-08",
+        "path": "benchmarks/tau2-telecom/harbor/tasks/telecom-test-08"
+      },
+      {
+        "name": "telecom-test-09",
+        "path": "benchmarks/tau2-telecom/harbor/tasks/telecom-test-09"
+      },
+      {
+        "name": "telecom-test-10",
+        "path": "benchmarks/tau2-telecom/harbor/tasks/telecom-test-10"
+      },
+      {
+        "name": "telecom-test-11",
+        "path": "benchmarks/tau2-telecom/harbor/tasks/telecom-test-11"
+      },
+      {
+        "name": "telecom-test-12",
+        "path": "benchmarks/tau2-telecom/harbor/tasks/telecom-test-12"
+      },
+      {
+        "name": "telecom-test-13",
+        "path": "benchmarks/tau2-telecom/harbor/tasks/telecom-test-13"
+      },
+      {
+        "name": "telecom-test-14",
+        "path": "benchmarks/tau2-telecom/harbor/tasks/telecom-test-14"
+      },
+      {
+        "name": "telecom-test-15",
+        "path": "benchmarks/tau2-telecom/harbor/tasks/telecom-test-15"
+      },
+      {
+        "name": "telecom-test-16",
+        "path": "benchmarks/tau2-telecom/harbor/tasks/telecom-test-16"
+      },
+      {
+        "name": "telecom-test-17",
+        "path": "benchmarks/tau2-telecom/harbor/tasks/telecom-test-17"
+      },
+      {
+        "name": "telecom-test-18",
+        "path": "benchmarks/tau2-telecom/harbor/tasks/telecom-test-18"
+      },
+      {
+        "name": "telecom-test-19",
+        "path": "benchmarks/tau2-telecom/harbor/tasks/telecom-test-19"
+      },
+      {
+        "name": "telecom-test-20",
+        "path": "benchmarks/tau2-telecom/harbor/tasks/telecom-test-20"
+      },
+      {
+        "name": "telecom-test-21",
+        "path": "benchmarks/tau2-telecom/harbor/tasks/telecom-test-21"
+      },
+      {
+        "name": "telecom-test-22",
+        "path": "benchmarks/tau2-telecom/harbor/tasks/telecom-test-22"
+      },
+      {
+        "name": "telecom-test-23",
+        "path": "benchmarks/tau2-telecom/harbor/tasks/telecom-test-23"
+      },
+      {
+        "name": "telecom-test-24",
+        "path": "benchmarks/tau2-telecom/harbor/tasks/telecom-test-24"
+      },
+      {
+        "name": "telecom-test-25",
+        "path": "benchmarks/tau2-telecom/harbor/tasks/telecom-test-25"
+      },
+      {
+        "name": "telecom-test-26",
+        "path": "benchmarks/tau2-telecom/harbor/tasks/telecom-test-26"
+      },
+      {
+        "name": "telecom-test-27",
+        "path": "benchmarks/tau2-telecom/harbor/tasks/telecom-test-27"
+      },
+      {
+        "name": "telecom-test-28",
+        "path": "benchmarks/tau2-telecom/harbor/tasks/telecom-test-28"
+      },
+      {
+        "name": "telecom-test-29",
+        "path": "benchmarks/tau2-telecom/harbor/tasks/telecom-test-29"
+      },
+      {
+        "name": "telecom-test-30",
+        "path": "benchmarks/tau2-telecom/harbor/tasks/telecom-test-30"
+      },
+      {
+        "name": "telecom-test-31",
+        "path": "benchmarks/tau2-telecom/harbor/tasks/telecom-test-31"
+      },
+      {
+        "name": "telecom-test-32",
+        "path": "benchmarks/tau2-telecom/harbor/tasks/telecom-test-32"
+      },
+      {
+        "name": "telecom-test-33",
+        "path": "benchmarks/tau2-telecom/harbor/tasks/telecom-test-33"
+      },
+      {
+        "name": "telecom-test-34",
+        "path": "benchmarks/tau2-telecom/harbor/tasks/telecom-test-34"
+      },
+      {
+        "name": "telecom-test-35",
+        "path": "benchmarks/tau2-telecom/harbor/tasks/telecom-test-35"
+      },
+      {
+        "name": "telecom-test-36",
+        "path": "benchmarks/tau2-telecom/harbor/tasks/telecom-test-36"
+      },
+      {
+        "name": "telecom-test-37",
+        "path": "benchmarks/tau2-telecom/harbor/tasks/telecom-test-37"
+      },
+      {
+        "name": "telecom-test-38",
+        "path": "benchmarks/tau2-telecom/harbor/tasks/telecom-test-38"
+      },
+      {
+        "name": "telecom-test-39",
+        "path": "benchmarks/tau2-telecom/harbor/tasks/telecom-test-39"
+      }
+    ]
+  },
+  {
+    "name": "ml-training-ops",
+    "version": "2.0.0",
+    "description": "ml-training-ops: 22 CPU tasks where coding agents fix injected faults in multi-process PyTorch training setups (distributed jobs, checkpoints, OOMs, stragglers, Kubernetes, Ray, scheduling), graded in a separate container by hidden tests that re-run the job. Every task passed the four checks on Modal (oracle 5/5, nop 0, shortcuts 0, an alternative 1; no alternative for ray-exactly-once). 4 CPUs / 8 GB per trial (v1: 2 / 4).",
+    "tasks": [
+      {
+        "name": "atomic-checkpoint",
+        "path": "benchmarks/ml-training-ops/harbor/tasks/atomic-checkpoint"
+      },
+      {
+        "name": "corrupt-shard",
+        "path": "benchmarks/ml-training-ops/harbor/tasks/corrupt-shard"
+      },
+      {
+        "name": "ddp-replica-drift",
+        "path": "benchmarks/ml-training-ops/harbor/tasks/ddp-replica-drift"
+      },
+      {
+        "name": "ddp-sharding",
+        "path": "benchmarks/ml-training-ops/harbor/tasks/ddp-sharding"
+      },
+      {
+        "name": "elastic-churn",
+        "path": "benchmarks/ml-training-ops/harbor/tasks/elastic-churn"
+      },
+      {
+        "name": "eval-mode",
+        "path": "benchmarks/ml-training-ops/harbor/tasks/eval-mode"
+      },
+      {
+        "name": "exact-resume",
+        "path": "benchmarks/ml-training-ops/harbor/tasks/exact-resume"
+      },
+      {
+        "name": "gang-controller",
+        "path": "benchmarks/ml-training-ops/harbor/tasks/gang-controller"
+      },
+      {
+        "name": "k8s-quota-zone",
+        "path": "benchmarks/ml-training-ops/harbor/tasks/k8s-quota-zone"
+      },
+      {
+        "name": "k8s-unschedulable",
+        "path": "benchmarks/ml-training-ops/harbor/tasks/k8s-unschedulable"
+      },
+      {
+        "name": "label-shuffle",
+        "path": "benchmarks/ml-training-ops/harbor/tasks/label-shuffle"
+      },
+      {
+        "name": "memory-leak-oom",
+        "path": "benchmarks/ml-training-ops/harbor/tasks/memory-leak-oom"
+      },
+      {
+        "name": "nan-loss",
+        "path": "benchmarks/ml-training-ops/harbor/tasks/nan-loss"
+      },
+      {
+        "name": "oom-grad-accum",
+        "path": "benchmarks/ml-training-ops/harbor/tasks/oom-grad-accum"
+      },
+      {
+        "name": "ray-exactly-once",
+        "path": "benchmarks/ml-training-ops/harbor/tasks/ray-exactly-once"
+      },
+      {
+        "name": "regression-bisect",
+        "path": "benchmarks/ml-training-ops/harbor/tasks/regression-bisect"
+      },
+      {
+        "name": "reshard-optimizer",
+        "path": "benchmarks/ml-training-ops/harbor/tasks/reshard-optimizer"
+      },
+      {
+        "name": "resume-checkpoint",
+        "path": "benchmarks/ml-training-ops/harbor/tasks/resume-checkpoint"
+      },
+      {
+        "name": "straggler-diagnosis",
+        "path": "benchmarks/ml-training-ops/harbor/tasks/straggler-diagnosis"
+      },
+      {
+        "name": "throughput-sla",
+        "path": "benchmarks/ml-training-ops/harbor/tasks/throughput-sla"
+      },
+      {
+        "name": "two-stragglers",
+        "path": "benchmarks/ml-training-ops/harbor/tasks/two-stragglers"
+      },
+      {
+        "name": "uneven-shard-hang",
+        "path": "benchmarks/ml-training-ops/harbor/tasks/uneven-shard-hang"
+      }
+    ]
+  },
+  {
+    "name": "ml-training-ops-titan",
+    "version": "2.0.0",
+    "description": "ml-training-ops, torchtitan tasks: reproduce a golden loss curve on a faulted fork of torchtitan v0.2.2. Each trial needs 2x L40S GPUs, 8 CPUs and 32 GB (agent limit 60-90 minutes). Only the GPU-free checks have been run.",
+    "tasks": [
+      {
+        "name": "titan-fork-drift",
+        "path": "benchmarks/ml-training-ops/harbor/tasks/titan-fork-drift"
+      },
+      {
+        "name": "titan-silent-divergence",
+        "path": "benchmarks/ml-training-ops/harbor/tasks/titan-silent-divergence"
+      }
+    ]
   }
 ]

@@ -1,0 +1,7 @@
+# Setup: Codex CLI with GPT-6 Luna (the cheapest vendor-API setup of the original runs). Codex version pinned
+# to what Harbor installed in the original runs (unpinned there). Needs OPENAI_API_KEY (--env-file .env).
+agents:
+  - name: codex
+    model_name: openai/gpt-6-luna
+    kwargs:
+      version: "0.162.1"
