@@ -141,7 +141,8 @@ def test_scripted_reference_through_runner_scores_1_and_is_recorded(name: str, t
     async def upload(url: str) -> list[str]:
         client = KitaruAPIClient(base_url=url, api_key="test")
         try:
-            return await upload_recordings.upload_trial(client, requests, "11111111-1111-1111-1111-111111111111", None)
+            return await upload_recordings.upload_trial(client, requests, "11111111-1111-1111-1111-111111111111", None,
+                                                        {"reward": 1.0, "graded_by": "harbor verifier"})
         finally:
             await client.close()
 
@@ -149,6 +150,10 @@ def test_scripted_reference_through_runner_scores_1_and_is_recorded(name: str, t
         assert len(asyncio.run(upload(server_sink.url))) == 1
     uploaded = json.loads((tmp_path / "server" / "session.json").read_text())[0]
     assert uploaded["session"]["agent_id"] == "11111111-1111-1111-1111-111111111111"
+    # The verifier's grade rides on the final outputs, next to the recorded answer.
+    recorded_outputs = json.loads(sessions[0]["session"]["outputs"])
+    assert json.loads(uploaded["session"]["outputs"]) == recorded_outputs | {"tau2": {"reward": 1.0,
+                                                                                      "graded_by": "harbor verifier"}}
     assert {n["external_id"]: n["status"] for n in uploaded["nodes"]} == {n["external_id"]: n["status"] for n in nodes}
 
 
