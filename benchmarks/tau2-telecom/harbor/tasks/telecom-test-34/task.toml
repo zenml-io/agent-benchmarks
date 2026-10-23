@@ -14,7 +14,7 @@ keywords = ["tau2-bench", "telecom", "tool-use", "simulated-user"]
 [metadata]
 difficulty = "medium"
 category = "customer_service"
-source_task_id = "[service_issue]break_apn_settings|contract_end_suspension|lock_sim_card_pin[PERSONA:Hard]"
+source_task_id = "[mms_issue]bad_wifi_calling|break_apn_mms_setting|break_app_both_permissions|data_mode_off|data_usage_exceeded|user_abroad_roaming_disabled_off[PERSONA:None]"
 source_split = "test"
 case = 34
 tau2_bench_ref = "05736c27219b769d0be507574dd3135010916644"

@@ -56,7 +56,7 @@
   },
   {
     "name": "tau2-telecom-test40",
-    "version": "0.1.0",
+    "version": "0.2.0",
     "description": "tau2-bench Telecom test split (40 tasks): tau2's 13 agent tools and a gpt-4.1 simulated customer on an MCP sidecar, graded by tau2's own evaluator (no model calls in grading; needs OPENAI_API_KEY for the user simulator). Built from Harbor's tau3-bench adapter with tau2-bench pinned at 05736c2. Every task passed the four verifier checks (oracle 5/5, nop 0, shortcuts 0, alternative 1). Custom agent and arms: benchmarks/tau2-telecom/harbor/README.md.",
     "tasks": [
       {

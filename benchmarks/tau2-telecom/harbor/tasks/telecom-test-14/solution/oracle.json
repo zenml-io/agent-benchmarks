@@ -1,25 +1,13 @@
 {
   "actions": [
     {
-      "action_id": "reset_apn_settings_0",
-      "name": "reset_apn_settings",
-      "arguments": {},
-      "requestor": "user",
-      "compare_args": null
-    },
-    {
-      "action_id": "reboot_device_1",
-      "name": "reboot_device",
-      "arguments": {},
-      "requestor": "user",
-      "compare_args": null
-    },
-    {
-      "action_id": "toggle_roaming_2",
-      "name": "toggle_roaming",
-      "arguments": {},
-      "requestor": "user",
-      "compare_args": null
+      "action_id": "transfer_to_human_agents",
+      "name": "transfer_to_human_agents",
+      "arguments": {
+        "summary": "I cannot fix the issue."
+      },
+      "requestor": "assistant",
+      "compare_args": []
     }
   ],
   "communicate_info": [],
@@ -35,30 +23,32 @@
     },
     {
       "env_type": "user",
-      "func_name": "break_apn_mms_setting",
+      "func_name": "turn_airplane_mode_on",
       "arguments": {}
     },
     {
       "env_type": "user",
-      "func_name": "set_user_location",
+      "func_name": "lock_sim_card",
       "arguments": {
-        "abroad": true
+        "mode": "pin"
       }
-    },
-    {
-      "env_type": "user",
-      "func_name": "turn_roaming_off",
-      "arguments": {}
     },
     {
       "env_type": "assistant",
-      "func_name": "enable_roaming",
+      "func_name": "suspend_line_for_overdue_bill",
       "arguments": {
         "customer_id": "C1001",
-        "line_id": "L1002"
+        "line_id": "L1002",
+        "new_bill_id": "B1234321",
+        "contract_ended": false
       }
+    },
+    {
+      "env_type": "user",
+      "func_name": "simulate_network_search",
+      "arguments": {}
     }
   ],
   "domain": "telecom",
-  "task_id": "[mms_issue]break_apn_mms_setting|user_abroad_roaming_enabled_off[PERSONA:Hard]"
+  "task_id": "[service_issue]airplane_mode_on|lock_sim_card_pin|overdue_bill_suspension[PERSONA:Easy]"
 }

@@ -4,7 +4,7 @@
 
 [dataset]
 name = "zenml/tau2-telecom-test40"
-version = "0.1.0"
+version = "0.2.0"
 description = "tau2-bench Telecom, test split (40 tasks): tau2's tools and simulated user (gpt-4.1) as an MCP sidecar, graded by tau2's evaluator; built from Harbor's tau3-bench adapter with tau2-bench pinned. https://github.com/zenml-io/agent-benchmarks/tree/main/benchmarks/tau2-telecom/harbor"
 keywords = [ "tau2-bench", "telecom", "customer-service", "simulated-user", "mcp", "kitaru",]
 [[dataset.authors]]
@@ -13,161 +13,161 @@ name = "Hamza Tahir"
 
 [[tasks]]
 name = "zenml/tau2-telecom-test-00"
-digest = "sha256:b8442ac462eb90de43b9bfd0763454851aba48c06cd2a7a70c8880625132158a"
+digest = "sha256:f92412bf5121342196217883ddf07284f06a03995cdf703304dd67cf792cb134"
 
 [[tasks]]
 name = "zenml/tau2-telecom-test-01"
-digest = "sha256:be9f83db851afa1e188a94ca9fcd2163f74e5b61c28d05f799cbd60b1b23d7dc"
+digest = "sha256:2529387d18cf39a891b82937347e1500af53857df8c2a67b91dc464429f7126f"
 
 [[tasks]]
 name = "zenml/tau2-telecom-test-02"
-digest = "sha256:97448dc9dd5a6095b1260bab7d6e4388d692628759b47df10f64a1ff8060a1a4"
+digest = "sha256:251d6c664c3e0ccdb09589b523f3ae1c18071915446c9fc19a81a944e5fc51ff"
 
 [[tasks]]
 name = "zenml/tau2-telecom-test-03"
-digest = "sha256:140db5ae501edfc2c5161205db16a5d81752316e5cc67432e340b46141939c89"
+digest = "sha256:0f48dd8b4af20b8388645a9d2d9094ea2e36fe9f6d63dd409a19ed5d13939709"
 
 [[tasks]]
 name = "zenml/tau2-telecom-test-04"
-digest = "sha256:9c94ff2f3c050a1a4d407425a6f03761151162261d24fa30b1b778f5f28f50e5"
+digest = "sha256:266e933ccaa9d60b0ced2d506ba9d2817cb269752c3eac6883dbd036b8ca45b9"
 
 [[tasks]]
 name = "zenml/tau2-telecom-test-05"
-digest = "sha256:a26f69018a22ed003090c0adcd143988c6d7f57eb5af47237a0f988b1c4151d1"
+digest = "sha256:2ff17764f1cfdbfb89c3243b34d7005738eab8f4d8824d65cede882c045d9005"
 
 [[tasks]]
 name = "zenml/tau2-telecom-test-06"
-digest = "sha256:ba766441a119d5989a7a7fe5144acbe117b61bbed178a1ece78d8dced4e0909b"
+digest = "sha256:f4ce265c6807f88ed545c9a63ae7d866ca0f6fdcb45cd47fe979dc70e8eafe88"
 
 [[tasks]]
 name = "zenml/tau2-telecom-test-07"
-digest = "sha256:f0f0c22d12ef4bdb0f21fc4eac31403a94abf547a0eac5d787dcd8f5ce8bfcfd"
+digest = "sha256:83fa046495dd6910de8f44a3c9ac4cc7e9dbf504e644e50920e6c481f40d1eb3"
 
 [[tasks]]
 name = "zenml/tau2-telecom-test-08"
-digest = "sha256:3c06198488d2da3fc750ff73373deb055539b3b70cd1936bc5cfa3bc444faecf"
+digest = "sha256:f00f5d525056e8a6e9204fd71a091b9f33157d1e646f452db18813c8041c9aa9"
 
 [[tasks]]
 name = "zenml/tau2-telecom-test-09"
-digest = "sha256:5fefa5dc426c654ac4f362727924f5af7ee45dccddbc2f8781039aa19b31be56"
+digest = "sha256:c47eefdc0096d93ebb49ff29ec9e3bf56a82e62782ebf7dabb72b068118710c7"
 
 [[tasks]]
 name = "zenml/tau2-telecom-test-10"
-digest = "sha256:3335278a6188d73e46c7e42ab90148a787ac55f3ef58695fd837cde8df4754dd"
+digest = "sha256:3d26ac658733180487bb71ba2669cdf0fc2e09cdfa3430c46d047ebba958fa19"
 
 [[tasks]]
 name = "zenml/tau2-telecom-test-11"
-digest = "sha256:eb775fdbff9b303a0f3224a6da40f98725cdeafc078f46b4339a6c8e545ae938"
+digest = "sha256:152fd161a9785c8714646f23c3d119b53edceee05837bd93eef182748e4c068b"
 
 [[tasks]]
 name = "zenml/tau2-telecom-test-12"
-digest = "sha256:517a644ecd1f02f24acb91e83e9428606c694b4b4f3a0dcfc613c1a571ce0f63"
+digest = "sha256:2c30a142c37434120f837eac6cdc64a2e796697f8b2f86f784d8622d60f07d41"
 
 [[tasks]]
 name = "zenml/tau2-telecom-test-13"
-digest = "sha256:0b9edc6e92f86c90d6d3170791971984d29202e8edd87934bb689dc11b9a26af"
+digest = "sha256:5433b930ed597e9cad0b67a7aae9f7f8b1bc2862267999835beb8081ad5900ef"
 
 [[tasks]]
 name = "zenml/tau2-telecom-test-14"
-digest = "sha256:5becdc39a04a4255f1076dde46d51fdba9f598deb0e760da2f77bb9f8027a19f"
+digest = "sha256:7ec4ea914ce6a663d5c559e77b3bbcf4ea026c7bb6a42909569305a88a9af111"
 
 [[tasks]]
 name = "zenml/tau2-telecom-test-15"
-digest = "sha256:d7451f91460474261334a0cb47b842b5b0860eb836ac18639cde365287e568e0"
+digest = "sha256:d0558b3eba63ef6f4b4c9b22b98bb5ca832baff23db7b633e8d7427690cd167c"
 
 [[tasks]]
 name = "zenml/tau2-telecom-test-16"
-digest = "sha256:22d5545e15fc793b5327422f37ce40f8e8534c36712cf2c46596e8d1c31d7bc9"
+digest = "sha256:dcf05c0525d296b3aa8fed71390f28161dba46907823f433ad099fc82a8ff694"
 
 [[tasks]]
 name = "zenml/tau2-telecom-test-17"
-digest = "sha256:4d318581e9873ead204076022fcc437fd35e48275bdc97d437012fd799a1a748"
+digest = "sha256:136b40fee844d00adc544cf7f00a24f8034b314674799ab468ad148fc8251155"
 
 [[tasks]]
 name = "zenml/tau2-telecom-test-18"
-digest = "sha256:0aa13383bd1e29a9b23cfa4e461c434d7c65a008308451aca191816b566ff713"
+digest = "sha256:5c8c8bfdbd19b82b62af2934e2001a2c73849914010ddbdd33cf0daae6c18ddc"
 
 [[tasks]]
 name = "zenml/tau2-telecom-test-19"
-digest = "sha256:02438fc339decb172f0bb4000cb3fcfddce7915fe82c970cf57cfbe8d4382876"
+digest = "sha256:b39ad83ebd377219e0548b78a9e588a0d806e6953064d82d157ef6c1b1ac732c"
 
 [[tasks]]
 name = "zenml/tau2-telecom-test-20"
-digest = "sha256:d3029a287b98f31c98868b778ef7292490ee9a7fe3fad73d88fbd16a26260233"
+digest = "sha256:39ad27161f3f959d97e60e1679b0b325d68d39fdd0edbcd52858299e5a1397d9"
 
 [[tasks]]
 name = "zenml/tau2-telecom-test-21"
-digest = "sha256:c3a165123cfa708bcf396de9205dba37a480c368694707a7b8fa1f9df1287ec8"
+digest = "sha256:6e4dcd650ec637a6897d1b2b76eb634ac8fa2875a9a573bb93ff21359648ecdf"
 
 [[tasks]]
 name = "zenml/tau2-telecom-test-22"
-digest = "sha256:b4e3ff6f74d909e70477fa2cbe27fa432c5f6fdc0ae91773bc4f76f45745c312"
+digest = "sha256:98cc9bd35ac3734e3acc55e57741f66477a176e3182f9a8b058f0ea6bba7ff72"
 
 [[tasks]]
 name = "zenml/tau2-telecom-test-23"
-digest = "sha256:60162b8e7be347e59980244eec156f30dc90c29893d15bb1cf33d7e1ee498fa5"
+digest = "sha256:4e77ef389d68d663bc17ce85300c4490a366f129d2c22254c1dce2c085371a6c"
 
 [[tasks]]
 name = "zenml/tau2-telecom-test-24"
-digest = "sha256:1858b465eb2cf79a6541787375054386e57826fb4a5336f7c24ea90861ba9f89"
+digest = "sha256:d9e3b40955e7b02639ca57c9390f60a847ac96cc0032f624fccfc4429437ce27"
 
 [[tasks]]
 name = "zenml/tau2-telecom-test-25"
-digest = "sha256:d3296d9957e86273352b431ee1cfeecac90bec2c80dc4580f6d7d48ba0ba6f45"
+digest = "sha256:8e9dce598b2834e0d82cd5a37811e1dfe10407cc103186739174d35c213e9d26"
 
 [[tasks]]
 name = "zenml/tau2-telecom-test-26"
-digest = "sha256:2b9aa3d7c2015fafa93729aca3e124217a2702fcbe35fcc3152fc0490b97a9d3"
+digest = "sha256:2e6afc9c3e67280d44e1822fd2c22cc285c0f93bcba08703f2ab3b376dcf893e"
 
 [[tasks]]
 name = "zenml/tau2-telecom-test-27"
-digest = "sha256:4ea4ce3d2ccd0aad9a0fd03f9b3326172de9b2f0eaaf5010f7f36c2f22f5fb76"
+digest = "sha256:90e41a66402287c528ebea03d91b1e56bd3a836f1ae50e079caed770dd749cba"
 
 [[tasks]]
 name = "zenml/tau2-telecom-test-28"
-digest = "sha256:da1dfe94d88ab6d389bbf5837d7f49e90d59a4588c8df93642b1a487f57a656a"
+digest = "sha256:13a57410a968ed3ecc057303cc4823583ea36a045ab8ae3886f590a7dfe47420"
 
 [[tasks]]
 name = "zenml/tau2-telecom-test-29"
-digest = "sha256:f3d21015214da6062a6a968bee984fde69caefe51e67f4a850903f850a642dc1"
+digest = "sha256:2640861e5db2b5ea59b7f3bb10d2cc47d35e7c04771ac9337c3c3f329275ce68"
 
 [[tasks]]
 name = "zenml/tau2-telecom-test-30"
-digest = "sha256:b41eba414a95be7219be4eda2fb9b890643bafc20774c674cf9f2e4c01f0ee14"
+digest = "sha256:d5354129f3459f4a760c079eb61060828a89760fb3f4cb247a73448a71676ff7"
 
 [[tasks]]
 name = "zenml/tau2-telecom-test-31"
-digest = "sha256:e70b95f8a567a24f7c871d052bee318043175b1c1378f3c7ae7e1a83fe9b842d"
+digest = "sha256:7737590b46ad0059300e719ecd5e6120bd971896b8f32e7bc6da7fa98110e588"
 
 [[tasks]]
 name = "zenml/tau2-telecom-test-32"
-digest = "sha256:87bfdfca59a874532a2bc342670c2029d039f4cd4acf2231966fbf4537d06beb"
+digest = "sha256:2ef7155dc70034157421ef75999e32adb4fcb2ed37635920f8f13b2e0a59dd14"
 
 [[tasks]]
 name = "zenml/tau2-telecom-test-33"
-digest = "sha256:f75c90f7619acd910d8009143122939b502632de3fdf5db8c24c7375e49c5c27"
+digest = "sha256:2280628745dc39cad78e77ba95701eea60abfabacdc93c05894f0a77cbcff951"
 
 [[tasks]]
 name = "zenml/tau2-telecom-test-34"
-digest = "sha256:73630d4c77fab3717bdfa0c84342c4b1c3c9a198026efe84dd2296b785040c56"
+digest = "sha256:4a816a685e24344c57817aae275723273fac613ba430ad80b489616146fa0ded"
 
 [[tasks]]
 name = "zenml/tau2-telecom-test-35"
-digest = "sha256:65ba010d250fa57d86d7abc0ca0839a8b7f934edb52e2e60e34162c27ed37815"
+digest = "sha256:77ba0989cd67bb273a145faff246d99f03ec2b912ae4dc1f05cb986a1b82e5f4"
 
 [[tasks]]
 name = "zenml/tau2-telecom-test-36"
-digest = "sha256:8bc855feffea29b698c4bf9c013595d60879979226f0c9cb1f525ea06471e8d4"
+digest = "sha256:acf89222f96f69fc56136cdeb591b7b139334a38266fabafdb79b5f814a275b8"
 
 [[tasks]]
 name = "zenml/tau2-telecom-test-37"
-digest = "sha256:74e2eeaa96609898184a5e728818b639f905b058fb4f406f1d129920af956be4"
+digest = "sha256:2966e89bdf02a1dcbabd6523d32d1d65891b03b6a1c68bfcfeef71a90e916ef2"
 
 [[tasks]]
 name = "zenml/tau2-telecom-test-38"
-digest = "sha256:78cc490920dfed101eae2c2ae0f8f364601f3107d3fe9bb0a896b73305dcdc08"
+digest = "sha256:44b095b9a2c4cfd9eace61698df5c2380eb88463b2c429ec111b838bb1016a11"
 
 [[tasks]]
 name = "zenml/tau2-telecom-test-39"
-digest = "sha256:86e61509af0ed922b483df33c73066496910ac86065a8157f01907f9f570a68a"
+digest = "sha256:28b1c04777a5151fe7063c62e5505483168745ed62a2db4f92251df218656785"
 

@@ -1,43 +1,13 @@
 {
   "actions": [
     {
-      "action_id": "toggle_airplane_mode_0",
-      "name": "toggle_airplane_mode",
-      "arguments": {},
-      "requestor": "user",
-      "compare_args": null
-    },
-    {
-      "action_id": "toggle_data_1",
-      "name": "toggle_data",
-      "arguments": {},
-      "requestor": "user",
-      "compare_args": null
-    },
-    {
-      "action_id": "toggle_data_saver_mode_2",
-      "name": "toggle_data_saver_mode",
-      "arguments": {},
-      "requestor": "user",
-      "compare_args": null
-    },
-    {
-      "action_id": "refuel_data_3",
-      "name": "refuel_data",
+      "action_id": "transfer_to_human_agents",
+      "name": "transfer_to_human_agents",
       "arguments": {
-        "customer_id": "C1001",
-        "line_id": "L1002",
-        "gb_amount": 2.0
+        "summary": "I cannot fix the issue."
       },
       "requestor": "assistant",
-      "compare_args": null
-    },
-    {
-      "action_id": "toggle_roaming_4",
-      "name": "toggle_roaming",
-      "arguments": {},
-      "requestor": "user",
-      "compare_args": null
+      "compare_args": []
     }
   ],
   "communicate_info": [],
@@ -58,44 +28,22 @@
     },
     {
       "env_type": "user",
-      "func_name": "turn_data_off",
+      "func_name": "break_apn_settings",
       "arguments": {}
     },
     {
       "env_type": "user",
-      "func_name": "turn_data_saver_mode_on",
-      "arguments": {}
-    },
-    {
-      "env_type": "assistant",
-      "func_name": "set_data_usage",
+      "func_name": "lock_sim_card",
       "arguments": {
-        "customer_id": "C1001",
-        "line_id": "L1002",
-        "data_used_gb": 15.1
+        "mode": "pin"
       }
     },
     {
       "env_type": "user",
-      "func_name": "set_user_location",
-      "arguments": {
-        "abroad": true
-      }
-    },
-    {
-      "env_type": "user",
-      "func_name": "turn_roaming_off",
+      "func_name": "unseat_sim_card",
       "arguments": {}
-    },
-    {
-      "env_type": "assistant",
-      "func_name": "enable_roaming",
-      "arguments": {
-        "customer_id": "C1001",
-        "line_id": "L1002"
-      }
     }
   ],
   "domain": "telecom",
-  "task_id": "[mobile_data_issue]airplane_mode_on|data_mode_off|data_saver_mode_on|data_usage_exceeded|user_abroad_roaming_enabled_off[PERSONA:Hard]"
+  "task_id": "[service_issue]airplane_mode_on|break_apn_settings|lock_sim_card_pin|unseat_sim_card[PERSONA:None]"
 }

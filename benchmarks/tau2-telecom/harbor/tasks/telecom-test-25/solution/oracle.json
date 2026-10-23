@@ -1,13 +1,21 @@
 {
   "actions": [
     {
-      "action_id": "transfer_to_human_agents",
-      "name": "transfer_to_human_agents",
+      "action_id": "grant_app_permission_0",
+      "name": "grant_app_permission",
       "arguments": {
-        "summary": "I cannot fix the issue."
+        "app_name": "messaging",
+        "permission": "sms"
       },
-      "requestor": "assistant",
-      "compare_args": []
+      "requestor": "user",
+      "compare_args": null
+    },
+    {
+      "action_id": "toggle_data_1",
+      "name": "toggle_data",
+      "arguments": {},
+      "requestor": "user",
+      "compare_args": null
     }
   ],
   "communicate_info": [],
@@ -23,37 +31,18 @@
     },
     {
       "env_type": "user",
-      "func_name": "turn_airplane_mode_on",
-      "arguments": {}
-    },
-    {
-      "env_type": "user",
-      "func_name": "break_apn_settings",
-      "arguments": {}
-    },
-    {
-      "env_type": "assistant",
-      "func_name": "suspend_line_for_overdue_bill",
+      "func_name": "remove_app_permission",
       "arguments": {
-        "customer_id": "C1001",
-        "line_id": "L1002",
-        "new_bill_id": "B1234321",
-        "contract_ended": true
+        "app_name": "messaging",
+        "permission": "sms"
       }
     },
     {
       "env_type": "user",
-      "func_name": "simulate_network_search",
+      "func_name": "turn_data_off",
       "arguments": {}
-    },
-    {
-      "env_type": "user",
-      "func_name": "lock_sim_card",
-      "arguments": {
-        "mode": "pin"
-      }
     }
   ],
   "domain": "telecom",
-  "task_id": "[service_issue]airplane_mode_on|break_apn_settings|contract_end_suspension|lock_sim_card_pin[PERSONA:None]"
+  "task_id": "[mms_issue]break_app_sms_permission|data_mode_off[PERSONA:None]"
 }

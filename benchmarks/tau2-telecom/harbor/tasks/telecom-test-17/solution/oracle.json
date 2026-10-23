@@ -1,34 +1,13 @@
 {
   "actions": [
     {
-      "action_id": "toggle_airplane_mode_0",
-      "name": "toggle_airplane_mode",
-      "arguments": {},
-      "requestor": "user",
-      "compare_args": null
-    },
-    {
-      "action_id": "set_network_mode_preference_1",
-      "name": "set_network_mode_preference",
+      "action_id": "transfer_to_human_agents",
+      "name": "transfer_to_human_agents",
       "arguments": {
-        "mode": "4g_5g_preferred"
+        "summary": "I cannot fix the issue."
       },
-      "requestor": "user",
-      "compare_args": null
-    },
-    {
-      "action_id": "toggle_data_2",
-      "name": "toggle_data",
-      "arguments": {},
-      "requestor": "user",
-      "compare_args": null
-    },
-    {
-      "action_id": "toggle_data_saver_mode_3",
-      "name": "toggle_data_saver_mode",
-      "arguments": {},
-      "requestor": "user",
-      "compare_args": null
+      "requestor": "assistant",
+      "compare_args": []
     }
   ],
   "communicate_info": [],
@@ -44,27 +23,32 @@
     },
     {
       "env_type": "user",
-      "func_name": "turn_airplane_mode_on",
+      "func_name": "break_apn_settings",
       "arguments": {}
     },
     {
-      "env_type": "user",
-      "func_name": "set_network_mode_preference",
+      "env_type": "assistant",
+      "func_name": "suspend_line_for_overdue_bill",
       "arguments": {
-        "mode": "2g_only"
+        "customer_id": "C1001",
+        "line_id": "L1002",
+        "new_bill_id": "B1234321",
+        "contract_ended": true
       }
     },
     {
       "env_type": "user",
-      "func_name": "turn_data_off",
+      "func_name": "simulate_network_search",
       "arguments": {}
     },
     {
       "env_type": "user",
-      "func_name": "turn_data_saver_mode_on",
-      "arguments": {}
+      "func_name": "lock_sim_card",
+      "arguments": {
+        "mode": "pin"
+      }
     }
   ],
   "domain": "telecom",
-  "task_id": "[mobile_data_issue]airplane_mode_on|bad_network_preference|data_mode_off|data_saver_mode_on[PERSONA:Hard]"
+  "task_id": "[service_issue]break_apn_settings|contract_end_suspension|lock_sim_card_pin[PERSONA:Hard]"
 }

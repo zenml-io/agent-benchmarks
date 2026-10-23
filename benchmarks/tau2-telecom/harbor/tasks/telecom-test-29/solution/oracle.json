@@ -1,58 +1,29 @@
 {
   "actions": [
     {
-      "action_id": "toggle_airplane_mode_0",
-      "name": "toggle_airplane_mode",
-      "arguments": {},
-      "requestor": "user",
-      "compare_args": null
-    },
-    {
-      "action_id": "reset_apn_settings_1",
-      "name": "reset_apn_settings",
-      "arguments": {},
-      "requestor": "user",
-      "compare_args": null
-    },
-    {
-      "action_id": "reboot_device_2",
-      "name": "reboot_device",
-      "arguments": {},
-      "requestor": "user",
-      "compare_args": null
-    },
-    {
-      "action_id": "send_payment_request_3",
-      "name": "send_payment_request",
+      "action_id": "set_network_mode_preference_0",
+      "name": "set_network_mode_preference",
       "arguments": {
-        "customer_id": "C1001",
-        "bill_id": "B1234321"
+        "mode": "4g_5g_preferred"
       },
-      "requestor": "assistant",
+      "requestor": "user",
       "compare_args": null
     },
     {
-      "action_id": "make_payment_4",
-      "name": "make_payment",
+      "action_id": "toggle_data_1",
+      "name": "toggle_data",
       "arguments": {},
       "requestor": "user",
       "compare_args": null
     },
     {
-      "action_id": "resume_line_5",
-      "name": "resume_line",
+      "action_id": "enable_roaming_2",
+      "name": "enable_roaming",
       "arguments": {
         "customer_id": "C1001",
         "line_id": "L1002"
       },
       "requestor": "assistant",
-      "compare_args": null
-    },
-    {
-      "action_id": "reboot_device_6",
-      "name": "reboot_device",
-      "arguments": {},
-      "requestor": "user",
       "compare_args": null
     }
   ],
@@ -69,22 +40,34 @@
     },
     {
       "env_type": "user",
-      "func_name": "turn_airplane_mode_on",
+      "func_name": "set_network_mode_preference",
+      "arguments": {
+        "mode": "2g_only"
+      }
+    },
+    {
+      "env_type": "user",
+      "func_name": "turn_data_off",
       "arguments": {}
     },
     {
       "env_type": "user",
-      "func_name": "break_apn_settings",
+      "func_name": "set_user_location",
+      "arguments": {
+        "abroad": true
+      }
+    },
+    {
+      "env_type": "user",
+      "func_name": "turn_roaming_on",
       "arguments": {}
     },
     {
       "env_type": "assistant",
-      "func_name": "suspend_line_for_overdue_bill",
+      "func_name": "disable_roaming",
       "arguments": {
         "customer_id": "C1001",
-        "line_id": "L1002",
-        "new_bill_id": "B1234321",
-        "contract_ended": false
+        "line_id": "L1002"
       }
     },
     {
@@ -94,5 +77,5 @@
     }
   ],
   "domain": "telecom",
-  "task_id": "[service_issue]airplane_mode_on|break_apn_settings|overdue_bill_suspension[PERSONA:None]"
+  "task_id": "[mms_issue]bad_network_preference|data_mode_off|user_abroad_roaming_disabled_on[PERSONA:None]"
 }

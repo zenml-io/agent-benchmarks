@@ -6,242 +6,242 @@
     {
       "case": 0,
       "task": "telecom-test-00",
-      "tau2_task_id": "[mms_issue]airplane_mode_on|bad_network_preference|bad_wifi_calling|break_apn_mms_setting|break_app_both_permissions|unseat_sim_card|user_abroad_roaming_enabled_off[PERSONA:Hard]",
-      "harbor_hub_task": "tau3-telecom-mms-issue-airplane-mode-on-bad-network-preference-bad-wifi-calling-break-apn-mms-setting-break-app-both-permissions-unseat-sim-card-user-abroad-roaming-enabled-off-persona-hard"
-    },
-    {
-      "case": 1,
-      "task": "telecom-test-01",
-      "tau2_task_id": "[mms_issue]airplane_mode_on|bad_network_preference|bad_wifi_calling|break_apn_mms_setting|break_app_sms_permission|data_mode_off|data_usage_exceeded|unseat_sim_card|user_abroad_roaming_disabled_on[PERSONA:None]",
-      "harbor_hub_task": "tau3-telecom-mms-issue-airplane-mode-on-bad-network-preference-bad-wifi-calling-break-apn-mms-setting-break-app-sms-permission-data-mode-off-data-usage-exceeded-unseat-sim-card-user-abroad-roaming-disabled-on-persona-none"
-    },
-    {
-      "case": 2,
-      "task": "telecom-test-02",
-      "tau2_task_id": "[mms_issue]airplane_mode_on|bad_network_preference|bad_wifi_calling|break_apn_mms_setting|break_app_storage_permission|data_mode_off|data_usage_exceeded|unseat_sim_card|user_abroad_roaming_disabled_on[PERSONA:Easy]",
-      "harbor_hub_task": "tau3-telecom-mms-issue-airplane-mode-on-bad-network-preference-bad-wifi-calling-break-apn-mms-setting-break-app-storage-permission-data-mode-off-data-usage-exceeded-unseat-sim-card-user-abroad-roaming-disabled-on-persona-easy"
-    },
-    {
-      "case": 3,
-      "task": "telecom-test-03",
-      "tau2_task_id": "[mms_issue]airplane_mode_on|bad_network_preference|break_app_both_permissions|data_usage_exceeded|unseat_sim_card|user_abroad_roaming_disabled_on[PERSONA:Hard]",
-      "harbor_hub_task": "tau3-telecom-mms-issue-airplane-mode-on-bad-network-preference-break-app-both-permissions-data-usage-exceeded-unseat-sim-card-user-abroad-roaming-disabled-on-persona-hard"
-    },
-    {
-      "case": 4,
-      "task": "telecom-test-04",
-      "tau2_task_id": "[mms_issue]airplane_mode_on|bad_network_preference|break_app_storage_permission|data_mode_off|user_abroad_roaming_enabled_off[PERSONA:Easy]",
-      "harbor_hub_task": "tau3-telecom-mms-issue-airplane-mode-on-bad-network-preference-break-app-storage-permission-data-mode-off-user-abroad-roaming-enabled-off-persona-easy"
-    },
-    {
-      "case": 5,
-      "task": "telecom-test-05",
-      "tau2_task_id": "[mms_issue]airplane_mode_on|bad_wifi_calling|break_app_both_permissions|data_mode_off|data_usage_exceeded|unseat_sim_card|user_abroad_roaming_enabled_off[PERSONA:None]",
-      "harbor_hub_task": "tau3-telecom-mms-issue-airplane-mode-on-bad-wifi-calling-break-app-both-permissions-data-mode-off-data-usage-exceeded-unseat-sim-card-user-abroad-roaming-enabled-off-persona-none"
-    },
-    {
-      "case": 6,
-      "task": "telecom-test-06",
-      "tau2_task_id": "[mms_issue]airplane_mode_on|bad_wifi_calling|user_abroad_roaming_enabled_off[PERSONA:Easy]",
-      "harbor_hub_task": "tau3-telecom-mms-issue-airplane-mode-on-bad-wifi-calling-user-abroad-roaming-enabled-off-persona-easy"
-    },
-    {
-      "case": 7,
-      "task": "telecom-test-07",
-      "tau2_task_id": "[mms_issue]airplane_mode_on|break_app_both_permissions[PERSONA:Hard]",
-      "harbor_hub_task": "tau3-telecom-mms-issue-airplane-mode-on-break-app-both-permissions-persona-hard"
-    },
-    {
-      "case": 8,
-      "task": "telecom-test-08",
-      "tau2_task_id": "[mms_issue]airplane_mode_on|break_app_both_permissions|data_usage_exceeded|user_abroad_roaming_disabled_off[PERSONA:None]",
-      "harbor_hub_task": "tau3-telecom-mms-issue-airplane-mode-on-break-app-both-permissions-data-usage-exceeded-user-abroad-roaming-disabled-off-persona-none"
-    },
-    {
-      "case": 9,
-      "task": "telecom-test-09",
-      "tau2_task_id": "[mms_issue]bad_network_preference|bad_wifi_calling|break_app_sms_permission|data_mode_off|data_usage_exceeded|unseat_sim_card|user_abroad_roaming_enabled_off[PERSONA:Easy]",
-      "harbor_hub_task": "tau3-telecom-mms-issue-bad-network-preference-bad-wifi-calling-break-app-sms-permission-data-mode-off-data-usage-exceeded-unseat-sim-card-user-abroad-roaming-enabled-off-persona-easy"
-    },
-    {
-      "case": 10,
-      "task": "telecom-test-10",
-      "tau2_task_id": "[mms_issue]bad_network_preference|break_app_both_permissions[PERSONA:Easy]",
-      "harbor_hub_task": "tau3-telecom-mms-issue-bad-network-preference-break-app-both-permissions-persona-easy"
-    },
-    {
-      "case": 11,
-      "task": "telecom-test-11",
-      "tau2_task_id": "[mms_issue]bad_network_preference|break_app_sms_permission|user_abroad_roaming_disabled_on[PERSONA:Hard]",
-      "harbor_hub_task": "tau3-telecom-mms-issue-bad-network-preference-break-app-sms-permission-user-abroad-roaming-disabled-on-persona-hard"
-    },
-    {
-      "case": 12,
-      "task": "telecom-test-12",
-      "tau2_task_id": "[mms_issue]bad_network_preference|data_mode_off|user_abroad_roaming_disabled_on[PERSONA:None]",
-      "harbor_hub_task": "tau3-telecom-mms-issue-bad-network-preference-data-mode-off-user-abroad-roaming-disabled-on-persona-none"
-    },
-    {
-      "case": 13,
-      "task": "telecom-test-13",
-      "tau2_task_id": "[mms_issue]bad_wifi_calling|break_apn_mms_setting|break_app_both_permissions|data_mode_off|data_usage_exceeded|user_abroad_roaming_disabled_off[PERSONA:None]",
-      "harbor_hub_task": "tau3-telecom-mms-issue-bad-wifi-calling-break-apn-mms-setting-break-app-both-permissions-data-mode-off-data-usage-exceeded-user-abroad-roaming-disabled-off-persona-none"
-    },
-    {
-      "case": 14,
-      "task": "telecom-test-14",
-      "tau2_task_id": "[mms_issue]break_apn_mms_setting|user_abroad_roaming_enabled_off[PERSONA:Hard]",
-      "harbor_hub_task": "tau3-telecom-mms-issue-break-apn-mms-setting-user-abroad-roaming-enabled-off-persona-hard"
-    },
-    {
-      "case": 15,
-      "task": "telecom-test-15",
-      "tau2_task_id": "[mms_issue]break_app_sms_permission|data_mode_off[PERSONA:None]",
-      "harbor_hub_task": "tau3-telecom-mms-issue-break-app-sms-permission-data-mode-off-persona-none"
-    },
-    {
-      "case": 16,
-      "task": "telecom-test-16",
-      "tau2_task_id": "[mobile_data_issue]airplane_mode_on|bad_network_preference|bad_vpn|data_mode_off|data_saver_mode_on|data_usage_exceeded|user_abroad_roaming_enabled_off[PERSONA:Easy]",
-      "harbor_hub_task": "tau3-telecom-mobile-data-issue-airplane-mode-on-bad-network-preference-bad-vpn-data-mode-off-data-saver-mode-on-data-usage-exceeded-user-abroad-roaming-enabled-off-persona-easy"
-    },
-    {
-      "case": 17,
-      "task": "telecom-test-17",
-      "tau2_task_id": "[mobile_data_issue]airplane_mode_on|bad_network_preference|data_mode_off|data_saver_mode_on[PERSONA:Hard]",
-      "harbor_hub_task": "tau3-telecom-mobile-data-issue-airplane-mode-on-bad-network-preference-data-mode-off-data-saver-mode-on-persona-hard"
-    },
-    {
-      "case": 18,
-      "task": "telecom-test-18",
-      "tau2_task_id": "[mobile_data_issue]airplane_mode_on|data_mode_off|data_saver_mode_on|data_usage_exceeded|user_abroad_roaming_enabled_off[PERSONA:Hard]",
-      "harbor_hub_task": "tau3-telecom-mobile-data-issue-airplane-mode-on-data-mode-off-data-saver-mode-on-data-usage-exceeded-user-abroad-roaming-enabled-off-persona-hard"
-    },
-    {
-      "case": 19,
-      "task": "telecom-test-19",
-      "tau2_task_id": "[mobile_data_issue]airplane_mode_on|data_saver_mode_on|user_abroad_roaming_disabled_on[PERSONA:None]",
-      "harbor_hub_task": "tau3-telecom-mobile-data-issue-airplane-mode-on-data-saver-mode-on-user-abroad-roaming-disabled-on-persona-none"
-    },
-    {
-      "case": 20,
-      "task": "telecom-test-20",
-      "tau2_task_id": "[mobile_data_issue]bad_network_preference|bad_vpn|data_mode_off|data_saver_mode_on|data_usage_exceeded|user_abroad_roaming_enabled_off[PERSONA:Easy]",
-      "harbor_hub_task": "tau3-telecom-mobile-data-issue-bad-network-preference-bad-vpn-data-mode-off-data-saver-mode-on-data-usage-exceeded-user-abroad-roaming-enabled-off-persona-easy"
-    },
-    {
-      "case": 21,
-      "task": "telecom-test-21",
-      "tau2_task_id": "[mobile_data_issue]bad_network_preference|bad_vpn|data_saver_mode_on|data_usage_exceeded|user_abroad_roaming_disabled_off[PERSONA:Easy]",
-      "harbor_hub_task": "tau3-telecom-mobile-data-issue-bad-network-preference-bad-vpn-data-saver-mode-on-data-usage-exceeded-user-abroad-roaming-disabled-off-persona-easy"
-    },
-    {
-      "case": 22,
-      "task": "telecom-test-22",
-      "tau2_task_id": "[mobile_data_issue]bad_network_preference|bad_vpn|user_abroad_roaming_disabled_off[PERSONA:Hard]",
-      "harbor_hub_task": "tau3-telecom-mobile-data-issue-bad-network-preference-bad-vpn-user-abroad-roaming-disabled-off-persona-hard"
-    },
-    {
-      "case": 23,
-      "task": "telecom-test-23",
-      "tau2_task_id": "[mobile_data_issue]bad_vpn|data_mode_off|data_usage_exceeded|user_abroad_roaming_disabled_off[PERSONA:None]",
-      "harbor_hub_task": "tau3-telecom-mobile-data-issue-bad-vpn-data-mode-off-data-usage-exceeded-user-abroad-roaming-disabled-off-persona-none"
-    },
-    {
-      "case": 24,
-      "task": "telecom-test-24",
       "tau2_task_id": "[mobile_data_issue]data_saver_mode_on|user_abroad_roaming_enabled_off[PERSONA:Easy]",
       "harbor_hub_task": "tau3-telecom-mobile-data-issue-data-saver-mode-on-user-abroad-roaming-enabled-off-persona-easy"
     },
     {
-      "case": 25,
-      "task": "telecom-test-25",
-      "tau2_task_id": "[service_issue]airplane_mode_on|break_apn_settings|contract_end_suspension|lock_sim_card_pin[PERSONA:None]",
-      "harbor_hub_task": "tau3-telecom-service-issue-airplane-mode-on-break-apn-settings-contract-end-suspension-lock-sim-card-pin-persona-none"
+      "case": 1,
+      "task": "telecom-test-01",
+      "tau2_task_id": "[mobile_data_issue]airplane_mode_on|data_saver_mode_on|user_abroad_roaming_disabled_on[PERSONA:None]",
+      "harbor_hub_task": "tau3-telecom-mobile-data-issue-airplane-mode-on-data-saver-mode-on-user-abroad-roaming-disabled-on-persona-none"
     },
     {
-      "case": 26,
-      "task": "telecom-test-26",
-      "tau2_task_id": "[service_issue]airplane_mode_on|break_apn_settings|contract_end_suspension|lock_sim_card_pin|unseat_sim_card[PERSONA:Easy]",
-      "harbor_hub_task": "tau3-telecom-service-issue-airplane-mode-on-break-apn-settings-contract-end-suspension-lock-sim-card-pin-unseat-sim-card-persona-easy"
+      "case": 2,
+      "task": "telecom-test-02",
+      "tau2_task_id": "[mobile_data_issue]bad_network_preference|bad_vpn|user_abroad_roaming_disabled_off[PERSONA:Hard]",
+      "harbor_hub_task": "tau3-telecom-mobile-data-issue-bad-network-preference-bad-vpn-user-abroad-roaming-disabled-off-persona-hard"
     },
     {
-      "case": 27,
-      "task": "telecom-test-27",
-      "tau2_task_id": "[service_issue]airplane_mode_on|break_apn_settings|lock_sim_card_pin|overdue_bill_suspension[PERSONA:Hard]",
-      "harbor_hub_task": "tau3-telecom-service-issue-airplane-mode-on-break-apn-settings-lock-sim-card-pin-overdue-bill-suspension-persona-hard"
+      "case": 3,
+      "task": "telecom-test-03",
+      "tau2_task_id": "[mobile_data_issue]airplane_mode_on|bad_network_preference|data_mode_off|data_saver_mode_on[PERSONA:Hard]",
+      "harbor_hub_task": "tau3-telecom-mobile-data-issue-airplane-mode-on-bad-network-preference-data-mode-off-data-saver-mode-on-persona-hard"
     },
     {
-      "case": 28,
-      "task": "telecom-test-28",
-      "tau2_task_id": "[service_issue]airplane_mode_on|break_apn_settings|lock_sim_card_pin|unseat_sim_card[PERSONA:None]",
-      "harbor_hub_task": "tau3-telecom-service-issue-airplane-mode-on-break-apn-settings-lock-sim-card-pin-unseat-sim-card-persona-none"
+      "case": 4,
+      "task": "telecom-test-04",
+      "tau2_task_id": "[mobile_data_issue]bad_vpn|data_mode_off|data_usage_exceeded|user_abroad_roaming_disabled_off[PERSONA:None]",
+      "harbor_hub_task": "tau3-telecom-mobile-data-issue-bad-vpn-data-mode-off-data-usage-exceeded-user-abroad-roaming-disabled-off-persona-none"
     },
     {
-      "case": 29,
-      "task": "telecom-test-29",
-      "tau2_task_id": "[service_issue]airplane_mode_on|break_apn_settings|overdue_bill_suspension[PERSONA:None]",
-      "harbor_hub_task": "tau3-telecom-service-issue-airplane-mode-on-break-apn-settings-overdue-bill-suspension-persona-none"
+      "case": 5,
+      "task": "telecom-test-05",
+      "tau2_task_id": "[mobile_data_issue]airplane_mode_on|data_mode_off|data_saver_mode_on|data_usage_exceeded|user_abroad_roaming_enabled_off[PERSONA:Hard]",
+      "harbor_hub_task": "tau3-telecom-mobile-data-issue-airplane-mode-on-data-mode-off-data-saver-mode-on-data-usage-exceeded-user-abroad-roaming-enabled-off-persona-hard"
     },
     {
-      "case": 30,
-      "task": "telecom-test-30",
-      "tau2_task_id": "[service_issue]airplane_mode_on|contract_end_suspension|lock_sim_card_pin|unseat_sim_card[PERSONA:Hard]",
-      "harbor_hub_task": "tau3-telecom-service-issue-airplane-mode-on-contract-end-suspension-lock-sim-card-pin-unseat-sim-card-persona-hard"
+      "case": 6,
+      "task": "telecom-test-06",
+      "tau2_task_id": "[mobile_data_issue]bad_network_preference|bad_vpn|data_saver_mode_on|data_usage_exceeded|user_abroad_roaming_disabled_off[PERSONA:Easy]",
+      "harbor_hub_task": "tau3-telecom-mobile-data-issue-bad-network-preference-bad-vpn-data-saver-mode-on-data-usage-exceeded-user-abroad-roaming-disabled-off-persona-easy"
     },
     {
-      "case": 31,
-      "task": "telecom-test-31",
+      "case": 7,
+      "task": "telecom-test-07",
+      "tau2_task_id": "[mobile_data_issue]bad_network_preference|bad_vpn|data_mode_off|data_saver_mode_on|data_usage_exceeded|user_abroad_roaming_enabled_off[PERSONA:Easy]",
+      "harbor_hub_task": "tau3-telecom-mobile-data-issue-bad-network-preference-bad-vpn-data-mode-off-data-saver-mode-on-data-usage-exceeded-user-abroad-roaming-enabled-off-persona-easy"
+    },
+    {
+      "case": 8,
+      "task": "telecom-test-08",
+      "tau2_task_id": "[mobile_data_issue]airplane_mode_on|bad_network_preference|bad_vpn|data_mode_off|data_saver_mode_on|data_usage_exceeded|user_abroad_roaming_enabled_off[PERSONA:Easy]",
+      "harbor_hub_task": "tau3-telecom-mobile-data-issue-airplane-mode-on-bad-network-preference-bad-vpn-data-mode-off-data-saver-mode-on-data-usage-exceeded-user-abroad-roaming-enabled-off-persona-easy"
+    },
+    {
+      "case": 9,
+      "task": "telecom-test-09",
       "tau2_task_id": "[service_issue]airplane_mode_on|lock_sim_card_pin[PERSONA:Easy]",
       "harbor_hub_task": "tau3-telecom-service-issue-airplane-mode-on-lock-sim-card-pin-persona-easy"
     },
     {
-      "case": 32,
-      "task": "telecom-test-32",
-      "tau2_task_id": "[service_issue]airplane_mode_on|lock_sim_card_pin|overdue_bill_suspension[PERSONA:Easy]",
-      "harbor_hub_task": "tau3-telecom-service-issue-airplane-mode-on-lock-sim-card-pin-overdue-bill-suspension-persona-easy"
-    },
-    {
-      "case": 33,
-      "task": "telecom-test-33",
+      "case": 10,
+      "task": "telecom-test-10",
       "tau2_task_id": "[service_issue]airplane_mode_on|overdue_bill_suspension[PERSONA:None]",
       "harbor_hub_task": "tau3-telecom-service-issue-airplane-mode-on-overdue-bill-suspension-persona-none"
     },
     {
-      "case": 34,
-      "task": "telecom-test-34",
-      "tau2_task_id": "[service_issue]break_apn_settings|contract_end_suspension|lock_sim_card_pin[PERSONA:Hard]",
-      "harbor_hub_task": "tau3-telecom-service-issue-break-apn-settings-contract-end-suspension-lock-sim-card-pin-persona-hard"
+      "case": 11,
+      "task": "telecom-test-11",
+      "tau2_task_id": "[service_issue]overdue_bill_suspension|unseat_sim_card[PERSONA:Easy]",
+      "harbor_hub_task": "tau3-telecom-service-issue-overdue-bill-suspension-unseat-sim-card-persona-easy"
     },
     {
-      "case": 35,
-      "task": "telecom-test-35",
-      "tau2_task_id": "[service_issue]break_apn_settings|contract_end_suspension|lock_sim_card_pin|unseat_sim_card[PERSONA:Hard]",
-      "harbor_hub_task": "tau3-telecom-service-issue-break-apn-settings-contract-end-suspension-lock-sim-card-pin-unseat-sim-card-persona-hard"
-    },
-    {
-      "case": 36,
-      "task": "telecom-test-36",
-      "tau2_task_id": "[service_issue]break_apn_settings|lock_sim_card_pin[PERSONA:None]",
-      "harbor_hub_task": "tau3-telecom-service-issue-break-apn-settings-lock-sim-card-pin-persona-none"
-    },
-    {
-      "case": 37,
-      "task": "telecom-test-37",
-      "tau2_task_id": "[service_issue]break_apn_settings|lock_sim_card_pin|overdue_bill_suspension[PERSONA:Easy]",
-      "harbor_hub_task": "tau3-telecom-service-issue-break-apn-settings-lock-sim-card-pin-overdue-bill-suspension-persona-easy"
-    },
-    {
-      "case": 38,
-      "task": "telecom-test-38",
+      "case": 12,
+      "task": "telecom-test-12",
       "tau2_task_id": "[service_issue]contract_end_suspension|unseat_sim_card[PERSONA:Hard]",
       "harbor_hub_task": "tau3-telecom-service-issue-contract-end-suspension-unseat-sim-card-persona-hard"
     },
     {
+      "case": 13,
+      "task": "telecom-test-13",
+      "tau2_task_id": "[service_issue]break_apn_settings|lock_sim_card_pin[PERSONA:None]",
+      "harbor_hub_task": "tau3-telecom-service-issue-break-apn-settings-lock-sim-card-pin-persona-none"
+    },
+    {
+      "case": 14,
+      "task": "telecom-test-14",
+      "tau2_task_id": "[service_issue]airplane_mode_on|lock_sim_card_pin|overdue_bill_suspension[PERSONA:Easy]",
+      "harbor_hub_task": "tau3-telecom-service-issue-airplane-mode-on-lock-sim-card-pin-overdue-bill-suspension-persona-easy"
+    },
+    {
+      "case": 15,
+      "task": "telecom-test-15",
+      "tau2_task_id": "[service_issue]airplane_mode_on|break_apn_settings|overdue_bill_suspension[PERSONA:None]",
+      "harbor_hub_task": "tau3-telecom-service-issue-airplane-mode-on-break-apn-settings-overdue-bill-suspension-persona-none"
+    },
+    {
+      "case": 16,
+      "task": "telecom-test-16",
+      "tau2_task_id": "[service_issue]break_apn_settings|lock_sim_card_pin|overdue_bill_suspension[PERSONA:Easy]",
+      "harbor_hub_task": "tau3-telecom-service-issue-break-apn-settings-lock-sim-card-pin-overdue-bill-suspension-persona-easy"
+    },
+    {
+      "case": 17,
+      "task": "telecom-test-17",
+      "tau2_task_id": "[service_issue]break_apn_settings|contract_end_suspension|lock_sim_card_pin[PERSONA:Hard]",
+      "harbor_hub_task": "tau3-telecom-service-issue-break-apn-settings-contract-end-suspension-lock-sim-card-pin-persona-hard"
+    },
+    {
+      "case": 18,
+      "task": "telecom-test-18",
+      "tau2_task_id": "[service_issue]airplane_mode_on|break_apn_settings|lock_sim_card_pin|unseat_sim_card[PERSONA:None]",
+      "harbor_hub_task": "tau3-telecom-service-issue-airplane-mode-on-break-apn-settings-lock-sim-card-pin-unseat-sim-card-persona-none"
+    },
+    {
+      "case": 19,
+      "task": "telecom-test-19",
+      "tau2_task_id": "[service_issue]airplane_mode_on|contract_end_suspension|lock_sim_card_pin|unseat_sim_card[PERSONA:Hard]",
+      "harbor_hub_task": "tau3-telecom-service-issue-airplane-mode-on-contract-end-suspension-lock-sim-card-pin-unseat-sim-card-persona-hard"
+    },
+    {
+      "case": 20,
+      "task": "telecom-test-20",
+      "tau2_task_id": "[service_issue]airplane_mode_on|break_apn_settings|lock_sim_card_pin|overdue_bill_suspension[PERSONA:Hard]",
+      "harbor_hub_task": "tau3-telecom-service-issue-airplane-mode-on-break-apn-settings-lock-sim-card-pin-overdue-bill-suspension-persona-hard"
+    },
+    {
+      "case": 21,
+      "task": "telecom-test-21",
+      "tau2_task_id": "[service_issue]airplane_mode_on|break_apn_settings|contract_end_suspension|lock_sim_card_pin[PERSONA:None]",
+      "harbor_hub_task": "tau3-telecom-service-issue-airplane-mode-on-break-apn-settings-contract-end-suspension-lock-sim-card-pin-persona-none"
+    },
+    {
+      "case": 22,
+      "task": "telecom-test-22",
+      "tau2_task_id": "[service_issue]break_apn_settings|contract_end_suspension|lock_sim_card_pin|unseat_sim_card[PERSONA:Hard]",
+      "harbor_hub_task": "tau3-telecom-service-issue-break-apn-settings-contract-end-suspension-lock-sim-card-pin-unseat-sim-card-persona-hard"
+    },
+    {
+      "case": 23,
+      "task": "telecom-test-23",
+      "tau2_task_id": "[service_issue]airplane_mode_on|break_apn_settings|contract_end_suspension|lock_sim_card_pin|unseat_sim_card[PERSONA:Easy]",
+      "harbor_hub_task": "tau3-telecom-service-issue-airplane-mode-on-break-apn-settings-contract-end-suspension-lock-sim-card-pin-unseat-sim-card-persona-easy"
+    },
+    {
+      "case": 24,
+      "task": "telecom-test-24",
+      "tau2_task_id": "[mms_issue]airplane_mode_on|break_app_both_permissions[PERSONA:Hard]",
+      "harbor_hub_task": "tau3-telecom-mms-issue-airplane-mode-on-break-app-both-permissions-persona-hard"
+    },
+    {
+      "case": 25,
+      "task": "telecom-test-25",
+      "tau2_task_id": "[mms_issue]break_app_sms_permission|data_mode_off[PERSONA:None]",
+      "harbor_hub_task": "tau3-telecom-mms-issue-break-app-sms-permission-data-mode-off-persona-none"
+    },
+    {
+      "case": 26,
+      "task": "telecom-test-26",
+      "tau2_task_id": "[mms_issue]break_apn_mms_setting|user_abroad_roaming_enabled_off[PERSONA:Hard]",
+      "harbor_hub_task": "tau3-telecom-mms-issue-break-apn-mms-setting-user-abroad-roaming-enabled-off-persona-hard"
+    },
+    {
+      "case": 27,
+      "task": "telecom-test-27",
+      "tau2_task_id": "[mms_issue]bad_network_preference|break_app_both_permissions[PERSONA:Easy]",
+      "harbor_hub_task": "tau3-telecom-mms-issue-bad-network-preference-break-app-both-permissions-persona-easy"
+    },
+    {
+      "case": 28,
+      "task": "telecom-test-28",
+      "tau2_task_id": "[mms_issue]airplane_mode_on|bad_wifi_calling|user_abroad_roaming_enabled_off[PERSONA:Easy]",
+      "harbor_hub_task": "tau3-telecom-mms-issue-airplane-mode-on-bad-wifi-calling-user-abroad-roaming-enabled-off-persona-easy"
+    },
+    {
+      "case": 29,
+      "task": "telecom-test-29",
+      "tau2_task_id": "[mms_issue]bad_network_preference|data_mode_off|user_abroad_roaming_disabled_on[PERSONA:None]",
+      "harbor_hub_task": "tau3-telecom-mms-issue-bad-network-preference-data-mode-off-user-abroad-roaming-disabled-on-persona-none"
+    },
+    {
+      "case": 30,
+      "task": "telecom-test-30",
+      "tau2_task_id": "[mms_issue]bad_network_preference|break_app_sms_permission|user_abroad_roaming_disabled_on[PERSONA:Hard]",
+      "harbor_hub_task": "tau3-telecom-mms-issue-bad-network-preference-break-app-sms-permission-user-abroad-roaming-disabled-on-persona-hard"
+    },
+    {
+      "case": 31,
+      "task": "telecom-test-31",
+      "tau2_task_id": "[mms_issue]airplane_mode_on|break_app_both_permissions|data_usage_exceeded|user_abroad_roaming_disabled_off[PERSONA:None]",
+      "harbor_hub_task": "tau3-telecom-mms-issue-airplane-mode-on-break-app-both-permissions-data-usage-exceeded-user-abroad-roaming-disabled-off-persona-none"
+    },
+    {
+      "case": 32,
+      "task": "telecom-test-32",
+      "tau2_task_id": "[mms_issue]airplane_mode_on|bad_network_preference|break_app_storage_permission|data_mode_off|user_abroad_roaming_enabled_off[PERSONA:Easy]",
+      "harbor_hub_task": "tau3-telecom-mms-issue-airplane-mode-on-bad-network-preference-break-app-storage-permission-data-mode-off-user-abroad-roaming-enabled-off-persona-easy"
+    },
+    {
+      "case": 33,
+      "task": "telecom-test-33",
+      "tau2_task_id": "[mms_issue]airplane_mode_on|bad_network_preference|break_app_both_permissions|data_usage_exceeded|unseat_sim_card|user_abroad_roaming_disabled_on[PERSONA:Hard]",
+      "harbor_hub_task": "tau3-telecom-mms-issue-airplane-mode-on-bad-network-preference-break-app-both-permissions-data-usage-exceeded-unseat-sim-card-user-abroad-roaming-disabled-on-persona-hard"
+    },
+    {
+      "case": 34,
+      "task": "telecom-test-34",
+      "tau2_task_id": "[mms_issue]bad_wifi_calling|break_apn_mms_setting|break_app_both_permissions|data_mode_off|data_usage_exceeded|user_abroad_roaming_disabled_off[PERSONA:None]",
+      "harbor_hub_task": "tau3-telecom-mms-issue-bad-wifi-calling-break-apn-mms-setting-break-app-both-permissions-data-mode-off-data-usage-exceeded-user-abroad-roaming-disabled-off-persona-none"
+    },
+    {
+      "case": 35,
+      "task": "telecom-test-35",
+      "tau2_task_id": "[mms_issue]airplane_mode_on|bad_wifi_calling|break_app_both_permissions|data_mode_off|data_usage_exceeded|unseat_sim_card|user_abroad_roaming_enabled_off[PERSONA:None]",
+      "harbor_hub_task": "tau3-telecom-mms-issue-airplane-mode-on-bad-wifi-calling-break-app-both-permissions-data-mode-off-data-usage-exceeded-unseat-sim-card-user-abroad-roaming-enabled-off-persona-none"
+    },
+    {
+      "case": 36,
+      "task": "telecom-test-36",
+      "tau2_task_id": "[mms_issue]airplane_mode_on|bad_network_preference|bad_wifi_calling|break_apn_mms_setting|break_app_both_permissions|unseat_sim_card|user_abroad_roaming_enabled_off[PERSONA:Hard]",
+      "harbor_hub_task": "tau3-telecom-mms-issue-airplane-mode-on-bad-network-preference-bad-wifi-calling-break-apn-mms-setting-break-app-both-permissions-unseat-sim-card-user-abroad-roaming-enabled-off-persona-hard"
+    },
+    {
+      "case": 37,
+      "task": "telecom-test-37",
+      "tau2_task_id": "[mms_issue]bad_network_preference|bad_wifi_calling|break_app_sms_permission|data_mode_off|data_usage_exceeded|unseat_sim_card|user_abroad_roaming_enabled_off[PERSONA:Easy]",
+      "harbor_hub_task": "tau3-telecom-mms-issue-bad-network-preference-bad-wifi-calling-break-app-sms-permission-data-mode-off-data-usage-exceeded-unseat-sim-card-user-abroad-roaming-enabled-off-persona-easy"
+    },
+    {
+      "case": 38,
+      "task": "telecom-test-38",
+      "tau2_task_id": "[mms_issue]airplane_mode_on|bad_network_preference|bad_wifi_calling|break_apn_mms_setting|break_app_sms_permission|data_mode_off|data_usage_exceeded|unseat_sim_card|user_abroad_roaming_disabled_on[PERSONA:None]",
+      "harbor_hub_task": "tau3-telecom-mms-issue-airplane-mode-on-bad-network-preference-bad-wifi-calling-break-apn-mms-setting-break-app-sms-permission-data-mode-off-data-usage-exceeded-unseat-sim-card-user-abroad-roaming-disabled-on-persona-none"
+    },
+    {
       "case": 39,
       "task": "telecom-test-39",
-      "tau2_task_id": "[service_issue]overdue_bill_suspension|unseat_sim_card[PERSONA:Easy]",
-      "harbor_hub_task": "tau3-telecom-service-issue-overdue-bill-suspension-unseat-sim-card-persona-easy"
+      "tau2_task_id": "[mms_issue]airplane_mode_on|bad_network_preference|bad_wifi_calling|break_apn_mms_setting|break_app_storage_permission|data_mode_off|data_usage_exceeded|unseat_sim_card|user_abroad_roaming_disabled_on[PERSONA:Easy]",
+      "harbor_hub_task": "tau3-telecom-mms-issue-airplane-mode-on-bad-network-preference-bad-wifi-calling-break-apn-mms-setting-break-app-storage-permission-data-mode-off-data-usage-exceeded-unseat-sim-card-user-abroad-roaming-disabled-on-persona-easy"
     }
   ]
 }

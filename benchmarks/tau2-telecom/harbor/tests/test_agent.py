@@ -28,8 +28,8 @@ TAU2_ROOT = os.environ.get("TAU2_BENCH_ROOT")
 pytestmark = pytest.mark.skipif(not TAU2_ROOT, reason="set TAU2_BENCH_ROOT to a tau2-bench checkout")
 sys.path.insert(0, str(HARBOR / "agent" / "tau2_kitaru_harbor"))
 
-# Both kinds of task: device fixes plus account fixes (05), and a transfer-only task (found below).
-TASKS = ["telecom-test-05", "telecom-test-00"]
+# Two kinds of task: device fixes plus an account fix (35), and device fixes only (36).
+TASKS = ["telecom-test-35", "telecom-test-36"]
 
 
 def load_server(task: Path, tmp: Path) -> Any:

@@ -1,36 +1,38 @@
 {
   "actions": [
     {
-      "action_id": "toggle_airplane_mode_0",
-      "name": "toggle_airplane_mode",
+      "action_id": "disconnect_vpn_0",
+      "name": "disconnect_vpn",
       "arguments": {},
       "requestor": "user",
       "compare_args": null
     },
     {
-      "action_id": "set_network_mode_preference_1",
-      "name": "set_network_mode_preference",
-      "arguments": {
-        "mode": "4g_5g_preferred"
-      },
-      "requestor": "user",
-      "compare_args": null
-    },
-    {
-      "action_id": "grant_app_permission_2",
-      "name": "grant_app_permission",
-      "arguments": {
-        "app_name": "messaging",
-        "permission": "storage"
-      },
-      "requestor": "user",
-      "compare_args": null
-    },
-    {
-      "action_id": "toggle_data_3",
+      "action_id": "toggle_data_1",
       "name": "toggle_data",
       "arguments": {},
       "requestor": "user",
+      "compare_args": null
+    },
+    {
+      "action_id": "refuel_data_2",
+      "name": "refuel_data",
+      "arguments": {
+        "customer_id": "C1001",
+        "line_id": "L1002",
+        "gb_amount": 2.0
+      },
+      "requestor": "assistant",
+      "compare_args": null
+    },
+    {
+      "action_id": "enable_roaming_3",
+      "name": "enable_roaming",
+      "arguments": {
+        "customer_id": "C1001",
+        "line_id": "L1002"
+      },
+      "requestor": "assistant",
       "compare_args": null
     },
     {
@@ -54,28 +56,22 @@
     },
     {
       "env_type": "user",
-      "func_name": "turn_airplane_mode_on",
+      "func_name": "break_vpn",
       "arguments": {}
-    },
-    {
-      "env_type": "user",
-      "func_name": "set_network_mode_preference",
-      "arguments": {
-        "mode": "2g_only"
-      }
-    },
-    {
-      "env_type": "user",
-      "func_name": "remove_app_permission",
-      "arguments": {
-        "app_name": "messaging",
-        "permission": "storage"
-      }
     },
     {
       "env_type": "user",
       "func_name": "turn_data_off",
       "arguments": {}
+    },
+    {
+      "env_type": "assistant",
+      "func_name": "set_data_usage",
+      "arguments": {
+        "customer_id": "C1001",
+        "line_id": "L1002",
+        "data_used_gb": 15.1
+      }
     },
     {
       "env_type": "user",
@@ -91,13 +87,18 @@
     },
     {
       "env_type": "assistant",
-      "func_name": "enable_roaming",
+      "func_name": "disable_roaming",
       "arguments": {
         "customer_id": "C1001",
         "line_id": "L1002"
       }
+    },
+    {
+      "env_type": "user",
+      "func_name": "simulate_network_search",
+      "arguments": {}
     }
   ],
   "domain": "telecom",
-  "task_id": "[mms_issue]airplane_mode_on|bad_network_preference|break_app_storage_permission|data_mode_off|user_abroad_roaming_enabled_off[PERSONA:Easy]"
+  "task_id": "[mobile_data_issue]bad_vpn|data_mode_off|data_usage_exceeded|user_abroad_roaming_disabled_off[PERSONA:None]"
 }

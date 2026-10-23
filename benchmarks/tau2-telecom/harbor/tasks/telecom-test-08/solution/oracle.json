@@ -8,27 +8,37 @@
       "compare_args": null
     },
     {
-      "action_id": "grant_app_permission_1",
-      "name": "grant_app_permission",
+      "action_id": "set_network_mode_preference_1",
+      "name": "set_network_mode_preference",
       "arguments": {
-        "app_name": "messaging",
-        "permission": "sms"
+        "mode": "4g_5g_preferred"
       },
       "requestor": "user",
       "compare_args": null
     },
     {
-      "action_id": "grant_app_permission_2",
-      "name": "grant_app_permission",
-      "arguments": {
-        "app_name": "messaging",
-        "permission": "storage"
-      },
+      "action_id": "disconnect_vpn_2",
+      "name": "disconnect_vpn",
+      "arguments": {},
       "requestor": "user",
       "compare_args": null
     },
     {
-      "action_id": "refuel_data_3",
+      "action_id": "toggle_data_3",
+      "name": "toggle_data",
+      "arguments": {},
+      "requestor": "user",
+      "compare_args": null
+    },
+    {
+      "action_id": "toggle_data_saver_mode_4",
+      "name": "toggle_data_saver_mode",
+      "arguments": {},
+      "requestor": "user",
+      "compare_args": null
+    },
+    {
+      "action_id": "refuel_data_5",
       "name": "refuel_data",
       "arguments": {
         "customer_id": "C1001",
@@ -39,17 +49,7 @@
       "compare_args": null
     },
     {
-      "action_id": "enable_roaming_4",
-      "name": "enable_roaming",
-      "arguments": {
-        "customer_id": "C1001",
-        "line_id": "L1002"
-      },
-      "requestor": "assistant",
-      "compare_args": null
-    },
-    {
-      "action_id": "toggle_roaming_5",
+      "action_id": "toggle_roaming_6",
       "name": "toggle_roaming",
       "arguments": {},
       "requestor": "user",
@@ -74,19 +74,25 @@
     },
     {
       "env_type": "user",
-      "func_name": "remove_app_permission",
+      "func_name": "set_network_mode_preference",
       "arguments": {
-        "app_name": "messaging",
-        "permission": "sms"
+        "mode": "2g_only"
       }
     },
     {
       "env_type": "user",
-      "func_name": "remove_app_permission",
-      "arguments": {
-        "app_name": "messaging",
-        "permission": "storage"
-      }
+      "func_name": "break_vpn",
+      "arguments": {}
+    },
+    {
+      "env_type": "user",
+      "func_name": "turn_data_off",
+      "arguments": {}
+    },
+    {
+      "env_type": "user",
+      "func_name": "turn_data_saver_mode_on",
+      "arguments": {}
     },
     {
       "env_type": "assistant",
@@ -111,18 +117,13 @@
     },
     {
       "env_type": "assistant",
-      "func_name": "disable_roaming",
+      "func_name": "enable_roaming",
       "arguments": {
         "customer_id": "C1001",
         "line_id": "L1002"
       }
-    },
-    {
-      "env_type": "user",
-      "func_name": "simulate_network_search",
-      "arguments": {}
     }
   ],
   "domain": "telecom",
-  "task_id": "[mms_issue]airplane_mode_on|break_app_both_permissions|data_usage_exceeded|user_abroad_roaming_disabled_off[PERSONA:None]"
+  "task_id": "[mobile_data_issue]airplane_mode_on|bad_network_preference|bad_vpn|data_mode_off|data_saver_mode_on|data_usage_exceeded|user_abroad_roaming_enabled_off[PERSONA:Easy]"
 }

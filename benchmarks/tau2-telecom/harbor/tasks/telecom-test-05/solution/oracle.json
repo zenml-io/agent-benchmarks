@@ -8,41 +8,21 @@
       "compare_args": null
     },
     {
-      "action_id": "toggle_wifi_calling_1",
-      "name": "toggle_wifi_calling",
-      "arguments": {},
-      "requestor": "user",
-      "compare_args": null
-    },
-    {
-      "action_id": "grant_app_permission_2",
-      "name": "grant_app_permission",
-      "arguments": {
-        "app_name": "messaging",
-        "permission": "sms"
-      },
-      "requestor": "user",
-      "compare_args": null
-    },
-    {
-      "action_id": "grant_app_permission_3",
-      "name": "grant_app_permission",
-      "arguments": {
-        "app_name": "messaging",
-        "permission": "storage"
-      },
-      "requestor": "user",
-      "compare_args": null
-    },
-    {
-      "action_id": "toggle_data_4",
+      "action_id": "toggle_data_1",
       "name": "toggle_data",
       "arguments": {},
       "requestor": "user",
       "compare_args": null
     },
     {
-      "action_id": "refuel_data_5",
+      "action_id": "toggle_data_saver_mode_2",
+      "name": "toggle_data_saver_mode",
+      "arguments": {},
+      "requestor": "user",
+      "compare_args": null
+    },
+    {
+      "action_id": "refuel_data_3",
       "name": "refuel_data",
       "arguments": {
         "customer_id": "C1001",
@@ -53,14 +33,7 @@
       "compare_args": null
     },
     {
-      "action_id": "reseat_sim_card_6",
-      "name": "reseat_sim_card",
-      "arguments": {},
-      "requestor": "user",
-      "compare_args": null
-    },
-    {
-      "action_id": "toggle_roaming_7",
+      "action_id": "toggle_roaming_4",
       "name": "toggle_roaming",
       "arguments": {},
       "requestor": "user",
@@ -85,31 +58,12 @@
     },
     {
       "env_type": "user",
-      "func_name": "set_wifi_calling",
-      "arguments": {
-        "enabled": true,
-        "mms_over_wifi": true
-      }
-    },
-    {
-      "env_type": "user",
-      "func_name": "remove_app_permission",
-      "arguments": {
-        "app_name": "messaging",
-        "permission": "sms"
-      }
-    },
-    {
-      "env_type": "user",
-      "func_name": "remove_app_permission",
-      "arguments": {
-        "app_name": "messaging",
-        "permission": "storage"
-      }
-    },
-    {
-      "env_type": "user",
       "func_name": "turn_data_off",
+      "arguments": {}
+    },
+    {
+      "env_type": "user",
+      "func_name": "turn_data_saver_mode_on",
       "arguments": {}
     },
     {
@@ -120,11 +74,6 @@
         "line_id": "L1002",
         "data_used_gb": 15.1
       }
-    },
-    {
-      "env_type": "user",
-      "func_name": "unseat_sim_card",
-      "arguments": {}
     },
     {
       "env_type": "user",
@@ -148,5 +97,5 @@
     }
   ],
   "domain": "telecom",
-  "task_id": "[mms_issue]airplane_mode_on|bad_wifi_calling|break_app_both_permissions|data_mode_off|data_usage_exceeded|unseat_sim_card|user_abroad_roaming_enabled_off[PERSONA:None]"
+  "task_id": "[mobile_data_issue]airplane_mode_on|data_mode_off|data_saver_mode_on|data_usage_exceeded|user_abroad_roaming_enabled_off[PERSONA:Hard]"
 }

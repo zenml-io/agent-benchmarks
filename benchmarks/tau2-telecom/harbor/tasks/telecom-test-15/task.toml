@@ -14,7 +14,7 @@ keywords = ["tau2-bench", "telecom", "tool-use", "simulated-user"]
 [metadata]
 difficulty = "medium"
 category = "customer_service"
-source_task_id = "[mms_issue]break_app_sms_permission|data_mode_off[PERSONA:None]"
+source_task_id = "[service_issue]airplane_mode_on|break_apn_settings|overdue_bill_suspension[PERSONA:None]"
 source_split = "test"
 case = 15
 tau2_bench_ref = "05736c27219b769d0be507574dd3135010916644"

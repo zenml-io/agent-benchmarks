@@ -1,55 +1,13 @@
 {
   "actions": [
     {
-      "action_id": "set_network_mode_preference_0",
-      "name": "set_network_mode_preference",
+      "action_id": "transfer_to_human_agents",
+      "name": "transfer_to_human_agents",
       "arguments": {
-        "mode": "4g_5g_preferred"
-      },
-      "requestor": "user",
-      "compare_args": null
-    },
-    {
-      "action_id": "disconnect_vpn_1",
-      "name": "disconnect_vpn",
-      "arguments": {},
-      "requestor": "user",
-      "compare_args": null
-    },
-    {
-      "action_id": "toggle_data_saver_mode_2",
-      "name": "toggle_data_saver_mode",
-      "arguments": {},
-      "requestor": "user",
-      "compare_args": null
-    },
-    {
-      "action_id": "refuel_data_3",
-      "name": "refuel_data",
-      "arguments": {
-        "customer_id": "C1001",
-        "line_id": "L1002",
-        "gb_amount": 2.0
+        "summary": "I cannot fix the issue."
       },
       "requestor": "assistant",
-      "compare_args": null
-    },
-    {
-      "action_id": "enable_roaming_4",
-      "name": "enable_roaming",
-      "arguments": {
-        "customer_id": "C1001",
-        "line_id": "L1002"
-      },
-      "requestor": "assistant",
-      "compare_args": null
-    },
-    {
-      "action_id": "toggle_roaming_5",
-      "name": "toggle_roaming",
-      "arguments": {},
-      "requestor": "user",
-      "compare_args": null
+      "compare_args": []
     }
   ],
   "communicate_info": [],
@@ -65,56 +23,37 @@
     },
     {
       "env_type": "user",
-      "func_name": "set_network_mode_preference",
-      "arguments": {
-        "mode": "2g_only"
-      }
-    },
-    {
-      "env_type": "user",
-      "func_name": "break_vpn",
+      "func_name": "turn_airplane_mode_on",
       "arguments": {}
     },
     {
       "env_type": "user",
-      "func_name": "turn_data_saver_mode_on",
+      "func_name": "break_apn_settings",
       "arguments": {}
     },
     {
       "env_type": "assistant",
-      "func_name": "set_data_usage",
+      "func_name": "suspend_line_for_overdue_bill",
       "arguments": {
         "customer_id": "C1001",
         "line_id": "L1002",
-        "data_used_gb": 15.1
-      }
-    },
-    {
-      "env_type": "user",
-      "func_name": "set_user_location",
-      "arguments": {
-        "abroad": true
-      }
-    },
-    {
-      "env_type": "user",
-      "func_name": "turn_roaming_off",
-      "arguments": {}
-    },
-    {
-      "env_type": "assistant",
-      "func_name": "disable_roaming",
-      "arguments": {
-        "customer_id": "C1001",
-        "line_id": "L1002"
+        "new_bill_id": "B1234321",
+        "contract_ended": true
       }
     },
     {
       "env_type": "user",
       "func_name": "simulate_network_search",
       "arguments": {}
+    },
+    {
+      "env_type": "user",
+      "func_name": "lock_sim_card",
+      "arguments": {
+        "mode": "pin"
+      }
     }
   ],
   "domain": "telecom",
-  "task_id": "[mobile_data_issue]bad_network_preference|bad_vpn|data_saver_mode_on|data_usage_exceeded|user_abroad_roaming_disabled_off[PERSONA:Easy]"
+  "task_id": "[service_issue]airplane_mode_on|break_apn_settings|contract_end_suspension|lock_sim_card_pin[PERSONA:None]"
 }

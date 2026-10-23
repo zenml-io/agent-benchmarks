@@ -1,13 +1,62 @@
 {
   "actions": [
     {
-      "action_id": "transfer_to_human_agents",
-      "name": "transfer_to_human_agents",
+      "action_id": "set_network_mode_preference_0",
+      "name": "set_network_mode_preference",
       "arguments": {
-        "summary": "I cannot fix the issue."
+        "mode": "4g_5g_preferred"
+      },
+      "requestor": "user",
+      "compare_args": null
+    },
+    {
+      "action_id": "toggle_wifi_calling_1",
+      "name": "toggle_wifi_calling",
+      "arguments": {},
+      "requestor": "user",
+      "compare_args": null
+    },
+    {
+      "action_id": "grant_app_permission_2",
+      "name": "grant_app_permission",
+      "arguments": {
+        "app_name": "messaging",
+        "permission": "sms"
+      },
+      "requestor": "user",
+      "compare_args": null
+    },
+    {
+      "action_id": "toggle_data_3",
+      "name": "toggle_data",
+      "arguments": {},
+      "requestor": "user",
+      "compare_args": null
+    },
+    {
+      "action_id": "refuel_data_4",
+      "name": "refuel_data",
+      "arguments": {
+        "customer_id": "C1001",
+        "line_id": "L1002",
+        "gb_amount": 2.0
       },
       "requestor": "assistant",
-      "compare_args": []
+      "compare_args": null
+    },
+    {
+      "action_id": "reseat_sim_card_5",
+      "name": "reseat_sim_card",
+      "arguments": {},
+      "requestor": "user",
+      "compare_args": null
+    },
+    {
+      "action_id": "toggle_roaming_6",
+      "name": "toggle_roaming",
+      "arguments": {},
+      "requestor": "user",
+      "compare_args": null
     }
   ],
   "communicate_info": [],
@@ -23,32 +72,67 @@
     },
     {
       "env_type": "user",
-      "func_name": "break_apn_settings",
-      "arguments": {}
+      "func_name": "set_network_mode_preference",
+      "arguments": {
+        "mode": "2g_only"
+      }
     },
     {
       "env_type": "user",
-      "func_name": "lock_sim_card",
+      "func_name": "set_wifi_calling",
       "arguments": {
-        "mode": "pin"
+        "enabled": true,
+        "mms_over_wifi": true
       }
+    },
+    {
+      "env_type": "user",
+      "func_name": "remove_app_permission",
+      "arguments": {
+        "app_name": "messaging",
+        "permission": "sms"
+      }
+    },
+    {
+      "env_type": "user",
+      "func_name": "turn_data_off",
+      "arguments": {}
     },
     {
       "env_type": "assistant",
-      "func_name": "suspend_line_for_overdue_bill",
+      "func_name": "set_data_usage",
       "arguments": {
         "customer_id": "C1001",
         "line_id": "L1002",
-        "new_bill_id": "B1234321",
-        "contract_ended": false
+        "data_used_gb": 15.1
       }
     },
     {
       "env_type": "user",
-      "func_name": "simulate_network_search",
+      "func_name": "unseat_sim_card",
       "arguments": {}
+    },
+    {
+      "env_type": "user",
+      "func_name": "set_user_location",
+      "arguments": {
+        "abroad": true
+      }
+    },
+    {
+      "env_type": "user",
+      "func_name": "turn_roaming_off",
+      "arguments": {}
+    },
+    {
+      "env_type": "assistant",
+      "func_name": "enable_roaming",
+      "arguments": {
+        "customer_id": "C1001",
+        "line_id": "L1002"
+      }
     }
   ],
   "domain": "telecom",
-  "task_id": "[service_issue]break_apn_settings|lock_sim_card_pin|overdue_bill_suspension[PERSONA:Easy]"
+  "task_id": "[mms_issue]bad_network_preference|bad_wifi_calling|break_app_sms_permission|data_mode_off|data_usage_exceeded|unseat_sim_card|user_abroad_roaming_enabled_off[PERSONA:Easy]"
 }

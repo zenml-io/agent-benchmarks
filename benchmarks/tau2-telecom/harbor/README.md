@@ -8,7 +8,7 @@ Status: **partly native**. The tasks, the grader and the agent run on Harbor, an
 
 | path | what |
 |---|---|
-| `tasks/telecom-test-NN/` | the 40 tasks, NN = index in tau2's Telecom `test` split at tau2-bench 05736c2 (the original run's case number); `tasks/index.json` maps each to its tau2 task id and its id in Harbor's `sierra-research/tau3-bench` |
+| `tasks/telecom-test-NN/` | the 40 tasks, NN = the original run's case number: the task's index in tau2's Telecom `test` split as tau2's loader returns it (`tasks.json` order) at tau2-bench 05736c2, checked against the original run's recorded cases by `generate_tasks.py` and `tests/test_tasks.py`; `tasks/index.json` maps each to its tau2 task id and its id in Harbor's `sierra-research/tau3-bench` |
 | `generate_tasks.py` | rebuilds `tasks/` from Harbor's tau3-bench adapter (pinned commit) and tau2-bench (pinned commit), then patches each task (below) |
 | `task_files/` | files the generator puts in every task: `test.sh` and `build_state.py` (reference solution, alternative and shortcuts) |
 | `agent/tau2_kitaru_harbor/` | the custom Harbor agent: `agent.py` (runs on the host, options model, install), `runner.py` (the agent, run inside the trial), `kitaru_sink.py` (local Kitaru recording) |
@@ -25,7 +25,7 @@ Each trial starts two containers from the task's compose file. `main` (Python 3.
 
 The agent (`runner.py`) is `harness/replay/tau2_kitaru_agent/episode.py` with the conversation moved into the sidecar: the same instructions (tau2's Telecom policy, taken from the task instruction and checked equal to `agent_domain_policy` for all 40 tasks), the same tools with tau2's own schemas, the same output validator (plain text before the customer leaves is a message to the customer), the same limits (100 model requests, 30 retries, tau2's 100 steps and 10 tool errors, 1200 s), the same prompt `Case N: continue the conversation with the user above.` and the same session names. The model sees only the tools the original had; the sidecar's control tools (`configure_run`, `record_termination`, `submit_assistant_tool_calls`, ...) are not offered to it.
 
-Models: `openai:<id>` (chat completions) and `openai-responses:<id>` (Responses API) go to OpenAI; `provider-a:<id>` goes to an OpenAI-compatible provider through `harness/replay/model_router.py`, started inside the trial (it strips the `metadata` field that provider adds, as in the original run).
+Models: `openai:<id>` and `openai-responses:<id>` go to OpenAI, both through the Responses API (`/responses`; pydantic-ai-slim 2.51.0 builds `OpenAIResponsesModel` for either prefix); `provider-a:<id>` goes to an OpenAI-compatible provider, also as `/responses` requests, through `harness/replay/model_router.py`, started inside the trial (it strips the `metadata` field that provider adds, as in the original run).
 
 ### Kitaru recording inside the trial
 
@@ -77,7 +77,7 @@ TAU2_BENCH_ROOT=/path/to/tau2-bench uv run --locked --extra replay --with pytest
 
 (`/path/to/tau2-bench` is the sparse checkout from RERUN.md section 3 plus `git -C /path/to/tau2-bench sparse-checkout add /src/ /pyproject.toml /README.md /data/tau2/multilingual/en/`.) This exact `uv run` line was not run while writing (it needs uv to fetch tau2-bench from git, more disk than the machine had); the tests ran in an equivalent venv with the same versions. They check, for every task: the reference scores 1, the alternative scores 1, every shortcut scores 0, a run that never started scores 0; that the 40 tasks share one grader and sidecar; `test.sh`'s reward rules; that the runner's policy equals tau2's; and, through the real sidecar code with a scripted customer and a scripted model playing the reference, that the runner's tool bridge reaches reward 1 on two tasks and that the Kitaru recording holds one completed session with the expected LLM and tool nodes (and survives `upload_recordings.py`).
 
-**The four checks through Harbor on Modal** (`scripts/verify_tasks.py`, 2026-10-22, harbor 0.24.0, Modal sandboxes):
+**The four checks through Harbor on Modal** (`scripts/verify_tasks.py`, 2026-10-22, harbor 0.24.0, Modal sandboxes; run on dataset version 0.1.0, whose tasks have the same contents as 0.2.0 under different numbers):
 
 | check | per task | result |
 |---|---|---|
@@ -120,6 +120,7 @@ Other arms: add `-c harbor/configs/arms/<arm>.yaml` for `prompt-rule`, `gpt-5.6-
 
 Expect differences, for these reasons:
 
+- **Per-task comparisons.** Since dataset version 0.2.0, task `telecom-test-NN` is the original run's case NN. Version 0.1.0 numbered tasks in `split_tasks.json` order, so no number matched; compare any 0.1.0 results with the original by `tau2_task_id` (in `tasks/index.json` and each trial's `task.toml`), not by number.
 - **Noise.** GPT-5.2 rerun unchanged moved 6 tasks each way on 40 tasks (interval -17.5 to +17.5 points). A Harbor run landing within that of a published number agrees with it; one attempt per task cannot tell arms apart that are closer than that.
 - **One agent version for every arm.** The original baseline ran agent version 1 (OpenAI direct), the rerun and model arms version 3 (through the router), the prompt arm version 2. Here every arm runs the same code; only `provider-a:` models go through the router. That removes a confound the original had, so the baseline-vs-rerun comparison is cleaner, not identical.
 - **The conversation loop is the sidecar's, not tau2's Orchestrator.** Same environment, user simulator and grader code from the same tau2 commit, but Harbor's sidecar reimplements the turn loop (step and error counting, the stop rules). Small differences in when an episode hits the 100-step limit are possible.

@@ -8,37 +8,60 @@
       "compare_args": null
     },
     {
-      "action_id": "send_payment_request_1",
-      "name": "send_payment_request",
+      "action_id": "set_network_mode_preference_1",
+      "name": "set_network_mode_preference",
+      "arguments": {
+        "mode": "4g_5g_preferred"
+      },
+      "requestor": "user",
+      "compare_args": null
+    },
+    {
+      "action_id": "grant_app_permission_2",
+      "name": "grant_app_permission",
+      "arguments": {
+        "app_name": "messaging",
+        "permission": "sms"
+      },
+      "requestor": "user",
+      "compare_args": null
+    },
+    {
+      "action_id": "grant_app_permission_3",
+      "name": "grant_app_permission",
+      "arguments": {
+        "app_name": "messaging",
+        "permission": "storage"
+      },
+      "requestor": "user",
+      "compare_args": null
+    },
+    {
+      "action_id": "refuel_data_4",
+      "name": "refuel_data",
       "arguments": {
         "customer_id": "C1001",
-        "bill_id": "B1234321"
+        "line_id": "L1002",
+        "gb_amount": 2.0
       },
       "requestor": "assistant",
       "compare_args": null
     },
     {
-      "action_id": "make_payment_2",
-      "name": "make_payment",
+      "action_id": "reseat_sim_card_5",
+      "name": "reseat_sim_card",
       "arguments": {},
       "requestor": "user",
       "compare_args": null
     },
     {
-      "action_id": "resume_line_3",
-      "name": "resume_line",
+      "action_id": "enable_roaming_6",
+      "name": "enable_roaming",
       "arguments": {
         "customer_id": "C1001",
         "line_id": "L1002"
       },
       "requestor": "assistant",
-      "compare_args": null
-    },
-    {
-      "action_id": "reboot_device_4",
-      "name": "reboot_device",
-      "arguments": {},
-      "requestor": "user",
       "compare_args": null
     }
   ],
@@ -59,13 +82,60 @@
       "arguments": {}
     },
     {
+      "env_type": "user",
+      "func_name": "set_network_mode_preference",
+      "arguments": {
+        "mode": "2g_only"
+      }
+    },
+    {
+      "env_type": "user",
+      "func_name": "remove_app_permission",
+      "arguments": {
+        "app_name": "messaging",
+        "permission": "sms"
+      }
+    },
+    {
+      "env_type": "user",
+      "func_name": "remove_app_permission",
+      "arguments": {
+        "app_name": "messaging",
+        "permission": "storage"
+      }
+    },
+    {
       "env_type": "assistant",
-      "func_name": "suspend_line_for_overdue_bill",
+      "func_name": "set_data_usage",
       "arguments": {
         "customer_id": "C1001",
         "line_id": "L1002",
-        "new_bill_id": "B1234321",
-        "contract_ended": false
+        "data_used_gb": 15.1
+      }
+    },
+    {
+      "env_type": "user",
+      "func_name": "unseat_sim_card",
+      "arguments": {}
+    },
+    {
+      "env_type": "user",
+      "func_name": "set_user_location",
+      "arguments": {
+        "abroad": true
+      }
+    },
+    {
+      "env_type": "user",
+      "func_name": "turn_roaming_on",
+      "arguments": {}
+    },
+    {
+      "env_type": "assistant",
+      "func_name": "disable_roaming",
+      "arguments": {
+        "customer_id": "C1001",
+        "line_id": "L1002"
       }
     },
     {
@@ -75,5 +145,5 @@
     }
   ],
   "domain": "telecom",
-  "task_id": "[service_issue]airplane_mode_on|overdue_bill_suspension[PERSONA:None]"
+  "task_id": "[mms_issue]airplane_mode_on|bad_network_preference|break_app_both_permissions|data_usage_exceeded|unseat_sim_card|user_abroad_roaming_disabled_on[PERSONA:Hard]"
 }

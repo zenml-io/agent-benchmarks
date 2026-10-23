@@ -8,7 +8,7 @@ Standard library only. Steps:
 1. Fetch tau2-bench at TAU2_REF (sparse: source, data, pyproject, README) and Harbor's
    `adapters/tau3-bench` at HARBOR_REF, unless local checkouts are given.
 2. Run the adapter (`Tau3BenchAdapter`, telecom domain) for the 40 ids of tau2's Telecom `test`
-   split, in split order. The adapter writes one Harbor task per id from its own template:
+   split, in tau2's loader order (`tasks.json` order), which is the order the original run numbered. The adapter writes one Harbor task per id from its own template:
    an MCP sidecar (`tau3-runtime`) that serves tau2's agent tools and the simulated user, and a
    verifier that grades with tau2's `evaluate_simulation`.
 3. Patch every task so it matches the original run and is safe to grade (each patch asserts the
@@ -25,7 +25,8 @@ Standard library only. Steps:
    - test.sh deletes stale rewards first and always writes a reward;
    - the oracle is rebuilt as `solution/build_state.py` (the adapter's oracle logic plus check modes),
      with one alternative valid solution and up to three shortcuts per task for the four checks.
-4. Rename each task to `telecom-test-NN` (NN = index in the test split, the original run's case number).
+4. Rename each task to `telecom-test-NN` (NN = the original run's case number: the index in tau2's
+   loader order, checked against the original run's recorded cases).
 
 Outputs `harbor/tasks/` (replaced) and `harbor/tasks/index.json` (case -> tau2 task id -> Harbor hub id).
 """
@@ -50,6 +51,7 @@ MAX_ERRORS = 10
 AGENT_TIMEOUT_SEC = 1200.0
 TAU2_SPARSE = ["/*", "!/web/", "!/tests/", "!/docs/", "!/figs/", "!/examples/", "!/data/voice/", "!/data/tau2/results/"]
 TEMPLATES = HERE / "task_files"
+ORIGINAL_CASES = HERE.parent / "results" / "runs" / "replay" / "baseline.jsonl"
 HIDDEN_FROM_AGENT = ["data/tau2/domains/telecom/tasks*.json", "data/tau2/domains/telecom/split_tasks.json"]
 
 
@@ -215,6 +217,32 @@ def shortcut_modes(actions: list[dict]) -> list[str]:
     return modes
 
 
+def test_split_ids(tau2_root: Path) -> list[str]:
+    """The test split's task ids in tau2's loader order: `tasks.json` order, filtered by `split_tasks.json`.
+
+    `split_tasks.json` lists the same ids in a different order; numbering by it would give no task its
+    original case number.
+    """
+    telecom = tau2_root / "data/tau2/domains/telecom"
+    test = {str(i) for i in json.loads((telecom / "split_tasks.json").read_text())["test"]}
+    tasks = json.loads((telecom / "tasks.json").read_text())
+    ids = [str(t["id"]) for t in (tasks["tasks"] if isinstance(tasks, dict) else tasks) if str(t["id"]) in test]
+    if len(ids) != 40 or set(ids) != test:
+        raise SystemExit(f"expected the 40 test ids in tasks.json, found {len(ids)}")
+    return ids
+
+
+def check_against_original_run(test_ids: list[str]) -> None:
+    """Fail unless case N is the task the original run recorded as case N (results/runs/replay/baseline.jsonl)."""
+    recorded = {}
+    for line in ORIGINAL_CASES.read_text().splitlines():
+        row = json.loads(line)
+        recorded[row["case"]] = row["tau2"]["task_id"]
+    wrong = [case for case, task_id in recorded.items() if test_ids[case] != task_id]
+    if len(recorded) != len(test_ids) or wrong:
+        raise SystemExit(f"case numbers differ from the original run for cases {wrong or 'missing'}")
+
+
 def main() -> int:
     ap = argparse.ArgumentParser()
     ap.add_argument("--tau2-root", type=Path)
@@ -227,10 +255,8 @@ def main() -> int:
         tau2_root = a.tau2_root or fetch(TAU2_REPO, TAU2_REF, tmp / "tau2-bench", TAU2_SPARSE)
         adapter_root = a.adapter_root or fetch(HARBOR_REPO, HARBOR_REF, tmp / "harbor",
                                                ["/adapters/tau3-bench/"]) / "adapters" / "tau3-bench"
-        split = json.loads((tau2_root / "data/tau2/domains/telecom/split_tasks.json").read_text())
-        test_ids = [str(i) for i in split["test"]]
-        if len(test_ids) != 40:
-            raise SystemExit(f"expected 40 test ids, found {len(test_ids)}")
+        test_ids = test_split_ids(tau2_root)
+        check_against_original_run(test_ids)
 
         sys.path.insert(0, str(adapter_root / "src"))
         from tau3_bench.adapter import Tau3BenchAdapter

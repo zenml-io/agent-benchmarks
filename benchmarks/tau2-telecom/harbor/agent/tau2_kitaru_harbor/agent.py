@@ -133,7 +133,7 @@ class Tau2KitaruAgent(BaseInstalledAgent):
                                  env=env)
 
     def _case(self) -> str:
-        """The task's index in tau2's test split, from the trial name (tasks are named telecom-test-NN)."""
+        """The original run's case number, from the trial name (tasks are named telecom-test-NN)."""
         match = re.search(r"telecom-test-(\d+)", self.session_id or "")
         return str(int(match.group(1))) if match else ""
 
