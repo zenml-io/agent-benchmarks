@@ -10,8 +10,9 @@ settings that decision-agents used.
 Reads $CLAIMS_WORK_DIR/candidates.jsonl (scripts/build_stream.py) and appends one row per candidate
 to $CLAIMS_WORK_DIR/case_files.jsonl: {id, case_file, leak, error}. A rerun skips every ID already in
 that file, so an interrupted run resumes where it stopped; --retry-failed redoes the rows with an
-error. Deploying needs MODAL_ENVIRONMENT and a logged-in Modal CLI. The GPU bills from `up` until
-`down`; `all` always stops the server, even on failure or Ctrl-C.
+error. Deploying needs MODAL_ENVIRONMENT and a logged-in Modal CLI. The server scales to zero: the GPU
+bills from the first request (the readiness check in `up` sends it) until 20 minutes after the last
+one, or until `down`; `all` always stops the server, even on failure or Ctrl-C.
 """
 
 import argparse
@@ -135,7 +136,7 @@ def endpoint_from_deploy(output: str) -> str:
 
 def up() -> str:
     t0 = time.time()
-    print(f"deploying {APP_NAME} at {time.strftime('%H:%M:%S')} (the GPU bills from now until `down`)", flush=True)
+    print(f"deploying {APP_NAME} at {time.strftime('%H:%M:%S')} (the GPU bills from the first request until 20 min after the last)", flush=True)
     dep = subprocess.run(["modal", "deploy", "--env", modal_env(), "--strategy", "recreate", str(HERE / "serve.py")],
                          env={**os.environ, "COLUMNS": "400"}, text=True, capture_output=True, cwd=BENCH,
                          check=False)

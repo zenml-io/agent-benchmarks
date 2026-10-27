@@ -10,17 +10,31 @@ accuracy on appeals the reviewer upheld and on appeals the reviewer overturned (
 present). The 95% interval resamples appeals with replacement (2000 draws, fixed seed).
 Wrongful denial: the agent upheld a denial the reviewer overturned. Wrongful approval: the agent
 overturned a denial the reviewer upheld. Uses only the standard library.
+
+A row's `run_error` is either the agent's own outcome (`error_kind` "agent": it hit its request limit, its output
+token limit, or failed validation after its retries), which counts as undecided like in the original harness, or a
+failure of everything around the agent (`error_kind` "infra": the network, the model server, a Kitaru job or worker),
+which says nothing about the agent. Rows tagged "infra" are never scored: rerun those appeals first.
 """
 
 import argparse
 import json
 import os
 import random
+import re
 from pathlib import Path
 from typing import Any
 
 BENCH = Path(__file__).resolve().parent.parent
 OUTCOMES = ("uphold", "overturn")
+# How PydanticAI words the ways the agent's own run ends without an answer: a usage limit (the request limit), the
+# output token limit, retries used up, a content filter, or a 400 from the model API about the conversation's length.
+# `run_error` holds the exception's repr (local runs) or, for a Kitaru session run, the failed session's error, which
+# keeps only the message; so the message decides, not the class name.
+AGENT_OUTCOME = re.compile(
+    r"(would exceed|Exceeded) the `?\w+_limit`? of|Model token limit \(\d+\) exceeded|Exceeded maximum (output )?retries"
+    r"|exceeded max retries count of|ContentFilterError\(|Content filter triggered"
+    r"|status_code: 400\b.*(context length|context_length|maximum context|maximum model length)", re.DOTALL)
 
 
 def jl(path: Path) -> list[dict[str, Any]]:
@@ -31,6 +45,18 @@ def decision_of(row: dict[str, Any]) -> str | None:
     final = row.get("final")
     d = final.get("decision") if isinstance(final, dict) else None
     return d if d in OUTCOMES else None
+
+
+def error_kind(run_error: str | None) -> str | None:
+    """The kind of a row's `run_error`: "agent", "infra", or None when there is none.
+
+    Anything not known to be the agent's own outcome is "infra", so an unexpected failure stops the round instead of
+    being scored as a wrong answer."""
+    if not run_error:
+        return None
+    if AGENT_OUTCOME.search(run_error):
+        return "agent"
+    return "infra"
 
 
 def balanced(pairs: list[tuple[str | None, str]]) -> float:
@@ -55,6 +81,10 @@ def metrics(pairs: list[tuple[str | None, str]], draws: int = 2000, seed: int = 
 def score(rows: list[dict[str, Any]], cases: dict[str, dict[str, Any]]) -> list[tuple[str, dict[str, Any]]]:
     """Per-batch then cumulative metrics, in batch order; rows for appeals not in `cases` are ignored."""
     last = {r["case_id"]: r for r in rows if r.get("case_id") in cases}
+    infra = sorted(cid for cid, r in last.items() if r.get("error_kind") == "infra")
+    if infra:
+        raise ValueError(f"{len(infra)} appeal(s) ended with an infrastructure error, so they cannot be scored; "
+                         f"rerun them first: {infra[:10]}")
     by_batch: dict[int, list[tuple[str | None, str]]] = {}
     for cid, r in last.items():
         by_batch.setdefault(cases[cid]["batch"], []).append((decision_of(r), cases[cid]["truth"]))

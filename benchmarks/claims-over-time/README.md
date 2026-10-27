@@ -6,7 +6,7 @@ When a claims-review agent meets new cases in batches, with only a few outcomes 
 
 ## Status
 
-**In progress: the harness is built and checked; no improvement round has run.** Built and checked on 2026-10-27: the case stream, the agent port, the reference classifier, both improver arms in Harbor, and three mini rounds end to end. Spend so far: about $9 (case-file extraction $3.19 on Modal's bill; classifier training about $1.60 of GPU time; calibration runs about $2.50; smoke tests and mini rounds about $1.50; OpenAI costs are the frameworks' own estimates, not checked against the bill).
+**In progress: the harness is built and checked; no improvement round has run.** Built and checked on 2026-10-27: the case stream, the agent port, the reference classifier, both improver arms in Harbor, and three mini rounds end to end. Spend so far: about $13 (case-file extraction $3.19 on Modal's bill; classifier training about $1.60 of GPU time; calibration runs about $2.50; smoke tests and mini rounds about $1.50; interruption tests about $4.05, of which $2.74 on Modal's bill; OpenAI costs are the frameworks' own estimates, not checked against the bill).
 
 ## Design
 
@@ -43,6 +43,7 @@ Checked:
 - The agent's tool definitions, system prompt and settings were compared request by request with the original and are identical; the remaining differences are listed in [`harness/claims_agent/README.md`](harness/claims_agent/README.md).
 - Batch assignment is deterministic (two runs give identical files).
 - Three mini rounds (10 appeals, 4 revealed) ran both improvers end to end. Inside each trial only the revealed appeals carried a ruling, and an attempt to score an unrevealed appeal in the Kitaru workspace was refused. In mini round 3 the ZenML Pro agent registered three versions and ran three Kitaru experiments on the revealed appeals, executed by the worker inside its own trial; no evaluation of an unrevealed appeal was stored.
+- `round.py` survives a killed process, a cut network and a simulated freeze without losing rows or scoring an infrastructure failure as a wrong answer (section "Interruptions and resuming" in [`RERUN.md`](RERUN.md)).
 
 Found while building it:
 - In mini rounds 1 and 2 the ZenML Pro agent could rerun the agent either with the same plain `claims-rerun` tool Codex has or through Kitaru experiments. Both times it read the Kitaru workspace and then used only `claims-rerun`, although its own Kitaru skill says to verify a change with an experiment. The rounds use the setup a team would have: for the ZenML Pro arm, Kitaru experiments are the only rerun path.
@@ -60,7 +61,7 @@ Not checked: any full round; the model switch end to end; the noise between two 
 - One state's medical-necessity and experimental-treatment reviews, written decisions, not insurers' claim files.
 - Case files are written by a model from decision texts that include the reviewer's reasoning; a regex drops files with outcome wording, but the choice of facts can still hint at the outcome. The same files feed the agent and the classifier.
 - 100 appeals per batch gives a 95% interval about 10 to 20 points wide (10 near 90%, 20 near 70%) on balanced accuracy for one batch; the cumulative numbers are tighter.
-- Improver runs are one attempt per round and arm.
+- Improver runs are one attempt per round and arm, unless a crash cuts one short; then the arm reruns, and the reruns it used before the crash still count against its budget.
 
 ## Provenance
 

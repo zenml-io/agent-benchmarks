@@ -8,8 +8,14 @@ Local mode (the default) runs `python -m <package>.episode <id> --local` in the 
 parent, one process per appeal, with no Kitaru server. Kitaru mode asks the server for one session
 run per appeal ("Review appeal <id>."); a worker runs the registered agent version's command, and the
 row is read back from the task result. Rows go to $CLAIMS_WORK_DIR/runs/<tag>.jsonl, or to --out. An appeal that
-already has a row there is skipped, so a rerun resumes; --retry-errors reruns appeals whose row has a
-run_error.
+already has a row there is skipped, so a rerun resumes.
+
+Each row gets `error_kind` (score.error_kind): "agent" for the agent's own outcome (request limit, output token
+limit, validation failure after retries), which is final and scored as undecided, or "infra" for a failure around
+the agent (network, timeout, HTTP 429 or 5xx, model server down, Kitaru job or worker failure, or any error not known
+to be the agent's). An appeal with an "infra" error is run again after 30 s, 2 min and 5 min (CLAIMS_INFRA_BACKOFF,
+comma-separated seconds); if it still fails, its row is written with the error and the script exits with status 3.
+A rerun drops rows with "infra" errors and runs those appeals again.
 """
 
 import argparse
@@ -18,12 +24,18 @@ import json
 import os
 import sys
 import uuid
+from collections.abc import Awaitable, Callable
 from pathlib import Path
 from typing import Any
+
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+from score import error_kind
 
 BENCH = Path(__file__).resolve().parent.parent
 WORK = Path(os.environ.get("CLAIMS_WORK_DIR") or BENCH / "work")
 TERMINAL = {"completed", "failed", "canceled"}
+INFRA_BACKOFF = tuple(int(x) for x in os.environ.get("CLAIMS_INFRA_BACKOFF", "30,120,300").split(","))
+EXIT_INFRA = 3
 
 
 def jl(path: Path) -> list[dict[str, Any]]:
@@ -34,7 +46,24 @@ def append(path: Path, row: dict[str, Any]) -> None:
     with path.open("a") as f:
         f.write(json.dumps(row) + "\n")
     final = row.get("final") or {}
-    print(row["case_id"], final.get("decision"), row.get("turns"), (row.get("run_error") or "")[:120], flush=True)
+    print(row["case_id"], final.get("decision"), row.get("turns"), row.get("error_kind") or "",
+          (row.get("run_error") or "")[:120], flush=True)
+
+
+async def with_infra_retries(case_id: str, run: Callable[[str], Awaitable[dict[str, Any]]]) -> dict[str, Any]:
+    """`run(case_id)`, again after each INFRA_BACKOFF delay while it ends with an infrastructure error; the last row,
+    with its `error_kind`."""
+    for delay in (*INFRA_BACKOFF, None):
+        try:
+            row = await run(case_id)
+        except Exception as exc:  # noqa: BLE001
+            row = {"case_id": case_id, "final": None, "run_error": f"{exc!r}"[:500]}
+        row["error_kind"] = error_kind(row.get("run_error"))
+        if row["error_kind"] != "infra" or delay is None:
+            return row
+        print(f"{case_id}: infrastructure error, retrying in {delay}s: {str(row.get('run_error'))[:200]}", flush=True)
+        await asyncio.sleep(delay)
+    raise AssertionError("unreachable")
 
 
 async def run_local(case_id: str, agent_dir: Path, sem: asyncio.Semaphore) -> dict[str, Any]:
@@ -85,7 +114,6 @@ async def main() -> None:
     ap.add_argument("--revealed-only", action="store_true", help="with --batch: only the revealed appeals")
     ap.add_argument("--kitaru-agent-version", type=uuid.UUID, help="run through Kitaru as this registered agent version")
     ap.add_argument("--concurrency", type=int, default=8)
-    ap.add_argument("--retry-errors", action="store_true")
     a = ap.parse_args()
 
     cases = jl(WORK / "cases.jsonl")
@@ -97,16 +125,16 @@ async def main() -> None:
     out = a.out or WORK / "runs" / f"{a.tag}.jsonl"
     out.parent.mkdir(parents=True, exist_ok=True)
     rows = jl(out)
-    if a.retry_errors:
-        rows = [r for r in rows if not r.get("run_error")]
-        out.write_text("".join(json.dumps(r) + "\n" for r in rows))
-    done = {r["case_id"] for r in rows}
+    kept = [r for r in rows if error_kind(r.get("run_error")) != "infra"]
+    if len(kept) < len(rows):
+        out.write_text("".join(json.dumps(r) + "\n" for r in kept))
+    done = {r["case_id"] for r in kept}
     todo = [i for i in ids if i not in done]
     print(f"{len(ids)} appeals, {len(ids) - len(todo)} already in {out}, running {len(todo)}", flush=True)
     meta = {"tag": a.tag, "kitaru_agent_version": str(a.kitaru_agent_version) if a.kitaru_agent_version else None}
 
-    async def one(case_id: str, fn: Any) -> None:
-        append(out, await fn(case_id) | meta)
+    async def one(case_id: str, fn: Callable[[str], Awaitable[dict[str, Any]]]) -> None:
+        append(out, await with_infra_retries(case_id, fn) | meta)
 
     if a.kitaru_agent_version:
         from kitaru.client import KitaruAPIClient
@@ -123,6 +151,11 @@ async def main() -> None:
         sem = asyncio.Semaphore(a.concurrency)
         agent_dir = a.agent_dir.resolve()
         await asyncio.gather(*(one(i, lambda c: run_local(c, agent_dir, sem)) for i in todo))
+    infra = sorted({r["case_id"] for r in jl(out) if r.get("error_kind") == "infra"} & set(ids))
+    if infra:
+        print(f"{len(infra)} appeal(s) still have infrastructure errors after {len(INFRA_BACKOFF)} retries; run again "
+              f"to retry them: {infra}", flush=True)
+        sys.exit(EXIT_INFRA)
 
 
 if __name__ == "__main__":

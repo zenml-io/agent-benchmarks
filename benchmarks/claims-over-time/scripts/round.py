@@ -25,6 +25,14 @@ Round k, in order (each step writes `<rounds>/round-<k>/<step>.json` when it fin
   audit    checks the Kitaru workspace: no evaluation of an unrevealed appeal, no task of a version the Pro agent
            registered claimed by a worker on this machine
 
+After a crash, run the same command again (RERUN.md, "Interruptions and resuming"). It first stops what an earlier
+call on the same state folder left running (its Harbor runs, run_batch.py runs and host workers) and removes its trial
+containers. Rows tagged `error_kind` "infra" (a failure around the agent, not the agent's own outcome) are rerun,
+never scored; Kitaru jobs a crash left behind are adopted or canceled from `<runs>/pro/batch-<k>.jobs.jsonl`; every
+improve attempt is recorded in `<rounds>/round-<k>/improve-attempts.json`: an arm whose trial finished is kept, the
+others restart, and the reruns of every attempt in which an arm ran count. On the open model, improve and approve ping
+the model server every two minutes so it does not scale to zero under them.
+
 Fairness rules this script enforces: every agent version runs with a view of the appeals that has no ruling at all
 (<rounds>/views/agent/); a trial and the Kitaru worker see rulings for revealed appeals only (<rounds>/views/round-<k>/);
 nothing about unrevealed appeals is scored anywhere but here.
@@ -38,6 +46,8 @@ PRO_AGENT_DIR only the left_alone and codex lines run. Docker must reach OrbStac
 
 import argparse
 import concurrent.futures
+import contextlib
+import fcntl
 import hashlib
 import importlib.util
 import json
@@ -49,12 +59,14 @@ import string
 import subprocess
 import sys
 import tarfile
+import threading
 import time
 import tomllib
+import urllib.request
 import uuid
-from collections.abc import Callable
+from collections.abc import Callable, Generator
 from dataclasses import asdict, dataclass
-from datetime import UTC, datetime
+from datetime import UTC, datetime, timedelta
 from pathlib import Path
 from typing import Any
 from urllib.parse import urlparse
@@ -68,6 +80,7 @@ TRIAL_TOOLS = [BENCH / "harbor" / "round_task" / "rerun.py", BENCH / "harbor" / 
                BENCH / "scripts" / "run_batch.py", BENCH / "scripts" / "score.py"]
 KITARU = Path(sys.executable).parent / "kitaru"
 
+LINES = ("left_alone", "codex", "pro")
 STEPS = ("switch", "run", "score", "reveal", "cohort", "improve", "approve", "audit")
 TOTAL_ROUNDS = 8
 CODEX_IMAGE = "claims-over-time-round-codex:latest"
@@ -77,7 +90,8 @@ TRIAL_CASES = "/claims/data/cases.jsonl"
 # The Pro agent's only rerun path is Kitaru experiments, so its trial gets neither `claims-rerun` nor run_batch.py.
 TRIAL_TOOLS_BY_ARM = {"codex": TRIAL_TOOLS, "pro": [BENCH / "harbor" / "round_task" / "verify.py"]}
 # Commands that run the claims agent outside an arm's counted rerun path (`claims-rerun`, Kitaru experiments).
-OUTSIDE_RUNS = re.compile(r"-m\s+claims_agent\.episode|(^|[\s;&|(])(import\s+claims_agent\b|from\s+claims_agent(\.\w+)?\s+import\b)"
+# Only what calls the model counts: importing the package to call a read tool such as `Env.call` directly does not.
+OUTSIDE_RUNS = re.compile(r"\bclaims_agent\.episode\b|\b(run_episode|build_agent)\s*\("
                           r"|python[\d.]*\s+\S*run_batch\.py|\bkitaru\b.*\breplay\s+create\b|session_runs\.create")
 # The command a Kitaru agent version is registered with names the episode module without running it.
 REGISTERED_COMMAND = re.compile(r"--command[\s=]+(\"[^\"]*\"|'[^']*'|\S+)")
@@ -111,7 +125,7 @@ class Settings:
 
     @property
     def lines(self) -> tuple[str, ...]:
-        return ("left_alone", "codex", "pro") if self.pro_arm else ("left_alone", "codex")
+        return LINES if self.pro_arm else LINES[:2]
 
     @property
     def arms(self) -> tuple[str, ...]:
@@ -179,6 +193,7 @@ def load_module(path: Path) -> Any:
 
 
 score_mod = load_module(BENCH / "scripts" / "score.py")
+batch_mod = load_module(BENCH / "scripts" / "run_batch.py")
 
 
 def tree_hash(agent_dir: Path) -> str:
@@ -326,20 +341,79 @@ def init_lines(s: Settings, p: Paths) -> None:
 # ---------------------------------------------------------------- running the agent
 
 def run_batch(rows_file: Path, ids: list[str], work_view: Path, agent_dir: Path, concurrency: int = 8) -> list[dict[str, Any]]:
-    """run_batch.py (local mode) on `ids`, then once more on the appeals whose row has a run_error; returns the rows."""
+    """run_batch.py (local mode) on `ids`; returns the rows. It retries infrastructure errors itself and exits with
+    EXIT_INFRA when some remain, which fails the step so that a rerun retries just those appeals."""
     rows_file.parent.mkdir(parents=True, exist_ok=True)
     cmd = [sys.executable, str(BENCH / "scripts" / "run_batch.py"), "--tag", rows_file.stem, "--out", str(rows_file),
            "--ids", ",".join(ids), "--concurrency", str(concurrency), "--agent-dir", str(agent_dir)]
     full_env = {**os.environ, "CLAIMS_WORK_DIR": str(work_view)}
     with (rows_file.parent / f"{rows_file.stem}.log").open("a") as out:
-        subprocess.run(cmd, env=full_env, check=True, stdout=out, stderr=subprocess.STDOUT)
-        if any(r.get("run_error") for r in jl(rows_file) if r["case_id"] in ids):
-            subprocess.run([*cmd, "--retry-errors"], env=full_env, check=True, stdout=out, stderr=subprocess.STDOUT)
+        code = subprocess.run(cmd, env=full_env, check=False, stdout=out, stderr=subprocess.STDOUT).returncode
+    if code == batch_mod.EXIT_INFRA:
+        infra = [r["case_id"] for r in jl(rows_file) if r["case_id"] in ids and r.get("error_kind") == "infra"]
+        raise RuntimeError(f"{rows_file}: {len(infra)} appeal(s) still have infrastructure errors after retries "
+                           f"(see {rows_file.stem}.log); rerun round.py to retry just those: {infra}")
+    if code != 0:
+        raise RuntimeError(f"run_batch.py exited with {code} on {rows_file} (see {rows_file.stem}.log)")
     rows = {r["case_id"]: r for r in jl(rows_file)}
     missing = [i for i in ids if i not in rows]
     if missing:
         raise RuntimeError(f"{rows_file}: no row for {missing}")
     return [rows[i] for i in ids]
+
+
+def wait_for_model(preset_name: str) -> None:
+    """Wait until the self-hosted model server answers, when the preset uses one. The server scales to zero when idle
+    and takes a few minutes to start; a request to it starts a container."""
+    preset = PRESETS[preset_name]
+    if not preset["base_url_env"]:
+        return
+    url = os.environ.get(preset["base_url_env"], "").rstrip("/").removesuffix("/v1")
+    if not url:
+        raise SystemExit(f"set {preset['base_url_env']}: the claims agent's model endpoint for preset {preset_name}")
+    t0, last = time.time(), None
+    while time.time() - t0 < 40 * 60:
+        try:
+            with urllib.request.urlopen(url + "/v1/models", timeout=60) as response:
+                if preset["model"].encode() in response.read():
+                    log(f"model server ready after {time.time() - t0:.0f}s")
+                    return
+        except Exception as exc:  # noqa: BLE001
+            last = exc
+        time.sleep(15)
+    raise RuntimeError(f"{url} did not serve {preset['model']} within 40 minutes (last error: {last!r})")
+
+
+KEEP_WARM_SEC = 120
+
+
+@contextlib.contextmanager
+def keep_warm(preset_name: str) -> Generator[None]:
+    """While the block runs, ask the self-hosted model server for its models every KEEP_WARM_SEC, so a pause longer
+    than its scale-down window (an improver thinking) does not meet a cold start of several minutes. Nothing pings it
+    once the block ends or this process dies, so it still scales to zero."""
+    preset = PRESETS[preset_name]
+    url = os.environ.get(preset["base_url_env"], "").rstrip("/").removesuffix("/v1") if preset["base_url_env"] else ""
+    if not url:
+        yield
+        return
+    stop = threading.Event()
+
+    def ping() -> None:
+        while not stop.wait(KEEP_WARM_SEC):
+            try:
+                with urllib.request.urlopen(url + "/v1/models", timeout=60) as response:
+                    response.read()
+            except Exception as exc:  # noqa: BLE001
+                log(f"keep-warm ping failed: {exc!r}")
+
+    thread = threading.Thread(target=ping, name="keep-warm", daemon=True)
+    thread.start()
+    try:
+        yield
+    finally:
+        stop.set()
+        thread.join()
 
 
 def done(p: Paths, k: int, step: str) -> dict[str, Any]:
@@ -459,41 +533,40 @@ def register_evaluator(s: Settings, p: Paths) -> dict[str, Any]:
     return reg["evaluator"]
 
 
+def host_worker_name(job_id: str) -> str:
+    return f"claims-host-{job_id[-12:]}"
+
+
 def host_worker_command(agent_version_id: str, job_id: str) -> list[str]:
     """A worker on this machine scoped to one agent version and one job: it never claims a job the round runner did
     not create (an experiment of the Pro agent, a version it registered), and it ends when its job settles."""
     return [str(KITARU), "worker", "start", "--claim", f"agent={agent_version_id}", "--job-id", job_id,
-            "--concurrency", "1", "--name", f"claims-host-{job_id[-12:]}"]
+            "--concurrency", "1", "--name", host_worker_name(job_id)]
 
 
-async def run_kitaru_appeal(p: Paths, client: Any, case_id: str, tag: str, version_id: str, work_view: Path,
-                            log_file: Path) -> dict[str, Any]:
-    """One session run of `case_id`, executed by its own job-scoped host worker; returns the result row."""
-    import asyncio
+def jobs_journal(rows_file: Path) -> Path:
+    """Every Kitaru job the round runner creates for a rows file, written when it is about to be created, once it is
+    created, and when it is settled, so a rerun after a crash finds the jobs left without a row."""
+    return rows_file.with_name(rows_file.stem + ".jobs.jsonl")
 
+
+def append_jl(path: Path, entry: dict[str, Any]) -> None:
+    with path.open("a") as f:
+        f.write(json.dumps(entry) + "\n")
+
+
+async def row_of_job(client: Any, job: Any, case_id: str, tag: str, version_id: str) -> dict[str, Any]:
+    """The result row of a settled session-run job, from its task and the session the task recorded."""
     from kitaru.api_models.v1.filter import FilterCondition, FilterOp
     from kitaru.api_models.v1.session import SessionListParams
-    from kitaru.api_models.v1.session_run import SessionRunCreateRequest
 
-    job = await client.session_runs.create(SessionRunCreateRequest(
-        agent_version_id=uuid.UUID(version_id), inputs=f"Review appeal {case_id}.", name=f"claims {tag} {case_id}"))
-    env = {**os.environ, **kitaru_env(p), "CLAIMS_WORK_DIR": str(work_view),
-           "PATH": f"{Path(sys.executable).parent}{os.pathsep}{os.environ.get('PATH', '')}"}
-    command = host_worker_command(version_id, str(job.id))
-    with log_file.open("a") as out:
-        proc = await asyncio.create_subprocess_exec(*command, env=env, stdout=out, stderr=subprocess.STDOUT)
-        try:
-            await asyncio.wait_for(proc.wait(), timeout=3600)
-        except TimeoutError:
-            proc.send_signal(signal.SIGTERM)
-            await proc.wait()
-    job = await client.jobs.get(job.id)
     tasks = (await client.jobs.list_tasks(job.id)).items
     task = tasks[-1] if tasks else None
     result = task.result if task is not None else None
     row: dict[str, Any] = result if isinstance(result, dict) and result.get("case_id") else \
         {"case_id": case_id, "final": None, "run_error": f"job {job.status.value}: {job.error or (task.error if task else '')}"[:500]}
-    row |= {"kitaru_job_id": str(job.id), "host_worker": command[-1], "tag": tag, "kitaru_agent_version": version_id}
+    row |= {"kitaru_job_id": str(job.id), "host_worker": host_worker_name(str(job.id)), "tag": tag,
+            "kitaru_agent_version": version_id}
     if task is not None:
         sessions = (await client.sessions.list(SessionListParams(
             filter=FilterCondition(field="task_id", op=FilterOp.EQ, value=str(task.id))))).items
@@ -503,38 +576,161 @@ async def run_kitaru_appeal(p: Paths, client: Any, case_id: str, tag: str, versi
     return row
 
 
-def run_kitaru_batch(p: Paths, rows_file: Path, ids: list[str], version_id: str, work_view: Path, tag: str,
-                     concurrency: int) -> list[dict[str, Any]]:
-    """Like run_batch() in Kitaru mode, but each appeal's job gets its own job-scoped host worker; a rerun skips
-    appeals that have a row and retries, once, those whose row has a run_error."""
+async def run_kitaru_appeal(p: Paths, client: Any, case_id: str, tag: str, version_id: str, work_view: Path,
+                            rows_file: Path) -> dict[str, Any]:
+    """One session run of `case_id`, executed by its own job-scoped host worker; returns the result row."""
+    import asyncio
+
+    from kitaru.api_models.v1.session_run import SessionRunCreateRequest
+
+    journal = jobs_journal(rows_file)
+    append_jl(journal, {"case_id": case_id, "intent": now(), "version_id": version_id})
+    job = await client.session_runs.create(SessionRunCreateRequest(
+        agent_version_id=uuid.UUID(version_id), inputs=f"Review appeal {case_id}.", name=f"claims {tag} {case_id}"))
+    append_jl(journal, {"case_id": case_id, "job_id": str(job.id), "created": now(), "version_id": version_id})
+    env = {**os.environ, **kitaru_env(p), "CLAIMS_WORK_DIR": str(work_view),
+           "PATH": f"{Path(sys.executable).parent}{os.pathsep}{os.environ.get('PATH', '')}"}
+    command = host_worker_command(version_id, str(job.id))
+    with rows_file.with_suffix(".workers.log").open("a") as out:
+        proc = await asyncio.create_subprocess_exec(*command, env=env, stdout=out, stderr=subprocess.STDOUT)
+        try:
+            await asyncio.wait_for(proc.wait(), timeout=3600)
+        except TimeoutError:
+            proc.send_signal(signal.SIGTERM)
+            await proc.wait()
+    job = await client.jobs.get(job.id)
+    if job.status.value in UNFINISHED_JOB:
+        # Left alone, its task would go back to the queue for any worker that claims this version, such as the pro
+        # trial's.
+        job = await cancel_job(client, job.id)
+    return await row_of_job(client, job, case_id, tag, version_id)
+
+
+UNFINISHED_JOB = ("pending", "running")
+
+
+async def cancel_job(client: Any, job_id: uuid.UUID) -> Any:
+    """Request cancellation; a job that settled meanwhile is returned as it is."""
+    try:
+        return await client.jobs.cancel(job_id)
+    except Exception:
+        job = await client.jobs.get(job_id)
+        if job.status.value in UNFINISHED_JOB:
+            raise
+        return job
+
+
+async def settle_jobs(client: Any, rows_file: Path) -> dict[str, list[str]]:
+    """Settle the jobs the round runner left unfinished for `rows_file`, before its appeals run (again).
+
+    A job journaled for an appeal without a row is adopted (its row written) when it completed, and canceled when it
+    is still pending or running. A crash while creating a job leaves an intent without a job id; then every pending
+    or running session-run job of the journal's agent versions created since that intent, and not journaled, is
+    canceled too: only the round runner runs session runs of the versions it registered."""
+    from kitaru.api_models.v1.job import JobListParams
+
+    journal, out = jobs_journal(rows_file), {"adopted": [], "canceled": []}
+    entries = jl(journal)
+    has_row = {r["case_id"] for r in jl(rows_file)}
+    settled = {e["job_id"] for e in entries if "settled" in e}
+    created = [e for e in entries if "created" in e]
+    for e in created:
+        if e["job_id"] in settled:
+            continue
+        job = await client.jobs.get(uuid.UUID(e["job_id"]))
+        if job.status.value in UNFINISHED_JOB:
+            job = await cancel_job(client, job.id)
+            out["canceled"].append(e["job_id"])
+            append_jl(journal, {"job_id": e["job_id"], "settled": "canceled", "at": now()})
+            continue
+        if job.status.value == "completed" and e["case_id"] not in has_row:
+            row = await row_of_job(client, job, e["case_id"], rows_file.stem, e["version_id"])
+            row["error_kind"] = score_mod.error_kind(row.get("run_error"))
+            if row["error_kind"] != "infra":
+                append_jl(rows_file, row | {"adopted_after_crash": True})
+                has_row.add(e["case_id"])
+                out["adopted"].append(e["job_id"])
+        append_jl(journal, {"job_id": e["job_id"], "settled": job.status.value, "at": now()})
+    intents = [e for e in entries if "intent" in e]
+    if len(intents) > len(created):
+        # Five minutes of slack for the difference between this machine's clock and the server's.
+        since = datetime.fromisoformat(min(e["intent"] for e in intents)) - timedelta(minutes=5)
+        versions, known = {e["version_id"] for e in intents}, {e["job_id"] for e in created}
+        params = JobListParams.model_validate({"filter": {"and": [
+            {"field": "kind", "op": "eq", "value": "session_run"},
+            {"field": "status", "op": "in", "value": list(UNFINISHED_JOB)}]}})
+        async for job in client.jobs.iter(params):
+            if str(job.id) in known or job.created < since:
+                continue
+            tasks = (await client.jobs.list_tasks(job.id)).items
+            if any(str(task.agent_version_id) in versions for task in tasks):
+                await cancel_job(client, job.id)
+                out["canceled"].append(str(job.id))
+                append_jl(journal, {"job_id": str(job.id), "settled": "canceled", "unrecorded": True, "at": now()})
+    if out["adopted"] or out["canceled"]:
+        log(f"kitaru: {rows_file.name}: adopted {len(out['adopted'])} completed job(s) left by an earlier run, "
+            f"canceled {len(out['canceled'])} unfinished one(s): {out}")
+    return out
+
+
+def settle_all_jobs(p: Paths, rows_files: list[Path]) -> None:
     import asyncio
 
     from kitaru.client import KitaruAPIClient
 
-    async def run(todo: list[str]) -> None:
-        sem = asyncio.Semaphore(concurrency)
-        async with KitaruAPIClient(base_url=kitaru_env(p)["KITARU_API_URL"], api_key=kitaru_env(p)["KITARU_API_KEY"]) as client:
-            async def one(case_id: str) -> None:
-                async with sem:
-                    row = await run_kitaru_appeal(p, client, case_id, tag, version_id, work_view,
-                                                  rows_file.with_suffix(".workers.log"))
-                with rows_file.open("a") as f:
-                    f.write(json.dumps(row) + "\n")
-            await asyncio.gather(*(one(i) for i in todo))
+    async def run() -> None:
+        env = kitaru_env(p)
+        async with KitaruAPIClient(base_url=env["KITARU_API_URL"], api_key=env["KITARU_API_KEY"]) as client:
+            for rows_file in rows_files:
+                if jobs_journal(rows_file).exists():
+                    await settle_jobs(client, rows_file)
+
+    asyncio.run(run())
+
+
+def run_kitaru_batch(p: Paths, rows_file: Path, ids: list[str], version_id: str, work_view: Path, tag: str,
+                     concurrency: int) -> list[dict[str, Any]]:
+    """Like run_batch() in Kitaru mode, but each appeal's job gets its own job-scoped host worker. A rerun first
+    settles the jobs an earlier run left unfinished, then runs the appeals without a row or with an infrastructure
+    error; an appeal still failing on infrastructure after the retries fails the step."""
+    import asyncio
+
+    from kitaru.client import KitaruAPIClient
 
     rows_file.parent.mkdir(parents=True, exist_ok=True)
-    for attempt in range(2):
-        rows = {r["case_id"]: r for r in jl(rows_file)}
-        todo = [i for i in ids if i not in rows or (attempt and rows[i].get("run_error"))]
-        if attempt and todo:
-            rows_file.write_text("".join(json.dumps(r) + "\n" for r in rows.values() if r["case_id"] not in todo))
-        if todo:
-            asyncio.run(run(todo))
-    rows = {r["case_id"]: r for r in jl(rows_file)}
-    missing = [i for i in ids if i not in rows]
+    rows = jl(rows_file)
+    kept = [r for r in rows if score_mod.error_kind(r.get("run_error")) != "infra"]
+    if len(kept) < len(rows):
+        rows_file.write_text("".join(json.dumps(r) + "\n" for r in kept))
+
+    async def run() -> None:
+        sem = asyncio.Semaphore(concurrency)
+        env = kitaru_env(p)
+        async with KitaruAPIClient(base_url=env["KITARU_API_URL"], api_key=env["KITARU_API_KEY"]) as client:
+            await settle_jobs(client, rows_file)
+            has_row = {r["case_id"] for r in jl(rows_file)}
+
+            async def attempt(case_id: str) -> dict[str, Any]:
+                async with sem:
+                    return await run_kitaru_appeal(p, client, case_id, tag, version_id, work_view, rows_file)
+
+            async def one(case_id: str) -> None:
+                row = await batch_mod.with_infra_retries(case_id, attempt)
+                append_jl(rows_file, row)
+                if row.get("kitaru_job_id"):
+                    append_jl(jobs_journal(rows_file), {"job_id": row["kitaru_job_id"], "settled": "row", "at": now()})
+            await asyncio.gather(*(one(i) for i in ids if i not in has_row))
+
+    asyncio.run(run())
+    rows_by_id = {r["case_id"]: r for r in jl(rows_file)}
+    missing = [i for i in ids if i not in rows_by_id]
     if missing:
         raise RuntimeError(f"{rows_file}: no row for {missing}")
-    return [rows[i] for i in ids]
+    infra = [i for i in ids if rows_by_id[i].get("error_kind") == "infra"]
+    if infra:
+        raise RuntimeError(f"{rows_file}: {len(infra)} appeal(s) still have infrastructure errors after retries; rerun "
+                           f"round.py to retry just those: {infra}")
+    return [rows_by_id[i] for i in ids]
 
 
 # ---------------------------------------------------------------- steps
@@ -554,6 +750,7 @@ def step_switch(s: Settings, p: Paths, k: int, plan: dict) -> dict[str, Any]:
 
 def step_run(s: Settings, p: Paths, k: int, plan: dict, concurrency: int) -> dict[str, Any]:
     ids = plan[k]["ids"]
+    wait_for_model(s.preset_for(k))
 
     def run_line(line: str) -> dict[str, Any]:
         cur, rows_file = current(p, line), p.runs / line / f"batch-{k}.jsonl"
@@ -763,7 +960,15 @@ def prepare_pro() -> Any:
         return last
 
 
+def improve_attempts_file(p: Paths, k: int) -> Path:
+    return p.round(k) / "improve-attempts.json"
+
+
 def step_improve(s: Settings, p: Paths, k: int, plan: dict, extra_hosts: list[str], concurrency: int) -> dict[str, Any]:
+    if s.pro_arm:
+        # The pro trial's worker claims any agent task in the workspace: no job of the round runner may be waiting.
+        settle_all_jobs(p, [p.runs / "pro" / f"batch-{j}.jsonl" for j in range(1, k + 1)])
+    wait_for_model(s.preset_for(k))
     prepared = prepare_pro() if s.pro_arm else None
     if s.preset_for(k) != s.preset_for(k + 1) and k + 1 <= TOTAL_ROUNDS:
         log(f"note: round {k}'s candidates are judged on preset {s.preset_for(k)}; batch {k + 1} runs on {s.preset_for(k + 1)}")
@@ -771,11 +976,26 @@ def step_improve(s: Settings, p: Paths, k: int, plan: dict, extra_hosts: list[st
     env = {**os.environ, "PYTHONPATH": os.pathsep.join(import_path), "HARBOR_TELEMETRY": "off",
            "DOCKER_CONTEXT": os.environ.get("DOCKER_CONTEXT", "orbstack")}
     procs, info = {}, {}
+    # Every attempt of this step is recorded before its trials start. An arm whose trial finished in an earlier
+    # attempt (its verifier wrote a reward) is kept; only the others restart, and the reruns of every attempt in
+    # which an arm ran count against its budget (the Pro agent's Kitaru versions and experiments carry over).
+    attempts = json.loads(improve_attempts_file(p, k).read_text()) if improve_attempts_file(p, k).exists() else []
+    n = len(attempts) + 1
+    arms: dict[str, dict[str, Any]] = {}
     for arm in s.arms:
+        ran = [a for a in attempts if a["arms"][arm]["status"] == "ran"]
+        trial = finished_trial(ran[-1]["arms"][arm]["job_dir"]) if ran else None
+        if ran and trial is not None:
+            arms[arm] = {"status": "kept", "job_dir": ran[-1]["arms"][arm]["job_dir"], "kept_from_attempt": ran[-1]["attempt"]}
+            info[arm] = ran[-1]["arms"][arm]["info"] | {
+                "started": ran[-1]["started"], "trial_dir": str(trial), "kept_from_attempt": ran[-1]["attempt"],
+                "finished": datetime.fromtimestamp((trial / "verifier" / "reward.txt").stat().st_mtime, UTC).isoformat()}
+            continue
         task = build_task(s, p, k, arm, plan)
-        jobs, job = p.round(k) / arm / "jobs", f"{'mini-' if s.mini else ''}round-{k}-{arm}"
+        jobs = p.round(k) / arm / "jobs"
+        job = f"{'mini-' if s.mini else ''}round-{k}-{arm}" + (f"-attempt-{n}" if n > 1 else "")
         if (jobs / job).exists():
-            (jobs / job).rename(jobs / f"{job}-abandoned-{int(time.time())}")
+            raise RuntimeError(f"{jobs / job} exists but {improve_attempts_file(p, k)} does not list it")
         cmd = ["harbor", "run", "-y", "-p", str(task), "-a", HARBOR_AGENTS[arm], "-m", f"openai/{s.improver_model}",
                "-e", "docker", "-o", str(jobs), "--job-name", job]
         for host in trial_hosts(s, k, arm, extra_hosts):
@@ -786,22 +1006,38 @@ def step_improve(s: Settings, p: Paths, k: int, plan: dict, extra_hosts: list[st
                     "--ak", f"trial_user={user}"]
         info[arm] = {"task": str(task), "job_dir": str(jobs / job), "hosts": trial_hosts(s, k, arm, extra_hosts),
                      "command": cmd, "image": image, "prepared": prepared if arm == "pro" else None}
+        arms[arm] = {"status": "ran", "job_dir": str(jobs / job), "info": dict(info[arm])}
     # No worker runs on this machine during the trials: the pro trial starts its own (pro_round_agent.py).
     started = now()
-    for arm in s.arms:
-        log(f"improve: starting the {arm} trial: {' '.join(info[arm]['command'][:12])} ...")
-        out = (p.round(k) / arm / "harbor.log").open("w")
-        procs[arm] = (subprocess.Popen(info[arm]["command"], env=env, stdout=out, stderr=subprocess.STDOUT), out)
-    for arm, (proc, out) in procs.items():
-        info[arm]["exit_code"] = proc.wait()
-        out.close()
+    attempts.append({"attempt": n, "started": started, "arms": arms})
+    write_json(improve_attempts_file(p, k), attempts)
+    restart = [arm for arm in s.arms if arms[arm]["status"] == "ran"]
+    if n > 1:
+        log(f"improve: attempt {n}: " + "; ".join(f"{arm} {'restarts' if arm in restart else 'keeps the trial of attempt ' + str(arms[arm]['kept_from_attempt'])}"
+                                                    for arm in s.arms))
+    with keep_warm(s.preset_for(k)):
+        for arm in restart:
+            log(f"improve: starting the {arm} trial: {' '.join(info[arm]['command'][:12])} ...")
+            out = (p.round(k) / arm / "harbor.log").open("w")
+            procs[arm] = (subprocess.Popen(info[arm]["command"], env=env, stdout=out, stderr=subprocess.STDOUT), out)
+        for arm, (proc, out) in procs.items():
+            info[arm]["exit_code"] = proc.wait()
+            out.close()
     finished = now()
-    for arm in s.arms:
+    for arm in restart:
         trials = [d for d in Path(info[arm]["job_dir"]).iterdir() if (d / "verifier").is_dir()] \
             if Path(info[arm]["job_dir"]).exists() else []
         info[arm] |= {"started": started, "finished": finished, "trial_dir": str(trials[0]) if trials else None}
         log(f"improve: {arm} trial finished (harbor exit {info[arm]['exit_code']}): {info[arm]['trial_dir']}")
-    return info
+    attempts[-1]["finished"] = finished
+    write_json(improve_attempts_file(p, k), attempts)
+    return info | {"attempts": attempts}
+
+
+def finished_trial(job_dir: str) -> Path | None:
+    """The trial of a Harbor job whose verifier wrote its reward, if there is one."""
+    done_trials = [d for d in trial_dirs(job_dir) if (d / "verifier" / "reward.txt").exists()]
+    return done_trials[0] if done_trials else None
 
 
 def changed_python_lines(old: Path, new: Path) -> list[str]:
@@ -857,12 +1093,83 @@ def experiment_runs_in(p: Paths, started: str, finished: str) -> list[dict[str, 
     return [r for r in runs if started <= str(r.get("created", "")) <= finished]
 
 
+def trial_dirs(job_dir: str) -> list[Path]:
+    return sorted(d for d in Path(job_dir).iterdir() if d.is_dir()) if Path(job_dir).exists() else []
+
+
+def claims_reruns(trial: Path) -> list[dict[str, Any]]:
+    """The `claims-rerun` log of a trial: the verifier's copy, or, for a trial cut short before its verifier ran,
+    the copy `claims-rerun` keeps in the trial's agent log folder."""
+    verifier = trial / "verifier" / "reruns.jsonl"
+    return jl(verifier) if verifier.exists() else jl(trial / "agent" / "claims-reruns.jsonl")
+
+
+def count_reruns(s: Settings, p: Paths, arm: str, attempts: list[dict[str, Any]], finished: str) -> dict[str, Any]:
+    """The arm's reruns over every improve attempt of the round in which its trial ran, and per attempt."""
+    per: list[dict[str, Any]] = []
+    ran = [a for a in attempts if a["arms"][arm]["status"] == "ran"]
+    for i, attempt in enumerate(ran):
+        trials = trial_dirs(attempt["arms"][arm]["job_dir"])
+        entry: dict[str, Any] = {"attempt": attempt["attempt"], "started": attempt["started"],
+                                 "finished": attempt.get("finished"), "job_dir": attempt["arms"][arm]["job_dir"],
+                                 "trial_dirs": [str(d) for d in trials]}
+        if arm == "codex":
+            events = [e for d in trials for e in claims_reruns(d)]
+            entry |= {"claims_rerun": sum(1 for e in events if e.get("event") == "start"),
+                      "claims_rerun_cost_usd": round(sum(e.get("cost_usd") or 0 for e in events
+                                                         if e.get("event") == "finish"), 4)}
+        else:
+            until = ran[i + 1]["started"] if i + 1 < len(ran) else finished
+            runs = experiment_runs_in(p, attempt["started"], until)
+            entry |= {"kitaru_experiment_runs": len(runs), "kitaru_experiment_run_ids": [str(r.get("id")) for r in runs]}
+        outside: dict[str, Any] = {"commands_scanned": 0, "count": 0, "commands": []}
+        for d in trials:
+            found = outside_runs(d, arm)
+            outside = {key: outside[key] + found[key] for key in outside}
+        entry["outside_counted_path"] = outside
+        per.append(entry)
+    key = "claims_rerun" if arm == "codex" else "kitaru_experiment_runs"
+    counted: dict[str, Any] = {key: sum(e[key] for e in per), "counted": sum(e[key] for e in per)}
+    if arm == "codex":
+        counted["claims_rerun_cost_usd"] = round(sum(e["claims_rerun_cost_usd"] for e in per), 4)
+    else:
+        counted["kitaru_experiment_run_ids"] = [x for e in per for x in e["kitaru_experiment_run_ids"]]
+    outside = {"count": sum(e["outside_counted_path"]["count"] for e in per),
+               "commands_scanned": sum(e["outside_counted_path"]["commands_scanned"] for e in per),
+               "commands": [c for e in per for c in e["outside_counted_path"]["commands"]]}
+    counted |= {"attempts": len(per), "per_attempt": per, "outside_counted_path": outside,
+                "per_improve_attempt": [{"attempt": a["attempt"], "status": a["arms"][arm]["status"],
+                                         "kept_from_attempt": a["arms"][arm].get("kept_from_attempt")} for a in attempts],
+                "total": counted["counted"] + outside["count"],
+                "over_budget": max(0, counted["counted"] - s.rerun_budget) + outside["count"]}
+    return counted
+
+
 def step_approve(s: Settings, p: Paths, k: int, plan: dict, concurrency: int) -> dict[str, Any]:
+    wait_for_model(s.preset_for(k))
+    with keep_warm(s.preset_for(k)):
+        return approve_arms(s, p, k, plan, concurrency)
+
+
+def approve_arms(s: Settings, p: Paths, k: int, plan: dict, concurrency: int) -> dict[str, Any]:
     improve = done(p, k, "improve")
     revealed = revealed_through(plan, k)
     truth = {c["id"]: c["truth"] for c in all_cases()}
+    first = improve[s.arms[0]]
+    # A round improved before attempts were recorded had one attempt.
+    attempts = improve.get("attempts") or [{"attempt": 1, "started": first["started"], "finished": first["finished"],
+                                            "arms": {arm: {"status": "ran", "job_dir": improve[arm]["job_dir"]}
+                                                     for arm in s.arms}}]
     out = {}
     for arm in s.arms:
+        decided = p.round(k) / f"decision-{arm}.json"
+        if decided.exists():
+            # An earlier call of this step decided this arm (and may have shipped its candidate) before failing on
+            # the other arm; deciding again would compare the candidate with itself.
+            decision = json.loads(decided.read_text())
+            log(f"approve: {arm}: already decided: {decision['reason']}")
+            out[arm] = {key: decision.get(key) for key in ("shipped", "reason", "candidate_hash", "new_version", "reruns")}
+            continue
         info, cur = improve[arm], current(p, arm)
         cur_dir = version_dir(p, arm, cur["version"])
         decision: dict[str, Any] = {"round": k, "arm": arm, "current_version": cur["version"], "current_hash": cur["hash"],
@@ -873,23 +1180,8 @@ def step_approve(s: Settings, p: Paths, k: int, plan: dict, concurrency: int) ->
         decision["verifier"] = {k2: check.get(k2) for k2 in ("loadable", "change_md", "reward", "error")}
         if trial:
             decision["improver_usage"] = improver_usage(trial, arm)
-        counted: dict[str, Any]
-        if arm == "codex":
-            reruns = [e for e in jl(verifier / "reruns.jsonl")] if verifier else []
-            counted = {
-                "claims_rerun": sum(1 for e in reruns if e.get("event") == "start"),
-                "claims_rerun_cost_usd": round(sum(e.get("cost_usd") or 0 for e in reruns if e.get("event") == "finish"), 4)}
-            counted["counted"] = counted["claims_rerun"]
-        else:
-            runs = experiment_runs_in(p, info["started"], info["finished"])
-            counted = {"kitaru_experiment_runs": len(runs), "kitaru_experiment_run_ids": [str(r.get("id")) for r in runs],
-                       "counted": len(runs)}
         # A run of the claims agent outside the counted path is a rerun the budget did not allow: all of it is over.
-        outside: dict[str, Any] = outside_runs(trial, arm) if trial else {"count": 0, "commands": []}
-        counted["outside_counted_path"] = outside
-        counted["total"] = counted["counted"] + outside["count"]
-        counted["over_budget"] = max(0, counted["counted"] - s.rerun_budget) + outside["count"]
-        decision["reruns"] = counted
+        decision["reruns"] = count_reruns(s, p, arm, attempts, info["finished"])
         candidate = p.line(arm) / "candidates" / f"round-{k}"
         shutil.rmtree(candidate, ignore_errors=True)
         tgz = verifier / "candidate.tgz" if verifier else None
@@ -1038,6 +1330,98 @@ def step_audit(s: Settings, p: Paths, k: int, plan: dict) -> dict[str, Any]:
     return report
 
 
+# ---------------------------------------------------------------- leftovers of an earlier call
+
+def lock_state(p: Paths) -> Any:
+    """Hold an exclusive lock on the state folder while this call runs (the system releases it when the process dies,
+    however it dies): two calls on one folder would run the same appeals twice, and the leftover check below would
+    take the other call's processes for leftovers."""
+    p.rounds.mkdir(parents=True, exist_ok=True)
+    handle = (p.rounds / ".round.lock").open("w")
+    try:
+        fcntl.flock(handle, fcntl.LOCK_EX | fcntl.LOCK_NB)
+    except BlockingIOError:
+        raise SystemExit(f"another round.py is running on {p.rounds}") from None
+    return handle
+
+
+def stop_processes(p: Paths) -> list[str]:
+    """Stop the processes an earlier, killed call on this state folder left running, with their children: its Harbor
+    trials (job folders under this folder), its run_batch.py runs (rows under this run's runs folder) and its host
+    Kitaru workers (named after the jobs in this run's journals). A process outlives its parent's SIGKILL."""
+    jobs = {e["job_id"] for path in (p.runs / "pro").glob("*.jobs.jsonl") for e in jl(path) if "created" in e}
+    names = {host_worker_name(j) for j in jobs}
+    listing = subprocess.run(["ps", "-axo", "pid=,ppid=,command="], capture_output=True, text=True, check=True).stdout
+    procs = [(int(pid), int(ppid), cmd) for pid, ppid, cmd in (line.strip().split(None, 2) for line in listing.splitlines()
+                                                                if len(line.split(None, 2)) == 3)]
+
+    # Exact folders, because another run's state folder can sit inside this one's (work/rounds/mini in work/rounds).
+    harbor = re.compile(rf"\bharbor run .*-o {re.escape(str(p.rounds))}/round-\d+/")
+    batch = re.compile(rf"run_batch\.py .*--out {re.escape(str(p.runs))}/(approval|{'|'.join(LINES)})/")
+
+    def ours(cmd: str) -> bool:
+        words = cmd.split()
+        return bool(harbor.search(cmd) or batch.search(cmd)
+                    or ("worker" in words and "--name" in words[:-1] and words[words.index("--name") + 1] in names))
+
+    roots = {pid for pid, _, cmd in procs if ours(cmd) and pid != os.getpid()}
+    found, children = set(roots), {}
+    for pid, ppid, _ in procs:
+        children.setdefault(ppid, []).append(pid)
+    todo = list(roots)
+    while todo:
+        for child in children.get(todo.pop(), []):
+            if child not in found:
+                found.add(child)
+                todo.append(child)
+    described = [f"{pid} {cmd[:160]}" for pid, _, cmd in procs if pid in roots]
+    for sig in (signal.SIGTERM, signal.SIGKILL):
+        for pid in found:
+            try:
+                os.kill(pid, sig)
+            except ProcessLookupError:
+                pass
+        deadline = time.time() + 20
+        while sig == signal.SIGTERM and time.time() < deadline and any(alive(pid) for pid in found):
+            time.sleep(1)
+    return described
+
+
+def alive(pid: int) -> bool:
+    try:
+        os.kill(pid, 0)
+    except ProcessLookupError:
+        return False
+    return True
+
+
+def remove_trial_containers(p: Paths) -> list[str]:
+    """Remove the Docker Compose projects of this run's Harbor trials: Harbor labels each container with its task's
+    environment folder, which is under this state folder."""
+    env = {**os.environ, "DOCKER_CONTEXT": os.environ.get("DOCKER_CONTEXT", "orbstack")}
+    fmt = '{{.Label "com.docker.compose.project"}}\t{{.Label "com.docker.compose.project.working_dir"}}'
+    listing = subprocess.run(["docker", "ps", "-a", "--format", fmt], capture_output=True, text=True, env=env, check=False)
+    if listing.returncode != 0:
+        log(f"leftovers: cannot list Docker containers, so trial containers were not checked: {listing.stderr.strip()[:300]}")
+        return []
+    projects = sorted({project for project, _, workdir in (line.partition("\t") for line in listing.stdout.splitlines())
+                       if workdir.startswith(f"{p.rounds}/round-") and workdir.endswith("/task/environment")})
+    for project in projects:
+        subprocess.run(["docker", "compose", "-p", project, "down", "--volumes", "--remove-orphans"], env=env,
+                       capture_output=True, check=True)
+    return projects
+
+
+def clean_leftovers(p: Paths) -> None:
+    stopped = stop_processes(p)
+    projects = remove_trial_containers(p)
+    if stopped or projects:
+        log(f"leftovers of an earlier call: stopped {len(stopped)} process(es) {stopped}; removed {len(projects)} "
+            f"trial container project(s) {projects}")
+    else:
+        log("leftovers of an earlier call: none")
+
+
 # ---------------------------------------------------------------- main
 
 def parse_rounds(value: str) -> list[int]:
@@ -1076,6 +1460,8 @@ def main() -> None:
                  pro_arm=pro_dir is not None)
     p = Paths(rounds=WORK / "rounds" / ("mini" if a.mini else ""), runs=WORK / "runs" / ("mini" if a.mini else ""))
     p = Paths(rounds=p.rounds.resolve(), runs=p.runs.resolve())
+    _lock = lock_state(p)
+    clean_leftovers(p)
     rounds = [1] if a.mini else parse_rounds(a.rounds)
     plan = make_plan(s)
     init_lines(s, p)

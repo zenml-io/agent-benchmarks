@@ -2,8 +2,11 @@
 Serve Qwen/Qwen3.8-27B on one Modal H100 with vLLM, as the model name "agent-model".
 
 A fixed copy of ../../../self-hosted-agents-harness/serve_vllm.py with its default ("defaults") config:
-the same image, vLLM version and flags that decision-agents used for case-file extraction. Deploy and
-stop it with `extract.py up` / `extract.py down` (or `extract.py all`), which run
+the same image, vLLM version and flags that decision-agents used for case-file extraction, except that it
+scales to zero: a container starts on the first request and stops 20 minutes after the last one. The
+claims agent's rounds (CLAIMS_AGENT_BASE_URL) use the same server; round.py pings it every two minutes while
+trials and approval runs need it. Deploy and stop it with
+`extract.py up` / `extract.py down` (or `extract.py all`), which run
 
     modal deploy --env $MODAL_ENVIRONMENT --strategy recreate harness/extract/serve.py
     modal app stop --env $MODAL_ENVIRONMENT -y $MODAL_APP_PREFIX-claims-extract
@@ -58,11 +61,13 @@ app = modal.App(APP_NAME)
     # "!" stops Modal from silently upgrading the request to an H200.
     gpu="H100!",
     port=PORT,
-    # One GPU from deploy until `modal app stop`: a second container would double the cost.
-    min_containers=1,
+    # No container while nobody sends requests: the GPU bills from the first request (a cold start takes 2 to 10
+    # minutes, with the weights cached in the volumes) until 20 minutes after the last one, so a client that dies
+    # leaves no GPU running for longer than that. At most one container: a second would double the cost.
+    min_containers=0,
     max_containers=1,
     startup_timeout=30 * 60,
-    scaledown_window=5 * 60,
+    scaledown_window=20 * 60,
     # The extraction client sends no auth headers; the URL is only live while extraction runs.
     unauthenticated=True,
     volumes={

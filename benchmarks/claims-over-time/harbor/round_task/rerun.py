@@ -8,6 +8,9 @@ Runs inside a round task's trial, the same way for both improver arms. Each call
 whatever the number of appeals; a call over budget still runs and is reported to the coordinator. Rows, with the
 full transcripts, go to /claims/reruns/<n>/rows.jsonl. Every call appends a `start` line to /claims/reruns/log.jsonl
 before it runs anything (so the count holds even if the call is interrupted) and a `finish` line with its scores.
+Both lines also go to the trial's agent log folder, which the host sees while the trial runs, so the count survives
+a trial that is cut short. An appeal whose run failed on infrastructure (network, model server) after run_batch.py's
+retries is listed as such and not scored.
 """
 
 import argparse
@@ -26,6 +29,8 @@ BIN = CLAIMS / "bin"
 DATA = CLAIMS / "data"
 RERUNS = CLAIMS / "reruns"
 SECRETS = CLAIMS / "secrets" / "rerun.env"
+HOST_LOG = Path("/logs/agent/claims-reruns.jsonl")
+EXIT_INFRA = 3  # run_batch.py's exit status when some appeals still have infrastructure errors
 
 sys.path.insert(0, str(BIN))
 from score import balanced, decision_of, metrics
@@ -40,6 +45,13 @@ def read_env_file(path: Path) -> dict[str, str]:
         return {}
     pairs = (line.split("=", 1) for line in path.read_text().splitlines() if "=" in line)
     return {k: v for k, v in pairs}
+
+
+def copy_to_host(entry: dict[str, Any]) -> None:
+    if HOST_LOG.parent.is_dir():
+        with HOST_LOG.open("a") as f:
+            fcntl.flock(f, fcntl.LOCK_EX)
+            f.write(json.dumps(entry) + "\n")
 
 
 def tree_hash(agent_dir: Path) -> str:
@@ -76,6 +88,7 @@ def main() -> None:
         entry = {"event": "start", "n": n, "at": datetime.now(UTC).isoformat(), "agent_dir": str(agent_dir),
                  "agent_version": tree_hash(agent_dir), "ids": ids, "budget": budget, "over_budget": n > budget}
         f.write(json.dumps(entry) + "\n")
+    copy_to_host(entry)
     if n > budget:
         print(f"WARNING: this is rerun {n}; the budget is {budget}. It runs, and the coordinator reports it as over budget.",
               flush=True)
@@ -83,31 +96,44 @@ def main() -> None:
     out.parent.mkdir(parents=True, exist_ok=True)
 
     env = {**os.environ, **read_env_file(SECRETS), "CLAIMS_WORK_DIR": str(DATA)}
-    subprocess.run([sys.executable, str(BIN / "run_batch.py"), "--agent-dir", str(agent_dir), "--tag", f"rerun-{n}",
-                    "--ids", ",".join(ids), "--out", str(out), "--concurrency", str(a.concurrency)],
-                   env=env, check=True, stdout=subprocess.DEVNULL)
+    code = subprocess.run([sys.executable, str(BIN / "run_batch.py"), "--agent-dir", str(agent_dir), "--tag", f"rerun-{n}",
+                           "--ids", ",".join(ids), "--out", str(out), "--concurrency", str(a.concurrency)],
+                          env=env, check=False, stdout=subprocess.DEVNULL).returncode
+    if code not in (0, EXIT_INFRA):
+        sys.exit(f"run_batch.py failed with exit status {code}")
 
     rows = {r["case_id"]: r for r in jl(out)}
-    pairs = []
+    pairs, infra = [], []
     print(f"\nrerun {n} of {budget}: agent {entry['agent_version']} ({agent_dir}), {len(ids)} revealed appeals")
     print(f"{'appeal':<14} {'ruling':<9} {'decision':<9} right  turns  error")
     for cid in ids:
         row = rows.get(cid, {})
         d = decision_of(row)
-        pairs.append((d, truth[cid]))
-        print(f"{cid:<14} {truth[cid]:<9} {d or '-':<9} {'yes' if d == truth[cid] else 'no ':<5}  "
-              f"{row.get('turns', '-'):<5}  {(row.get('run_error') or '')[:60]}")
-    m = metrics(pairs)
-    print(f"\naccuracy {m['accuracy']:.3f}, balanced accuracy {balanced(pairs):.3f} "
-          f"(decided {m['decided']} of {m['n']}; wrongful denials {m['wrongful_denials']}, "
-          f"wrongful approvals {m['wrongful_approvals']})")
+        if row.get("error_kind") == "infra":
+            infra.append(cid)
+            right = "n/a"
+        else:
+            pairs.append((d, truth[cid]))
+            right = "yes" if d == truth[cid] else "no"
+        print(f"{cid:<14} {truth[cid]:<9} {d or '-':<9} {right:<5}  {row.get('turns', '-'):<5}  "
+              f"{(row.get('error_kind') or '') + ': ' if row.get('error_kind') else ''}{(row.get('run_error') or '')[:60]}")
+    if infra:
+        print(f"\n{len(infra)} appeal(s) failed on infrastructure (network or model server), not on the agent, after "
+              f"retries; they are not scored: {', '.join(infra)}")
+    m = metrics(pairs) if pairs else {"n": 0}
+    if pairs:
+        print(f"\naccuracy {m['accuracy']:.3f}, balanced accuracy {balanced(pairs):.3f} on {m['n']} appeals "
+              f"(decided {m['decided']} of {m['n']}; wrongful denials {m['wrongful_denials']}, "
+              f"wrongful approvals {m['wrongful_approvals']})")
     print(f"rows with transcripts: {out}")
-    finish = {"event": "finish", "n": n, "at": datetime.now(UTC).isoformat(), "accuracy": m["accuracy"],
-              "balanced_accuracy": balanced(pairs), "errors": sum(1 for r in rows.values() if r.get("run_error")),
+    finish = {"event": "finish", "n": n, "at": datetime.now(UTC).isoformat(), "scored": len(pairs),
+              "accuracy": m.get("accuracy"), "balanced_accuracy": balanced(pairs) if pairs else None,
+              "errors": sum(1 for r in rows.values() if r.get("error_kind") == "agent"), "infra_errors": len(infra),
               "cost_usd": sum(r.get("cost_usd") or 0 for r in rows.values())}
     with log.open("a") as f:
         fcntl.flock(f, fcntl.LOCK_EX)
         f.write(json.dumps(finish) + "\n")
+    copy_to_host(finish)
 
 if __name__ == "__main__":
     main()
