@@ -12,7 +12,7 @@ _spec.loader.exec_module(round_script)
 
 
 def runs_agent(command: str) -> bool:
-    return bool(round_script.OUTSIDE_RUNS.search(round_script.REGISTERED_COMMAND.sub(" ", command)))
+    return round_script.runs_claims_agent(command)
 
 
 RUNS = [
@@ -35,6 +35,7 @@ NOT_RUNS = [
     "kitaru agent version register claims-agent --command \"python -m claims_agent.episode\" --working-dir /claims/try",
     "kitaru experiment run start exp --agent claims-agent@5 --wait",
     "claims-rerun --agent-dir /claims/try/claims_agent",
+    "cd /claims/agent && CLAIMS_WORK_DIR=/claims/data /opt/claims-venv/bin/python -m claims_agent.episode --help",
 ]
 
 

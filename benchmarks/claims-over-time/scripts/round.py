@@ -95,6 +95,16 @@ OUTSIDE_RUNS = re.compile(r"\bclaims_agent\.episode\b|\b(run_episode|build_agent
                           r"|python[\d.]*\s+\S*run_batch\.py|\bkitaru\b.*\breplay\s+create\b|session_runs\.create")
 # The command a Kitaru agent version is registered with names the episode module without running it.
 REGISTERED_COMMAND = re.compile(r"--command[\s=]+(\"[^\"]*\"|'[^']*'|\S+)")
+# A `--help` call names the episode module without running the agent.
+HELP_ONLY = re.compile(r"claims_agent\.episode\s+(--help|-h)\b")
+
+
+def runs_claims_agent(command: str) -> bool:
+    """Whether a shell command from an improver's log runs the claims agent (calls its model)."""
+    command = REGISTERED_COMMAND.sub(" ", command)
+    return bool(OUTSIDE_RUNS.search(HELP_ONLY.sub(" ", command)))
+
+
 # A candidate whose Python adds any of these is not shipped: they are how an agent could read rulings or reach out.
 INTEGRITY = re.compile(r"truth|cases\.jsonl|imr\.csv|\.\./|/Users/|os\.environ|subprocess|socket|urllib|requests|httpx")
 
@@ -122,6 +132,9 @@ class Settings:
     pro_agent: str
     mini: bool
     pro_arm: bool
+    # Runs of each version on the revealed appeals at approval; their mean balanced accuracy decides. One run on 20
+    # appeals with 4 upheld moved a candidate 25 points between two runs in round 1.
+    approval_repeats: int = 3
 
     @property
     def lines(self) -> tuple[str, ...]:
@@ -1083,8 +1096,7 @@ def outside_runs(trial: Path, arm: str) -> dict[str, Any]:
     """Commands in the improver's log that run the claims agent outside the arm's counted rerun path."""
     commands = improver_commands(trial, arm)
     # Codex writes shell commands inside JavaScript string literals, so escaped newlines and tabs are unescaped first.
-    hits = [c for c in commands
-            if OUTSIDE_RUNS.search(REGISTERED_COMMAND.sub(" ", c.replace("\\n", "\n").replace("\\t", "\t")))]
+    hits = [c for c in commands if runs_claims_agent(c.replace("\\n", "\n").replace("\\t", "\t"))]
     return {"commands_scanned": len(commands), "count": len(hits), "commands": [c[:400] for c in hits]}
 
 
@@ -1214,19 +1226,23 @@ def approve_arms(s: Settings, p: Paths, k: int, plan: dict, concurrency: int) ->
             scores: dict[str, dict[str, Any]] = {}
             balanced: dict[str, float] = {}
             for label, directory, h in (("current", cur_dir, cur["hash"]), ("candidate", cand_dir, decision["candidate_hash"])):
-                cache = p.runs / "approval" / f"{h}.jsonl"
-                before = {r["case_id"] for r in jl(cache)}
-                rows = run_batch(cache, revealed, p.agent_view, agent_dir=directory, concurrency=concurrency)
-                pairs = [(score_mod.decision_of(r), truth[r["case_id"]]) for r in rows]
-                balanced[label] = float(score_mod.balanced(pairs))
-                scores[label] = {"hash": h, "balanced_accuracy": score_mod.balanced(pairs),
+                runs: list[dict[str, Any]] = []
+                for r in range(s.approval_repeats):
+                    # Run 0 keeps the cache name used before repeats existed, so earlier approval runs are reused.
+                    cache = p.runs / "approval" / (f"{h}.jsonl" if r == 0 else f"{h}.r{r}.jsonl")
+                    before = {row["case_id"] for row in jl(cache)}
+                    rows = run_batch(cache, revealed, p.agent_view, agent_dir=directory, concurrency=concurrency)
+                    pairs = [(score_mod.decision_of(row), truth[row["case_id"]]) for row in rows]
+                    runs.append({"balanced_accuracy": float(score_mod.balanced(pairs)),
                                  "accuracy": sum(d == t for d, t in pairs) / len(pairs),
                                  "undecided": sum(d is None for d, _ in pairs), "rows": str(cache),
                                  "new_runs": len(set(revealed) - before),
-                                 "new_cost_usd": round(sum(row_cost(r) for r in rows if r["case_id"] not in before), 4)}
+                                 "new_cost_usd": round(sum(row_cost(row) for row in rows if row["case_id"] not in before), 4)})
+                balanced[label] = sum(run["balanced_accuracy"] for run in runs) / len(runs)
+                scores[label] = {"hash": h, "balanced_accuracy": balanced[label], "repeats": len(runs), "runs": runs}
             decision["approval"] = scores
             ship = balanced["candidate"] >= balanced["current"]
-            reason = (f"balanced accuracy on {len(revealed)} revealed appeals: candidate "
+            reason = (f"mean balanced accuracy over {s.approval_repeats} runs on {len(revealed)} revealed appeals: candidate "
                       f"{scores['candidate']['balanced_accuracy']:.3f} vs current {scores['current']['balanced_accuracy']:.3f}")
             if ship:
                 decision["shipped"] = True
@@ -1436,6 +1452,7 @@ def main() -> None:
     ap.add_argument("--switch-round", type=int, default=4, help="the first batch every line runs on the open model")
     ap.add_argument("--improver-model", default="gpt-6-luna", help="OpenAI model for both improvers")
     ap.add_argument("--rerun-budget", type=int, default=3)
+    ap.add_argument("--approval-repeats", type=int, default=3, help="runs of each version at approval; the mean decides")
     ap.add_argument("--minutes", type=int, default=45, help="each improver's time limit")
     ap.add_argument("--pro-agent", help="Kitaru agent name of the pro line (default claims-agent, or claims-agent-smoke "
                                         "with --mini)")
@@ -1456,6 +1473,7 @@ def main() -> None:
         raise SystemExit(f"PRO_AGENT_DIR={pro_dir} has no pro_agent/agent.py or no executable prepare")
     s = Settings(frontier_preset=a.frontier_preset, open_preset=a.open_preset, switch_round=a.switch_round,
                  improver_model=a.improver_model, rerun_budget=a.rerun_budget, minutes=a.minutes, mini=a.mini,
+                 approval_repeats=a.approval_repeats,
                  pro_agent=a.pro_agent or ("claims-agent-smoke" if a.mini else "claims-agent"),
                  pro_arm=pro_dir is not None)
     p = Paths(rounds=WORK / "rounds" / ("mini" if a.mini else ""), runs=WORK / "runs" / ("mini" if a.mini else ""))
