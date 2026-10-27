@@ -977,7 +977,8 @@ def improve_attempts_file(p: Paths, k: int) -> Path:
     return p.round(k) / "improve-attempts.json"
 
 
-def step_improve(s: Settings, p: Paths, k: int, plan: dict, extra_hosts: list[str], concurrency: int) -> dict[str, Any]:
+def step_improve(s: Settings, p: Paths, k: int, plan: dict, extra_hosts: list[str], concurrency: int,
+                 retry: dict[str, str] | None = None) -> dict[str, Any]:
     if s.pro_arm:
         # The pro trial's worker claims any agent task in the workspace: no job of the round runner may be waiting.
         settle_all_jobs(p, [p.runs / "pro" / f"batch-{j}.jsonl" for j in range(1, k + 1)])
@@ -998,7 +999,8 @@ def step_improve(s: Settings, p: Paths, k: int, plan: dict, extra_hosts: list[st
     for arm in s.arms:
         ran = [a for a in attempts if a["arms"][arm]["status"] == "ran"]
         trial = finished_trial(ran[-1]["arms"][arm]["job_dir"]) if ran else None
-        if ran and trial is not None:
+        # An operator can restart a finished trial whose outcome infrastructure decided (--retry-improve), with a reason.
+        if ran and trial is not None and arm not in (retry or {}):
             arms[arm] = {"status": "kept", "job_dir": ran[-1]["arms"][arm]["job_dir"], "kept_from_attempt": ran[-1]["attempt"]}
             info[arm] = ran[-1]["arms"][arm]["info"] | {
                 "started": ran[-1]["started"], "trial_dir": str(trial), "kept_from_attempt": ran[-1]["attempt"],
@@ -1020,6 +1022,8 @@ def step_improve(s: Settings, p: Paths, k: int, plan: dict, extra_hosts: list[st
         info[arm] = {"task": str(task), "job_dir": str(jobs / job), "hosts": trial_hosts(s, k, arm, extra_hosts),
                      "command": cmd, "image": image, "prepared": prepared if arm == "pro" else None}
         arms[arm] = {"status": "ran", "job_dir": str(jobs / job), "info": dict(info[arm])}
+        if ran and arm in (retry or {}):
+            arms[arm]["retry_reason"] = (retry or {})[arm]
     # No worker runs on this machine during the trials: the pro trial starts its own (pro_round_agent.py).
     started = now()
     attempts.append({"attempt": n, "started": started, "arms": arms})
@@ -1452,6 +1456,9 @@ def main() -> None:
     ap.add_argument("--switch-round", type=int, default=4, help="the first batch every line runs on the open model")
     ap.add_argument("--improver-model", default="gpt-6-luna", help="OpenAI model for both improvers")
     ap.add_argument("--rerun-budget", type=int, default=3)
+    ap.add_argument("--retry-improve", action="append", default=[], metavar="ARM=REASON",
+                    help="restart this arm's finished trial when improve runs again (infrastructure decided its outcome); "
+                         "first move the round's improve, approve and audit markers and the arm's decision file aside")
     ap.add_argument("--approval-repeats", type=int, default=3, help="runs of each version at approval; the mean decides")
     ap.add_argument("--minutes", type=int, default=45, help="each improver's time limit")
     ap.add_argument("--pro-agent", help="Kitaru agent name of the pro line (default claims-agent, or claims-agent-smoke "
@@ -1490,7 +1497,8 @@ def main() -> None:
         "score": lambda k: step_score(s, p, k, plan),
         "reveal": lambda k: step_reveal(s, p, k, plan),
         "cohort": lambda k: step_cohort(s, p, k, plan),
-        "improve": lambda k: step_improve(s, p, k, plan, a.allow_host, a.concurrency),
+        "improve": lambda k: step_improve(s, p, k, plan, a.allow_host, a.concurrency,
+                                          dict(item.split("=", 1) for item in a.retry_improve)),
         "approve": lambda k: step_approve(s, p, k, plan, a.concurrency),
         "audit": lambda k: step_audit(s, p, k, plan),
     }
