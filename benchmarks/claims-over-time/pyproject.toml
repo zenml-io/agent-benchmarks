@@ -1,0 +1,21 @@
+[project]
+name = "claims-over-time"
+version = "0.1.0"
+description = "A claims-review agent improved round by round on real California IMR appeals, with and without the ZenML Pro agent"
+requires-python = ">=3.12,<3.13"
+# Base install: what the free checks need (data selection, batch assignment, scoring).
+dependencies = []
+
+[project.optional-dependencies]
+# The PydanticAI claims agent, recorded through Kitaru. Paid when run.
+agent = [
+    "kitaru[cli,worker]==0.27.2",
+    "kitaru-pydantic-ai[openai]==0.3.1",
+]
+# Case-file extraction and classifier training on Modal GPUs. Paid when run.
+modal = [
+    "modal==1.6.2",
+]
+
+[tool.uv]
+package = false

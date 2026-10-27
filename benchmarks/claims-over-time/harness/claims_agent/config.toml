@@ -1,0 +1,23 @@
+# Settings of this agent version. The system prompt is in prompt.md, the tools and the final answer schema in tools.json.
+
+# With base_url_env set, `model` is the model name an OpenAI-compatible server serves (the vLLM servers
+# serve "agent-model") and the server's base URL is read from that environment variable.
+# With base_url_env = "", `model` is a PydanticAI model string, for example "openai-chat:gpt-5-mini"
+# (OpenAI Chat Completions API, key from OPENAI_API_KEY).
+model = "agent-model"
+base_url_env = "CLAIMS_AGENT_BASE_URL"
+
+# Model calls per appeal. An appeal with no submitted determination after this many calls is undecided.
+request_limit = 12
+
+# Tool results are JSON, cut to this many characters before the model sees them.
+tool_result_chars = 6000
+
+# Sent back to the model when it answers in text instead of calling a tool.
+nudge = "Use the tools, and finish with submit_determination."
+
+# Passed to the model API on every call. Reasoning models such as gpt-5-mini ignore temperature
+# (PydanticAI drops it with a warning).
+[model_settings]
+temperature = 0.6
+max_tokens = 4096

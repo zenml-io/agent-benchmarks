@@ -1,0 +1,129 @@
+[
+  {
+    "type": "function",
+    "function": {
+      "name": "get_case",
+      "description": "The appeal: requested treatment, categories, review type, patient age range and gender.",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "case_id": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "case_id"
+        ]
+      }
+    }
+  },
+  {
+    "type": "function",
+    "function": {
+      "name": "get_medical_records",
+      "description": "Clinical facts from the patient's records.",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "case_id": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "case_id"
+        ]
+      }
+    }
+  },
+  {
+    "type": "function",
+    "function": {
+      "name": "search_precedents",
+      "description": "Past IMR decisions (2016-2023) for a treatment category, most recent first.",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "treatment": {
+            "type": "string",
+            "description": "treatment subcategory, e.g. 'MRI' or 'Hormones'"
+          },
+          "diagnosis": {
+            "type": "string",
+            "description": "optional diagnosis subcategory to narrow the search"
+          },
+          "decision": {
+            "type": "string",
+            "enum": [
+              "uphold",
+              "overturn"
+            ],
+            "description": "optional"
+          }
+        },
+        "required": [
+          "treatment"
+        ]
+      }
+    }
+  },
+  {
+    "type": "function",
+    "function": {
+      "name": "get_precedent",
+      "description": "Full text of one past decision.",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "precedent_id": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "precedent_id"
+        ]
+      }
+    }
+  },
+  {
+    "type": "function",
+    "function": {
+      "name": "submit_determination",
+      "description": "Final answer.",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "decision": {
+            "type": "string",
+            "enum": [
+              "uphold",
+              "overturn"
+            ]
+          },
+          "confidence": {
+            "type": "string",
+            "enum": [
+              "low",
+              "medium",
+              "high"
+            ]
+          },
+          "rationale": {
+            "type": "string"
+          },
+          "cited_precedents": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        },
+        "required": [
+          "decision",
+          "confidence",
+          "rationale",
+          "cited_precedents"
+        ]
+      }
+    }
+  }
+]
