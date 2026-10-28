@@ -149,6 +149,9 @@ class Settings:
     # "held-out": approval runs on appeals whose rulings the improvers never get; "revealed": on the revealed appeals
     # the improvers studied, the rule of the published run.
     approval_on: str = "held-out"
+    # The Pro arm gets GEPA (the kitaru-playbook skill's prompt search), and its budget counts appeal runs: every
+    # appeal in a Kitaru experiment run counts once, up to rerun_budget times the revealed appeals so far.
+    pro_gepa: bool = False
 
     @property
     def lines(self) -> tuple[str, ...]:
@@ -906,10 +909,35 @@ def arm_access(s: Settings, p: Paths, arm: str, k: int) -> str:
             f"it claims agent tasks of any agent version and evaluator tasks, and runs them with "
             f"`/opt/claims-venv/bin` (the agent's Python environment) first on PATH, `CLAIMS_WORK_DIR=/claims/data` "
             f"and the agent's model credentials. No other worker claims tasks of agent versions registered during "
-            f"this round. Reruns on the revealed appeals are Kitaru experiment runs; each experiment run counts as one "
-            f"rerun. Before you choose sessions to study or to rerun, count how every recorded session ended (a "
-            f"decision, an error, or a stop at a token, request or time limit) and give the counts in `CHANGE.md`: a "
-            f"session that ended without a decision is a failure whether or not its ruling is revealed.")
+            f"this round. Reruns on the revealed appeals are Kitaru experiment runs; "
+            + (f"every appeal in an experiment run counts once against your budget. GEPA 0.1.4 and the OpenAI SDK are "
+               f"installed in `/opt/gepa-venv`; search for this round's change with GEPA as the `kitaru-playbook` "
+               f"skill's `references/prompt-search.md` describes, with `{s.improver_model}` as GEPA's rewriting model. "
+               f"A set of files GEPA found counts as one change. " if s.pro_gepa else
+               "each experiment run counts as one rerun. ")
+            + "Before you choose sessions to study or to rerun, count how every recorded session ended (a "
+            "decision, an error, or a stop at a token, request or time limit) and give the counts in `CHANGE.md`: a "
+            "session that ended without a decision is a failure whether or not its ruling is revealed.")
+
+
+def budget_unit(s: Settings, arm: str) -> str:
+    return "kitaru_appeal_runs" if arm == "pro" and s.pro_gepa else \
+        ("claims_rerun" if arm == "codex" else "kitaru_experiment_runs")
+
+
+def budget_total(s: Settings, arm: str, plan: dict, k: int) -> int:
+    """The arm's rerun budget for round k, in its unit (budget_unit)."""
+    if budget_unit(s, arm) == "kitaru_appeal_runs":
+        return s.rerun_budget * len(revealed_through(plan, k))
+    return s.rerun_budget
+
+
+def rerun_limit(s: Settings, arm: str, budget: int) -> str:
+    """The instruction's budget rule for the arm, after \"You may\"."""
+    if budget_unit(s, arm) == "kitaru_appeal_runs":
+        return (f"run the agent on at most {budget} revealed appeals in total this round (each appeal in a Kitaru "
+                f"experiment run counts once, so a run on 4 appeals uses 4 of them)")
+    return f"rerun the agent on the revealed appeals at most {budget} times this round"
 
 
 def trial_worker_name(s: Settings, k: int) -> str:
@@ -976,7 +1004,7 @@ def build_task(s: Settings, p: Paths, k: int, arm: str, plan: dict, budget: int)
         round=k, total_rounds=TOTAL_ROUNDS, batch_size=s.batch_size, current_version=cur["version"],
         agent_dir=TRIAL_AGENT_DIR, runs_total=sum(len(plan[j]["ids"]) for j in range(1, k + 1)),
         revealed_count=s.revealed_per_batch, revealed_total=len(revealed), cases_file=TRIAL_CASES,
-        arm_access=arm_access(s, p, arm, k), rerun_budget=budget, minutes=s.minutes,
+        arm_access=arm_access(s, p, arm, k), rerun_limit=rerun_limit(s, arm, budget), minutes=s.minutes,
         approval_rule=approval_rule(s, plan, k)))
     return task
 
@@ -1061,8 +1089,8 @@ def step_improve(s: Settings, p: Paths, k: int, plan: dict, extra_hosts: list[st
                 "finished": datetime.fromtimestamp((trial / "verifier" / "reward.txt").stat().st_mtime, UTC).isoformat()}
             continue
         # A restarted trial gets what the earlier attempts left of the budget: their reruns count against it.
-        used = count_reruns(s, p, arm, attempts, now())["counted"] if ran else 0
-        budget = max(0, s.rerun_budget - used)
+        used = count_reruns(s, p, arm, attempts, now(), budget_total(s, arm, plan, k))["counted"] if ran else 0
+        budget = max(0, budget_total(s, arm, plan, k) - used)
         if used:
             log(f"improve: {arm} used {used} rerun(s) in earlier attempts; its trial gets {budget}")
         task = build_task(s, p, k, arm, plan, budget)
@@ -1179,7 +1207,8 @@ def claims_reruns(trial: Path) -> list[dict[str, Any]]:
     return jl(verifier) if verifier.exists() else jl(trial / "agent" / "claims-reruns.jsonl")
 
 
-def count_reruns(s: Settings, p: Paths, arm: str, attempts: list[dict[str, Any]], finished: str) -> dict[str, Any]:
+def count_reruns(s: Settings, p: Paths, arm: str, attempts: list[dict[str, Any]], finished: str,
+                 total: int) -> dict[str, Any]:
     """The arm's reruns over every improve attempt of the round in which its trial ran, and per attempt."""
     per: list[dict[str, Any]] = []
     ran = [a for a in attempts if a["arms"][arm]["status"] == "ran"]
@@ -1196,15 +1225,17 @@ def count_reruns(s: Settings, p: Paths, arm: str, attempts: list[dict[str, Any]]
         else:
             until = ran[i + 1]["started"] if i + 1 < len(ran) else finished
             runs = experiment_runs_in(p, attempt["started"], until)
-            entry |= {"kitaru_experiment_runs": len(runs), "kitaru_experiment_run_ids": [str(r.get("id")) for r in runs]}
+            entry |= {"kitaru_experiment_runs": len(runs), "kitaru_experiment_run_ids": [str(r.get("id")) for r in runs],
+                      "kitaru_appeal_runs": sum(int((r.get("progress") or {}).get("total") or 0) for r in runs)}
         outside: dict[str, Any] = {"commands_scanned": 0, "count": 0, "commands": []}
         for d in trials:
             found = outside_runs(d, arm)
             outside = {key: outside[key] + found[key] for key in outside}
         entry["outside_counted_path"] = outside
         per.append(entry)
-    key = "claims_rerun" if arm == "codex" else "kitaru_experiment_runs"
-    counted: dict[str, Any] = {key: sum(e[key] for e in per), "counted": sum(e[key] for e in per)}
+    key = budget_unit(s, arm)
+    counted: dict[str, Any] = {key: sum(e[key] for e in per), "counted": sum(e[key] for e in per), "unit": key,
+                               "budget": total}
     if arm == "codex":
         counted["claims_rerun_cost_usd"] = round(sum(e["claims_rerun_cost_usd"] for e in per), 4)
     else:
@@ -1216,7 +1247,7 @@ def count_reruns(s: Settings, p: Paths, arm: str, attempts: list[dict[str, Any]]
                 "per_improve_attempt": [{"attempt": a["attempt"], "status": a["arms"][arm]["status"],
                                          "kept_from_attempt": a["arms"][arm].get("kept_from_attempt")} for a in attempts],
                 "total": counted["counted"] + outside["count"],
-                "over_budget": max(0, counted["counted"] - s.rerun_budget) + outside["count"]}
+                "over_budget": max(0, counted["counted"] - total) + outside["count"]}
     return counted
 
 
@@ -1260,7 +1291,7 @@ def approve_arms(s: Settings, p: Paths, k: int, plan: dict, concurrency: int) ->
         if trial:
             decision["improver_usage"] = improver_usage(trial, arm)
         # A run of the claims agent outside the counted path is a rerun the budget did not allow: all of it is over.
-        decision["reruns"] = count_reruns(s, p, arm, attempts, info["finished"])
+        decision["reruns"] = count_reruns(s, p, arm, attempts, info["finished"], budget_total(s, arm, plan, k))
         candidate = p.line(arm) / "candidates" / f"round-{k}"
         shutil.rmtree(candidate, ignore_errors=True)
         tgz = verifier / "candidate.tgz" if verifier else None
@@ -1535,6 +1566,8 @@ def main() -> None:
                     help="the appeals approval runs on: held-out unrevealed ones, or the revealed ones (the rule of the "
                          "published 2026-10-28 run)")
     ap.add_argument("--minutes", type=int, default=45, help="each improver's time limit")
+    ap.add_argument("--pro-gepa", action="store_true", help="give the Pro arm GEPA and a budget of appeal runs "
+                                                           "(--rerun-budget times the revealed appeals)")
     ap.add_argument("--pro-agent", help="Kitaru agent name of the pro line (default claims-agent, or claims-agent-smoke "
                                         "with --mini)")
     ap.add_argument("--rounds", default="1-8", help="rounds to run, for example 1-8 or 3")
@@ -1554,7 +1587,7 @@ def main() -> None:
         raise SystemExit(f"PRO_AGENT_DIR={pro_dir} has no pro_agent/agent.py or no executable prepare")
     s = Settings(frontier_preset=a.frontier_preset, open_preset=a.open_preset, switch_round=a.switch_round,
                  improver_model=a.improver_model, rerun_budget=a.rerun_budget, minutes=a.minutes, mini=a.mini,
-                 approval_repeats=a.approval_repeats, approval_on=a.approval_on,
+                 approval_repeats=a.approval_repeats, approval_on=a.approval_on, pro_gepa=a.pro_gepa,
                  pro_agent=a.pro_agent or ("claims-agent-smoke" if a.mini else "claims-agent"),
                  pro_arm=pro_dir is not None)
     p = Paths(rounds=WORK / "rounds" / ("mini" if a.mini else ""), runs=WORK / "runs" / ("mini" if a.mini else ""))

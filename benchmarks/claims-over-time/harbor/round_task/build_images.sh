@@ -2,7 +2,7 @@
 # Build the images the round tasks start from (they stay in the local Docker daemon):
 #   claims-over-time-round-codex:latest   Node + the Codex CLI + uv (harbor/codex/Dockerfile), plus the shared tools
 #                                         and `claims-rerun`
-#   $PRO_ROUND_IMAGE                      the ZenML Pro agent's trial image ($PRO_BASE_IMAGE), plus the shared tools
+#   $PRO_ROUND_IMAGE                      the ZenML Pro agent's trial image ($PRO_BASE_IMAGE), plus the shared tools and GEPA
 #                                         (default tag claims-over-time-round-pro:latest); only when PRO_BASE_IMAGE is set
 #
 #   DOCKER_CONTEXT=orbstack [PRO_BASE_IMAGE=<image>] harbor/round_task/build_images.sh
@@ -34,6 +34,7 @@ if [ -z "${PRO_BASE_IMAGE:-}" ]; then
 fi
 PRO_USER="$(docker image inspect -f '{{.Config.User}}' "$PRO_BASE_IMAGE")"
 docker build -f "$HERE/tools.Dockerfile" --build-arg "BASE=$PRO_BASE_IMAGE" \
-  --build-arg "AGENT_USER=${PRO_USER:-root}" --build-arg RERUN_TOOL=0 --build-arg "PRECEDENTS_SHA256=$SHA" \
+  --build-arg "AGENT_USER=${PRO_USER:-root}" --build-arg RERUN_TOOL=0 --build-arg GEPA_TOOLS=1 \
+  --build-arg "PRECEDENTS_SHA256=$SHA" \
   -t "$PRO_ROUND_IMAGE" "$CTX"
 echo "built $PRO_ROUND_IMAGE on $PRO_BASE_IMAGE (user ${PRO_USER:-root})"

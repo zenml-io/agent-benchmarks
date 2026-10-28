@@ -53,7 +53,7 @@ uv run python scripts/score.py work/runs/<tag>.jsonl                    # per-ba
 
 - **Calibration batch on three models** (about $2.50): run `scripts/run_batch.py --batch 0` with the frozen agent on Qwen (`CLAIMS_AGENT_BASE_URL` set, server from `harness/extract/extract.py up`), and with copies whose `config.toml` uses `openai-responses:gpt-6.1-sol` and `openai-responses:gpt-6-luna`. Expected: Qwen 70 to 76% accuracy, Sol about 88% balanced accuracy. Verified 2026-10-27 (table in `README.md`). GPT-6 models need the Responses API (`openai-responses:`); on chat completions they reject tools with reasoning.
 - **HICRIC classifier** (about $1.60): `harness/hicric/README.md`, section Rerun. Verified 2026-10-27.
-- **Mini round** (about $0.50): `harbor/round_task/README.md`, section Mini round 3. Verified 2026-10-27. With `--frontier-preset smoke-gpt-5-mini-tight` some appeals end undecided at the output limit, which tests whether an improver finds them; verified 2026-10-28.
+- **Mini round** (about $0.50): `harbor/round_task/README.md`, section Mini round 3. Verified 2026-10-27. With `--frontier-preset smoke-gpt-5-mini-tight` some appeals end undecided at the output limit, which tests whether an improver finds them; verified 2026-10-28. `--pro-gepa` gives the ZenML Pro arm GEPA and a budget of appeal runs; it needs the pro image rebuilt by `build_images.sh` after 2026-10-28.
 
 ## 7. Full rerun
 
