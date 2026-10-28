@@ -889,8 +889,15 @@ def arm_access(s: Settings, p: Paths, arm: str, k: int) -> str:
     reg = kitaru_registry(p)
     version = reg["versions"][current(p, "pro")["hash"]]
     evaluator = reg["evaluator"]
+    numbers = {v["id"]: v["number"] for v in reg["versions"].values()}
+    deciders = "; ".join(f"batch {j}: " + ", ".join(sorted({f"`{s.pro_agent}@{numbers[r['kitaru_agent_version']]}`"
+                                                             for r in jl(p.runs / "pro" / f"batch-{j}.jsonl")
+                                                             if r.get("kitaru_agent_version") in numbers}))
+                         for j in range(1, k + 1))
     return (f"The agent is registered in the Kitaru workspace you can reach as `{s.pro_agent}`, and its recorded runs "
-            f"are sessions of that agent, one per appeal (the session input is `Review appeal <id>.`). The sessions of "
+            f"are sessions of that agent, one per appeal (the session input is `Review appeal <id>.`). Each batch's "
+            f"recorded sessions belong to the agent version that decided it ({deciders}); other sessions of the agent, "
+            f"such as replays or earlier runs, can carry the same names. The sessions of "
             f"the revealed appeals are in the cohort `{reg['cohort']}` (its latest version). The version in "
             f"`{TRIAL_AGENT_DIR}` as you received it is registered as `{s.pro_agent}@{version['number']}`, whose working "
             f"directory `{version['workdir']}` exists in this sandbox as a read-only copy of it. The evaluator "
