@@ -45,7 +45,7 @@ Source: [California IMR determinations](https://data.chhs.ca.gov/dataset/indepen
 ## 5. Free checks
 
 ```bash
-uv run --with pytest pytest -q scripts                                  # 11 passed; verified 2026-10-28
+uv run --with pytest pytest -q scripts                                  # 14 passed; verified 2026-10-28
 uv run python scripts/score.py work/runs/<tag>.jsonl                    # per-batch and cumulative table
 ```
 
@@ -53,7 +53,7 @@ uv run python scripts/score.py work/runs/<tag>.jsonl                    # per-ba
 
 - **Calibration batch on three models** (about $2.50): run `scripts/run_batch.py --batch 0` with the frozen agent on Qwen (`CLAIMS_AGENT_BASE_URL` set, server from `harness/extract/extract.py up`), and with copies whose `config.toml` uses `openai-responses:gpt-6.1-sol` and `openai-responses:gpt-6-luna`. Expected: Qwen 70 to 76% accuracy, Sol about 88% balanced accuracy. Verified 2026-10-27 (table in `README.md`). GPT-6 models need the Responses API (`openai-responses:`); on chat completions they reject tools with reasoning.
 - **HICRIC classifier** (about $1.60): `harness/hicric/README.md`, section Rerun. Verified 2026-10-27.
-- **Mini round** (about $0.50): `harbor/round_task/README.md`, section Mini round 3. Verified 2026-10-27.
+- **Mini round** (about $0.50): `harbor/round_task/README.md`, section Mini round 3. Verified 2026-10-27. With `--frontier-preset smoke-gpt-5-mini-tight` some appeals end undecided at the output limit, which tests whether an improver finds them; verified 2026-10-28.
 
 ## 7. Full rerun
 
@@ -62,6 +62,8 @@ harbor/round_task/build_images.sh                                       # verifi
 export DOCKER_CONTEXT=orbstack CLAIMS_AGENT_BASE_URL=... PRO_AGENT_DIR=...
 uv run --extra agent python scripts/round.py --frontier-preset gpt-6.1-sol --rounds 1-8 --concurrency 24   # verified 2026-10-28, one round at a time
 ```
+
+The published run used the approval rule now selected by `--approval-on revealed`; add that flag to reproduce it. Without it, approval runs on held-out appeals (README, "Approval rule since the run").
 
 `round.py` is resumable: each finished step writes `work/rounds/round-<k>/<step>.json` and is skipped on rerun. From round 4 the open model's server must be deployed (`harness/extract/extract.py up`); it scales to zero when idle, and `round.py` waits for it before each step that uses it. `--concurrency` sets how many appeals the batch runs and approvals run at once; at the default of 8 the first approval on the open model took over 3 hours, at 24 an approval of both arms took 15 to 101 minutes.
 

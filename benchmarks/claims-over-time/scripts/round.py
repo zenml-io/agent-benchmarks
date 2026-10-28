@@ -18,8 +18,10 @@ Round k, in order (each step writes `<rounds>/round-<k>/<step>.json` when it fin
   cohort   a new version of the Kitaru cohort of the pro line's revealed sessions (batches 1..k)
   improve  one Harbor round task per improver arm (harbor/round_task/), both trials at once; no worker runs on this
            machine meanwhile: the pro trial runs its own, so versions the Pro agent registers run only in its sandbox
-  approve  the candidate each trial left is run with the current version on every revealed appeal so far (locally,
-           cached by version hash and appeal); it ships only if its balanced accuracy is at least as high. Reruns are
+  approve  the candidate each trial left is run with the current version, three times each, on the held-out appeals
+           of batches 1..k (drawn from the unrevealed ones; with --approval-on revealed, on the revealed appeals as in
+           the published run), locally and cached by version hash and appeal; it ships only if its mean balanced
+           accuracy is at least as high, and wrongful denials and approvals are reported for both. Reruns are
            counted per arm (Codex: `claims-rerun` calls; pro: Kitaru experiment runs), and the improver's own command
            log is scanned for runs of the claims agent outside that path, which count as over budget
   audit    checks the Kitaru workspace: no evaluation of an unrevealed appeal, no task of a version the Pro agent
@@ -35,7 +37,7 @@ the model server every two minutes so it does not scale to zero under them.
 
 Fairness rules this script enforces: every agent version runs with a view of the appeals that has no ruling at all
 (<rounds>/views/agent/); a trial and the Kitaru worker see rulings for revealed appeals only (<rounds>/views/round-<k>/);
-nothing about unrevealed appeals is scored anywhere but here.
+nothing about unrevealed appeals is scored anywhere but here, the held-out approval appeals included.
 
 Environment: OPENAI_API_KEY; CLAIMS_AGENT_BASE_URL (from the switch round on). The pro line needs the ZenML Pro agent
 bundle, which is not public: PRO_AGENT_DIR (its directory, put on Harbor's import path; this script runs its
@@ -52,6 +54,7 @@ import hashlib
 import importlib.util
 import json
 import os
+import random
 import re
 import shutil
 import signal
@@ -123,6 +126,9 @@ PRESETS: dict[str, dict[str, Any]] = {
     # Cheap smoke tests only.
     "smoke-gpt-5-mini": {"model": "openai-chat:gpt-5-mini", "base_url_env": "",
                          "model_settings": {"temperature": 0.6, "max_tokens": 4096}},
+    # An output limit low enough that some appeals end undecided, as on the open model (1 in 10 at 1500 tokens).
+    "smoke-gpt-5-mini-tight": {"model": "openai-chat:gpt-5-mini", "base_url_env": "",
+                               "model_settings": {"temperature": 0.6, "max_tokens": 1200}},
 }
 
 
@@ -140,6 +146,9 @@ class Settings:
     # Runs of each version on the revealed appeals at approval; their mean balanced accuracy decides. One run on 20
     # appeals with 4 upheld moved a candidate 25 points between two runs in round 1.
     approval_repeats: int = 3
+    # "held-out": approval runs on appeals whose rulings the improvers never get; "revealed": on the revealed appeals
+    # the improvers studied, the rule of the published run.
+    approval_on: str = "held-out"
 
     @property
     def lines(self) -> tuple[str, ...]:
@@ -239,7 +248,7 @@ def all_cases() -> list[dict[str, Any]]:
 
 
 def make_plan(s: Settings) -> dict[int, dict[str, list[str]]]:
-    """Per batch: the appeal ids the lines decide and the ids revealed after it."""
+    """Per batch: the appeal ids the lines decide, the ids revealed after it, and the held-out ids approval runs on."""
     cases = sorted(all_cases(), key=lambda c: c["order"])
     plan = {}
     for k in range(1, TOTAL_ROUNDS + 1):
@@ -251,12 +260,33 @@ def make_plan(s: Settings) -> dict[int, dict[str, list[str]]]:
             shown += [c for c in revealed if c not in shown][:4 - len(shown)]
             hidden = [c for c in batch if not c["revealed"]][:s.batch_size - len(shown)]
             batch, revealed = sorted(shown + hidden, key=lambda c: c["order"]), shown
-        plan[k] = {"ids": [c["id"] for c in batch], "revealed": sorted(c["id"] for c in revealed)}
+        plan[k] = {"ids": [c["id"] for c in batch], "revealed": sorted(c["id"] for c in revealed),
+                   "approval": held_out(s, k, [c for c in batch if c not in revealed])}
     return plan
+
+
+def held_out(s: Settings, k: int, unrevealed: list[dict[str, Any]]) -> list[str]:
+    """As many unrevealed appeals of batch k as are revealed per batch, drawn with a seed per batch so every call
+    draws the same ones. Upheld and overturned appeals are drawn in the batch's own proportion (in --mini two of each
+    when the batch has them), so a draw with two upheld appeals cannot let those two decide half the score."""
+    rng = random.Random(f"claims-over-time-approval-{k}")
+    pool = rng.sample(unrevealed, len(unrevealed))
+    n = s.revealed_per_batch
+    upheld = [c for c in pool if c["truth"] == "uphold"]
+    n_upheld = 2 if s.mini else round(n * len(upheld) / len(pool))
+    picked = upheld[:n_upheld] + [c for c in pool if c["truth"] == "overturn"][:n - n_upheld]
+    picked += [c for c in pool if c not in picked][:n - len(picked)]
+    return sorted(c["id"] for c in picked)
 
 
 def revealed_through(plan: dict[int, dict[str, list[str]]], k: int) -> list[str]:
     return sorted(i for j in range(1, k + 1) for i in plan[j]["revealed"])
+
+
+def approval_ids(s: Settings, plan: dict[int, dict[str, list[str]]], k: int) -> list[str]:
+    if s.approval_on == "revealed":
+        return revealed_through(plan, k)
+    return sorted(i for j in range(1, k + 1) for i in plan[j]["approval"])
 
 
 def write_view(directory: Path, truth_ids: set[str]) -> None:
@@ -937,8 +967,18 @@ def build_task(s: Settings, p: Paths, k: int, arm: str, plan: dict, budget: int)
         round=k, total_rounds=TOTAL_ROUNDS, batch_size=s.batch_size, current_version=cur["version"],
         agent_dir=TRIAL_AGENT_DIR, runs_total=sum(len(plan[j]["ids"]) for j in range(1, k + 1)),
         revealed_count=s.revealed_per_batch, revealed_total=len(revealed), cases_file=TRIAL_CASES,
-        arm_access=arm_access(s, p, arm, k), rerun_budget=budget, minutes=s.minutes))
+        arm_access=arm_access(s, p, arm, k), rerun_budget=budget, minutes=s.minutes,
+        approval_rule=approval_rule(s, plan, k)))
     return task
+
+
+def approval_rule(s: Settings, plan: dict, k: int) -> str:
+    """The instruction's sentence on which appeals approval runs on."""
+    if s.approval_on == "revealed":
+        return "on every revealed appeal so far"
+    return (f"on {len(approval_ids(s, plan, k))} appeals of batches 1 to {k} whose rulings you do not have and will "
+            f"not get ({s.revealed_per_batch} per batch, drawn at random from the unrevealed ones; which ones is not "
+            f"disclosed)")
 
 
 def trial_hosts(s: Settings, k: int, arm: str, extra: list[str]) -> list[str]:
@@ -1180,6 +1220,9 @@ def step_approve(s: Settings, p: Paths, k: int, plan: dict, concurrency: int) ->
 def approve_arms(s: Settings, p: Paths, k: int, plan: dict, concurrency: int) -> dict[str, Any]:
     improve = done(p, k, "improve")
     revealed = revealed_through(plan, k)
+    ids = approval_ids(s, plan, k)
+    if s.approval_on == "held-out" and set(ids) & set(revealed):
+        raise RuntimeError(f"held-out approval appeals that were revealed: {sorted(set(ids) & set(revealed))}")
     truth = {c["id"]: c["truth"] for c in all_cases()}
     first = improve[s.arms[0]]
     # A round improved before attempts were recorded had one attempt.
@@ -1199,7 +1242,8 @@ def approve_arms(s: Settings, p: Paths, k: int, plan: dict, concurrency: int) ->
         info, cur = improve[arm], current(p, arm)
         cur_dir = version_dir(p, arm, cur["version"])
         decision: dict[str, Any] = {"round": k, "arm": arm, "current_version": cur["version"], "current_hash": cur["hash"],
-                                    "trial_dir": info.get("trial_dir"), "revealed_n": len(revealed), "shipped": False}
+                                    "trial_dir": info.get("trial_dir"), "revealed_n": len(revealed),
+                                    "approval_on": s.approval_on, "approval_n": len(ids), "shipped": False}
         trial = Path(info["trial_dir"]) if info.get("trial_dir") else None
         verifier = trial / "verifier" if trial else None
         check = json.loads((verifier / "check.json").read_text()) if verifier and (verifier / "check.json").exists() else {}
@@ -1239,25 +1283,33 @@ def approve_arms(s: Settings, p: Paths, k: int, plan: dict, concurrency: int) ->
         else:
             scores: dict[str, dict[str, Any]] = {}
             balanced: dict[str, float] = {}
+            errors: dict[str, dict[str, float]] = {}
             for label, directory, h in (("current", cur_dir, cur["hash"]), ("candidate", cand_dir, decision["candidate_hash"])):
                 runs: list[dict[str, Any]] = []
                 for r in range(s.approval_repeats):
                     # Run 0 keeps the cache name used before repeats existed, so earlier approval runs are reused.
                     cache = p.runs / "approval" / (f"{h}.jsonl" if r == 0 else f"{h}.r{r}.jsonl")
                     before = {row["case_id"] for row in jl(cache)}
-                    rows = run_batch(cache, revealed, p.agent_view, agent_dir=directory, concurrency=concurrency)
+                    rows = run_batch(cache, ids, p.agent_view, agent_dir=directory, concurrency=concurrency)
                     pairs = [(score_mod.decision_of(row), truth[row["case_id"]]) for row in rows]
                     runs.append({"balanced_accuracy": float(score_mod.balanced(pairs)),
                                  "accuracy": sum(d == t for d, t in pairs) / len(pairs),
+                                 "wrongful_denials": sum(d == "uphold" and t == "overturn" for d, t in pairs),
+                                 "wrongful_approvals": sum(d == "overturn" and t == "uphold" for d, t in pairs),
                                  "undecided": sum(d is None for d, _ in pairs), "rows": str(cache),
-                                 "new_runs": len(set(revealed) - before),
+                                 "new_runs": len(set(ids) - before),
                                  "new_cost_usd": round(sum(row_cost(row) for row in rows if row["case_id"] not in before), 4)})
                 balanced[label] = sum(run["balanced_accuracy"] for run in runs) / len(runs)
-                scores[label] = {"hash": h, "balanced_accuracy": balanced[label], "repeats": len(runs), "runs": runs}
+                errors[label] = {key: sum(run[key] for run in runs) / len(runs)
+                                 for key in ("wrongful_denials", "wrongful_approvals", "undecided")}
+                scores[label] = {"hash": h, "balanced_accuracy": balanced[label], "repeats": len(runs), "runs": runs,
+                                 "mean_errors": errors[label]}
             decision["approval"] = scores
             ship = balanced["candidate"] >= balanced["current"]
-            reason = (f"mean balanced accuracy over {s.approval_repeats} runs on {len(revealed)} revealed appeals: candidate "
-                      f"{scores['candidate']['balanced_accuracy']:.3f} vs current {scores['current']['balanced_accuracy']:.3f}")
+            reason = (f"mean balanced accuracy over {s.approval_repeats} runs on {len(ids)} {s.approval_on} appeals: candidate "
+                      f"{scores['candidate']['balanced_accuracy']:.3f} vs current {scores['current']['balanced_accuracy']:.3f}"
+                      + "".join(f"; {key.replace('_', ' ')} {errors['candidate'][key]:.1f} vs {errors['current'][key]:.1f}"
+                                for key in ("wrongful_denials", "wrongful_approvals", "undecided")))
             if ship:
                 decision["shipped"] = True
                 decision["new_version"] = add_version(p, arm, cand_dir, k, f"round {k} candidate, approved: {reason}",
@@ -1470,6 +1522,9 @@ def main() -> None:
                     help="restart this arm's finished trial when improve runs again (infrastructure decided its outcome); "
                          "first move the round's improve, approve and audit markers and the arm's decision file aside")
     ap.add_argument("--approval-repeats", type=int, default=3, help="runs of each version at approval; the mean decides")
+    ap.add_argument("--approval-on", choices=("held-out", "revealed"), default="held-out",
+                    help="the appeals approval runs on: held-out unrevealed ones, or the revealed ones (the rule of the "
+                         "published 2026-10-28 run)")
     ap.add_argument("--minutes", type=int, default=45, help="each improver's time limit")
     ap.add_argument("--pro-agent", help="Kitaru agent name of the pro line (default claims-agent, or claims-agent-smoke "
                                         "with --mini)")
@@ -1490,7 +1545,7 @@ def main() -> None:
         raise SystemExit(f"PRO_AGENT_DIR={pro_dir} has no pro_agent/agent.py or no executable prepare")
     s = Settings(frontier_preset=a.frontier_preset, open_preset=a.open_preset, switch_round=a.switch_round,
                  improver_model=a.improver_model, rerun_budget=a.rerun_budget, minutes=a.minutes, mini=a.mini,
-                 approval_repeats=a.approval_repeats,
+                 approval_repeats=a.approval_repeats, approval_on=a.approval_on,
                  pro_agent=a.pro_agent or ("claims-agent-smoke" if a.mini else "claims-agent"),
                  pro_arm=pro_dir is not None)
     p = Paths(rounds=WORK / "rounds" / ("mini" if a.mini else ""), runs=WORK / "runs" / ("mini" if a.mini else ""))
