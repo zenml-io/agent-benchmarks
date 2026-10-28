@@ -90,18 +90,23 @@ TRIAL_CASES = "/claims/data/cases.jsonl"
 # The Pro agent's only rerun path is Kitaru experiments, so its trial gets neither `claims-rerun` nor run_batch.py.
 TRIAL_TOOLS_BY_ARM = {"codex": TRIAL_TOOLS, "pro": [BENCH / "harbor" / "round_task" / "verify.py"]}
 # Commands that run the claims agent outside an arm's counted rerun path (`claims-rerun`, Kitaru experiments).
-# Only what calls the model counts: importing the package to call a read tool such as `Env.call` directly does not.
-OUTSIDE_RUNS = re.compile(r"\bclaims_agent\.episode\b|\b(run_episode|build_agent)\s*\("
+# Only what calls the model counts: importing the package to call a read tool such as `Env.call` directly does not,
+# and neither does a process listing that searches for the episode module by name (`ps ... | rg claims_agent.episode`).
+OUTSIDE_RUNS = re.compile(r"-m\s+claims_agent\.episode\b|\b(from\s+claims_agent\.episode\s+|import\s+claims_agent\.episode\b)"
+                          r"|\b(run_episode|build_agent)\s*\("
                           r"|python[\d.]*\s+\S*run_batch\.py|\bkitaru\b.*\breplay\s+create\b|session_runs\.create")
 # The command a Kitaru agent version is registered with names the episode module without running it.
 REGISTERED_COMMAND = re.compile(r"--command[\s=]+(\"[^\"]*\"|'[^']*'|\S+)")
 # A `--help` call names the episode module without running the agent.
 HELP_ONLY = re.compile(r"claims_agent\.episode\s+(--help|-h)\b")
+# A quoted pattern given to a search or text tool (`rg 'claims_agent.episode'`, `sed -E 's/.*python -m ...//'`) names
+# the module without running it; a run elsewhere in the same command is still found.
+SEARCH_PATTERN = re.compile(r"\b(rg|grep|egrep|sed|awk|pgrep)((\s+-[\w-]+)*)\s+('[^']*'|\"[^\"]*\")")
 
 
 def runs_claims_agent(command: str) -> bool:
     """Whether a shell command from an improver's log runs the claims agent (calls its model)."""
-    command = REGISTERED_COMMAND.sub(" ", command)
+    command = SEARCH_PATTERN.sub(r"\1\2 ''", REGISTERED_COMMAND.sub(" ", command))
     return bool(OUTSIDE_RUNS.search(HELP_ONLY.sub(" ", command)))
 
 
@@ -890,7 +895,7 @@ def trial_image_and_user(arm: str) -> tuple[str, str]:
     return (CODEX_IMAGE, "root") if arm == "codex" else (pro_round_image(), image_user(pro_round_image()))
 
 
-def build_task(s: Settings, p: Paths, k: int, arm: str, plan: dict) -> Path:
+def build_task(s: Settings, p: Paths, k: int, arm: str, plan: dict, budget: int) -> Path:
     task = p.round(k) / arm / "task"
     shutil.rmtree(task, ignore_errors=True)
     shutil.copytree(TASK_TEMPLATE, task)
@@ -925,14 +930,14 @@ def build_task(s: Settings, p: Paths, k: int, arm: str, plan: dict) -> Path:
         for j in range(1, k + 1):
             rows = [{key: v for key, v in r.items() if key != "agent_dir"} for r in jl(p.runs / "codex" / f"batch-{j}.jsonl")]
             (ctx / "runs" / f"batch-{j}.jsonl").write_text("".join(json.dumps(r) + "\n" for r in rows))
-    write_json(ctx / "round.json", {"round": k, "arm": arm, "rerun_budget": s.rerun_budget, "minutes": s.minutes,
+    write_json(ctx / "round.json", {"round": k, "arm": arm, "rerun_budget": budget, "minutes": s.minutes,
                                     "current_version": cur["version"], "revealed": len(revealed)})
     text = INSTRUCTIONS.read_text().split("\n---\n", 1)[1].strip() + "\n"
     (task / "instruction.md").write_text(text.format(
         round=k, total_rounds=TOTAL_ROUNDS, batch_size=s.batch_size, current_version=cur["version"],
         agent_dir=TRIAL_AGENT_DIR, runs_total=sum(len(plan[j]["ids"]) for j in range(1, k + 1)),
         revealed_count=s.revealed_per_batch, revealed_total=len(revealed), cases_file=TRIAL_CASES,
-        arm_access=arm_access(s, p, arm, k), rerun_budget=s.rerun_budget, minutes=s.minutes))
+        arm_access=arm_access(s, p, arm, k), rerun_budget=budget, minutes=s.minutes))
     return task
 
 
@@ -1006,7 +1011,12 @@ def step_improve(s: Settings, p: Paths, k: int, plan: dict, extra_hosts: list[st
                 "started": ran[-1]["started"], "trial_dir": str(trial), "kept_from_attempt": ran[-1]["attempt"],
                 "finished": datetime.fromtimestamp((trial / "verifier" / "reward.txt").stat().st_mtime, UTC).isoformat()}
             continue
-        task = build_task(s, p, k, arm, plan)
+        # A restarted trial gets what the earlier attempts left of the budget: their reruns count against it.
+        used = count_reruns(s, p, arm, attempts, now())["counted"] if ran else 0
+        budget = max(0, s.rerun_budget - used)
+        if used:
+            log(f"improve: {arm} used {used} rerun(s) in earlier attempts; its trial gets {budget}")
+        task = build_task(s, p, k, arm, plan, budget)
         jobs = p.round(k) / arm / "jobs"
         job = f"{'mini-' if s.mini else ''}round-{k}-{arm}" + (f"-attempt-{n}" if n > 1 else "")
         if (jobs / job).exists():
@@ -1021,7 +1031,7 @@ def step_improve(s: Settings, p: Paths, k: int, plan: dict, extra_hosts: list[st
                     "--ak", f"trial_user={user}"]
         info[arm] = {"task": str(task), "job_dir": str(jobs / job), "hosts": trial_hosts(s, k, arm, extra_hosts),
                      "command": cmd, "image": image, "prepared": prepared if arm == "pro" else None}
-        arms[arm] = {"status": "ran", "job_dir": str(jobs / job), "info": dict(info[arm])}
+        arms[arm] = {"status": "ran", "job_dir": str(jobs / job), "info": dict(info[arm]), "rerun_budget": budget}
         if ran and arm in (retry or {}):
             arms[arm]["retry_reason"] = (retry or {})[arm]
     # No worker runs on this machine during the trials: the pro trial starts its own (pro_round_agent.py).

@@ -1,6 +1,6 @@
 # Rerun: claims over time
 
-Each component's README has the full detail; this file gives the order. Commands marked "verified 2026-10-27" were run while building the benchmark. No full round has run, so the full-run steps are untested.
+Each component's README has the full detail; this file gives the order. Commands marked "verified 2026-10-27" were run while building the benchmark; the full run (section 7) ran on 2026-10-27 and 2026-10-28.
 
 ## 1. Prerequisites
 
@@ -45,7 +45,7 @@ Source: [California IMR determinations](https://data.chhs.ca.gov/dataset/indepen
 ## 5. Free checks
 
 ```bash
-uv run --with pytest pytest -q scripts                                  # 9 passed; verified 2026-10-27
+uv run --with pytest pytest -q scripts                                  # 11 passed; verified 2026-10-28
 uv run python scripts/score.py work/runs/<tag>.jsonl                    # per-batch and cumulative table
 ```
 
@@ -55,15 +55,19 @@ uv run python scripts/score.py work/runs/<tag>.jsonl                    # per-ba
 - **HICRIC classifier** (about $1.60): `harness/hicric/README.md`, section Rerun. Verified 2026-10-27.
 - **Mini round** (about $0.50): `harbor/round_task/README.md`, section Mini round 3. Verified 2026-10-27.
 
-## 7. Full rerun (not run yet)
+## 7. Full rerun
 
 ```bash
 harbor/round_task/build_images.sh                                       # verified 2026-10-27
 export DOCKER_CONTEXT=orbstack CLAIMS_AGENT_BASE_URL=... PRO_AGENT_DIR=...
-uv run --extra agent python scripts/round.py --frontier-preset gpt-6.1-sol --rounds 1-8
+uv run --extra agent python scripts/round.py --frontier-preset gpt-6.1-sol --rounds 1-8 --concurrency 24   # verified 2026-10-28, one round at a time
 ```
 
-`round.py` is resumable: each finished step writes `work/rounds/round-<k>/<step>.json` and is skipped on rerun. From round 4 the open model's server must be deployed (`harness/extract/extract.py up`); it scales to zero when idle, and `round.py` waits for it before each step that uses it. Cost and wall time are not known yet.
+`round.py` is resumable: each finished step writes `work/rounds/round-<k>/<step>.json` and is skipped on rerun. From round 4 the open model's server must be deployed (`harness/extract/extract.py up`); it scales to zero when idle, and `round.py` waits for it before each step that uses it. `--concurrency` sets how many appeals the batch runs and approvals run at once; at the default of 8 the first approval on the open model took over 3 hours, at 24 an approval of both arms took 15 to 101 minutes.
+
+The full run cost about $87 ($54.53 of Modal GPU time for the open model, about $32 of OpenAI usage by the frameworks' estimates) and took about 18 hours from the first batch to the last audit, including four retried ZenML Pro trials. A round on the open model took 2 to 2.5 hours without retries: the three batch runs about 17 minutes, both improver trials 30 to 40 minutes in parallel, approval the rest. Stop the open model's server afterwards (`harness/extract/extract.py down`) and check `modal app list`.
+
+To retry an arm whose trial a network failure cut short, set the step's markers aside (`improve`, `approve`, `audit` and that arm's `decision-<arm>.json`), undo the arm's shipped version if the cut trial's candidate shipped (move `work/rounds/<arm>/versions/<n>` aside, copy the previous version's `meta.json` to `current.json`, and add a line saying so to `history.jsonl`), and run the round again with `--retry-improve ARM=REASON`. The restarted trial is told what is left of the arm's budget.
 
 ### Interruptions and resuming
 

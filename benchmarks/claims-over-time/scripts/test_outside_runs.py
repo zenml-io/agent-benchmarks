@@ -22,6 +22,7 @@ RUNS = [
     "python -c 'from claims_agent.agent import build_agent, Env; a = build_agent(Env(w), c, set(), cfg)'",
     "python /claims/bin/run_batch.py --ids MN25-1",
     "kitaru --server x replay create --session s",
+    "grep -c MN25 /claims/ids.txt && python -m claims_agent.episode MN25-1 --local",
 ]
 
 
@@ -36,6 +37,9 @@ NOT_RUNS = [
     "kitaru experiment run start exp --agent claims-agent@5 --wait",
     "claims-rerun --agent-dir /claims/try/claims_agent",
     "cd /claims/agent && CLAIMS_WORK_DIR=/claims/data /opt/claims-venv/bin/python -m claims_agent.episode --help",
+    "wc -l /claims/reruns/3/rows.jsonl; ps -eo etime,stat,cmd | rg 'claims_agent.episode' | cut -c1-180 | tail -n 8",
+    "ps -eo pid,etime,cmd | rg 'rerun.py|run_batch.py|claims_agent.episode' | cut -c1-200",
+    "wc -l /claims/reruns/1/rows.jsonl; ps -eo etime,stat,cmd | rg 'claims_agent.episode' | sed -E 's/.*python -m claims_agent.episode ([^ ]+).*/\\\\1/' | head -15",
 ]
 
 

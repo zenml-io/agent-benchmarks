@@ -6,7 +6,7 @@ When a claims-review agent meets new cases in batches, with only a few outcomes 
 
 ## Status
 
-**In progress: the harness is built and checked; no improvement round has run.** Built and checked on 2026-10-27: the case stream, the agent port, the reference classifier, both improver arms in Harbor, and three mini rounds end to end. Spend so far: about $13 (case-file extraction $3.19 on Modal's bill; classifier training about $1.60 of GPU time; calibration runs about $2.50; smoke tests and mini rounds about $1.50; interruption tests about $4.05, of which $2.74 on Modal's bill; OpenAI costs are the frameworks' own estimates, not checked against the bill).
+**Complete: all eight rounds ran on 2026-10-27 and 2026-10-28.** No improver beat the agent that was left alone by a margin this design can detect (section "Over time"). Spend on the full run: about $87, of which $54.53 for the open model's server (Modal's bill) and about $32 of OpenAI usage: the claims agent on `gpt-6.1-sol` in rounds 1 to 3 ($11.91 for the batches, $9.04 for approvals, $4.38 for Codex's reruns and $5.66 for the ZenML Pro agent's Kitaru experiments) and $1.26 for both improvers over all rounds and retries. Building and checking the harness on 2026-10-27 cost about $13 more (case-file extraction $3.19 on Modal's bill; classifier training about $1.60 of GPU time; calibration runs about $2.50; smoke tests and mini rounds about $1.50; interruption tests about $4.05, of which $2.74 on Modal's bill). OpenAI costs are the frameworks' own estimates, not checked against the bill.
 
 ## Design
 
@@ -18,6 +18,55 @@ When a claims-review agent meets new cases in batches, with only a few outcomes 
 - **Fairness rules.** Both improvers run on `gpt-6-luna`, get the same instructions except one line (`harness/improver_instructions.md`), the same revealed rulings, the same budget (3 reruns on the revealed appeals, 45 minutes; Codex reruns with a `claims-rerun` tool, the ZenML Pro agent only through Kitaru experiments, and any other run of the agent found in an improver's command log counts as over budget) and the same network (the model API, and for `pro` the Kitaru workspace). An improver can never read the ruling of an unrevealed appeal, and no score of an unrevealed appeal is written anywhere an improver can read.
 
 ## Results
+
+### Over time (batches 1 to 8, 100 appeals each)
+
+Balanced accuracy of each line on each new batch, decided by the version that was current before the batch's outcomes were revealed. Batches 1 to 3 ran on `gpt-6.1-sol`, batches 4 to 8 on Qwen3.8-27B.
+
+| batch | model | `left_alone` | `codex` | `pro` |
+|---|---|---|---|---|
+| 1 | Sol | 81.2% | 80.1% | 79.4% |
+| 2 | Sol | 78.4% | 78.4% | 77.7% |
+| 3 | Sol | 86.7% | 90.0% | 85.3% |
+| 4 | Qwen | 65.4% | 64.5% | 64.8% |
+| 5 | Qwen | 76.6% | 73.7% | 71.2% |
+| 6 | Qwen | 78.3% | 85.2% | 80.2% |
+| 7 | Qwen | 72.2% | 74.2% | 80.0% |
+| 8 | Qwen | 66.9% | 75.0% | 74.8% |
+| batches 1 to 3 | Sol | 82.4% | 83.1% | 81.1% |
+| batches 4 to 8 | Qwen | 71.8% | 74.1% | 73.8% |
+| all 800 (95% CI) | | 75.5% (72.2 to 78.6) | 76.8% (73.4 to 80.2) | 75.6% (72.2 to 78.9) |
+
+Paired differences on the same appeals (bootstrap over appeals, 95% CI): over all 800, `codex` minus `left_alone` +1.3 points (-1.6 to +4.1), `pro` minus `left_alone` +0.2 (-3.0 to +3.3), `pro` minus `codex` -1.2 (-4.0 to +1.3). Over batches 4 to 8: +2.4 (-1.5 to +6.4), +2.1 (-2.5 to +6.6) and -0.3 (-4.1 to +3.5). Every interval includes zero.
+
+Over all 800 appeals, `left_alone` made 141 wrongful denials, 27 wrongful approvals and left 46 appeals undecided; `codex` 82, 47 and 35; `pro` 88, 69 and 10. Accuracy (not balanced) was 73.2%, 79.5% and 79.1%.
+
+### What each improver changed
+
+Each cell gives the change and the approval result: mean balanced accuracy over 3 runs on every revealed appeal so far, candidate against current version. All changes were to the prompt or to one setting; neither improver changed the agent's code or tools.
+
+| round | revealed | `codex` | `pro` |
+|---|---|---|---|
+| 1 | 20 | ASAM level 3.1/3.5 residential rule; not shipped (0.802 vs 0.823) | tested separating missing documentation from negative evidence; shipped nothing |
+| 2 | 40 | residential treatment center rule; **shipped** (0.862 vs 0.760) | tested fact-matched precedent comparison; shipped nothing (first trial cut by DNS, retried) |
+| 3 | 60 | acute rehabilitation after stroke rule; **shipped** (0.895 vs 0.884) | RTC/ASAM precedent comparison rule; **shipped** (0.878 vs 0.795) |
+| 4 | 80 | limit on precedent searches; not shipped (0.762 vs 0.768) | concise reasoning and exact-treatment search first; **shipped** (0.748 vs 0.735; first trial cut by DNS, retried, 1 rerun over budget) |
+| 5 | 100 | considered a higher output limit; no change | output limit 4,096 to 8,192 tokens; **shipped** (0.776 vs 0.770; first trial cut by DNS, retried) |
+| 6 | 120 | proton-beam rule; **shipped** (0.814 vs 0.798) | verify the exact drug and diagnosis; **shipped** (0.786 vs 0.783; first trial cut by DNS, retried) |
+| 7 | 140 | output limit 4,096 to 8,192 tokens; **shipped** (0.829 vs 0.818) | tested an ABA hours rule, it broke another appeal; shipped nothing |
+| 8 | 160 | match evidence to the exact service and setting; **shipped** (0.816 vs 0.807) | match precedents on service, diagnosis and indication; **shipped** (0.843 vs 0.811) |
+
+Round 8's changes were never scored on a new batch. The improvers' own cost, by the frameworks' estimates: Codex $0.69 and the ZenML Pro agent $0.57 over all eight rounds, retries included.
+
+### What the run showed
+
+- **The noise is as large as the improvements.** On batches 1 and 2 all three lines ran the same starting version: they differed by up to 1.8 points on 100 appeals. On 20 appeals one candidate scored 0.969 and 0.719 in two runs minutes apart (round 1). The three-run approval rule shipped changes that won by 0.3 to 10.2 points on the revealed appeals; the lines that carried them ended within 1.3 points of the line that never changed.
+- **The improvers traded wrongful denials for wrongful approvals.** Both improved lines made about 40% fewer wrongful denials than `left_alone`, and more wrongful approvals: `codex` 1.7 times as many, `pro` 2.6 times. Balanced accuracy weighs both errors equally; an insurer or a patient would not.
+- **The model switch cost every line 7 to 11 points.** Against `left_alone`, `codex` was 0.7 points ahead before the switch and 2.3 after it, `pro` 1.3 behind and 2.0 ahead; all within the noise.
+- **Both improvers found the same settings fix.** On Qwen, the original 4,096-token output limit left appeals undecided when the model's reasoning used it up. The ZenML Pro agent raised it to 8,192 in round 5, Codex in round 7. From batch 6, `pro` left 1 of 300 appeals undecided, `left_alone` 33.
+- **The ZenML Pro agent shipped nothing twice after its own test showed harm** (rounds 1 and 7). Codex shipped nothing once (round 5).
+- **Four of the eight ZenML Pro trials were cut by DNS failures**, none of Codex's. The host's VPN resolver failed for short spells; the ZenML Pro agent's instructions stop it at its first workspace error, while Codex retried failed commands. Each cut trial was rerun, whatever its approval result, with the budget the earlier attempt left. After the VPN was turned off, during round 6, no failure recurred.
+- **A restarted ZenML Pro trial picked up from the stored workspace.** In round 6 the retried trial found the first attempt's experiment in the Kitaru workspace, read its results and resubmitted the same change in 5 minutes without a new rerun. A restarted Codex trial starts from nothing, because its notes and reruns lived in the dead container.
 
 ### Calibration batch (batch 0, 100 appeals, one attempt each)
 
@@ -51,7 +100,13 @@ Found while building it:
 - A Kitaru agent version registered with a working directory points at that directory, not a copy, so a version's code can change after it is registered. The improver edited and reverted one directory under three versions.
 - A Kitaru replay that fails (here, the claims agent hitting its request limit) gets no evaluation, so an experiment's own scores leave that appeal out instead of counting it as wrong. The approval rule scores on the host and counts it as wrong.
 
-Not checked: any full round; the model switch end to end; the noise between two unchanged runs of the same batch (planned: round 1 runs the starting version three times, once per line).
+Found while running it:
+- The scan for agent runs outside an arm's counted rerun path matched commands that only name the episode module: `--help` calls, imports that call a read tool directly, and process listings that search for the module with `rg` or `sed`. Each false match was fixed in `round.py`, added to `scripts/test_outside_runs.py`, and every earlier decision recounted; a recounted decision keeps its old counts under `reruns.recounted`. One overrun is real: the round 4 retry of the ZenML Pro trial was told it had 3 reruns, used them, and the first attempt's 1 counts too. Since then a restarted trial is told the budget the earlier attempts left.
+- The first approval on the open model (round 4) ran 8 appeals at a time and took 3 hours 11 minutes. From the round 4 retry on, `round.py` ran with `--concurrency 24`, and an approval of both arms took 15 to 101 minutes, growing with the number of revealed appeals.
+- Codex's `claims-rerun` runs 6 appeals at a time and the ZenML Pro agent's Kitaru worker 4, so a ZenML Pro rerun of the same appeals takes longer within the same 45 minutes. This was set before the run and left unchanged.
+- The audit after round 8 found 941 evaluations in the Kitaru workspace since the run started, all of revealed appeals, and no agent version registered by an improver run by a host worker.
+
+Checked by the run: the model switch end to end; the noise between unchanged runs of the same batch (batches 1 and 2, where all three lines ran the starting version).
 
 ## Harbor status
 
@@ -62,7 +117,8 @@ Not checked: any full round; the model switch end to end; the noise between two 
 - One state's medical-necessity and experimental-treatment reviews, written decisions, not insurers' claim files.
 - Case files are written by a model from decision texts that include the reviewer's reasoning; a regex drops files with outcome wording, but the choice of facts can still hint at the outcome. The same files feed the agent and the classifier.
 - 100 appeals per batch gives a 95% interval about 10 to 20 points wide (10 near 90%, 20 near 70%) on balanced accuracy for one batch; the cumulative numbers are tighter.
-- Improver runs are one attempt per round and arm, unless a crash cuts one short; then the arm reruns, and the reruns it used before the crash still count against its budget.
+- Improver runs are one attempt per round and arm, unless a crash or network failure cuts one short; then the arm reruns, and the reruns it used before the crash still count against its budget. One run of the whole experiment: a second run could rank the lines differently.
+- The ZenML Pro arm lost four trials to network failures and Codex none; the retries were given what was left of the budget, so those rounds gave the ZenML Pro agent fewer fresh reruns.
 
 ## Provenance
 
