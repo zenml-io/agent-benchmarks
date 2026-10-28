@@ -900,7 +900,9 @@ def arm_access(s: Settings, p: Paths, arm: str, k: int) -> str:
             f"`/opt/claims-venv/bin` (the agent's Python environment) first on PATH, `CLAIMS_WORK_DIR=/claims/data` "
             f"and the agent's model credentials. No other worker claims tasks of agent versions registered during "
             f"this round. Reruns on the revealed appeals are Kitaru experiment runs; each experiment run counts as one "
-            f"rerun.")
+            f"rerun. Before you choose sessions to study or to rerun, count how every recorded session ended (a "
+            f"decision, an error, or a stop at a token, request or time limit) and give the counts in `CHANGE.md`: a "
+            f"session that ended without a decision is a failure whether or not its ruling is revealed.")
 
 
 def trial_worker_name(s: Settings, k: int) -> str:
