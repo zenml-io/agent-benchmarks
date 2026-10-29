@@ -1,0 +1,25 @@
+schema_version = "1.4"
+
+# Filled in by scripts/round.py (string.Template) for one round and one improver arm.
+[task]
+name = "zenml/claims-over-time-round-${round}-${arm}"
+description = "Claims-over-time round ${round}: propose one change to the claims agent (${arm} arm)."
+keywords = ["claims-over-time", "improver", "${arm}"]
+
+[agent]
+timeout_sec = ${agent_timeout_sec}
+user = "${user}"
+# More hosts are added at run time with --allow-agent-host, never committed: the Kitaru server (pro arm only)
+# and the claims agent's model endpoint when it is not api.openai.com.
+network_mode = "allowlist"
+allowed_hosts = ["api.openai.com"]
+
+[verifier]
+timeout_sec = 600.0
+user = "root"
+
+[environment]
+build_timeout_sec = 900.0
+network_mode = "no-network"
+cpus = 4
+memory_mb = 8192
