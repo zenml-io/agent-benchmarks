@@ -152,6 +152,9 @@ class Settings:
     # The Pro arm gets GEPA (the kitaru-playbook skill's prompt search), and its budget counts appeal runs: every
     # appeal in a Kitaru experiment run counts once, up to rerun_budget times the revealed appeals so far.
     pro_gepa: bool = False
+    # The Pro arm's line names the version that recorded each batch and asks it to count how every session ended.
+    # Without it, the bot has only what its own prompt and skills say about that.
+    pro_task_hint: bool = True
 
     @property
     def lines(self) -> tuple[str, ...]:
@@ -898,10 +901,11 @@ def arm_access(s: Settings, p: Paths, arm: str, k: int) -> str:
                                                              if r.get("kitaru_agent_version") in numbers}))
                          for j in range(1, k + 1))
     return (f"The agent is registered in the Kitaru workspace you can reach as `{s.pro_agent}`, and its recorded runs "
-            f"are sessions of that agent, one per appeal (the session input is `Review appeal <id>.`). Each batch's "
-            f"recorded sessions belong to the agent version that decided it ({deciders}); other sessions of the agent, "
-            f"such as replays or earlier runs, can carry the same names. The sessions of "
-            f"the revealed appeals are in the cohort `{reg['cohort']}` (its latest version). The version in "
+            f"are sessions of that agent, one per appeal (the session input is `Review appeal <id>.`). "
+            + (f"Each batch's recorded sessions belong to the agent version that decided it ({deciders}); other "
+               f"sessions of the agent, such as replays or earlier runs, can carry the same names. "
+               if s.pro_task_hint else "")
+            + f"The sessions of the revealed appeals are in the cohort `{reg['cohort']}` (its latest version). The version in "
             f"`{TRIAL_AGENT_DIR}` as you received it is registered as `{s.pro_agent}@{version['number']}`, whose working "
             f"directory `{version['workdir']}` exists in this sandbox as a read-only copy of it. The evaluator "
             f"`{evaluator['name']}@{evaluator['version']}` is registered for the agent and scores a session 1 or 0 "
@@ -915,9 +919,10 @@ def arm_access(s: Settings, p: Paths, arm: str, k: int) -> str:
                f"skill's `references/prompt-search.md` describes, with `{s.improver_model}` as GEPA's rewriting model. "
                f"A set of files GEPA found counts as one change. " if s.pro_gepa else
                "each experiment run counts as one rerun. ")
-            + "Before you choose sessions to study or to rerun, count how every recorded session ended (a "
-            "decision, an error, or a stop at a token, request or time limit) and give the counts in `CHANGE.md`: a "
-            "session that ended without a decision is a failure whether or not its ruling is revealed.")
+            + ("Before you choose sessions to study or to rerun, count how every recorded session ended (a "
+               "decision, an error, or a stop at a token, request or time limit) and give the counts in `CHANGE.md`: "
+               "a session that ended without a decision is a failure whether or not its ruling is revealed."
+               if s.pro_task_hint else "")).rstrip()
 
 
 def budget_unit(s: Settings, arm: str) -> str:
@@ -1568,6 +1573,9 @@ def main() -> None:
     ap.add_argument("--minutes", type=int, default=45, help="each improver's time limit")
     ap.add_argument("--pro-gepa", action="store_true", help="give the Pro arm GEPA and a budget of appeal runs "
                                                            "(--rerun-budget times the revealed appeals)")
+    ap.add_argument("--no-pro-task-hint", dest="pro_task_hint", action="store_false",
+                    help="leave out of the Pro arm's line the version that recorded each batch and the request to count "
+                         "how every session ended")
     ap.add_argument("--pro-agent", help="Kitaru agent name of the pro line (default claims-agent, or claims-agent-smoke "
                                         "with --mini)")
     ap.add_argument("--rounds", default="1-8", help="rounds to run, for example 1-8 or 3")
@@ -1587,7 +1595,7 @@ def main() -> None:
         raise SystemExit(f"PRO_AGENT_DIR={pro_dir} has no pro_agent/agent.py or no executable prepare")
     s = Settings(frontier_preset=a.frontier_preset, open_preset=a.open_preset, switch_round=a.switch_round,
                  improver_model=a.improver_model, rerun_budget=a.rerun_budget, minutes=a.minutes, mini=a.mini,
-                 approval_repeats=a.approval_repeats, approval_on=a.approval_on, pro_gepa=a.pro_gepa,
+                 approval_repeats=a.approval_repeats, approval_on=a.approval_on, pro_gepa=a.pro_gepa, pro_task_hint=a.pro_task_hint,
                  pro_agent=a.pro_agent or ("claims-agent-smoke" if a.mini else "claims-agent"),
                  pro_arm=pro_dir is not None)
     p = Paths(rounds=WORK / "rounds" / ("mini" if a.mini else ""), runs=WORK / "runs" / ("mini" if a.mini else ""))
